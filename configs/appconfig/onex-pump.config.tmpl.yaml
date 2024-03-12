@@ -1,0 +1,63 @@
+#
+# Copyright 2020 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
+# Use of this source code is governed by a MIT style
+# license that can be found in the LICENSE file.
+
+health:
+  enable-http-profiler: ${ONEX_PUMP_HEALTH_ENABLE_HTTP_PROFILER}
+  check-path: ${ONEX_PUMP_HEALTH_CHECK_PATH}
+  check-address: ${ONEX_PUMP_HEALTH_CHECK_ADDRESS}
+redis:
+  addr: ${ONEX_REDIS_ADDR} # Redis 地址
+  database: ${ONEX_PUMP_REDIS_DATABASE} # Redis 数据库索引
+  password: ${ONEX_REDIS_PASSWORD} # Redis 密码
+  max-retries: 3 # # 使用默认值即可，不需要在 manifests/env.local 中配置
+  min-idle-conn: 0
+  dial-timeout: 5s
+  read-timeout: 5s
+  write-timeout: 5s
+  # pool-time:
+  pool-size: 10
+  enable-trace: false
+kafka:
+  brokers: ${ONEX_KAFKA_BROKERS}
+  topic: ${ONEX_KAFKA_TOPIC}
+  timeout: ${ONEX_KAFKA_TIMEOUT}
+  # tls:
+  #mechanism:
+  #username: 
+  #password:
+  #algorithm:
+  #compressed:
+  reader: # 使用默认值即可，不需要在 manifests/env.local 中配置
+    partition: 0
+    queue-capacity: 100
+    min-bytes: 1
+    max-bytes: 1024
+    max-wait: 10s
+    read-batch-timeout: 10s
+    heartbeat-interval: 3s
+    commit-interval: 0s
+    rebalance-timeout: 30s
+    start-offset: 0
+    max-attempts: 3
+mongo:
+  url: ${ONEX_MONGO_URL}
+  database: ${ONEX_MONGO_DATABASE}
+  collection: ${ONEX_MONGO_COLLECTION} # mongodb collection name
+  username: ${ONEX_MONGO_USERNAME}
+  password: ${ONEX_MONGO_PASSWORD}
+  timeout: ${ONEX_MONGO_TIMEOUT}
+  tls:
+    use-tls: false
+    nsecure-skip-verify: true
+    # ca-cert: 
+    # cert: 
+    # key: 
+log: # 使用默认值即可，不需要在 manifests/env.local 中配置
+    level: debug # 日志级别，优先级从低到高依次为：debug, info, warn, error, dpanic, panic, fatal。
+    format: console # 支持的日志输出格式，目前支持 console 和 json 两种。console 其实就是 text 格式。
+    enable-color: true # 是否开启颜色输出，true: 是，false: 否
+    disable-caller: false # 是否开启 caller，如果开启会在日志中显示调用日志所在的文件、函数和行号
+    disable-stacktrace: false # 是否再 panic 及以上级别禁止打印堆栈信息
+    output-paths: [${ONEX_PUMP_LOG_OUTPUT}] # 多个输出，逗号分开。stdout：标准输出，

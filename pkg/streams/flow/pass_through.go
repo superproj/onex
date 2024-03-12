@@ -1,0 +1,70 @@
+// Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
+// Use of this source code is governed by a MIT style
+// license that can be found in the LICENSE file. The original repo for
+// this file is https://github.com/superproj/onex.
+//
+
+package flow
+
+import (
+	"github.com/superproj/onex/pkg/streams"
+)
+
+// PassThrough retransmits incoming elements as is.
+//
+// in  -- 1 -- 2 ---- 3 -- 4 ------ 5 --
+//
+// out -- 1 -- 2 ---- 3 -- 4 ------ 5 --.
+type PassThrough struct {
+	in  chan any
+	out chan any
+}
+
+// Verify PassThrough satisfies the Flow interface.
+var _ streams.Flow = (*PassThrough)(nil)
+
+// NewPassThrough returns a new PassThrough instance.
+func NewPassThrough() *PassThrough {
+	passThrough := &PassThrough{
+		in:  make(chan any),
+		out: make(chan any),
+	}
+	go passThrough.doStream()
+
+	return passThrough
+}
+
+// Via streams data through the given flow.
+func (pt *PassThrough) Via(flow streams.Flow) streams.Flow {
+	go pt.transmit(flow)
+	return flow
+}
+
+// To streams data to the given sink.
+func (pt *PassThrough) To(sink streams.Sink) {
+	pt.transmit(sink)
+}
+
+// Out returns an output channel for sending data.
+func (pt *PassThrough) Out() <-chan any {
+	return pt.out
+}
+
+// In returns an input channel for receiving data.
+func (pt *PassThrough) In() chan<- any {
+	return pt.in
+}
+
+func (pt *PassThrough) transmit(inlet streams.Inlet) {
+	for elem := range pt.Out() {
+		inlet.In() <- elem
+	}
+	close(inlet.In())
+}
+
+func (pt *PassThrough) doStream() {
+	for elem := range pt.in {
+		pt.out <- elem
+	}
+	close(pt.out)
+}

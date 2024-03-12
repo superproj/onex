@@ -1,0 +1,32 @@
+// Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
+// Use of this source code is governed by a MIT style
+// license that can be found in the LICENSE file. The original repo for
+// this file is https://github.com/superproj/onex.
+//
+
+syntax = "proto3";
+
+package zerrors;
+
+import "errors/errors.proto";
+
+option go_package = "github.com/superproj/onex/pkg/api/zerrors;zerrors";
+
+enum ErrorReason {
+  option (errors.default_code) = 500;
+
+  // 未知错误，服务器内部错误
+  Unknown = 0 [(errors.code) = 500];
+  // 无效参数错误
+  InvalidParameter = 1 [(errors.code) = 400];
+  // 未找到错误
+  NotFound = 2 [(errors.code) = 400];
+  // 未经授权错误
+  Unauthorized = 3 [(errors.code) = 401];
+  // 禁止访问错误
+  Forbidden = 4 [(errors.code) = 403];
+  // 缺少幂等性令牌错误
+  IdempotentMissingToken = 5 [(errors.code) = 400];
+  // 幂等性令牌已过期错误
+  IdempotentTokenExpired = 6 [(errors.code) = 400];
+}

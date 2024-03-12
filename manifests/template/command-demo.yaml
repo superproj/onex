@@ -1,0 +1,30 @@
+# Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
+# Use of this source code is governed by a MIT style
+# license that can be found in the LICENSE file. The original repo for
+# this file is https://github.com/superproj/onex.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: command-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: command-demo
+  template:
+    metadata:
+      labels:
+        app: command-demo
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: my-container
+          image: busybox
+          command: ["sh", "-c", "sleep 3000"]
+          readinessProbe:
+            exec:
+              command: ["false"]
+            initialDelaySeconds: 5
+            periodSeconds: 10

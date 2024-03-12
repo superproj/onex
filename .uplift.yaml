@@ -1,0 +1,55 @@
+# Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
+# Use of this source code is governed by a MIT style
+# license that can be found in the LICENSE file. The original repo for
+# this file is https://github.com/superproj/onex.
+#
+
+# .uplift.yaml
+# Example of bumping a package.json file
+
+# Use annotated tags instead of lightweight tags when tagging a new
+# semantic version. An annotated tag is treated like a regular commit
+# by git and contains both author details and a commit message. Uplift
+# will either use its defaults or the custom commit details provided
+# when generated the annotated tag.
+#
+# Defaults to false
+annotatedTags: true
+
+# Customise the creation of the Changelog
+changelog:
+  # Change the sort order of the commits within each changelog entry.
+  # Supported values are asc or desc (case is ignored)
+  #
+  # Defaults to desc (descending order) to mirror the default behaviour
+  # of "git log"
+  sort: asc
+
+  # A list of commits to exclude during the creation of a changelog.
+  # Provide a list of regular expressions for matching commits that
+  # are to be excluded. Auto-generated commits from Uplift
+  # (with the prefix ci(uplift)) will always be excluded
+  #
+  # Defaults to an empty list. All commits are included
+  exclude:
+    - ^docs
+    - ^ci
+
+  # A list of commits to cherry-pick and include during the creation
+  # of a changelog. Provide a list of regular expressions for matching
+  # commits that are to be included
+  #include:
+  #- '^.*\(scope\)'
+
+  # Include multiline commit messages within the changelog. Disables
+  # default behaviour of truncating a commit message to its first line
+  #multiline: true
+
+# Changes the default commit message used by Uplift when committing
+# any staged changes.
+#
+# Default commit message is: ci(uplift): uplifted for version v0.1.0
+#commitMessage: "ci(release): release commit"
+
+git:
+  ignoreDetached: true

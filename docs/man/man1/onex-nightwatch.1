@@ -1,0 +1,177 @@
+.nh
+.TH OneX(1) onex User Manuals
+Eric Paris
+Jan 2015
+
+.SH NAME
+.PP
+onex-nightwatch - Launch a onex asynchronous task processing server
+
+
+.SH SYNOPSIS
+.PP
+\fBonex-nightwatch\fP [OPTIONS]
+
+
+.SH DESCRIPTION
+.PP
+The nightwatch server is responsible for executing some async tasks
+like linux cronjob. You can add Cron(github.com/robfig/cron) jobs on the given schedule
+use the Cron spec format.
+
+
+.SH OPTIONS
+.PP
+\fB-c\fP, \fB--config\fP=""
+	Read configuration from specified \fB\fCFILE\fR, support JSON, TOML, YAML, HCL, or Java properties formats.
+
+.PP
+\fB--db.database\fP="onex"
+	Database name for the server to use.
+
+.PP
+\fB--db.host\fP="127.0.0.1:3306"
+	MySQL service host address. If left blank, the following related mysql options will be ignored.
+
+.PP
+\fB--db.log-mode\fP=1
+	Specify gorm log level.
+
+.PP
+\fB--db.max-connection-life-time\fP=10s
+	Maximum connection life time allowed to connect to mysql.
+
+.PP
+\fB--db.max-idle-connections\fP=100
+	Maximum idle connections allowed to connect to mysql.
+
+.PP
+\fB--db.max-open-connections\fP=100
+	Maximum open connections allowed to connect to mysql.
+
+.PP
+\fB--db.password\fP="onex(#)666"
+	Password for access to mysql, should be used pair with password.
+
+.PP
+\fB--db.username\fP="onex"
+	Username for access to mysql service.
+
+.PP
+\fB--feature-gates\fP=
+	A set of key=value pairs that describe feature gates for alpha/experimental features. Options are:
+AllAlpha=true|false (ALPHA - default=false)
+AllBeta=true|false (BETA - default=false)
+ContextualLogging=true|false (ALPHA - default=false)
+LoggingAlphaOptions=true|false (ALPHA - default=false)
+LoggingBetaOptions=true|false (BETA - default=true)
+MachinePool=true|false (ALPHA - default=false)
+
+.PP
+\fB--health.check-address\fP="0.0.0.0:20250"
+	Specifies liveness health check bind address.
+
+.PP
+\fB--health.check-path\fP="/healthz"
+	Specifies liveness health check request path.
+
+.PP
+\fB--health.enable-http-profiler\fP=false
+	Expose runtime profiling data via HTTP.
+
+.PP
+\fB--kubeconfig\fP=""
+	Path to kubeconfig file with authorization and master location information.
+
+.PP
+\fB--log.disable-caller\fP=false
+	Disable output of caller information in the log.
+
+.PP
+\fB--log.disable-stacktrace\fP=false
+	Disable the log to record a stack trace for all messages at or above panic level.
+
+.PP
+\fB--log.enable-color\fP=false
+	Enable output ansi colors in plain format logs.
+
+.PP
+\fB--log.format\fP="console"
+	Log output \fB\fCFORMAT\fR, support plain or json format.
+
+.PP
+\fB--log.level\fP="info"
+	Minimum log output \fB\fCLEVEL\fR\&.
+
+.PP
+\fB--log.output-paths\fP=[stdout]
+	Output paths of log.
+
+.PP
+\fB--metrics.allow-metric-labels\fP=[]
+	The map from metric-label to value allow-list of this label. The key's format is ,\&. The value's format is ,\&...e.g. metric1,label1='v1,v2,v3', metric1,label2='v1,v2,v3' metric2,label1='v1,v2,v3'.
+
+.PP
+\fB--metrics.disabled-metrics\fP=[]
+	This flag provides an escape hatch for misbehaving metrics. You must provide the fully qualified metric name in order to disable it. Disclaimer: disabling metrics is higher in precedence than showing hidden metrics.
+
+.PP
+\fB--metrics.show-hidden-metrics-for-version\fP=""
+	The previous version for which you want to show hidden metrics. Only the previous minor version is meaningful, other values will not be allowed. The format is \&., e.g.: '1.16'. The purpose of this format is make sure you have the opportunity to notice if the next release hides additional metrics, rather than being surprised when they are permanently removed in the release after that.
+
+.PP
+\fB--redis.addr\fP="127.0.0.1:6379"
+	Address of your Redis server(ip:port).
+
+.PP
+\fB--redis.database\fP=0
+	Database to be selected after connecting to the server.
+
+.PP
+\fB--redis.dial-timeout\fP=5s
+	Dial timeout for establishing new connections.
+
+.PP
+\fB--redis.enable-trace\fP=false
+	Redis hook tracing (using open telemetry).
+
+.PP
+\fB--redis.max-retries\fP=3
+	Maximum number of retries before giving up.
+
+.PP
+\fB--redis.min-idle-conns\fP=0
+	Minimum number of idle connections which is useful when establishing new connection is slow.
+
+.PP
+\fB--redis.password\fP=""
+	Optional auth password for redis db.
+
+.PP
+\fB--redis.pool-size\fP=10
+	Maximum number of socket connections.
+
+.PP
+\fB--redis.pool-timeout\fP=0s
+	Amount of time client waits for connection if all connections are busy before returning an error.
+
+.PP
+\fB--redis.read-timeout\fP=3s
+	Timeout for socket reads.
+
+.PP
+\fB--redis.username\fP=""
+	Username for access to redis service.
+
+.PP
+\fB--redis.write-timeout\fP=3s
+	Timeout for socket writes.
+
+.PP
+\fB--version\fP=false
+	Print version information and quit
+
+
+.SH HISTORY
+.PP
+January 2015, Originally compiled by Eric Paris (eparis at redhat dot com) based on the superproj source material, but hopefully they have been automatically generated since!
