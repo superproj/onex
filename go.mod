@@ -71,17 +71,17 @@ require (
 	go.opentelemetry.io/otel/trace v1.19.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20231002182017-d307bd883b97
 	google.golang.org/grpc v1.58.3
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.33.0
 	gorm.io/driver/mysql v1.5.1-0.20230509030346-3715c134c25b
 	gorm.io/gen v0.3.23
 	gorm.io/gorm v1.25.1-0.20230505075827-e61b98d69677
-	k8s.io/api v0.29.2
-	k8s.io/apimachinery v0.29.2
-	k8s.io/apiserver v0.29.2
-	k8s.io/cli-runtime v0.29.2
-	k8s.io/client-go v0.29.2
-	k8s.io/code-generator v0.29.2
-	k8s.io/component-base v0.29.2
+	k8s.io/api v0.29.3
+	k8s.io/apimachinery v0.29.3
+	k8s.io/apiserver v0.29.3
+	k8s.io/cli-runtime v0.29.3
+	k8s.io/client-go v0.29.3
+	k8s.io/code-generator v0.29.3
+	k8s.io/component-base v0.29.3
 	k8s.io/klog/v2 v2.110.1
 	k8s.io/kube-openapi v0.0.0-20231010175941-2dd684a91f00
 	k8s.io/kubernetes v0.0.0-00010101000000-000000000000
@@ -196,9 +196,9 @@ require (
 	gorm.io/driver/sqlserver v1.4.1 // indirect
 	gorm.io/hints v1.1.0 // indirect
 	gorm.io/plugin/dbresolver v1.3.0 // indirect
-	k8s.io/cloud-provider v0.29.2 // indirect
-	k8s.io/kms v0.29.2 // indirect
-	k8s.io/kube-controller-manager v0.29.2 // indirect
+	k8s.io/cloud-provider v0.29.3 // indirect
+	k8s.io/kms v0.29.3 // indirect
+	k8s.io/kube-controller-manager v0.29.3 // indirect
 	modernc.org/libc v1.19.0 // indirect
 	modernc.org/mathutil v1.5.0 // indirect
 	modernc.org/memory v1.4.0 // indirect
@@ -231,7 +231,7 @@ require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/glog v1.1.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/golang/protobuf v1.5.3
+	github.com/golang/protobuf v1.5.4
 	github.com/google/go-cmp v0.6.0
 	github.com/google/gofuzz v1.2.0
 	github.com/google/uuid v1.3.0
@@ -281,9 +281,9 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/apiextensions-apiserver v0.29.2
-	k8s.io/component-helpers v0.29.2 // indirect
-	k8s.io/controller-manager v0.29.2
+	k8s.io/apiextensions-apiserver v0.29.3
+	k8s.io/component-helpers v0.29.3 // indirect
+	k8s.io/controller-manager v0.29.3
 	k8s.io/gengo v0.0.0-20230829151522-9cce18d56c01
 	k8s.io/kubelet v0.26.9 // indirect
 	sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.28.0 // indirect
@@ -305,17 +305,17 @@ replace (
 	go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v1.19.0
 	go.opentelemetry.io/otel/trace => go.opentelemetry.io/otel/trace v1.19.0
 	go.opentelemetry.io/proto/otlp => go.opentelemetry.io/proto/otlp v1.0.0
-	k8s.io/cri-api => k8s.io/cri-api v0.29.2
-	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.29.2
-	k8s.io/dynamic-resource-allocation => k8s.io/dynamic-resource-allocation v0.29.2
-	k8s.io/endpointslice => k8s.io/endpointslice v0.29.2
-	k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.29.2
-	k8s.io/kube-proxy => k8s.io/kube-proxy v0.29.2
-	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.29.2
+	k8s.io/cri-api => k8s.io/cri-api v0.29.3
+	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.29.3
+	k8s.io/dynamic-resource-allocation => k8s.io/dynamic-resource-allocation v0.29.3
+	k8s.io/endpointslice => k8s.io/endpointslice v0.29.3
+	k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.29.3
+	k8s.io/kube-proxy => k8s.io/kube-proxy v0.29.3
+	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.29.3
 	// k8s.io/kubernetes 经常会被自动变更为v1.15.0-alpha.0，这里使用replace解决掉
-	k8s.io/kubernetes => k8s.io/kubernetes v1.29.2
-	k8s.io/legacy-cloud-providers => k8s.io/legacy-cloud-providers v0.29.2
-	k8s.io/mount-utils => k8s.io/mount-utils v0.29.2
-	k8s.io/pod-security-admission => k8s.io/pod-security-admission v0.29.2
-	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.29.2
+	k8s.io/kubernetes => k8s.io/kubernetes v1.29.3
+	k8s.io/legacy-cloud-providers => k8s.io/legacy-cloud-providers v0.29.3
+	k8s.io/mount-utils => k8s.io/mount-utils v0.29.3
+	k8s.io/pod-security-admission => k8s.io/pod-security-admission v0.29.3
+	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.29.3
 )

@@ -174,14 +174,35 @@ func (a *App) buildCommand() {
 		Short: a.shortDesc,
 		Long:  a.description,
 		RunE:  a.runCommand,
-
-		// stop printing usage when the command errors
-		SilenceUsage: true,
 		PersistentPreRunE: func(*cobra.Command, []string) error {
 			return nil
 		},
 		Args: a.args,
 	}
+	// When error printing is enabled for the Cobra command, a flag parse
+	// error gets printed first, then optionally the often long usage
+	// text. This is very unreadable in a console because the last few
+	// lines that will be visible on screen don't include the error.
+	//
+	// The recommendation from #sig-cli was to print the usage text, then
+	// the error. We implement this consistently for all commands here.
+	// However, we don't want to print the usage text when command
+	// execution fails for other reasons than parsing. We detect this via
+	// the FlagParseError callback.
+	//
+	// Some commands, like kubectl, already deal with this themselves.
+	// We don't change the behavior for those.
+	if !cmd.SilenceUsage {
+		cmd.SilenceUsage = true
+		cmd.SetFlagErrorFunc(func(c *cobra.Command, err error) error {
+			// Re-enable usage printing.
+			c.SilenceUsage = false
+			return err
+		})
+	}
+	// In all cases error printing is done below.
+	cmd.SilenceErrors = true
+
 	cmd.SetOutput(os.Stdout)
 	cmd.SetErr(os.Stderr)
 	cmd.Flags().SortFlags = true

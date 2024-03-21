@@ -78,7 +78,7 @@ $ make docker-install # 本地快速搭建 OneX（容器化），最好用全新
 1. 编译所有组件
 
 ```bash
-$ make buid # # 编译二进制文件，会编译 cmd/ 目录下的所有 main 文件
+$ make build # # 编译二进制文件，会编译 cmd/ 目录下的所有 main 文件
 ```
 
 2. 编译某个或某几个组件
