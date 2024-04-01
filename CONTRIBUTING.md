@@ -1,33 +1,40 @@
-The onex community wants to be helped by a wide range of developers, so you'd like to take a few minutes to read this guide before you mention the problem or pull request.
+Welcome to the Onex! We’re thrilled to have a diverse group of developers contribute to our project. To ensure a smooth collaboration process, we kindly ask you to review this guide before submitting an issue or a pull request.
 
-## Reporting Bug or Fixing Bugs
-We use GitHub issues to manage issues. If you want to submit , first make sure you've searched for existing issues, pull requests and read our [FAQ](https://onex.com/docs/intro/faq).
+### Reporting Bugs or Suggesting Fixes
 
-When submitting a bug report, use the issue template we provide to clearly describe the problems encountered and how to reproduce, and if convenient it is best to provide a minimal reproduce repository.
+For bug reporting and fixes, we utilize GitHub issues. Before making a submission, please:
 
-## Adding new features
+- Conduct a search for existing issues and pull requests.
+- Review our [FAQ](https://onex.com/docs/intro/faq) to see if your question has already been addressed.
 
-In order to accurately distinguish whether the needs put forward by users are the needs or reasonable needs of most users, solicit opinions from the community through the proposal process, and the proposals adopted by the community will be realized as new feature.
-In order to make the proposal process as simple as possible, the process includes three stages: proposal, feature and PR, in which proposal, feature is issue and PR is the specific function implementation. 
-In order to facilitate the community to correctly understand the requirements of the proposal, the proposal issue needs to describe the functional requirements and relevant references or literature in detail. 
-When most community users agree with this proposal, they will create a feature issue associated with the proposal issue.
-The feature issue needs to describe the implementation method and function demonstration in detail as a reference for the final function implementation. 
-After the function is implemented, a merge request will be initiated to associate the proposal issue and feature issue.
-After the merge is completed, Close all issues.
+When reporting a bug, follow the issue template provided to detail the encountered issue and steps to reproduce it. If possible, include a minimal repository that replicates the problem.
 
-## How to submit code
-If you've never submitted code on GitHub, follow these steps:
+### Proposing New Features
 
-- First, please fork items to your GitHub account
-- Then create a new feature branch based on the main branch and name it features such as feature/log 
-- Write code
-- Submit code to the far end branch
-- Submit a PR request in github
-- Wait for review and merge to the main branch
+To ensure that new features reflect the broader community’s needs, we follow a proposal process. This process comprises three stages: proposal, feature discussion, and pull request (PR), with each stage taking the form of a GitHub issue for clarity and traceability.
 
-**Note That when you submit a PR request, you first ensure that the code uses the correct coding specifications and that there are complete test cases, and that the information in the submission of the PR is best associated with the relevant issue to ease the workload of the auditor.**
+1. **Proposal Submission**: Describe the feature’s functional requirements and any relevant references or literature in detail.
+2. **Feature Discussion**: Once the community shows support for a proposal, a detailed feature issue will be opened to discuss implementation methods and demonstrations.
+3. **Pull Request**: Following agreement on the feature, a PR will be initiated to implement the function, linking back to both the proposal and feature issues.
 
-## Conventional Commits
+After successful merge, all related issues will be closed.
+
+### How to Submit Code
+
+New to GitHub? Follow these steps to contribute your code:
+
+1. Fork the repository to your GitHub account.
+2. Create a new feature branch from the main branch, naming it appropriately (e.g., `feature/log`).
+3. Develop your feature.
+4. Push your code to the branch.
+5. Submit a PR on GitHub.
+6. Await review and potential merge into the main branch.
+
+**Note**: Ensure your code adheres to our coding standards and includes complete test cases. Linking relevant issues in your PR description can significantly aid the review process.
+
+### Conventional Commits
+
+We adhere to the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) standard, which structures commit messages as follows:
 
 ```
 <type>[optional scope]: <description>
@@ -37,89 +44,23 @@ If you've never submitted code on GitHub, follow these steps:
 [optional footer(s)]
 ```
 
-> More: [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)
+#### Commit Types
 
-### type
+- **Main Types**: `fix`, `feat`, `deps`, `break`
+- **Other Types**: `docs`, `refactor`, `style`, `test`, `chore`, `ci`
 
-There are the following types of commit:
+#### Scopes
 
-#### Main
+Our project defines scopes such as `uc`, `apiserver`, and `gw`, among others, to categorize changes more specifically.
 
-- **fix**: A bug fix
-- **feat**: A new feature
-- **deps**: Changes external dependencies
-- **break**: Changes has break change
+#### Descriptions and Bodies
 
-#### Other
+Commit messages should be clear and to the point, using present tense and avoiding capitalization and punctuation at the end.
 
-- **docs**: Documentation only changes
-- **refactor**: A code change that neither fixes a bug nor adds a feature
-- **style**: Changes that do not affect the meaning of the code (white-space, formatting, etc)
-- **test**: Adding missing tests or correcting existing tests
-- **chore** Daily work, examples, etc.
-- **ci**: Changes to our CI configuration files and scripts
+#### Footers
 
-### scope 
+Use the footer to note any breaking changes or to reference issues that the commit addresses.
 
-The following is the list of supported scopes:
+### Release Notes
 
-- **uc**: changes related to `onex-usercenter`
-- **apiserver**: changes related to `onex-apiserver`
-- **gw**: changes related to `onex-gateway`
-- **nightwatch**: changes related to `onex-nightwatch`
-- **pump**: changes related to `onex-pump`
-- **minerset**: changes related to `onex-minerset-controller`
-- **miner**: changes related to `onex-miner-controller`
-- **cm**: changes related to `onex-controller-manager`
-- **etc.**: changes to all other code
-
-### description
-
-The description contains a succinct description of the change
-
-- use the imperative, present tense: "change" not "changed" nor "changes"
-- don't capitalize the first letter
-- no dot (.) at the end
-
-### body
-
-The body should include the motivation for the change and contrast this with previous behavior.
-
-### footer
-
-The footer should contain any information about **Breaking Changes** and is also the place to reference GitHub issues that this commit Closes.
-
-### examples
-
-
-#### Only commit message
-```
-fix: The log debug level should be -1  
-```
-
-#### Attention
-```
-refactor!(uc): replacement underlying implementation
-```
-
-#### Full commit message
-```
-fix(log): [BREAKING-CHANGE] unable to meet the requirement of log Library
-
-Explain the reason, purpose, realization method, etc.
-
-Close #777
-Doc change on doc/#111
-BREAKING CHANGE:
-  Breaks log.info api, log.log should be used instead
-```
-## Release
-
-You can use [git-chglog](https://github.com/git-chglog/git-chglog) to generate a change log during.
-
-The following is the list of supported types:
-
-- Breaking Change
-- Dependencies
-- Bug Fixes
-- Others
+Use [git-chglog](https://github.com/git-chglog/git-chglog) to generate changelogs, capturing categories like Breaking Changes, Dependencies, Bug Fixes, and more.

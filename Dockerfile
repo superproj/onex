@@ -12,7 +12,8 @@
 # Default <prod_image> is debian:jessie
 ARG prod_image=debian:jessie
 
-FROM ${prod_image}
+FROM ${prod_image} AS builder
+
 LABEL maintainer="<colin404@foxmail.com>"
 
 WORKDIR /opt/onex
@@ -23,5 +24,8 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
       echo "Asia/Shanghai" > /etc/timezone
 
 COPY onex-usercenter /opt/onex/bin/
+
+RUN useradd -m onexuser
+USER onexuser
 
 ENTRYPOINT ["/opt/onex/bin/onex-usercenter"]
