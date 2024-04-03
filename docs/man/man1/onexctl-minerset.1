@@ -1,0 +1,169 @@
+.nh
+.TH OneX(1) onex User Manuals
+Eric Paris
+Jan 2015
+
+.SH NAME
+.PP
+onexctl minerset - Manage minersets on onex platform
+
+
+.SH SYNOPSIS
+.PP
+\fBonexctl minerset\fP [OPTIONS]
+
+
+.SH DESCRIPTION
+.PP
+MinerSet management commands.
+
+.PP
+This commands allow you to manage your minerset on onex platform.
+
+
+.SH OPTIONS INHERITED FROM PARENT COMMANDS
+.PP
+\fB--alsologtostderr\fP=false
+	log to standard error as well as files
+
+.PP
+\fB--config\fP=""
+	Path to the config file to use for CLI.
+
+.PP
+\fB--gateway.address\fP=""
+	The address and port of the OneX API server
+
+.PP
+\fB--gateway.certificate-authority\fP=""
+	Path to a cert file for the certificate authority
+
+.PP
+\fB--gateway.insecure-skip-tls-verify\fP=false
+	If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
+
+.PP
+\fB--gateway.max-retries\fP=0
+	Maximum number of retries.
+
+.PP
+\fB--gateway.retry-interval\fP=0s
+	The interval time between each attempt.
+
+.PP
+\fB--gateway.timeout\fP=0s
+	The length of time to wait before giving up on a single server request. Non-zero values should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero means don't timeout requests.
+
+.PP
+\fB--kubeconfig\fP=""
+	Paths to a kubeconfig. Only required if out-of-cluster.
+
+.PP
+\fB--log-backtrace-at\fP=
+	when logging hits line file:N, emit a stack trace
+
+.PP
+\fB--log-dir\fP=""
+	If non-empty, write log files in this directory
+
+.PP
+\fB--log-link\fP=""
+	If non-empty, add symbolic links in this directory to the log files
+
+.PP
+\fB--logbuflevel\fP=0
+	Buffer log messages logged at this level or lower (-1 means don't buffer; 0 means buffer INFO only; ...). Has limited applicability on non-prod platforms.
+
+.PP
+\fB--logtostderr\fP=false
+	log to standard error instead of files
+
+.PP
+\fB--profile\fP="none"
+	Name of profile to capture. One of (none|cpu|heap|goroutine|threadcreate|block|mutex)
+
+.PP
+\fB--profile-output\fP="profile.pprof"
+	Name of the file to write the profile to
+
+.PP
+\fB--stderrthreshold\fP=2
+	logs at or above this threshold go to stderr
+
+.PP
+\fB--user.client-certificate\fP=""
+	Path to a client certificate file for TLS
+
+.PP
+\fB--user.client-key\fP=""
+	Path to a client key file for TLS
+
+.PP
+\fB--user.password\fP=""
+	Password for basic authentication to the API server
+
+.PP
+\fB--user.secret-id\fP=""
+	SecretID for JWT authentication to the API server
+
+.PP
+\fB--user.secret-key\fP=""
+	SecretKey for jwt authentication to the API server
+
+.PP
+\fB--user.token\fP=""
+	Bearer token for authentication to the API server
+
+.PP
+\fB--user.username\fP=""
+	Username for basic authentication to the API server
+
+.PP
+\fB--usercenter.address\fP=""
+	The address and port of the OneX API server
+
+.PP
+\fB--usercenter.certificate-authority\fP=""
+	Path to a cert file for the certificate authority
+
+.PP
+\fB--usercenter.insecure-skip-tls-verify\fP=false
+	If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure
+
+.PP
+\fB--usercenter.max-retries\fP=0
+	Maximum number of retries.
+
+.PP
+\fB--usercenter.retry-interval\fP=0s
+	The interval time between each attempt.
+
+.PP
+\fB--usercenter.timeout\fP=0s
+	The length of time to wait before giving up on a single server request. Non-zero values should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero means don't timeout requests.
+
+.PP
+\fB-v\fP, \fB--v\fP=0
+	log level for V logs
+
+.PP
+\fB--version\fP=false
+	Print version information and quit
+
+.PP
+\fB--vmodule\fP=
+	comma-separated list of pattern=N settings for file-filtered logging
+
+.PP
+\fB--warnings-as-errors\fP=false
+	Treat warnings received from the server as errors and exit with a non-zero exit code
+
+
+.SH SEE ALSO
+.PP
+\fBonexctl(1)\fP, \fBonexctl-minerset-list(1)\fP,
+
+
+.SH HISTORY
+.PP
+January 2015, Originally compiled by Eric Paris (eparis at redhat dot com) based on the superproj source material, but hopefully they have been automatically generated since!

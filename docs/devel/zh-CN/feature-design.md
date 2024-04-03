@@ -1,0 +1,153 @@
+## 功能设计
+
+
+### 功能列表
+
+onex设计目的是能够在一个项目中，有机整合 Go 项目开发中用到的几乎所有的核心功能点，以及大部分常用功能点。本篇文章会详细罗列这些功能点，以及设计方式。
+
+
+- 代码规范、质量高：
+  - 遵循各种代码开发规范：代码规范、目录规范、日志规范、错误码规范、提交规范、版本规范、文档规范等
+  - 采用标准、高效的代码开发流程：
+    - 采用结构化的高质量 Makefile 高效管理 Git 大仓；工程化管理包括但不限于以下几点：
+      - 代码格式化
+      - 代码生成
+      - 代码编译
+      - 代码测试
+      - 代码部署
+      - 镜像制作
+      - 版权声明
+      - 生成Swagger文档
+      - 工具安装
+      - CA证书制作
+      - 静态代码检查
+      - license header添加
+      - ...
+    - 采用GitFlow代码管理模式
+    - 采用敏捷开发模式
+    - 集成进了CI/CD系统
+  - 面向接口编程、Go项目设计哲学
+  - 可测试的代码设计
+  - 代码遵循了 Go最佳实战，是用来大量的Go设计模式
+- 开发阶段全：项目包含了设计、开发、测试、发布全流程
+  - 测试：单元测试、性能测试、性能分析、测试框架(testify, GoConvey)、覆盖率、Mock工具(sqlmock, httpmock, bouk/monkey, golang/mock)
+- 常用功能设计：
+  - 日志包设计
+  - 错误包设计
+  - 错误码设计
+  - 应用框架构建设计
+  - ...
+- 遵循简洁架构：onex-gateway/onex-usercenter 遵循了简洁架构。(service、biz、store三层设计)；
+- 项目有配套的课程可供学习：极客时间、知识星球、B站免费课程（开发企业级REST API服务）、慕课网（视频课）；
+- 采用结构化的高质量 Makefile 高效管理 Git 大仓；
+- 代码实现的企业级功能全： 
+  - 包含了企业级应用需要的众多核心功能：
+    - Web服务(onex-gateway, onex-usercenter)详细功能列表包含但不限于以下列表：
+      - RESTful
+      - gRPC
+      - 路由匹配
+      - 路由分组
+      - HTTP/HTTPS
+      - 认证/授权
+      - 路由匹配
+      - Protobuf
+      - 中间件
+      - 跨域
+      - ResutID
+      - 优雅关停
+      - 参数解析
+      - 参数校验
+      - 逻辑处理
+      - 返回结果处理
+      - ...
+    - 分布式异步任务处理服务：onex-nightwatch；
+    - ETL数据抽取：onex-pump
+    - HTTP/GRPC SDK
+  - 包含了其他辅助功能：
+    - 命令行工具：onexctl；
+    - 代码检查：lint-xxx
+    - 代码生成：gen-xxx
+- 自动版本生成、CHANGELOG生成
+- 开发中一些常用功能设计：Client SDK设计方案，Options设计方案
+- 大量采用了代码生成技术，提高代码开发效率（见scripts/make-rules/generate.mk）：
+  - 自定义代码生成gen-xxx
+  - 自动生成go protobuf文件 
+  - swagger.json
+  - error code
+  - doc.go
+  - ca
+  - license header
+  - 应用使用文档
+  - man文件
+  - wire
+  - k8s相关源码（listers, informers, client-go等）
+  - dockerfile 
+  - kubeconfig
+  - helm docs
+  - ...
+- 包含了众多Linter检查规则：Dockerfile, Helm Chart, Code, linters
+- 项目包含了声明式 API 和命令式 API 2 种编程范式；
+- 中间件组件及实战：MySQL、Redis、Etcd、Kafka、MongoDB；
+- 校验：基于 Tag 的校验、自定义校验逻辑
+- 日志(v1.0)：Elasticsearch、Filebeat、Kibana；(Loki，grafana v2.0)
+- 监控告警：Prometheus、alertmanager；
+- 部署：裸机部署、独立Deployment部署、Helm编排部署；
+- 错误码设计
+- Event 分库 Etcd
+- 认证：基本认证、Token认证、CA
+- 授权：RBAC
+- 用了大量Go生态中优秀的包：
+  - 缓存：go-cache、lru；
+  - 中间件：go-redis、gorm；
+  - Web框架：grpc、gin(独立Demo)、grpc-gateway；
+  - 命令行工具：cobra、pflag、viper；
+  - 认证：golang-jwt；
+  - 校验：validator；
+  - 日志：klog、zap(独立Demo)、logrus(独立Demo)；
+  - 定时任务：cron；
+  - HTTP客户端：retry；
+  - 授权：casbin
+  - 微服务框架：kratos
+  - 其他常用的包：client-go、uuid、golang-set、segmentio/kafka-go、fatih/color、olekukonko/tablewriter、redsync等；
+- 微服务相关功能：
+  - 配置中心：viper + configmap、【kubernetes、nacos（v2.0）】
+  - 服务治理（服务注册/服务发现）：etcd(v1.0)、、polaris(v2.0)
+  - 调用链：OpenTelemetry、Jaeger
+- Blockchain 基本原理、私有链搭建和使用；
+- 验证码（captcha）
+- 其他特性：
+  - Protobuf；
+  - 限流算法；
+  - 依赖注入；
+  - 分布式锁；
+  - CA证书制作
+  - Dockerfile编写
+- Kubernetes编程开发实战：
+  - 声明式 API 编程范式（Kubernetes 编程）：
+    - kube-apiserver 风格的 apiserver： onex-apiserver；
+    - Kubernetes controller：onex-minerset-controller, onex-miner-controller, onex-controller-manager；
+    - Operator开发：onex-operator
+  - Kubernetes Webhook、准入控制；
+  - Kubernetes 集群（Kind集群）搭建和使用；
+- 云原生应用的部署设计和实战：
+  - 云原生部署架构设计
+  - 监控告警
+  - 分布式日志解决方案
+  - 容灾能力建设实战
+  - 弹性扩缩容能力设计和实战
+  - Helm服务编排
+  - 容器化部署
+  - 安全能力建设
+  - CI/CD
+  - 负载均衡
+- 更多其他特性...
+- 可能实现的功能：
+  - WebSocket；
+  - Kratos集成Gin；
+  - 服务治理用：consul、kubernetes
+- 涉及的语言：Go、Shell、Makefile、AWK
+- 使用了众多可以提高效率、规范的工具，例如：
+  - gsemver, git-chglog, addlicense, kratos, kind, go-apidiff, gotests, cfssl, go-gitlint, kustomize, kafkactl, kube-linter, kubectl, helm-docs, db2struct, gentool, air, swagger, license, helm, kafka, golangci-lint, goimports, wire
+- 泛型、模糊测试、多工作区
+
+### 功能实现详解

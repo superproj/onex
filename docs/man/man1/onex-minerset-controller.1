@@ -1,0 +1,70 @@
+.nh
+.TH OneX(1) onex User Manuals
+Eric Paris
+Jan 2015
+
+.SH NAME
+.PP
+onex-minerset-controller -
+
+
+.SH SYNOPSIS
+.PP
+\fBonex-minerset-controller\fP [OPTIONS]
+
+
+.SH DESCRIPTION
+.PP
+The minerset controller is a daemon that embeds
+the core control loops. In applications of robotics and
+automation, a control loop is a non-terminating loop that regulates the state of
+the system. In OneX, a controller is a control loop that watches the shared
+state of the minerset through the onex-apiserver and makes changes attempting to move the
+current state towards the desired state.
+
+
+.SH OPTIONS
+.PP
+\fB--config\fP=""
+	The path to the configuration file.
+
+.PP
+\fB-h\fP, \fB--help\fP=false
+	help for onex-minerset-controller
+
+.PP
+\fB--kubeconfig\fP="/home/colin/.onex/config"
+	Path to kubeconfig file with authorization and master location information.
+
+.PP
+\fB--log-flush-frequency\fP=5s
+	Maximum number of seconds between log flushes
+
+.PP
+\fB--logging-format\fP="text"
+	Sets the log format. Permitted formats: "text".
+
+.PP
+\fB--master\fP=""
+	The address of the Kubernetes API server (overrides any value in kubeconfig).
+
+.PP
+\fB-v\fP, \fB--v\fP=0
+	number for the log level verbosity
+
+.PP
+\fB--version\fP=false
+	Print version information and quit
+
+.PP
+\fB--vmodule\fP=
+	comma-separated list of pattern=N settings for file-filtered logging (only works for text log format)
+
+.PP
+\fB--write-config-to\fP=""
+	If set, write the default configuration values to this file and exit.
+
+
+.SH HISTORY
+.PP
+January 2015, Originally compiled by Eric Paris (eparis at redhat dot com) based on the superproj source material, but hopefully they have been automatically generated since!

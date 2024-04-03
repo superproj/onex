@@ -1,0 +1,32 @@
+# Copyright 2020 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
+# Use of this source code is governed by a MIT style
+# license that can be found in the LICENSE file.
+
+style: github # 指定使用的样式文件
+template: CHANGELOG.tpl.md # 指定使用的模板文件
+info: # 指定生成的 CHANGELOG.md 文件的标题和仓库 URL
+  title: CHANGELOG
+  repository_url: https://github.com/superproj/zero
+options: # 指定生成 CHANGELOG.md 文件的选项
+  commits: # 指定如何过滤和排序提交
+    filters: # 指定要过滤的提交类型
+      Type:
+        - feat
+        - fix
+        - perf
+        - refactor
+  commit_groups: # 指定如何分组提交
+    title_maps: # 指定标题的映射
+      feat: Features
+      fix: Bug Fixes
+      perf: Performance Improvements
+      refactor: Code Refactoring
+  header: # 指定如何处理提交的头部
+    pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$" # 指定用于匹配头部的正则表达式
+    pattern_maps: # 指定头部的映射
+      - Type
+      - Scope
+      - Subject
+  notes: # 指定如何处理提交中的注释
+    keywords:  # 指定用于识别注释的关键字
+      - BREAKING CHANGE

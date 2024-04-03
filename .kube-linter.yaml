@@ -1,0 +1,43 @@
+# Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
+# Use of this source code is governed by a MIT style
+# license that can be found in the LICENSE file. The original repo for
+# this file is https://github.com/superproj/superproj.
+#
+
+# customChecks defines custom checks.
+customChecks:
+- name: "required-label-app"
+  template: "required-label"
+  params:
+    key: "app"
+checks:
+  # if doNotAutoAddDefaults is true, default checks are not automatically added.
+  doNotAutoAddDefaults: false
+
+  # addAllBuiltIn, if set, adds all built-in checks. This allows users to
+  # explicitly opt-out of checks that are not relevant using Exclude.
+  # Takes precedence over doNotAutoAddDefaults, if both are set.
+  addAllBuiltIn: true
+
+  # include explicitly adds checks, by name. You can reference any of the built-in checks.
+  # Note that customChecks defined above are included automatically.
+  # include:
+  # - "required-label-owner"
+  # exclude explicitly excludes checks, by name. exclude has the highest priority: if a check is
+  # in exclude, then it is not considered, even if it is in include as well.
+  exclude:
+  - no-readiness-probe
+  - dnsconfig-options
+  - no-liveness-probe
+  - required-annotation-email
+  - required-label-app
+  - required-label-owner
+  - run-as-non-root
+  - use-namespace
+  - default-service-account
+  - minimum-three-replicas
+  - non-isolated-pod
+  - no-node-affinity
+  - no-read-only-root-fs
+
+

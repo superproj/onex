@@ -1,0 +1,419 @@
+.nh
+.TH OneX(1) onex User Manuals
+Eric Paris
+Jan 2015
+
+.SH NAME
+.PP
+onex-usercenter - Launch a onex usercenter server
+
+
+.SH SYNOPSIS
+.PP
+\fBonex-usercenter\fP [OPTIONS]
+
+
+.SH DESCRIPTION
+.PP
+The usercenter server is used to manage users, keys, fees, etc.
+
+
+.SH OPTIONS
+.PP
+\fB--client.debug\fP=false
+	Enables the debug mode on Resty client.
+
+.PP
+\fB--client.retry-count\fP=3
+	Enables retry on Resty client and allows you to set no. of retry count. Resty uses a Backoff mechanism.
+
+.PP
+\fB--client.timeout\fP=30s
+	Request timeout for client.
+
+.PP
+\fB--client.user-agent\fP="onex"
+	Used to specify the Resty client User-Agent.
+
+.PP
+\fB-c\fP, \fB--config\fP=""
+	Read configuration from specified \fB\fCFILE\fR, support JSON, TOML, YAML, HCL, or Java properties formats.
+
+.PP
+\fB--consul.addr\fP="127.0.0.1:8500"
+	Addr is the address of the consul server.
+
+.PP
+\fB--consul.scheme\fP="http"
+	Scheme is the URI scheme for the consul server.
+
+.PP
+\fB--db.database\fP="onex"
+	Database name for the server to use.
+
+.PP
+\fB--db.host\fP="127.0.0.1:3306"
+	MySQL service host address. If left blank, the following related mysql options will be ignored.
+
+.PP
+\fB--db.log-mode\fP=1
+	Specify gorm log level.
+
+.PP
+\fB--db.max-connection-life-time\fP=10s
+	Maximum connection life time allowed to connect to mysql.
+
+.PP
+\fB--db.max-idle-connections\fP=100
+	Maximum idle connections allowed to connect to mysql.
+
+.PP
+\fB--db.max-open-connections\fP=100
+	Maximum open connections allowed to connect to mysql.
+
+.PP
+\fB--db.password\fP="onex(#)666"
+	Password for access to mysql, should be used pair with password.
+
+.PP
+\fB--db.username\fP="onex"
+	Username for access to mysql service.
+
+.PP
+\fB--etcd.dial-timeout\fP=5s
+	Etcd dial timeout in seconds.
+
+.PP
+\fB--etcd.endpoints\fP=[127.0.0.1:2379]
+	Endpoints of etcd cluster.
+
+.PP
+\fB--etcd.password\fP=""
+	Password of etcd cluster.
+
+.PP
+\fB--etcd.tls.ca-cert\fP=""
+	Path to ca cert for connecting to the server.
+
+.PP
+\fB--etcd.tls.cert\fP=""
+	Path to cert file for connecting to the server.
+
+.PP
+\fB--etcd.tls.insecure-skip-verify\fP=false
+	Controls whether a client verifies the server's certificate chain and host name.
+
+.PP
+\fB--etcd.tls.key\fP=""
+	Path to key file for connecting to the server.
+
+.PP
+\fB--etcd.tls.use-tls\fP=false
+	Use tls transport to connect the server.
+
+.PP
+\fB--etcd.username\fP=""
+	Username of etcd cluster.
+
+.PP
+\fB--feature-gates\fP=
+	A set of key=value pairs that describe feature gates for alpha/experimental features. Options are:
+AllAlpha=true|false (ALPHA - default=false)
+AllBeta=true|false (BETA - default=false)
+ContextualLogging=true|false (ALPHA - default=false)
+LoggingAlphaOptions=true|false (ALPHA - default=false)
+LoggingBetaOptions=true|false (BETA - default=true)
+MachinePool=true|false (ALPHA - default=false)
+
+.PP
+\fB--grpc.addr\fP="0.0.0.0:39090"
+	Specify the gRPC server bind address and port.
+
+.PP
+\fB--grpc.network\fP="tcp"
+	Specify the network for the gRPC server.
+
+.PP
+\fB--grpc.timeout\fP=30s
+	Timeout for server connections.
+
+.PP
+\fB--http.addr\fP="0.0.0.0:38443"
+	Specify the HTTP server bind address and port.
+
+.PP
+\fB--http.network\fP="tcp"
+	Specify the network for the HTTP server.
+
+.PP
+\fB--http.timeout\fP=30s
+	Timeout for server connections.
+
+.PP
+\fB--jaeger.env\fP="dev"
+	Specify the deployment environment(dev/test/staging/prod).
+
+.PP
+\fB--jaeger.server\fP="http://127.0.0.1:14268/api/traces"
+	Server is the url of the Jaeger server.
+
+.PP
+\fB--jaeger.service-name\fP=""
+	Specify the service name for jaeger resource.
+
+.PP
+\fB--jwt.expired\fP=2h0m0s
+	JWT token expiration time.
+
+.PP
+\fB--jwt.key\fP="onex(#)666"
+	Private key used to sign jwt token.
+
+.PP
+\fB--jwt.max-refresh\fP=2h0m0s
+	This field allows clients to refresh their token until MaxRefresh has passed.
+
+.PP
+\fB--jwt.signing-method\fP="HS512"
+	JWT token signature method.
+
+.PP
+\fB--kafka.algorithm\fP=""
+	Algorithm used to create sasl.Mechanism.
+
+.PP
+\fB--kafka.brokers\fP=[]
+	The list of brokers used to discover the partitions available on the kafka cluster.
+
+.PP
+\fB--kafka.client-id\fP=""
+	 Unique identifier for client connections established by this Dialer.
+
+.PP
+\fB--kafka.compressed\fP=false
+	compressed is used to specify whether compress Kafka messages.
+
+.PP
+\fB--kafka.mechanism\fP=""
+	Configures the Dialer to use SASL authentication.
+
+.PP
+\fB--kafka.password\fP=""
+	Password of the kafka cluster.
+
+.PP
+\fB--kafka.reader.commit-interval\fP=0s
+	CommitInterval indicates the interval at which offsets are committed to the broker.
+
+.PP
+\fB--kafka.reader.group-id\fP=""
+	GroupID holds the optional consumer group id. If GroupID is specified, then Partition should NOT be specified e.g. 0.
+
+.PP
+\fB--kafka.reader.heartbeat-interval\fP=3s
+	HeartbeatInterval sets the optional frequency at which the reader sends the consumer group heartbeat update.
+
+.PP
+\fB--kafka.reader.max-attempts\fP=3
+	Limit of how many attempts will be made before delivering the error.
+
+.PP
+\fB--kafka.reader.max-bytes\fP=1048576
+	MaxBytes indicates to the broker the maximum batch size that the consumer will accept.
+
+.PP
+\fB--kafka.reader.max-wait\fP=10s
+	Maximum amount of time to wait for new data to come when fetching batches of messages from kafka.
+
+.PP
+\fB--kafka.reader.min-bytes\fP=1
+	MinBytes indicates to the broker the minimum batch size that the consumer will accept.
+
+.PP
+\fB--kafka.reader.partition\fP=0
+	Partition to read messages from.
+
+.PP
+\fB--kafka.reader.queue-capacity\fP=100
+	The capacity of the internal message queue, defaults to 100 if none is set.
+
+.PP
+\fB--kafka.reader.read-batch-timeout\fP=10s
+	ReadBatchTimeout amount of time to wait to fetch message from kafka messages batch.
+
+.PP
+\fB--kafka.reader.rebalance-timeout\fP=30s
+	RebalanceTimeout optionally sets the length of time the coordinator will wait for members to join as part of a rebalance.
+
+.PP
+\fB--kafka.reader.start-offset\fP=-2
+	StartOffset determines from whence the consumer group should begin consuming when it finds a partition without a committed offset.
+
+.PP
+\fB--kafka.required-acks\fP=1
+	Number of acknowledges from partition replicas required before receiving a response to a produce request.
+
+.PP
+\fB--kafka.timeout\fP=3s
+	Timeout is the maximum amount of time a dial will wait for a connect to complete.
+
+.PP
+\fB--kafka.tls.ca-cert\fP=""
+	Path to ca cert for connecting to the server.
+
+.PP
+\fB--kafka.tls.cert\fP=""
+	Path to cert file for connecting to the server.
+
+.PP
+\fB--kafka.tls.insecure-skip-verify\fP=false
+	Controls whether a client verifies the server's certificate chain and host name.
+
+.PP
+\fB--kafka.tls.key\fP=""
+	Path to key file for connecting to the server.
+
+.PP
+\fB--kafka.tls.use-tls\fP=false
+	Use tls transport to connect the server.
+
+.PP
+\fB--kafka.topic\fP=""
+	The topic that the writer/reader will produce/consume messages to.
+
+.PP
+\fB--kafka.username\fP=""
+	Username of the kafka cluster.
+
+.PP
+\fB--kafka.writer.async\fP=true
+	Limit on how many attempts will be made to deliver a message.
+
+.PP
+\fB--kafka.writer.batch-bytes\fP=1048576
+	Limit the maximum size of a request in bytes before being sent to a partition.
+
+.PP
+\fB--kafka.writer.batch-size\fP=100
+	Limit on how many messages will be buffered before being sent to a partition.
+
+.PP
+\fB--kafka.writer.batch-timeout\fP=1s
+	Time limit on how often incomplete message batches will be flushed to kafka.
+
+.PP
+\fB--kafka.writer.max-attempts\fP=10
+	Limit on how many attempts will be made to deliver a message.
+
+.PP
+\fB--log.disable-caller\fP=false
+	Disable output of caller information in the log.
+
+.PP
+\fB--log.disable-stacktrace\fP=false
+	Disable the log to record a stack trace for all messages at or above panic level.
+
+.PP
+\fB--log.enable-color\fP=false
+	Enable output ansi colors in plain format logs.
+
+.PP
+\fB--log.format\fP="console"
+	Log output \fB\fCFORMAT\fR, support plain or json format.
+
+.PP
+\fB--log.level\fP="info"
+	Minimum log output \fB\fCLEVEL\fR\&.
+
+.PP
+\fB--log.output-paths\fP=[stdout]
+	Output paths of log.
+
+.PP
+\fB--metrics.allow-metric-labels\fP=[]
+	The map from metric-label to value allow-list of this label. The key's format is ,\&. The value's format is ,\&...e.g. metric1,label1='v1,v2,v3', metric1,label2='v1,v2,v3' metric2,label1='v1,v2,v3'.
+
+.PP
+\fB--metrics.disabled-metrics\fP=[]
+	This flag provides an escape hatch for misbehaving metrics. You must provide the fully qualified metric name in order to disable it. Disclaimer: disabling metrics is higher in precedence than showing hidden metrics.
+
+.PP
+\fB--metrics.show-hidden-metrics-for-version\fP=""
+	The previous version for which you want to show hidden metrics. Only the previous minor version is meaningful, other values will not be allowed. The format is \&., e.g.: '1.16'. The purpose of this format is make sure you have the opportunity to notice if the next release hides additional metrics, rather than being surprised when they are permanently removed in the release after that.
+
+.PP
+\fB--redis.addr\fP="127.0.0.1:6379"
+	Address of your Redis server(ip:port).
+
+.PP
+\fB--redis.database\fP=0
+	Database to be selected after connecting to the server.
+
+.PP
+\fB--redis.dial-timeout\fP=5s
+	Dial timeout for establishing new connections.
+
+.PP
+\fB--redis.enable-trace\fP=false
+	Redis hook tracing (using open telemetry).
+
+.PP
+\fB--redis.max-retries\fP=3
+	Maximum number of retries before giving up.
+
+.PP
+\fB--redis.min-idle-conns\fP=0
+	Minimum number of idle connections which is useful when establishing new connection is slow.
+
+.PP
+\fB--redis.password\fP=""
+	Optional auth password for redis db.
+
+.PP
+\fB--redis.pool-size\fP=10
+	Maximum number of socket connections.
+
+.PP
+\fB--redis.pool-timeout\fP=0s
+	Amount of time client waits for connection if all connections are busy before returning an error.
+
+.PP
+\fB--redis.read-timeout\fP=3s
+	Timeout for socket reads.
+
+.PP
+\fB--redis.username\fP=""
+	Username for access to redis service.
+
+.PP
+\fB--redis.write-timeout\fP=3s
+	Timeout for socket writes.
+
+.PP
+\fB--tls.ca-cert\fP=""
+	Path to ca cert for connecting to the server.
+
+.PP
+\fB--tls.cert\fP=""
+	Path to cert file for connecting to the server.
+
+.PP
+\fB--tls.insecure-skip-verify\fP=false
+	Controls whether a client verifies the server's certificate chain and host name.
+
+.PP
+\fB--tls.key\fP=""
+	Path to key file for connecting to the server.
+
+.PP
+\fB--tls.use-tls\fP=false
+	Use tls transport to connect the server.
+
+.PP
+\fB--version\fP=false
+	Print version information and quit
+
+
+.SH HISTORY
+.PP
+January 2015, Originally compiled by Eric Paris (eparis at redhat dot com) based on the superproj source material, but hopefully they have been automatically generated since!

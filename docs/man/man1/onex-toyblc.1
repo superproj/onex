@@ -1,0 +1,117 @@
+.nh
+.TH OneX(1) onex User Manuals
+Eric Paris
+Jan 2015
+
+.SH NAME
+.PP
+onex-toyblc - Launch a onex toy blockchain node
+
+
+.SH SYNOPSIS
+.PP
+\fBonex-toyblc\fP [OPTIONS]
+
+
+.SH DESCRIPTION
+.PP
+The toy blc is used to start a naive and simple blockchain node.
+
+
+.SH OPTIONS
+.PP
+\fB--accounts\fP=toyblc:onex(#)666,onex:onex(#)666
+	Authentication username and password set for API interface.
+
+.PP
+\fB--address\fP="0x210d9eD12CEA87E33a98AA7Bcb4359eABA9e800e"
+	Wallet account to receive the block rewards.
+
+.PP
+\fB-c\fP, \fB--config\fP=""
+	Read configuration from specified \fB\fCFILE\fR, support JSON, TOML, YAML, HCL, or Java properties formats.
+
+.PP
+\fB--http.addr\fP="0.0.0.0:38443"
+	Specify the HTTP server bind address and port.
+
+.PP
+\fB--http.network\fP="tcp"
+	Specify the network for the HTTP server.
+
+.PP
+\fB--http.timeout\fP=30s
+	Timeout for server connections.
+
+.PP
+\fB--log.disable-caller\fP=false
+	Disable output of caller information in the log.
+
+.PP
+\fB--log.disable-stacktrace\fP=false
+	Disable the log to record a stack trace for all messages at or above panic level.
+
+.PP
+\fB--log.enable-color\fP=false
+	Enable output ansi colors in plain format logs.
+
+.PP
+\fB--log.format\fP="console"
+	Log output \fB\fCFORMAT\fR, support plain or json format.
+
+.PP
+\fB--log.level\fP="info"
+	Minimum log output \fB\fCLEVEL\fR\&.
+
+.PP
+\fB--log.output-paths\fP=[stdout]
+	Output paths of log.
+
+.PP
+\fB--min-mine-interval\fP=2h0m0s
+	Specify the minimum mining interval.
+
+.PP
+\fB--miner\fP=false
+	Turn on mining mode.
+
+.PP
+\fB--mining-difficulty\fP=1
+	Specify the mining difficulty.
+
+.PP
+\fB--p2p-addr\fP="0.0.0.0:6001"
+	The p2p server address.
+
+.PP
+\fB--peers\fP=[ws://localhost:6001]
+	The initial peers.
+
+.PP
+\fB--tls.ca-cert\fP=""
+	Path to ca cert for connecting to the server.
+
+.PP
+\fB--tls.cert\fP=""
+	Path to cert file for connecting to the server.
+
+.PP
+\fB--tls.insecure-skip-verify\fP=false
+	Controls whether a client verifies the server's certificate chain and host name.
+
+.PP
+\fB--tls.key\fP=""
+	Path to key file for connecting to the server.
+
+.PP
+\fB--tls.use-tls\fP=false
+	Use tls transport to connect the server.
+
+.PP
+\fB--version\fP=false
+	Print version information and quit
+
+
+.SH HISTORY
+.PP
+January 2015, Originally compiled by Eric Paris (eparis at redhat dot com) based on the superproj source material, but hopefully they have been automatically generated since!
