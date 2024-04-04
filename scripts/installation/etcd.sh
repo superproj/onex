@@ -26,7 +26,7 @@ onex::etcd::docker::install()
     -v ${ONEX_ETCD_DIR}:/etcd-data \
     -p ${ONEX_ACCESS_HOST}:${ONEX_ETCD_CLIENT_PORT}:2379 \
     -p ${ONEX_ACCESS_HOST}:${ONEX_ETCD_PEER_PORT}:2380 \
-    quay.io/coreos/etcd:latest \
+    quay.io/coreos/etcd:v3.5.13 \
     /usr/local/bin/etcd \
     --advertise-client-urls http://0.0.0.0:2379 \
     --listen-client-urls http://0.0.0.0:2379 \
