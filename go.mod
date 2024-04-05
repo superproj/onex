@@ -8,7 +8,6 @@ require (
 	github.com/MakeNowJust/heredoc/v2 v2.0.1
 	github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d
-	github.com/blang/semver v3.5.1+incompatible
 	github.com/blang/semver/v4 v4.0.0
 	github.com/brianvoe/gofakeit/v6 v6.23.2
 	github.com/caarlos0/env/v8 v8.0.0
@@ -108,6 +107,7 @@ require (
 require (
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
+	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/elazarl/goproxy v0.0.0-20210110162100-a92cc753f88e // indirect
