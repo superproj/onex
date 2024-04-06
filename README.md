@@ -128,10 +128,12 @@ OneX [项目文档] 包含了 OneX 项目介绍、OneX 部署、OneX 项目测�
 
 ## Contacts
 
-- 欢迎扫码关注我的公众号：令飞编程；
-- 欢迎扫码加群交流云原生技术；
+- 关注公众号【[令飞编程](https://mp.weixin.qq.com/s/a8efr1hZ6bZHOqH3ITj9yA)】，干货不错过：
+  - 回复【资料】获取全套 Go + 云原生学习资料；
+  - 回复【好友】可以添加我的微信，免费一对一技术交流指导；
+  - 回复【星球】加入 [孔令飞的云原生实战营](https://konglingfei.com)，带你进阶 Go+云原生高级开发工程师。
 
-![合并-知识星球-公众号-交流群.png](./docs/images/合并-知识星球-公众号-交流群.png)
+![令飞编程](./docs/images/令飞编程.png)
 
 ## License
 
