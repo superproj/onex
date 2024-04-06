@@ -195,6 +195,7 @@ onex-usercenter:
   grpc port: ${ONEX_USERCENTER_GRPC_ADDR}
 onex-apiserver:
   http secure port: ${ONEX_APISERVER_SECURE_PORT}
+  access onex-apiserver via kubectl: kubectl --kubeconfig=${ONEX_ADMIN_KUBECONFIG} api-resources
 onex-gateway:
   http port: ${ONEX_GATEWAY_HTTP_ADDR}
   grpc port: ${ONEX_GATEWAY_GRPC_ADDR}
