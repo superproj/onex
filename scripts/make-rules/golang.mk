@@ -4,7 +4,7 @@
 
 GO := go
 # Minimum supported go version.
-GO_MINIMUM_VERSION ?= 1.21
+GO_MINIMUM_VERSION ?= 1.22
 
 GOPATH := $(shell go env GOPATH)
 ifeq ($(origin GOBIN), undefined)
