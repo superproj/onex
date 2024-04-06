@@ -44,6 +44,16 @@ onex::mongo::docker::install()
 
 onex::mongo::pre_install()
 {
+  # 添加 MongoDB APT 源
+  echo ${LINUX_PASSWORD} | sudo -S echo "deb [arch=amd64,arm64] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+
+  # 安装libssl1.1，否则安装 mongo 时会报以下错误：
+  # mongodb-org-mongos : Depends: libssl1.1 (>= 1.1.1) but it is not installable
+  wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb -P /tmp/
+  echo ${LINUX_PASSWORD} | sudo -S -i dpkg -i /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+
+  onex::util::sudo "apt update"
+
   # 安装 MongoDB 客户端
   onex::util::sudo "apt install -y mongodb-mongosh"
 }
@@ -66,16 +76,6 @@ onex::mongo::sbs::install()
 
   # 获取 MongoDB 公钥
   echo ${LINUX_PASSWORD} | sudo -S wget -qO - https://www.mongodb.org/static/pgp/server-7.0.asc | sudo apt-key add -
-
-  # 添加 MongoDB APT 源
-  echo ${LINUX_PASSWORD} | sudo -S echo "deb [arch=amd64,arm64] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
-
-  # 安装libssl1.1，否则安装 mongo 时会报以下错误：
-  # mongodb-org-mongos : Depends: libssl1.1 (>= 1.1.1) but it is not installable
-  wget http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb -P /tmp/
-  echo ${LINUX_PASSWORD} | sudo -S -i dpkg -i /tmp/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
-
-  onex::util::sudo "apt update"
 
   # 安装 MongoDB 服务端
   # 以为我们uninstall时会删除配置文件，所以要使用--force-confmiss 重新安装配置文件
