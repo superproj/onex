@@ -46,7 +46,7 @@ spec:
         # 密码类的环境变量，为了安全，不能以明文的方式在 YAML 中指定，需要通过 secret 挂载
         envFrom:
           - secretRef:
-            name: mariadb
+              name: mariadb
   # 指定了要创建的持久化存储卷模板信息
   volumeClaimTemplates:
   # 指定了存储卷模板的元数据信息
