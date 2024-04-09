@@ -251,7 +251,7 @@ onex::onex::prepare()
   # 2. 配置 $HOME/.bashrc 添加一些便捷入口
   if ! grep -q 'Alias for onex quick access' $HOME/.bashrc; then
     cat << 'EOF' >> $HOME/.bashrc
-# Alias and environments for onex quick access
+# Alias for onex quick access
 export GOSRC="$WORKSPACE/golang/src"
 # OneX project root directory, used in many places.
 export ONEX_ROOT="$GOSRC/github.com/superproj/onex"
