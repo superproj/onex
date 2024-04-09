@@ -15,7 +15,7 @@ import (
 	v1 "github.com/superproj/onex/pkg/api/usercenter/v1"
 )
 
-// UserBiz defines methods used to handle user rquest.
+// UserBiz defines methods used to handle user request.
 type UserBiz interface {
 	Create(ctx context.Context, rq *v1.CreateUserRequest) (*v1.UserReply, error)
 	List(ctx context.Context, rq *v1.ListUserRequest) (*v1.ListUserResponse, error)
