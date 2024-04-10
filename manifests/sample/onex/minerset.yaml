@@ -17,3 +17,6 @@ spec:
     spec:
       chainName: genesis
       minerType: M1.MEDIUM2
+  selector: 
+    matchLabels:
+      app: testminerset
