@@ -173,7 +173,7 @@ _install.kubeconform: ## Install kubeconform command line tool.
 
 .PHONY: _install.kubectl
 _install.kubectl: ## Install kubectl command line tool.
-	@curl --create-dirs -L -o $$HOME/bin/kubectl "https://dl.k8s.io/release/$(shell curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+	@curl --create-dirs -L -o $$HOME/bin/kubectl "https://dl.k8s.io/release/$(shell curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/$(shell $(GO) env GOHOSTARCH)/kubectl"
 	@chmod +x $$HOME/bin/kubectl
 	@$(SCRIPTS_DIR)/add-completion.sh kubectl bash
 
