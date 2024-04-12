@@ -12,7 +12,7 @@ ONEX_ROOT=$(dirname "${BASH_SOURCE[0]}")/../..
 [[ -z ${COMMON_SOURCED} ]] && source ${ONEX_ROOT}/scripts/installation/common.sh
 # Set some environment variables.
 ONEX_MYSQL_HOST=${ONEX_MYSQL_HOST:-127.0.0.1}
-ONEX_MYSQL_PORT=${ONEX_MYSQL_PORT:-6379}
+ONEX_MYSQL_PORT=${ONEX_MYSQL_PORT:-3306}
 ONEX_PASSWORD=${ONEX_PASSWORD:-onex(#)666}
 
 # Install mariadb using containerization.
