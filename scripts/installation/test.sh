@@ -17,8 +17,7 @@ ONEX_PUMP_ADDR=${ONEX_ACCESS_HOST}:${ONEX_PUMP_HEALTH_CHECK_PORT}
 ONEX_TOYBLC_ADDR=${ONEX_ACCESS_HOST}:${ONEX_TOYBLC_HTTP_PORT}
 
 Header="-HContent-Type:application/json"
-CURLARGS="-f -s"
-#CURLARGS=""
+CURLARGS="-S"
 CCURL="curl ${CURLARGS} -XPOST ${Header}" # Create
 UCURL="curl ${CURLARGS} -XPUT ${Header}" # Update
 RCURL="curl ${CURLARGS} -XGET" # Retrieve
