@@ -15,7 +15,7 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-// MySQLOptions defines optsions for mysql database.
+// MySQLOptions defines options for mysql database.
 type MySQLOptions struct {
 	Host                  string
 	Username              string
