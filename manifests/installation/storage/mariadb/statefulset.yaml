@@ -17,6 +17,8 @@ spec:
   selector:
     matchLabels:
       app: mariadb
+  # 指定了Pod关联的Service名称
+  serviceName: mariadb
   # 指定了要创建的Pod的模板信息
   template:
     # 指定了Pod的元数据信息，包括标签等
