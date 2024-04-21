@@ -85,7 +85,7 @@ EOF
   fi
 
   if [[ ! -r "ca.pem" || ! -r "ca-key.pem" ]]; then
-    ${CFSSL_BIN} gencert -loglevel 2 -initca ca-csr.json | ${CFSSLJSON_BIN} -bare ca -
+    ${CFSSL_BIN} gencert -initca ca-csr.json | ${CFSSLJSON_BIN} -bare ca -
   fi
 
   if [[ -z "${prefix}" ]];then
@@ -94,7 +94,7 @@ EOF
 
   #echo "Generate "${prefix}" certificates..."
   echo '{"CN":"'"${prefix}"'","hosts":[],"key":{"algo":"rsa","size":2048},"names":[{"C":"CN","ST":"Shenzhen","L":"Shenzhen","O":"tencent","OU":"'"${prefix}"'"}]}' \
-    | ${CFSSL_BIN} gencert -loglevel 2 -hostname="${CERT_HOSTNAME},${prefix/-/.}.${ONEX_DOMAIN}" -ca=ca.pem -ca-key=ca-key.pem \
+    | ${CFSSL_BIN} gencert -hostname="${CERT_HOSTNAME},${prefix/-/.}.${ONEX_DOMAIN}" -ca=ca.pem -ca-key=ca-key.pem \
     -config=ca-config.json -profile=node - | ${CFSSLJSON_BIN} -bare "${prefix}"
 
   # the popd will access `directory stack`, no `real` parameters is actually needed
