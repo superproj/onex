@@ -101,7 +101,7 @@ func (o *Options) ApplyTo(c *nightwatch.Config) error {
 	return nil
 }
 
-// Config return a onex-nightwatch config object.
+// Config return an onex-nightwatch config object.
 func (o *Options) Config() (*nightwatch.Config, error) {
 	kubeconfig, err := clientcmd.BuildConfigFromFlags("", o.Kubeconfig)
 	if err != nil {

@@ -89,7 +89,7 @@ func (o *Options) ApplyTo(c *pump.Config) error {
 	return nil
 }
 
-// Config return a onex-nightwatch config object.
+// Config return an onex-pump config object.
 func (o *Options) Config() (*pump.Config, error) {
 	c := &pump.Config{}
 
