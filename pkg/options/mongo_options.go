@@ -63,7 +63,7 @@ func (o *MongoOptions) Validate() []error {
 }
 
 // AddFlags adds flags related to redis storage for a specific APIServer to the specified FlagSet.
-func (o *MongoOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (o *MongoOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	o.TLSOptions.AddFlags(fs, "mongo")
 
 	fs.DurationVar(&o.Timeout, "mongo.timeout", o.Timeout, "Timeout is the maximum amount of time a dial will wait for a connect to complete.")

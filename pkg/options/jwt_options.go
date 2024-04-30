@@ -49,7 +49,7 @@ func (s *JWTOptions) Validate() []error {
 
 // AddFlags adds flags related to features for a specific api server to the
 // specified FlagSet.
-func (s *JWTOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (s *JWTOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	if fs == nil {
 		return
 	}

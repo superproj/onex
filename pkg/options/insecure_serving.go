@@ -36,6 +36,6 @@ func (s *InsecureServingOptions) Validate() []error {
 
 // AddFlags adds flags related to features for a specific api server to the
 // specified FlagSet.
-func (s *InsecureServingOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (s *InsecureServingOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	fs.StringVar(&s.Addr, "insecure.addr", s.Addr, "Specify the HTTP server bind address and port.")
 }

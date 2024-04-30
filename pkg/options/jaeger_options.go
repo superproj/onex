@@ -44,7 +44,7 @@ func (o *JaegerOptions) Validate() []error {
 }
 
 // AddFlags adds flags related to mysql storage for a specific APIServer to the specified FlagSet.
-func (o *JaegerOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (o *JaegerOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	fs.StringVar(&o.Server, "jaeger.server", o.Server, ""+
 		"Server is the url of the Jaeger server.")
 	fs.StringVar(&o.ServiceName, "jaeger.service-name", o.ServiceName, ""+

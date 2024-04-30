@@ -53,7 +53,7 @@ func (o *HTTPOptions) Validate() []error {
 
 // AddFlags adds flags related to HTTPS server for a specific APIServer to the
 // specified FlagSet.
-func (o *HTTPOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (o *HTTPOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	fs.StringVar(&o.Network, "http.network", o.Network, "Specify the network for the HTTP server.")
 	fs.StringVar(&o.Addr, "http.addr", o.Addr, "Specify the HTTP server bind address and port.")
 	fs.DurationVar(&o.Timeout, "http.timeout", o.Timeout, "Timeout for server connections.")

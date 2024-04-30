@@ -82,7 +82,7 @@ func (s *SecureServingOptions) Validate() []error {
 
 // AddFlags adds flags related to HTTPS server for a specific APIServer to the
 // specified FlagSet.
-func (s *SecureServingOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (s *SecureServingOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	fs.StringVar(&s.BindAddress, "secure.bind-address", s.BindAddress, ""+
 		"The IP address on which to listen for the --secure.bind-port port. The "+
 		"associated interface(s) must be reachable by the rest of the engine, and by CLI/web "+

@@ -68,7 +68,7 @@ func (o *RedisOptions) Validate() []error {
 }
 
 // AddFlags adds flags related to redis storage for a specific APIServer to the specified FlagSet.
-func (o *RedisOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (o *RedisOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	fs.StringVar(&o.Addr, "redis.addr", o.Addr, "Address of your Redis server(ip:port).")
 	fs.StringVar(&o.Username, "redis.username", o.Username, "Username for access to redis service.")
 	fs.StringVar(&o.Password, "redis.password", o.Password, "Optional auth password for redis db.")

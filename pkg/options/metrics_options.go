@@ -42,7 +42,7 @@ func (o *MetricsOptions) Validate() []error {
 }
 
 // AddFlags adds flags for exposing component metrics.
-func (o *MetricsOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (o *MetricsOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	if o == nil {
 		return
 	}

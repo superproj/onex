@@ -36,19 +36,19 @@ func (o *ServerOptions) Validate() []error {
 }
 
 // AddFlags adds flags related to mysql storage for a specific APIServer to the specified FlagSet.
-func (o *ServerOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
-	fs.BoolVar(&o.Insecure, join(prefixs...)+"insecure-skip-tls-verify", o.Insecure, ""+
+func (o *ServerOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
+	fs.BoolVar(&o.Insecure, join(prefixes...)+"insecure-skip-tls-verify", o.Insecure, ""+
 		"If true, the server's certificate will not be checked for validity. This will make your HTTPS connections insecure")
-	fs.StringVar(&o.CAFile, join(prefixs...)+"certificate-authority", o.CAFile, "Path to a cert file for the certificate authority")
-	fs.StringVar(&o.Addr, join(prefixs...)+"address", o.Addr, "The address and port of the OneX API server")
-	fs.DurationVar(&o.Timeout, join(prefixs...)+"timeout", o.Timeout, "The length of time to wait before giving up on a single "+
+	fs.StringVar(&o.CAFile, join(prefixes...)+"certificate-authority", o.CAFile, "Path to a cert file for the certificate authority")
+	fs.StringVar(&o.Addr, join(prefixes...)+"address", o.Addr, "The address and port of the OneX API server")
+	fs.DurationVar(&o.Timeout, join(prefixes...)+"timeout", o.Timeout, "The length of time to wait before giving up on a single "+
 		"server request. Non-zero values should contain a corresponding time unit (e.g. 1s, 2m, 3h). A value of zero means don't timeout requests.")
-	fs.IntVar(&o.MaxRetries, join(prefixs...)+"max-retries", o.MaxRetries, "Maximum number of retries.")
-	fs.DurationVar(&o.RetryInterval, join(prefixs...)+"retry-interval", o.RetryInterval, "The interval time between each attempt.")
+	fs.IntVar(&o.MaxRetries, join(prefixes...)+"max-retries", o.MaxRetries, "Maximum number of retries.")
+	fs.DurationVar(&o.RetryInterval, join(prefixes...)+"retry-interval", o.RetryInterval, "The interval time between each attempt.")
 }
 
-func join(prefixs ...string) string {
-	joined := strings.Join(prefixs, ".")
+func join(prefixes ...string) string {
+	joined := strings.Join(prefixes, ".")
 	if joined != "" {
 		joined += "."
 	}

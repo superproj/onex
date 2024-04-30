@@ -14,5 +14,5 @@ type IOptions interface {
 	Validate() []error
 
 	// AddFlags adds flags related to given flagset.
-	AddFlags(fs *pflag.FlagSet, prefixs ...string)
+	AddFlags(fs *pflag.FlagSet, prefixes ...string)
 }

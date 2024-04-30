@@ -51,7 +51,7 @@ func (o *GRPCOptions) Validate() []error {
 
 // AddFlags adds flags related to features for a specific api server to the
 // specified FlagSet.
-func (o *GRPCOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (o *GRPCOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	fs.StringVar(&o.Network, "grpc.network", o.Network, "Specify the network for the gRPC server.")
 	fs.StringVar(&o.Addr, "grpc.addr", o.Addr, "Specify the gRPC server bind address and port.")
 	fs.DurationVar(&o.Timeout, "grpc.timeout", o.Timeout, "Timeout for server connections.")
