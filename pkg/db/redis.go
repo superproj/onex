@@ -13,7 +13,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// RedisOptions defines optsions for mysql database.
+// RedisOptions defines options for redis database.
 type RedisOptions struct {
 	Addr         string
 	Username     string
@@ -28,7 +28,7 @@ type RedisOptions struct {
 	PoolSize     int
 }
 
-// NewRedis create a new gorm db instance with the given options.
+// NewRedis create a new redis db instance with the given options.
 func NewRedis(opts *RedisOptions) (*redis.Client, error) {
 	options := &redis.Options{
 		Addr:         opts.Addr,
