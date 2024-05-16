@@ -83,7 +83,7 @@ func WithDescription(desc string) Option {
 	}
 }
 
-// WithHealthCheck is used to set the health check function for the application.
+// WithHealthCheckFunc is used to set the health check function for the application.
 // The app framework will use the function to start a health check server.
 func WithHealthCheckFunc(fn HealthCheckFunc) Option {
 	return func(a *App) {

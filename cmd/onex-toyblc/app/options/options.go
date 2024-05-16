@@ -114,7 +114,7 @@ func (o *Options) Validate() error {
 	return utilerrors.NewAggregate(errs)
 }
 
-// ApplyTo fills up onex-nightwatch config with options.
+// ApplyTo fills up onex-toyblc config with options.
 func (o *Options) ApplyTo(c *toyblc.Config) error {
 	c.Miner = o.Miner
 	c.MinMineInterval = o.MinMineInterval
@@ -128,7 +128,7 @@ func (o *Options) ApplyTo(c *toyblc.Config) error {
 	return nil
 }
 
-// Config return a onex-nightwatch config object.
+// Config return an onex-toyblc config object.
 func (o *Options) Config() (*toyblc.Config, error) {
 	c := &toyblc.Config{}
 
