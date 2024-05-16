@@ -43,7 +43,7 @@ func (o *UserCenterOptions) Validate() []error {
 }
 
 // AddFlags adds flags for a specific APIServer to the specified FlagSet.
-func (o *UserCenterOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (o *UserCenterOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	if o == nil {
 		return
 	}

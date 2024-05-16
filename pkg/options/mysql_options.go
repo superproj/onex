@@ -53,21 +53,21 @@ func (o *MySQLOptions) Validate() []error {
 }
 
 // AddFlags adds flags related to mysql storage for a specific APIServer to the specified FlagSet.
-func (o *MySQLOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
-	fs.StringVar(&o.Host, join(prefixs...)+"db.host", o.Host, ""+
+func (o *MySQLOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
+	fs.StringVar(&o.Host, join(prefixes...)+"db.host", o.Host, ""+
 		"MySQL service host address. If left blank, the following related mysql options will be ignored.")
-	fs.StringVar(&o.Username, join(prefixs...)+"db.username", o.Username, "Username for access to mysql service.")
-	fs.StringVar(&o.Password, join(prefixs...)+"db.password", o.Password, ""+
+	fs.StringVar(&o.Username, join(prefixes...)+"db.username", o.Username, "Username for access to mysql service.")
+	fs.StringVar(&o.Password, join(prefixes...)+"db.password", o.Password, ""+
 		"Password for access to mysql, should be used pair with password.")
-	fs.StringVar(&o.Database, join(prefixs...)+"db.database", o.Database, ""+
+	fs.StringVar(&o.Database, join(prefixes...)+"db.database", o.Database, ""+
 		"Database name for the server to use.")
-	fs.IntVar(&o.MaxIdleConnections, join(prefixs...)+"db.max-idle-connections", o.MaxOpenConnections, ""+
+	fs.IntVar(&o.MaxIdleConnections, join(prefixes...)+"db.max-idle-connections", o.MaxOpenConnections, ""+
 		"Maximum idle connections allowed to connect to mysql.")
-	fs.IntVar(&o.MaxOpenConnections, join(prefixs...)+"db.max-open-connections", o.MaxOpenConnections, ""+
+	fs.IntVar(&o.MaxOpenConnections, join(prefixes...)+"db.max-open-connections", o.MaxOpenConnections, ""+
 		"Maximum open connections allowed to connect to mysql.")
-	fs.DurationVar(&o.MaxConnectionLifeTime, join(prefixs...)+"db.max-connection-life-time", o.MaxConnectionLifeTime, ""+
+	fs.DurationVar(&o.MaxConnectionLifeTime, join(prefixes...)+"db.max-connection-life-time", o.MaxConnectionLifeTime, ""+
 		"Maximum connection life time allowed to connect to mysql.")
-	fs.IntVar(&o.LogLevel, join(prefixs...)+"db.log-mode", o.LogLevel, ""+
+	fs.IntVar(&o.LogLevel, join(prefixes...)+"db.log-mode", o.LogLevel, ""+
 		"Specify gorm log level.")
 }
 

@@ -35,7 +35,7 @@ func (o *PolarisOptions) Validate() []error {
 }
 
 // AddFlags adds flags related to Polaris service to the specified FlagSet.
-func (o *PolarisOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (o *PolarisOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	fs.StringVar(&o.Addr, "polaris.addr", o.Addr, "Address of your Polaris service(ip:port).")
 	fs.DurationVar(&o.ReadTimeout, "polaris.read-timeout", o.ReadTimeout, "Timeout for socket reads.")
 	fs.DurationVar(&o.WriteTimeout, "polaris.write-timeout", o.WriteTimeout, "Timeout for socket writes.")

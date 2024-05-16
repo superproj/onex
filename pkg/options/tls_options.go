@@ -49,13 +49,13 @@ func (o *TLSOptions) Validate() []error {
 }
 
 // AddFlags adds flags related to redis storage for a specific APIServer to the specified FlagSet.
-func (o *TLSOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
-	fs.BoolVar(&o.UseTLS, join(prefixs...)+"tls.use-tls", o.UseTLS, "Use tls transport to connect the server.")
-	fs.BoolVar(&o.InsecureSkipVerify, join(prefixs...)+"tls.insecure-skip-verify", o.InsecureSkipVerify, ""+
+func (o *TLSOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
+	fs.BoolVar(&o.UseTLS, join(prefixes...)+"tls.use-tls", o.UseTLS, "Use tls transport to connect the server.")
+	fs.BoolVar(&o.InsecureSkipVerify, join(prefixes...)+"tls.insecure-skip-verify", o.InsecureSkipVerify, ""+
 		"Controls whether a client verifies the server's certificate chain and host name.")
-	fs.StringVar(&o.CaCert, join(prefixs...)+"tls.ca-cert", o.CaCert, "Path to ca cert for connecting to the server.")
-	fs.StringVar(&o.Cert, join(prefixs...)+"tls.cert", o.Cert, "Path to cert file for connecting to the server.")
-	fs.StringVar(&o.Key, join(prefixs...)+"tls.key", o.Key, "Path to key file for connecting to the server.")
+	fs.StringVar(&o.CaCert, join(prefixes...)+"tls.ca-cert", o.CaCert, "Path to ca cert for connecting to the server.")
+	fs.StringVar(&o.Cert, join(prefixes...)+"tls.cert", o.Cert, "Path to cert file for connecting to the server.")
+	fs.StringVar(&o.Key, join(prefixes...)+"tls.key", o.Key, "Path to key file for connecting to the server.")
 }
 
 func (o *TLSOptions) MustTLSConfig() *tls.Config {

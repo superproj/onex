@@ -44,7 +44,7 @@ func (o *HealthOptions) Validate() []error {
 }
 
 // AddFlags adds flags related to redis storage for a specific APIServer to the specified FlagSet.
-func (o *HealthOptions) AddFlags(fs *pflag.FlagSet, prefixs ...string) {
+func (o *HealthOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 	fs.BoolVar(&o.HTTPProfile, "health.enable-http-profiler", o.HTTPProfile, "Expose runtime profiling data via HTTP.")
 	fs.StringVar(&o.HealthCheckPath, "health.check-path", o.HealthCheckPath, "Specifies liveness health check request path.")
 	fs.StringVar(&o.HealthCheckAddress, "health.check-address", o.HealthCheckAddress, "Specifies liveness health check bind address.")
