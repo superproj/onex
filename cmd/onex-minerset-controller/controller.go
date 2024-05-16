@@ -10,7 +10,7 @@ package main
 import (
 	"os"
 
-	_ "go.uber.org/automaxprocs"
+	_ "go.uber.org/automaxprocs/maxprocs"
 	"k8s.io/component-base/cli"
 	_ "k8s.io/component-base/logs/json/register"          // for JSON log format registration
 	_ "k8s.io/component-base/metrics/prometheus/clientgo" // load all the prometheus client-go plugin

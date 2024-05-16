@@ -8,7 +8,7 @@
 package main
 
 import (
-	_ "go.uber.org/automaxprocs"
+	_ "go.uber.org/automaxprocs/maxprocs"
 
 	"github.com/superproj/onex/cmd/onex-nightwatch/app"
 )

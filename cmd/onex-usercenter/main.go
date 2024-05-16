@@ -9,7 +9,7 @@ package main
 
 import (
 	// Importing the package to automatically set GOMAXPROCS.
-	_ "go.uber.org/automaxprocs"
+	_ "go.uber.org/automaxprocs/maxprocs"
 
 	"github.com/superproj/onex/cmd/onex-usercenter/app"
 )
