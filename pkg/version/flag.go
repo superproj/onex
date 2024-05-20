@@ -10,8 +10,10 @@ package version
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"strconv"
+	"strings"
 
 	flag "github.com/spf13/pflag"
 )
@@ -39,6 +41,16 @@ func (v *versionValue) Set(s string) error {
 		*v = VersionRaw
 		return nil
 	}
+
+	if strings.HasPrefix(s, "v") {
+		err := SetDynamicVersion(s)
+		if err == nil {
+			value, _ := strconv.Atoi(s)
+			*v = versionValue(value)
+		}
+		return err
+	}
+
 	boolVal, err := strconv.ParseBool(s)
 	if boolVal {
 		*v = VersionTrue
@@ -83,14 +95,20 @@ func AddFlags(fs *flag.FlagSet) {
 	fs.AddFlag(flag.Lookup(versionFlagName))
 }
 
+// variables for unit testing PrintAndExitIfRequested
+var (
+	output = io.Writer(os.Stdout)
+	exit   = os.Exit
+)
+
 // PrintAndExitIfRequested will check if the -version flag was passed
 // and, if so, print the version and exit.
 func PrintAndExitIfRequested(appName string) {
 	if *versionFlag == VersionRaw {
-		fmt.Printf("%s\n", Get().Text())
-		os.Exit(0)
+		fmt.Fprintf(output, "%s\n", Get().Text())
+		exit(0)
 	} else if *versionFlag == VersionTrue {
-		fmt.Printf("%s %s\n", appName, Get().GitVersion)
-		os.Exit(0)
+		fmt.Fprintf(output, "%s %s\n", appName, Get().GitVersion)
+		exit(0)
 	}
 }
