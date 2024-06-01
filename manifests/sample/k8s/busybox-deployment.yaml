@@ -4,25 +4,26 @@
 # this file is https://github.com/superproj/onex.
 #
 
+# 有：wget, telnet, ping
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: command-demo
+  name: busybox
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: command-demo
+      app: busybox
   template:
     metadata:
       labels:
-        app: command-demo
+        app: busybox
     spec:
       restartPolicy: Always
       containers:
-        - name: my-container
+        - name: busybox
           image: busybox
-          command: ["sh", "-c", "sleep 3000"]
+          command: ["sleep", "infinity"]
           readinessProbe:
             exec:
               command: ["false"]
