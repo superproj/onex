@@ -17,7 +17,7 @@ ONEX_TEMPLATE_PORT=${ONEX_TEMPLATE_PORT:-xxxx}
 # Install template using containerization.
 onex::template::docker::install()
 {
-  # docker run -d --name onex-xxx ...
+  # docker run -d --restart always --name onex-xxx ...
   onex::template::status || return 1
   onex::template::info
   onex::log::info "install template successfully"

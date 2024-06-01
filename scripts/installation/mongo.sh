@@ -28,6 +28,7 @@ onex::mongo::docker::install()
 
   onex::common::network
   docker run -d --name onex-mongo \
+    --restart always \
     --network onex \
     -v ${ONEX_THIRDPARTY_INSTALL_DIR}/mongo:/data \
     -p ${ONEX_ACCESS_HOST}:${ONEX_MONGO_PORT}:27017 \

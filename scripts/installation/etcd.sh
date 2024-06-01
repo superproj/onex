@@ -22,6 +22,7 @@ onex::etcd::docker::install()
 {
   onex::common::network
   docker run -d --name onex-etcd \
+    --restart always \
     --network onex \
     -v ${ONEX_ETCD_DIR}:/etcd-data \
     -p ${ONEX_ACCESS_HOST}:${ONEX_ETCD_CLIENT_PORT}:2379 \

@@ -19,6 +19,7 @@ onex::jaeger::docker::install()
 {
   onex::common::network
   docker run -d --name onex-jaeger \
+    --restart always \
     --network onex \
     -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
     -p ${ONEX_ACCESS_HOST}:6831:6831/udp \

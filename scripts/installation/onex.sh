@@ -41,6 +41,7 @@ onex::onex::docker::install()
   # "Failed to get D-Bus connection: Operation not permitted"
   onex::common::network
   docker run -d --name onex \
+    --restart always \
     --network onex \
     --privileged \
     -v onex-volume:${ONEX_INSTALL_DIR}:rw \

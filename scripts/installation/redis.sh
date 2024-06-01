@@ -22,6 +22,7 @@ onex::redis::docker::install()
 
   onex::common::network
   docker run -d --name onex-redis \
+    --restart always \
     --network onex \
     -v ${ONEX_THIRDPARTY_INSTALL_DIR}/redis:/data \
     -p ${ONEX_ACCESS_HOST}:${ONEX_REDIS_PORT}:6379 \

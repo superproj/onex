@@ -19,8 +19,9 @@ ONEX_KAFKA_PORT=${ONEX_KAFKA_PORT:-4317}
 onex::kafka::docker::install()
 {
   onex::common::network
-  docker run -d --name onex-zookeeper --network onex -p 2181:2181 -t wurstmeister/zookeeper
+  docker run -d --restart always --name onex-zookeeper --network onex -p 2181:2181 -t wurstmeister/zookeeper
   docker run -d --name onex-kafka --link onex-zookeeper:zookeeper \
+    --restart always \
     --network onex \
     --restart=always \
     -v /etc/localtime:/etc/localtime \
