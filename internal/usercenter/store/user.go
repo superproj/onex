@@ -65,7 +65,7 @@ func (d *userStore) List(ctx context.Context, opts ...meta.ListOption) (count in
 	ans := d.db(ctx).
 		Where(o.Filters).
 		Offset(o.Offset).
-		Limit(defaultLimit(o.Limit)).
+		Limit(o.Limit).
 		Order("id desc").
 		Find(&ret).
 		Offset(-1).

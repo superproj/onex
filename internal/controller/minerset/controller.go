@@ -775,7 +775,7 @@ func (r *Reconciler) createMiners(ctx context.Context, ms *v1beta1.MinerSet, con
 		eg.Go(func() error {
 			select {
 			case <-ctx.Done():
-				return nil
+				return ctx.Err()
 			default:
 				miner := r.computeDesiredMiner(ms, nil)
 

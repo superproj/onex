@@ -34,7 +34,7 @@ func (b *userBiz) List(ctx context.Context, rq *v1.ListUserRequest) (*v1.ListUse
 		eg.Go(func() error {
 			select {
 			case <-ctx.Done():
-				return nil
+				return ctx.Err()
 			default:
 				count, _, err := b.ds.Secrets().List(ctx, user.UserID)
 				if err != nil {

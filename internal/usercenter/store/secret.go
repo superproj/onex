@@ -90,7 +90,7 @@ func (d *secretStore) List(ctx context.Context, userID string, opts ...meta.List
 		Not("name", known.TemporaryKeyName).
 		Where(o.Filters).
 		Offset(o.Offset).
-		Limit(defaultLimit(o.Limit)).
+		Limit(o.Limit).
 		Order("id desc").
 		Find(&ret).
 		Offset(-1).

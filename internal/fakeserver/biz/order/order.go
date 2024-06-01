@@ -93,7 +93,7 @@ func (b *orderBiz) List(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListO
 		eg.Go(func() error {
 			select {
 			case <-ctx.Done():
-				return nil
+				return ctx.Err()
 			default:
 				var o v1.OrderReply
 				_ = copier.Copy(&o, order)
