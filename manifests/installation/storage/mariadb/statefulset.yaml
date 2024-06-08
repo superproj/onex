@@ -58,6 +58,9 @@ spec:
     # 指定了存储卷的规格信息，包括访问模式和资源请求等
     spec:
       # 指定了存储卷的访问模式为"ReadWriteOnce"，表示可以被单个节点挂载为读写模式
+      # ReadWriteOnce: PV 能以 read-write 模式 mount 到单个节点
+      # ReadOnlyMany: PV 能以 read-only 模式 mount 到多个节点
+      # ReadWriteMany: PV 能以 read-write 模式 mount 到多个节点
       accessModes: [ "ReadWriteOnce" ]
       # 指定了存储卷的资源请求信息
       resources:
