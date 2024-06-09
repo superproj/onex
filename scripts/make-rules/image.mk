@@ -20,10 +20,10 @@ _DOCKER_BUILD_EXTRA_ARGS += $(EXTRA_ARGS)
 endif
 
 # Determine image files by looking into cmd/*
-IMAGES_DIR ?= $(wildcard ${ONEX_ROOT}/cmd/*)
-# Determine images names by stripping out the dir names
-IMAGES ?= $(filter-out tools,$(foreach image,${IMAGES_DIR},$(notdir ${image})))
-
+CMD_DIRS ?= $(wildcard ${ONEX_ROOT}/cmd/*)
+# Determine images names by stripping out the dir names.
+# Filter out directories without Go files, as these directories cannot be compiled to build a docker image.
+IMAGES ?= $(filter-out tools, $(foreach dir, $(CMD_DIRS), $(notdir $(if $(wildcard $(dir)/*.go), $(dir),))))
 ifeq (${IMAGES},)
   $(error Could not determine IMAGES, set ONEX_ROOT or run in source dir)
 endif

@@ -9,8 +9,8 @@
 
 # Build the onex-fake-miner binary
 # Run this with docker build --build-arg prod_image=<golang:x.y.z>
-# Default <prod_image> is alpine:3.17
-ARG prod_image=alpine:3.17
+# Default <prod_image> is debian:trixie
+ARG prod_image=debian:trixie
 
 FROM ${prod_image}
 LABEL maintainer="<colin404@foxmail.com>"

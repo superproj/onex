@@ -9,8 +9,8 @@
 
 # Build the onex-oss-center binary
 # Run this with docker build --build-arg prod_image=<golang:x.y.z>
-# Default <prod_image> is debian:jessie
-ARG prod_image=debian:jessie
+# Default <prod_image> is debian:trixie
+ARG prod_image=debian:trixie
 
 FROM ${prod_image}
 LABEL maintainer="<colin404@foxmail.com>"

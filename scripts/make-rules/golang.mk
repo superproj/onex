@@ -11,7 +11,9 @@ ifeq ($(origin GOBIN), undefined)
 	GOBIN := $(GOPATH)/bin
 endif
 
-COMMANDS ?= $(filter-out %.md, $(wildcard ${ONEX_ROOT}/cmd/*))
+CMD_DIRS := $(wildcard $(ONEX_ROOT)/cmd/*)
+# Filter out directories without Go files, as these directories cannot be compiled.
+COMMANDS := $(filter-out $(wildcard %.md), $(foreach dir, $(CMD_DIRS), $(if $(wildcard $(dir)/*.go), $(dir),)))
 BINS ?= $(foreach cmd,${COMMANDS},$(notdir ${cmd}))
 
 ifeq (${COMMANDS},)

@@ -10,8 +10,8 @@
 # Build the gen-onex-docs binary
 
 # Run this with docker build --build-arg prod_image=<golang:x.y.z>
-# Default <prod_image> is debian:jessie
-ARG prod_image=debian:jessie
+# Default <prod_image> is debian:trixie
+ARG prod_image=debian:trixie
 
 # Ignore Hadolint rule "Always tag the version of an image explicitly."
 # It's an invalid finding since the image is explicitly set in the Makefile.
