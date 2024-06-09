@@ -1,5 +1,5 @@
 # 设置集群的域名
-clusterDomain: onex.io
+clusterDomain: superproj.com
 # 镜像相关配置
 image:
   # 镜像仓库的地址

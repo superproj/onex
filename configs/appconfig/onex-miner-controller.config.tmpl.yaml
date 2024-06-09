@@ -11,6 +11,7 @@ leaderElection:
   leaderElect: false
 metricsBindAddress: 0.0.0.0:${ONEX_MINER_CONTROLLER_METRICS_PORT}
 healthzBindAddress: 0.0.0.0:${ONEX_MINER_CONTROLLER_HEALTHZ_PORT}
+providerKubeconfig: /opt/onex/etc/config.kind
 dryRun: true
 redis:
   addr: ${ONEX_REDIS_ADDR}

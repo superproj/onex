@@ -5,6 +5,16 @@
 #
 
 apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: onex-apiserver-transport
+spec:
+  serverName: onex.apiserver.superproj.com
+  insecureSkipVerify: false
+  rootCAsSecrets:
+    - root-ca-secret
+---
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: onex-apiserver-https
@@ -18,5 +28,6 @@ spec:
         - kind: Service
           name: onex-apiserver
           port: 52443
+          serversTransport: onex-apiserver-transport
   tls:
     secretName: onex-apiserver

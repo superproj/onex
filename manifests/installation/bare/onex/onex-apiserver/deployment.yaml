@@ -41,7 +41,7 @@ spec:
       - args:
         - --secure-port=52443
         - --bind-address=0.0.0.0
-        - --etcd-servers=etcd.infra.svc.onex.io:2379
+        - --etcd-servers=etcd.infra.svc.superproj.com:2379
         - --client-ca-file=/opt/onex/etc/cert/ca.pem
         - --tls-cert-file=/opt/onex/etc/cert/onex-apiserver.pem 
         - --tls-private-key-file=/opt/onex/etc/cert/onex-apiserver-key.pem

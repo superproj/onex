@@ -91,7 +91,7 @@ func IsMinerReady(m *v1beta1.Miner) bool {
 }
 
 func ChainDNSServiceNameFromMiner(namespace, name string) string {
-	return fmt.Sprintf("%s.%s.svc.onex.io", name, namespace)
+	return fmt.Sprintf("%s.%s.svc.superproj.com", name, namespace)
 }
 
 func GenesisDNSServiceNameFromMiner(name string) string {

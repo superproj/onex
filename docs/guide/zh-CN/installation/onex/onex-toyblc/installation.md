@@ -35,7 +35,7 @@ $ curl -H "Host: onex.toyblc.superproj.com" http://127.0.0.1:18080/v1/peers
 $ curl -H "Host: onex.toyblc.superproj.com" http://127.0.0.1:18080/v1/blocks
 ```
 
-> curl http://genesis.kube-system.svc.onex.io:8080/v1/blocks
+> curl http://genesis.kube-system.svc.superproj.com:8080/v1/blocks
 
 ### 3. 挖矿 
 

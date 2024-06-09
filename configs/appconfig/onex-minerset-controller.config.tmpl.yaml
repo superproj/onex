@@ -4,7 +4,6 @@
 # this file is https://github.com/superproj/onex.
 #
 
-
 apiVersion: minersetcontroller.config.onex.io/v1beta1
 kind: MinerSetControllerConfiguration
 leaderElection:
