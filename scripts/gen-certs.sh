@@ -15,6 +15,8 @@ source "${ONEX_ROOT}/scripts/lib/init.sh"
 readonly LOCAL_OUTPUT_ROOT="${ONEX_ROOT}/${OUT_DIR:-_output}"
 readonly LOCAL_OUTPUT_CAPATH="${LOCAL_OUTPUT_ROOT}/cert"
 readonly ONEX_DOMAIN="onex.io"
+# To ensure that access is available in the default k8s cluster (with cluster domain as cluster.local).
+readonly DEFAULT_KUBERNETES_CLUSTER_DOMAIN="cluster.local"
 
 # Hostname for the cert
 #readonly CERT_HOSTNAME="${CERT_HOSTNAME:-onex-apiserver},127.0.0.1,localhost,"
@@ -94,7 +96,7 @@ EOF
 
   #echo "Generate "${prefix}" certificates..."
   echo '{"CN":"'"${prefix}"'","hosts":[],"key":{"algo":"rsa","size":2048},"names":[{"C":"CN","ST":"Shenzhen","L":"Shenzhen","O":"tencent","OU":"'"${prefix}"'"}]}' \
-    | ${CFSSL_BIN} gencert -hostname="${CERT_HOSTNAME},${prefix/-/.}.${ONEX_DOMAIN}" -ca=ca.pem -ca-key=ca-key.pem \
+    | ${CFSSL_BIN} gencert -hostname="${CERT_HOSTNAME},${prefix/-/.}.${DEFAULT_KUBERNETES_CLUSTER_DOMAIN},${prefix/-/.}.${ONEX_DOMAIN}" -ca=ca.pem -ca-key=ca-key.pem \
     -config=ca-config.json -profile=node - | ${CFSSLJSON_BIN} -bare "${prefix}"
 
   # the popd will access `directory stack`, no `real` parameters is actually needed
