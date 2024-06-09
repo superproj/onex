@@ -13,7 +13,9 @@ import (
 	"errors"
 	"sync"
 
+	"github.com/gammazero/workerpool"
 	"github.com/jinzhu/copier"
+	"github.com/panjf2000/ants/v2"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"gorm.io/gorm"
@@ -115,6 +117,103 @@ func (b *orderBiz) List(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListO
 		log.C(ctx).Errorw(err, "Failed to wait all function calls returned")
 		return nil, err
 	}
+
+	// The following code block is used to maintain the consistency of query order.
+	orders := make([]*v1.OrderReply, 0, len(list))
+	for _, item := range list {
+		order, _ := m.Load(item.ID)
+		orders = append(orders, order.(*v1.OrderReply))
+	}
+
+	log.C(ctx).Debugw("Get orders from backend storage", "count", len(orders))
+
+	return &v1.ListOrderResponse{TotalCount: count, Orders: orders}, nil
+}
+
+// ListWithWorkerPool retrieves a list of all orders from the database use workerpool package.
+// Concurrency limits can effectively protect downstream services and control the resource
+// consumption of components.
+func (b *orderBiz) ListWithWorkerPool(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListOrderResponse, error) {
+	count, list, err := b.ds.Orders().List(ctx, meta.WithOffset(rq.Offset), meta.WithLimit(rq.Limit))
+	if err != nil {
+		log.C(ctx).Errorw(err, "Failed to list orders from storage")
+		return nil, err
+	}
+
+	var m sync.Map
+	wp := workerpool.New(100)
+
+	// Use goroutine to improve interface performance
+	for _, order := range list {
+		wp.Submit(func() {
+			var o v1.OrderReply
+			// Here simulates a time-consuming concurrent logic.
+			_ = copier.Copy(&o, order)
+			m.Store(order.ID, &v1.OrderReply{
+				OrderID:   order.OrderID,
+				Customer:  order.Customer,
+				Product:   order.Product,
+				Quantity:  order.Quantity,
+				CreatedAt: timestamppb.New(order.CreatedAt),
+				UpdatedAt: timestamppb.New(order.UpdatedAt),
+			})
+
+			return
+		})
+	}
+
+	wp.StopWait()
+
+	// The following code block is used to maintain the consistency of query order.
+	orders := make([]*v1.OrderReply, 0, len(list))
+	for _, item := range list {
+		order, _ := m.Load(item.ID)
+		orders = append(orders, order.(*v1.OrderReply))
+	}
+
+	log.C(ctx).Debugw("Get orders from backend storage", "count", len(orders))
+
+	return &v1.ListOrderResponse{TotalCount: count, Orders: orders}, nil
+}
+
+// ListWithAnts retrieves a list of all orders from the database use ants package.
+// Concurrency limits can effectively protect downstream services and control the
+// resource consumption of components.
+func (b *orderBiz) ListWithAnts(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListOrderResponse, error) {
+	count, list, err := b.ds.Orders().List(ctx, meta.WithOffset(rq.Offset), meta.WithLimit(rq.Limit))
+	if err != nil {
+		log.C(ctx).Errorw(err, "Failed to list orders from storage")
+		return nil, err
+	}
+
+	var m sync.Map
+	var wg sync.WaitGroup
+	pool, _ := ants.NewPool(100)
+	defer pool.Release()
+
+	// Use goroutine to improve interface performance
+	for _, order := range list {
+		wg.Add(1)
+		_ = pool.Submit(func() {
+			defer wg.Done()
+
+			var o v1.OrderReply
+			// Here simulates a time-consuming concurrent logic.
+			_ = copier.Copy(&o, order)
+			m.Store(order.ID, &v1.OrderReply{
+				OrderID:   order.OrderID,
+				Customer:  order.Customer,
+				Product:   order.Product,
+				Quantity:  order.Quantity,
+				CreatedAt: timestamppb.New(order.CreatedAt),
+				UpdatedAt: timestamppb.New(order.UpdatedAt),
+			})
+
+			return
+		})
+	}
+
+	wg.Wait()
 
 	// The following code block is used to maintain the consistency of query order.
 	orders := make([]*v1.OrderReply, 0, len(list))
