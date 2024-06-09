@@ -8,12 +8,13 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
-	"k8s.io/apimachinery/pkg/util/wait"
+	genericapiserver "k8s.io/apiserver/pkg/server"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	restclient "k8s.io/client-go/rest"
 	cliflag "k8s.io/component-base/cli/flag"
@@ -32,7 +33,7 @@ import (
 
 	"github.com/superproj/onex/cmd/onex-minerset-controller/app/config"
 	"github.com/superproj/onex/cmd/onex-minerset-controller/app/options"
-	onexcontroller "github.com/superproj/onex/internal/controller"
+	minersetcontroller "github.com/superproj/onex/internal/controller/minerset"
 	"github.com/superproj/onex/internal/pkg/util/ratelimiter"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	"github.com/superproj/onex/pkg/record"
@@ -50,7 +51,8 @@ func init() {
 func NewControllerCommand() *cobra.Command {
 	o, err := options.NewOptions()
 	if err != nil {
-		klog.Fatalf("Unable to initialize command options: %v", err)
+		klog.Background().Error(err, "Unable to initialize command options")
+		klog.FlushAndExit(klog.ExitFlushTimeout, 1)
 	}
 
 	cmd := &cobra.Command{
@@ -102,7 +104,7 @@ current state towards the desired state.`,
 
 			// add feature enablement metrics
 			utilfeature.DefaultMutableFeatureGate.AddMetrics()
-			return Run(cc, wait.NeverStop)
+			return Run(genericapiserver.SetupSignalContext(), cc)
 		},
 		Args: func(cmd *cobra.Command, args []string) error {
 			for _, arg := range args {
@@ -125,11 +127,15 @@ current state towards the desired state.`,
 	cols, _, _ := term.TerminalSize(cmd.OutOrStdout())
 	cliflag.SetUsageAndHelpFunc(cmd, namedFlagSets, cols)
 
+	if err := cmd.MarkFlagFilename("config", "yaml", "yml", "json"); err != nil {
+		klog.Background().Error(err, "Failed to mark flag filename")
+	}
+
 	return cmd
 }
 
 // Run runs the minerset controller Options. This should never exit.
-func Run(c *config.CompletedConfig, stopCh <-chan struct{}) error {
+func Run(ctx context.Context, c *config.CompletedConfig) error {
 	// To help debugging, immediately log version
 	klog.InfoS("Starting minerset controller", "version", version.Get().String())
 
@@ -173,9 +179,7 @@ func Run(c *config.CompletedConfig, stopCh <-chan struct{}) error {
 	// Initialize event recorder.
 	record.InitFromRecorder(mgr.GetEventRecorderFor("onex-minerset-controller"))
 
-	ctx := wait.ContextForChannel(stopCh)
-
-	if err = (&onexcontroller.MinerSetReconciler{
+	if err = (&minersetcontroller.Reconciler{
 		WatchFilterValue: c.ComponentConfig.WatchFilterValue,
 	}).SetupWithManager(ctx, mgr, controller.Options{
 		MaxConcurrentReconciles: int(c.ComponentConfig.Parallelism),

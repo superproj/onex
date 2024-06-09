@@ -31,7 +31,7 @@ gen.docgo.check: gen.docgo.doc ## Check missing doc.go for go packages.
 
 .PHONY: gen.docs
 gen.docs: ## Update generated swagger docs.
-	@${SCRIPTS_DIR}/update-generated-swagger-docs.sh
+	@${SCRIPTS_DIR}/update-codegen.sh swagger
 
 .PHONY: gen.appdocs
 gen.appdocs: ## Update generated application docs.
@@ -63,7 +63,7 @@ gen.protoc: ## Generate go source files from protobuf files.
 	@protoc \
 		--proto_path=$(APIROOT) \
 		--proto_path=$(APISROOT) \
-		--proto_path=$(ONEX_ROOT)/third_party \
+		--proto_path=$(ONEX_ROOT)/third_party/protobuf \
 		--go_out=paths=source_relative:$(APIROOT) \
 		--go-http_out=paths=source_relative:$(APIROOT) \
 		--go-grpc_out=paths=source_relative:$(APIROOT) \
@@ -79,13 +79,13 @@ gen.protoc: ## Generate go source files from protobuf files.
 	@protoc \
 		--proto_path=$(APIROOT) \
 		--proto_path=$(APISROOT) \
-		--proto_path=$(ONEX_ROOT)/third_party \
+		--proto_path=$(ONEX_ROOT)/third_party/protobuf \
 		--grpc-gateway_out=paths=source_relative:$(APIROOT) \
 		$(shell find $(APIROOT)/fakeserver -name *.proto)
 
 .PHONY: gen.apisprotobuf
 gen.apisprotobuf: ## Generate protobuf files from structs.
-	@$(SCRIPTS_DIR)/update-codegen.sh
+	#@$(SCRIPTS_DIR)/update-codegen.sh
 	@cp $(ONEX_ROOT)/manifests/generated.pb.go.fix $(ONEX_ROOT)/pkg/apis/apps/v1beta1/generated.pb.go
 
 .PHONY: go.generate

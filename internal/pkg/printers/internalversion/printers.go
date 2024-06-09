@@ -10,17 +10,17 @@ import (
 	"fmt"
 	"strings"
 
+	coordinationv1 "k8s.io/api/coordination/v1"
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/kubernetes/pkg/apis/coordination"
 	api "k8s.io/kubernetes/pkg/apis/core"
 	"k8s.io/kubernetes/pkg/printers"
 
 	printersutil "github.com/superproj/onex/internal/pkg/util/printers"
 	"github.com/superproj/onex/pkg/apis/apps"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
-	"github.com/superproj/onex/pkg/apis/coordination"
-	coordinationv1 "github.com/superproj/onex/pkg/apis/coordination/v1"
 )
 
 // AddHandlers adds print handlers for default OneX types dealing with internal versions.

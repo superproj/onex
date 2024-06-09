@@ -141,7 +141,7 @@ func RegisterFakeServerServer(s grpc.ServiceRegistrar, srv FakeServerServer) {
 	s.RegisterService(&FakeServer_ServiceDesc, srv)
 }
 
-func _FakeServer_CreateOrder_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _FakeServer_CreateOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateOrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -153,13 +153,13 @@ func _FakeServer_CreateOrder_Handler(srv any, ctx context.Context, dec func(any)
 		Server:     srv,
 		FullMethod: FakeServer_CreateOrder_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FakeServerServer).CreateOrder(ctx, req.(*CreateOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FakeServer_ListOrder_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _FakeServer_ListOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListOrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -171,13 +171,13 @@ func _FakeServer_ListOrder_Handler(srv any, ctx context.Context, dec func(any) e
 		Server:     srv,
 		FullMethod: FakeServer_ListOrder_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FakeServerServer).ListOrder(ctx, req.(*ListOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FakeServer_GetOrder_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _FakeServer_GetOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetOrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -189,13 +189,13 @@ func _FakeServer_GetOrder_Handler(srv any, ctx context.Context, dec func(any) er
 		Server:     srv,
 		FullMethod: FakeServer_GetOrder_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FakeServerServer).GetOrder(ctx, req.(*GetOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FakeServer_UpdateOrder_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _FakeServer_UpdateOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateOrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -207,13 +207,13 @@ func _FakeServer_UpdateOrder_Handler(srv any, ctx context.Context, dec func(any)
 		Server:     srv,
 		FullMethod: FakeServer_UpdateOrder_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FakeServerServer).UpdateOrder(ctx, req.(*UpdateOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FakeServer_DeleteOrder_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _FakeServer_DeleteOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteOrderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -225,7 +225,7 @@ func _FakeServer_DeleteOrder_Handler(srv any, ctx context.Context, dec func(any)
 		Server:     srv,
 		FullMethod: FakeServer_DeleteOrder_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FakeServerServer).DeleteOrder(ctx, req.(*DeleteOrderRequest))
 	}
 	return interceptor(ctx, in, info, handler)

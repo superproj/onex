@@ -35,8 +35,8 @@ func (w *cleanWatcher) Run() {
 	}
 }
 
-// Init initializes the watcher for later execution.
-func (w *cleanWatcher) Init(ctx context.Context, config *watcher.Config) error {
+// Initialize initializes the watcher for later execution.
+func (w *cleanWatcher) Initialize(ctx context.Context, config *watcher.Config) error {
 	w.store = config.Store
 	return nil
 }

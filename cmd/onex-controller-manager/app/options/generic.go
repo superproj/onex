@@ -7,9 +7,12 @@
 package options
 
 import (
+	"fmt"
+	"k8s.io/apimachinery/pkg/util/sets"
 	cliflag "k8s.io/component-base/cli/flag"
 	"k8s.io/component-base/config/options"
 	utilflag "k8s.io/kubernetes/pkg/util/flag"
+	"strings"
 
 	cmconfig "github.com/superproj/onex/internal/controller/apis/config"
 	cmoptions "github.com/superproj/onex/pkg/config/options"
@@ -20,8 +23,19 @@ type GenericControllerManagerConfigurationOptions struct {
 	*cmconfig.GenericControllerManagerConfiguration
 }
 
+func NewGenericControllerManagerConfigurationOptions(cfg *cmconfig.GenericControllerManagerConfiguration) *GenericControllerManagerConfigurationOptions {
+	return &GenericControllerManagerConfigurationOptions{
+		GenericControllerManagerConfiguration: cfg,
+	}
+}
+
 // AddFlags adds flags related to ChainController for controller manager to the specified FlagSet.
-func (o *GenericControllerManagerConfigurationOptions) AddFlags(fss *cliflag.NamedFlagSets) {
+func (o *GenericControllerManagerConfigurationOptions) AddFlags(
+	fss *cliflag.NamedFlagSets,
+	allControllers []string,
+	disabledControllers []string,
+	controllerAliasesmap map[string]string,
+) {
 	if o == nil {
 		return
 	}
@@ -51,4 +65,59 @@ func (o *GenericControllerManagerConfigurationOptions) AddFlags(fss *cliflag.Nam
 		"This parameter is ignored if a config file is specified by --config.")
 	genericfs.StringVar(&o.WatchFilterValue, "watch-filter-value", o.WatchFilterValue, "The label value used to filter events prior to reconciliation."+
 		"This parameter is ignored if a config file is specified by --config.")
+	genericfs.StringSliceVar(&o.Controllers, "controllers", o.Controllers, fmt.Sprintf(""+
+		"A list of controllers to enable. '*' enables all on-by-default controllers, 'foo' enables the controller "+
+		"named 'foo', '-foo' disables the controller named 'foo'.\nAll controllers: %s\nDisabled-by-default controllers: %s",
+		strings.Join(allControllers, ", "), strings.Join(disabledControllers, ", ")))
+}
+
+func (o *GenericControllerManagerConfigurationOptions) ApplyTo(
+	cfg *cmconfig.GenericControllerManagerConfiguration,
+	allControllers []string,
+	disabledControllers []string,
+	controllerAliases map[string]string,
+) error {
+	*cfg = *o.GenericControllerManagerConfiguration
+
+	// copy controller names and replace aliases with canonical names
+	cfg.Controllers = make([]string, len(o.Controllers))
+	for i, initialName := range o.Controllers {
+		initialNameWithoutPrefix := strings.TrimPrefix(initialName, "-")
+		controllerName := initialNameWithoutPrefix
+		if canonicalName, ok := controllerAliases[controllerName]; ok {
+			controllerName = canonicalName
+		}
+		if strings.HasPrefix(initialName, "-") {
+			controllerName = fmt.Sprintf("-%s", controllerName)
+		}
+		cfg.Controllers[i] = controllerName
+	}
+
+	return nil
+}
+
+// Validate checks validation of GenericControllerManagerConfigurationOptions.
+func (o *GenericControllerManagerConfigurationOptions) Validate(allControllers []string, disabledControllers []string, controllerAliases map[string]string) []error {
+	if o == nil {
+		return nil
+	}
+
+	errs := []error{}
+
+	allControllersSet := sets.NewString(allControllers...)
+	for _, initialName := range o.Controllers {
+		if initialName == "*" {
+			continue
+		}
+		initialNameWithoutPrefix := strings.TrimPrefix(initialName, "-")
+		controllerName := initialNameWithoutPrefix
+		if canonicalName, ok := controllerAliases[controllerName]; ok {
+			controllerName = canonicalName
+		}
+		if !allControllersSet.Has(controllerName) {
+			errs = append(errs, fmt.Errorf("%q is not in the list of known controllers", initialNameWithoutPrefix))
+		}
+	}
+
+	return errs
 }

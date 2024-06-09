@@ -29,11 +29,21 @@ getcomponents() {
 
 # Load docker images to kind cluster
 load_docker_image() {
+  # Only kind cluster need to load image.
+  if ! kubectl config view | grep -q 'cluster: kind-';then
+    return
+  fi
+
   NODES=${KIND_LOAD_NODES:-$(kubectl get nodes|awk '/Ready/ && !/SchedulingDisabled/{nodes=nodes$1","} END{gsub(/,$/,"",nodes);print nodes}')}
 
   local comp="$1"
 
-  kind load docker-image --name ${ONEX_KIND_CLUSTER_NAME} --nodes ${NODES} ccr.ccs.tencentyun.com/superproj/${comp}-amd64:${OVERSION}
+  # In the SemVer versioning specification, the use of the "+" sign is possible, but container image tag names
+  # do not support the "+" character. Therefore, it is necessary to replace the "+" with "-" in the version number.
+  # For example, the version number "v0.18.0+20240121235656" should be transformed into "v0.18.0-20240121235656" for
+  # use as a container tag name.
+  kind load docker-image --name ${ONEX_KIND_CLUSTER_NAME} --nodes ${NODES} \
+    ccr.ccs.tencentyun.com/superproj/${comp}-amd64:$(echo ${OVERSION} | sed 's/+/-/')
 }
 
 # Build docker images
@@ -43,10 +53,7 @@ build_image() {
 
   for comp in "${COMPONENTS[@]}"
   do
-    # 容器镜像标签名不支持 "+" 字符，所以需要将版本号中的 "+" 替换为 "-"。例如将
-    # 版本号"v0.18.0+20240121235656"，转换为 "v0.18.0-20240121235656" 作为容器标签名
-    # 转换方式为：VERSION=$(echo ${OVERSION} | sed 's/+/-/')
-    make -C ${ONEX_ROOT} ${cmd} IMAGES=${comp} VERSION=$(echo ${OVERSION} | sed 's/+/-/') MULTISTAGE=0
+    make -C ${ONEX_ROOT} ${cmd} IMAGES=${comp} VERSION=${OVERSION} MULTISTAGE=0
     [[ "$LOAD" == true ]] && load_docker_image ${comp}
   done
 }

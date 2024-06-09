@@ -37,7 +37,7 @@ func NewEventLister(indexer cache.Indexer) EventLister {
 
 // List lists all Events in the indexer.
 func (s *eventLister) List(selector labels.Selector) (ret []*v1.Event, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m any) {
+	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1.Event))
 	})
 	return ret, err
@@ -69,7 +69,7 @@ type eventNamespaceLister struct {
 
 // List lists all Events in the indexer for a given namespace.
 func (s eventNamespaceLister) List(selector labels.Selector) (ret []*v1.Event, err error) {
-	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m any) {
+	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1.Event))
 	})
 	return ret, err

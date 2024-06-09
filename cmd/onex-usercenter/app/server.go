@@ -18,9 +18,9 @@ import (
 const commandDesc = `The usercenter server is used to manage users, keys, fees, etc.`
 
 // NewApp creates and returns a new App object with default parameters.
-func NewApp(name string) *app.App {
+func NewApp() *app.App {
 	opts := options.NewOptions()
-	application := app.NewApp(name, "Launch a onex usercenter server",
+	application := app.NewApp(usercenter.Name, "Launch a onex usercenter server",
 		app.WithDescription(commandDesc),
 		app.WithOptions(opts),
 		app.WithDefaultValidArgs(),

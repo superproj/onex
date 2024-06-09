@@ -1,6 +1,7 @@
 # ==============================================================================
 # Makefile helper functions used to generate kubernetes related files and go functions.
 #
+# Deprecated: Please use scripts/update-codegen.sh. This Makefile script is kept for possible future reference.
 
 # Don't allow an implicit 'all' rule.  This is not a user-facing file.
 #ifeq ($(MAKECMDGOALS),)

@@ -288,7 +288,7 @@ func RegisterGatewayServer(s grpc.ServiceRegistrar, srv GatewayServer) {
 	s.RegisterService(&Gateway_ServiceDesc, srv)
 }
 
-func _Gateway_GetVersion_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_GetVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -300,13 +300,13 @@ func _Gateway_GetVersion_Handler(srv any, ctx context.Context, dec func(any) err
 		Server:     srv,
 		FullMethod: Gateway_GetVersion_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).GetVersion(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_GetIdempotentToken_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_GetIdempotentToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -318,13 +318,13 @@ func _Gateway_GetIdempotentToken_Handler(srv any, ctx context.Context, dec func(
 		Server:     srv,
 		FullMethod: Gateway_GetIdempotentToken_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).GetIdempotentToken(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_CreateMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_CreateMinerSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(v1beta1.MinerSet)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -336,13 +336,13 @@ func _Gateway_CreateMinerSet_Handler(srv any, ctx context.Context, dec func(any)
 		Server:     srv,
 		FullMethod: Gateway_CreateMinerSet_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).CreateMinerSet(ctx, req.(*v1beta1.MinerSet))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_ListMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_ListMinerSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListMinerSetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -354,13 +354,13 @@ func _Gateway_ListMinerSet_Handler(srv any, ctx context.Context, dec func(any) e
 		Server:     srv,
 		FullMethod: Gateway_ListMinerSet_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).ListMinerSet(ctx, req.(*ListMinerSetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_GetMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_GetMinerSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetMinerSetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -372,13 +372,13 @@ func _Gateway_GetMinerSet_Handler(srv any, ctx context.Context, dec func(any) er
 		Server:     srv,
 		FullMethod: Gateway_GetMinerSet_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).GetMinerSet(ctx, req.(*GetMinerSetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_UpdateMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_UpdateMinerSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(v1beta1.MinerSet)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -390,13 +390,13 @@ func _Gateway_UpdateMinerSet_Handler(srv any, ctx context.Context, dec func(any)
 		Server:     srv,
 		FullMethod: Gateway_UpdateMinerSet_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).UpdateMinerSet(ctx, req.(*v1beta1.MinerSet))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_DeleteMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_DeleteMinerSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteMinerSetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -408,13 +408,13 @@ func _Gateway_DeleteMinerSet_Handler(srv any, ctx context.Context, dec func(any)
 		Server:     srv,
 		FullMethod: Gateway_DeleteMinerSet_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).DeleteMinerSet(ctx, req.(*DeleteMinerSetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_ScaleMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_ScaleMinerSet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ScaleMinerSetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -426,13 +426,13 @@ func _Gateway_ScaleMinerSet_Handler(srv any, ctx context.Context, dec func(any) 
 		Server:     srv,
 		FullMethod: Gateway_ScaleMinerSet_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).ScaleMinerSet(ctx, req.(*ScaleMinerSetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_CreateMiner_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_CreateMiner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(v1beta1.Miner)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -444,13 +444,13 @@ func _Gateway_CreateMiner_Handler(srv any, ctx context.Context, dec func(any) er
 		Server:     srv,
 		FullMethod: Gateway_CreateMiner_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).CreateMiner(ctx, req.(*v1beta1.Miner))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_ListMiner_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_ListMiner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListMinerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -462,13 +462,13 @@ func _Gateway_ListMiner_Handler(srv any, ctx context.Context, dec func(any) erro
 		Server:     srv,
 		FullMethod: Gateway_ListMiner_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).ListMiner(ctx, req.(*ListMinerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_GetMiner_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_GetMiner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetMinerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -480,13 +480,13 @@ func _Gateway_GetMiner_Handler(srv any, ctx context.Context, dec func(any) error
 		Server:     srv,
 		FullMethod: Gateway_GetMiner_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).GetMiner(ctx, req.(*GetMinerRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_UpdateMiner_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_UpdateMiner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(v1beta1.Miner)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -498,13 +498,13 @@ func _Gateway_UpdateMiner_Handler(srv any, ctx context.Context, dec func(any) er
 		Server:     srv,
 		FullMethod: Gateway_UpdateMiner_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).UpdateMiner(ctx, req.(*v1beta1.Miner))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_DeleteMiner_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _Gateway_DeleteMiner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteMinerRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -516,7 +516,7 @@ func _Gateway_DeleteMiner_Handler(srv any, ctx context.Context, dec func(any) er
 		Server:     srv,
 		FullMethod: Gateway_DeleteMiner_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GatewayServer).DeleteMiner(ctx, req.(*DeleteMinerRequest))
 	}
 	return interceptor(ctx, in, info, handler)

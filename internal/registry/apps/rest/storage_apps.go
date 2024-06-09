@@ -13,7 +13,7 @@ import (
 	serverstorage "k8s.io/apiserver/pkg/server/storage"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 
-	"github.com/superproj/onex/internal/apiserver/storage"
+	"github.com/superproj/onex/internal/controlplane/storage"
 	serializerutil "github.com/superproj/onex/internal/pkg/util/serializer"
 	chainstore "github.com/superproj/onex/internal/registry/apps/chain/storage"
 	minerstore "github.com/superproj/onex/internal/registry/apps/miner/storage"

@@ -19,9 +19,9 @@ like linux cronjob. You can add Cron(github.com/robfig/cron) jobs on the given s
 use the Cron spec format.`
 
 // NewApp creates an App object with default parameters.
-func NewApp(name string) *app.App {
+func NewApp() *app.App {
 	opts := options.NewOptions()
-	application := app.NewApp(name, "Launch a onex asynchronous task processing server",
+	application := app.NewApp("onex-nightwatch", "Launch a onex asynchronous task processing server",
 		app.WithDescription(commandDesc),
 		app.WithOptions(opts),
 		app.WithDefaultValidArgs(),

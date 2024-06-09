@@ -56,7 +56,10 @@ endif
 
 .PHONY: gen-k8s
 gen-k8s: ## Generate all necessary kubernetes related files, such as deepcopy files
-	$(MAKE) -s generated.files
+	@$(ONEX_ROOT)/scripts/update-codegen.sh
+	# The following command is old generate way with makefile script.
+	# Comment here as a code history.
+	# $(MAKE) -s generated.files
 
 .PHONY: protoc
 protoc: ## Generate api proto files.
@@ -103,8 +106,8 @@ push.multiarch: ## Build docker images for multiple platforms and push images to
 ##@ Deploy
 
 .PHONY: deploy
-deploy: ## Build docker images for host arch, and deploy it in kind cluster.
-	$(MAKE) deploy.kind
+deploy: ## Build and push docker images for host arch, and deploy it in kubernetes cluster.
+	$(MAKE) deploy.run
 
 .PHONY: docker-install
 docker-install: ## Deploy onex with docker.

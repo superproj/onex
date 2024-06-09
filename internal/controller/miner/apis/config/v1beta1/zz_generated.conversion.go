@@ -13,12 +13,11 @@ package v1beta1
 import (
 	unsafe "unsafe"
 
+	config "github.com/superproj/onex/internal/controller/miner/apis/config"
+	configv1beta1 "github.com/superproj/onex/pkg/config/v1beta1"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	v1alpha1 "k8s.io/component-base/config/v1alpha1"
-
-	config "github.com/superproj/onex/internal/controller/miner/apis/config"
-	configv1beta1 "github.com/superproj/onex/pkg/config/v1beta1"
 )
 
 func init() {
@@ -28,22 +27,22 @@ func init() {
 // RegisterConversions adds conversion functions to the given scheme.
 // Public to allow building arbitrary schemes.
 func RegisterConversions(s *runtime.Scheme) error {
-	if err := s.AddGeneratedConversionFunc((*MinerControllerConfiguration)(nil), (*config.MinerControllerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerControllerConfiguration)(nil), (*config.MinerControllerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerControllerConfiguration_To_config_MinerControllerConfiguration(a.(*MinerControllerConfiguration), b.(*config.MinerControllerConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*config.MinerControllerConfiguration)(nil), (*MinerControllerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*config.MinerControllerConfiguration)(nil), (*MinerControllerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_config_MinerControllerConfiguration_To_v1beta1_MinerControllerConfiguration(a.(*config.MinerControllerConfiguration), b.(*MinerControllerConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*MinerProfile)(nil), (*config.MinerProfile)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerProfile)(nil), (*config.MinerProfile)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerProfile_To_config_MinerProfile(a.(*MinerProfile), b.(*config.MinerProfile), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*config.MinerProfile)(nil), (*MinerProfile)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*config.MinerProfile)(nil), (*MinerProfile)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_config_MinerProfile_To_v1beta1_MinerProfile(a.(*config.MinerProfile), b.(*MinerProfile), scope)
 	}); err != nil {
 		return err

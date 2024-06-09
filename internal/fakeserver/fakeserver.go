@@ -7,6 +7,8 @@
 package fakeserver
 
 import (
+	"os"
+
 	"github.com/jinzhu/copier"
 
 	"github.com/superproj/onex/internal/fakeserver/biz"
@@ -17,6 +19,14 @@ import (
 	"github.com/superproj/onex/internal/fakeserver/store/mysql"
 	"github.com/superproj/onex/pkg/db"
 	genericoptions "github.com/superproj/onex/pkg/options"
+)
+
+var (
+	// Name is the name of the compiled software.
+	Name = "onex-fakeserver"
+
+	// ID contains the host name and any error encountered during the retrieval.
+	ID, _ = os.Hostname()
 )
 
 // Config represents the configuration of the service.

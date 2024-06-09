@@ -7,18 +7,17 @@
 package rest
 
 import (
+	coordinationv1 "k8s.io/api/coordination/v1"
 	"k8s.io/apiserver/pkg/registry/generic"
 	"k8s.io/apiserver/pkg/registry/rest"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	serverstorage "k8s.io/apiserver/pkg/server/storage"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
+	"k8s.io/kubernetes/pkg/apis/coordination"
 	leasestore "k8s.io/kubernetes/pkg/registry/coordination/lease/storage"
 
+	"github.com/superproj/onex/internal/controlplane/storage"
 	serializerutil "github.com/superproj/onex/internal/pkg/util/serializer"
-
-	"github.com/superproj/onex/internal/apiserver/storage"
-	"github.com/superproj/onex/pkg/apis/coordination"
-	coordinationv1 "github.com/superproj/onex/pkg/apis/coordination/v1"
 	// leasestore "github.com/superproj/onex/internal/registry/coordination/lease/storage".
 )
 

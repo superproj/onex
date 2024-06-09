@@ -57,6 +57,11 @@ func (in *GenericControllerManagerConfiguration) DeepCopyInto(out *GenericContro
 	out.MySQL = in.MySQL
 	out.LeaderElection = in.LeaderElection
 	out.SyncPeriod = in.SyncPeriod
+	if in.Controllers != nil {
+		in, out := &in.Controllers, &out.Controllers
+		*out = make([]string, len(*in))
+		copy(*out, *in)
+	}
 	return
 }
 
@@ -90,14 +95,7 @@ func (in *GroupResource) DeepCopy() *GroupResource {
 func (in *OneXControllerManagerConfiguration) DeepCopyInto(out *OneXControllerManagerConfiguration) {
 	*out = *in
 	out.TypeMeta = in.TypeMeta
-	if in.FeatureGates != nil {
-		in, out := &in.FeatureGates, &out.FeatureGates
-		*out = make(map[string]bool, len(*in))
-		for key, val := range *in {
-			(*out)[key] = val
-		}
-	}
-	out.Generic = in.Generic
+	in.Generic.DeepCopyInto(&out.Generic)
 	in.GarbageCollectorController.DeepCopyInto(&out.GarbageCollectorController)
 	out.ChainController = in.ChainController
 	return

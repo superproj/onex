@@ -15,7 +15,7 @@ import (
 	"github.com/superproj/onex/internal/gateway/biz/minerset"
 	"github.com/superproj/onex/internal/gateway/store"
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
-	informers "github.com/superproj/onex/pkg/generated/informers/externalversions"
+	"github.com/superproj/onex/pkg/generated/informers"
 )
 
 // ProviderSet is biz providers.

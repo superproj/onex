@@ -15,5 +15,5 @@ import (
 )
 
 func main() {
-	app.NewApp("onex-pump").Run()
+	app.NewApp().Run()
 }

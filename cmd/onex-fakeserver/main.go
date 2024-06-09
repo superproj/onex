@@ -15,5 +15,5 @@ import (
 )
 
 func main() {
-	app.NewApp("onex-fakeserver").Run()
+	app.NewApp().Run()
 }

@@ -20,7 +20,7 @@ type OneXControllerManagerConfiguration struct {
 	metav1.TypeMeta
 
 	// FeatureGates is a map of feature names to bools that enable or disable alpha/experimental features.
-	FeatureGates map[string]bool
+	//FeatureGates map[string]bool
 
 	// Generic holds configuration for a generic controller-manager
 	Generic GenericControllerManagerConfiguration
@@ -74,6 +74,13 @@ type GenericControllerManagerConfiguration struct {
 
 	// Label value that the controller watches to reconcile cloud miner objects
 	WatchFilterValue string
+
+	// Controllers is the list of controllers to enable or disable
+	// '*' means "all enabled by default controllers"
+	// 'foo' means "enable 'foo'"
+	// '-foo' means "disable 'foo'"
+	// first item for a particular name wins
+	Controllers []string
 }
 
 type ChainControllerConfiguration struct {

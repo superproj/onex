@@ -9,7 +9,10 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
+	corev1 "github.com/superproj/onex/pkg/generated/applyconfigurations/core/v1"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -106,6 +109,49 @@ func (c *FakeNamespaces) Delete(ctx context.Context, name string, opts metav1.De
 func (c *FakeNamespaces) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.Namespace, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewRootPatchSubresourceAction(namespacesResource, name, pt, data, subresources...), &v1.Namespace{})
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1.Namespace), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied namespace.
+func (c *FakeNamespaces) Apply(ctx context.Context, namespace *corev1.NamespaceApplyConfiguration, opts metav1.ApplyOptions) (result *v1.Namespace, err error) {
+	if namespace == nil {
+		return nil, fmt.Errorf("namespace provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(namespace)
+	if err != nil {
+		return nil, err
+	}
+	name := namespace.Name
+	if name == nil {
+		return nil, fmt.Errorf("namespace.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewRootPatchSubresourceAction(namespacesResource, *name, types.ApplyPatchType, data), &v1.Namespace{})
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1.Namespace), err
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *FakeNamespaces) ApplyStatus(ctx context.Context, namespace *corev1.NamespaceApplyConfiguration, opts metav1.ApplyOptions) (result *v1.Namespace, err error) {
+	if namespace == nil {
+		return nil, fmt.Errorf("namespace provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(namespace)
+	if err != nil {
+		return nil, err
+	}
+	name := namespace.Name
+	if name == nil {
+		return nil, fmt.Errorf("namespace.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewRootPatchSubresourceAction(namespacesResource, *name, types.ApplyPatchType, data, "status"), &v1.Namespace{})
 	if obj == nil {
 		return nil, err
 	}

@@ -21,7 +21,7 @@ import (
 	v1 "github.com/superproj/onex/pkg/api/gateway/v1"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
-	informers "github.com/superproj/onex/pkg/generated/informers/externalversions"
+	"github.com/superproj/onex/pkg/generated/informers"
 	listers "github.com/superproj/onex/pkg/generated/listers/apps/v1beta1"
 	"github.com/superproj/onex/pkg/log"
 )

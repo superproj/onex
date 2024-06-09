@@ -14,5 +14,5 @@ import (
 )
 
 func main() {
-	app.NewApp("onex-gateway").Run()
+	app.NewApp().Run()
 }

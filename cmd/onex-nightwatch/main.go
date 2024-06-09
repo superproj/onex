@@ -14,5 +14,5 @@ import (
 )
 
 func main() {
-	app.NewApp("onex-nightwatch").Run()
+	app.NewApp().Run()
 }

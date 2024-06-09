@@ -8,7 +8,6 @@ package validation
 
 import (
 	"k8s.io/apimachinery/pkg/util/validation/field"
-	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	componentbasevalidation "k8s.io/component-base/config/validation"
 
 	"github.com/superproj/onex/internal/controller/apis/config"
@@ -20,11 +19,6 @@ import (
 func Validate(cc *config.OneXControllerManagerConfiguration) field.ErrorList {
 	allErrs := field.ErrorList{}
 	newPath := field.NewPath("OneXControllerManagerConfiguration")
-
-	effectiveFeatures := utilfeature.DefaultFeatureGate.DeepCopy()
-	if err := effectiveFeatures.SetFromMap(cc.FeatureGates); err != nil {
-		allErrs = append(allErrs, field.Invalid(newPath.Child("featureGates"), cc.FeatureGates, err.Error()))
-	}
 
 	allErrs = append(allErrs, componentbasevalidation.ValidateLeaderElectionConfiguration(&cc.Generic.LeaderElection, field.NewPath("generic", "leaderElection"))...)
 	allErrs = append(allErrs, cmvalidation.ValidateMySQLConfiguration(&cc.Generic.MySQL, field.NewPath("generic", "mysql"))...)

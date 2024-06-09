@@ -26,10 +26,6 @@ func addDefaultingFuncs(scheme *runtime.Scheme) error {
 }
 
 func SetDefaults_OneXControllerManagerConfiguration(obj *OneXControllerManagerConfiguration) {
-	if obj.FeatureGates == nil {
-		obj.FeatureGates = make(map[string]bool)
-	}
-
 	RecommendedDefaultGenericControllerManagerConfiguration(&obj.Generic)
 	RecommendedDefaultGarbageCollectorControllerConfiguration(&obj.GarbageCollectorController)
 	RecommendedDefaultChainControllerConfiguration(&obj.ChainController)

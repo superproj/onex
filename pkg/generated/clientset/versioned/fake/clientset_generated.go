@@ -8,19 +8,22 @@
 package fake
 
 import (
-	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/watch"
-	"k8s.io/client-go/discovery"
-	fakediscovery "k8s.io/client-go/discovery/fake"
-	"k8s.io/client-go/testing"
-
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
+	apiextensionsv1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/apiextensions/v1"
+	fakeapiextensionsv1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/apiextensions/v1/fake"
 	appsv1beta1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/apps/v1beta1"
 	fakeappsv1beta1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/apps/v1beta1/fake"
 	coordinationv1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/coordination/v1"
 	fakecoordinationv1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/coordination/v1/fake"
 	corev1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/core/v1"
 	fakecorev1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/core/v1/fake"
+	flowcontrolv1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/flowcontrol/v1"
+	fakeflowcontrolv1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/flowcontrol/v1/fake"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/watch"
+	"k8s.io/client-go/discovery"
+	fakediscovery "k8s.io/client-go/discovery/fake"
+	"k8s.io/client-go/testing"
 )
 
 // NewSimpleClientset returns a clientset that will respond with the provided objects.
@@ -73,6 +76,11 @@ var (
 	_ testing.FakeClient  = &Clientset{}
 )
 
+// ApiextensionsV1 retrieves the ApiextensionsV1Client
+func (c *Clientset) ApiextensionsV1() apiextensionsv1.ApiextensionsV1Interface {
+	return &fakeapiextensionsv1.FakeApiextensionsV1{Fake: &c.Fake}
+}
+
 // AppsV1beta1 retrieves the AppsV1beta1Client
 func (c *Clientset) AppsV1beta1() appsv1beta1.AppsV1beta1Interface {
 	return &fakeappsv1beta1.FakeAppsV1beta1{Fake: &c.Fake}
@@ -86,4 +94,9 @@ func (c *Clientset) CoordinationV1() coordinationv1.CoordinationV1Interface {
 // CoreV1 retrieves the CoreV1Client
 func (c *Clientset) CoreV1() corev1.CoreV1Interface {
 	return &fakecorev1.FakeCoreV1{Fake: &c.Fake}
+}
+
+// FlowcontrolV1 retrieves the FlowcontrolV1Client
+func (c *Clientset) FlowcontrolV1() flowcontrolv1.FlowcontrolV1Interface {
+	return &fakeflowcontrolv1.FakeFlowcontrolV1{Fake: &c.Fake}
 }

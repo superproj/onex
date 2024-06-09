@@ -17,10 +17,11 @@ import (
 type Config struct {
 	ComponentConfig *ctrlmgrconfig.OneXControllerManagerConfiguration
 
+	// the general onex client
+	Client clientset.Interface
+
 	// the rest config for the master
 	Kubeconfig *restclient.Config
-
-	Client clientset.Interface
 }
 
 // CompletedConfig same as Config, just to swap private object.

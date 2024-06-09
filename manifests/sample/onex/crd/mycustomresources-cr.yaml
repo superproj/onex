@@ -1,0 +1,8 @@
+apiVersion: example.com/v1
+kind: MyCustomResource
+metadata:
+  name: my-custom-resource
+  namespace: default
+spec:
+  name: my-app
+  image: myregistry.azurecr.io/my-app:v1.0

@@ -8,27 +8,28 @@
 package scheme
 
 import (
+	appsv1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	coordinationv1 "k8s.io/api/coordination/v1"
 	corev1 "k8s.io/api/core/v1"
+	flowcontrolv1 "k8s.io/api/flowcontrol/v1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
-
-	appsv1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
-	coordinationv1 "github.com/superproj/onex/pkg/apis/coordination/v1"
 )
 
-var (
-	Scheme             = runtime.NewScheme()
-	Codecs             = serializer.NewCodecFactory(Scheme)
-	ParameterCodec     = runtime.NewParameterCodec(Scheme)
-	localSchemeBuilder = runtime.SchemeBuilder{
-		appsv1beta1.AddToScheme,
-		coordinationv1.AddToScheme,
-		corev1.AddToScheme,
-	}
-)
+var Scheme = runtime.NewScheme()
+var Codecs = serializer.NewCodecFactory(Scheme)
+var ParameterCodec = runtime.NewParameterCodec(Scheme)
+var localSchemeBuilder = runtime.SchemeBuilder{
+	apiextensionsv1.AddToScheme,
+	appsv1beta1.AddToScheme,
+	coordinationv1.AddToScheme,
+	corev1.AddToScheme,
+	flowcontrolv1.AddToScheme,
+}
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition
 // of clientsets, like in:

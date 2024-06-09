@@ -39,10 +39,9 @@ source "${ONEX_ROOT}/scripts/lib/golang.sh"
 # list of all available group versions. This should be used when generated code
 # or when starting an API server that you want to have everything.
 # most preferred version for a group should appear first
+# UPDATEME: New group need to update here.
 ONEX_AVAILABLE_GROUP_VERSIONS="${ONEX_AVAILABLE_GROUP_VERSIONS:-\
 apps/v1beta1 \
-coordination/v1 \
-core/v1 \
 }"
 
 # This emulates "readlink -f" which is not available on MacOS X.

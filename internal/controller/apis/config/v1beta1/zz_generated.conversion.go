@@ -13,13 +13,12 @@ package v1beta1
 import (
 	unsafe "unsafe"
 
+	config "github.com/superproj/onex/internal/controller/apis/config"
+	configv1beta1 "github.com/superproj/onex/pkg/config/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	v1alpha1 "k8s.io/component-base/config/v1alpha1"
-
-	config "github.com/superproj/onex/internal/controller/apis/config"
-	configv1beta1 "github.com/superproj/onex/pkg/config/v1beta1"
 )
 
 func init() {
@@ -29,52 +28,52 @@ func init() {
 // RegisterConversions adds conversion functions to the given scheme.
 // Public to allow building arbitrary schemes.
 func RegisterConversions(s *runtime.Scheme) error {
-	if err := s.AddGeneratedConversionFunc((*ChainControllerConfiguration)(nil), (*config.ChainControllerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*ChainControllerConfiguration)(nil), (*config.ChainControllerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_ChainControllerConfiguration_To_config_ChainControllerConfiguration(a.(*ChainControllerConfiguration), b.(*config.ChainControllerConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*config.ChainControllerConfiguration)(nil), (*ChainControllerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*config.ChainControllerConfiguration)(nil), (*ChainControllerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_config_ChainControllerConfiguration_To_v1beta1_ChainControllerConfiguration(a.(*config.ChainControllerConfiguration), b.(*ChainControllerConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*GarbageCollectorControllerConfiguration)(nil), (*config.GarbageCollectorControllerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*GarbageCollectorControllerConfiguration)(nil), (*config.GarbageCollectorControllerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_GarbageCollectorControllerConfiguration_To_config_GarbageCollectorControllerConfiguration(a.(*GarbageCollectorControllerConfiguration), b.(*config.GarbageCollectorControllerConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*config.GarbageCollectorControllerConfiguration)(nil), (*GarbageCollectorControllerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*config.GarbageCollectorControllerConfiguration)(nil), (*GarbageCollectorControllerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_config_GarbageCollectorControllerConfiguration_To_v1beta1_GarbageCollectorControllerConfiguration(a.(*config.GarbageCollectorControllerConfiguration), b.(*GarbageCollectorControllerConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*GenericControllerManagerConfiguration)(nil), (*config.GenericControllerManagerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*GenericControllerManagerConfiguration)(nil), (*config.GenericControllerManagerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_GenericControllerManagerConfiguration_To_config_GenericControllerManagerConfiguration(a.(*GenericControllerManagerConfiguration), b.(*config.GenericControllerManagerConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*config.GenericControllerManagerConfiguration)(nil), (*GenericControllerManagerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*config.GenericControllerManagerConfiguration)(nil), (*GenericControllerManagerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_config_GenericControllerManagerConfiguration_To_v1beta1_GenericControllerManagerConfiguration(a.(*config.GenericControllerManagerConfiguration), b.(*GenericControllerManagerConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*GroupResource)(nil), (*config.GroupResource)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*GroupResource)(nil), (*config.GroupResource)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_GroupResource_To_config_GroupResource(a.(*GroupResource), b.(*config.GroupResource), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*config.GroupResource)(nil), (*GroupResource)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*config.GroupResource)(nil), (*GroupResource)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_config_GroupResource_To_v1beta1_GroupResource(a.(*config.GroupResource), b.(*GroupResource), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*OneXControllerManagerConfiguration)(nil), (*config.OneXControllerManagerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*OneXControllerManagerConfiguration)(nil), (*config.OneXControllerManagerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_OneXControllerManagerConfiguration_To_config_OneXControllerManagerConfiguration(a.(*OneXControllerManagerConfiguration), b.(*config.OneXControllerManagerConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*config.OneXControllerManagerConfiguration)(nil), (*OneXControllerManagerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*config.OneXControllerManagerConfiguration)(nil), (*OneXControllerManagerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_config_OneXControllerManagerConfiguration_To_v1beta1_OneXControllerManagerConfiguration(a.(*config.OneXControllerManagerConfiguration), b.(*OneXControllerManagerConfiguration), scope)
 	}); err != nil {
 		return err
@@ -145,6 +144,7 @@ func autoConvert_v1beta1_GenericControllerManagerConfiguration_To_config_Generic
 	out.Parallelism = in.Parallelism
 	out.SyncPeriod = in.SyncPeriod
 	out.WatchFilterValue = in.WatchFilterValue
+	out.Controllers = *(*[]string)(unsafe.Pointer(&in.Controllers))
 	return nil
 }
 
@@ -168,6 +168,7 @@ func autoConvert_config_GenericControllerManagerConfiguration_To_v1beta1_Generic
 	out.Parallelism = in.Parallelism
 	out.SyncPeriod = in.SyncPeriod
 	out.WatchFilterValue = in.WatchFilterValue
+	out.Controllers = *(*[]string)(unsafe.Pointer(&in.Controllers))
 	return nil
 }
 
@@ -199,7 +200,6 @@ func Convert_config_GroupResource_To_v1beta1_GroupResource(in *config.GroupResou
 }
 
 func autoConvert_v1beta1_OneXControllerManagerConfiguration_To_config_OneXControllerManagerConfiguration(in *OneXControllerManagerConfiguration, out *config.OneXControllerManagerConfiguration, s conversion.Scope) error {
-	out.FeatureGates = *(*map[string]bool)(unsafe.Pointer(&in.FeatureGates))
 	if err := Convert_v1beta1_GenericControllerManagerConfiguration_To_config_GenericControllerManagerConfiguration(&in.Generic, &out.Generic, s); err != nil {
 		return err
 	}
@@ -218,7 +218,6 @@ func Convert_v1beta1_OneXControllerManagerConfiguration_To_config_OneXController
 }
 
 func autoConvert_config_OneXControllerManagerConfiguration_To_v1beta1_OneXControllerManagerConfiguration(in *config.OneXControllerManagerConfiguration, out *OneXControllerManagerConfiguration, s conversion.Scope) error {
-	out.FeatureGates = *(*map[string]bool)(unsafe.Pointer(&in.FeatureGates))
 	if err := Convert_config_GenericControllerManagerConfiguration_To_v1beta1_GenericControllerManagerConfiguration(&in.Generic, &out.Generic, s); err != nil {
 		return err
 	}

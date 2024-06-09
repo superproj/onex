@@ -43,8 +43,8 @@ func (w *secretsCleanWatcher) Run() {
 	}
 }
 
-// Init initializes the watcher for later execution.
-func (w *secretsCleanWatcher) Init(ctx context.Context, config *watcher.Config) error {
+// Initialize initializes the watcher for later execution.
+func (w *secretsCleanWatcher) Initialize(ctx context.Context, config *watcher.Config) error {
 	w.store = config.Store
 	return nil
 }

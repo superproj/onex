@@ -7,4 +7,4 @@
 
 package v1
 
-type LeaseExpansion any
+type LeaseExpansion interface{}

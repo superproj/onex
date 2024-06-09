@@ -156,7 +156,7 @@ func RegisterCacheServerServer(s grpc.ServiceRegistrar, srv CacheServerServer) {
 	s.RegisterService(&CacheServer_ServiceDesc, srv)
 }
 
-func _CacheServer_Set_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _CacheServer_Set_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -168,13 +168,13 @@ func _CacheServer_Set_Handler(srv any, ctx context.Context, dec func(any) error,
 		Server:     srv,
 		FullMethod: CacheServer_Set_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CacheServerServer).Set(ctx, req.(*SetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CacheServer_Get_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _CacheServer_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -186,13 +186,13 @@ func _CacheServer_Get_Handler(srv any, ctx context.Context, dec func(any) error,
 		Server:     srv,
 		FullMethod: CacheServer_Get_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CacheServerServer).Get(ctx, req.(*GetRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CacheServer_Del_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _CacheServer_Del_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DelRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -204,13 +204,13 @@ func _CacheServer_Del_Handler(srv any, ctx context.Context, dec func(any) error,
 		Server:     srv,
 		FullMethod: CacheServer_Del_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CacheServerServer).Del(ctx, req.(*DelRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CacheServer_SetSecret_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _CacheServer_SetSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetSecretRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -222,13 +222,13 @@ func _CacheServer_SetSecret_Handler(srv any, ctx context.Context, dec func(any) 
 		Server:     srv,
 		FullMethod: CacheServer_SetSecret_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CacheServerServer).SetSecret(ctx, req.(*SetSecretRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CacheServer_GetSecret_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _CacheServer_GetSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetSecretRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -240,13 +240,13 @@ func _CacheServer_GetSecret_Handler(srv any, ctx context.Context, dec func(any) 
 		Server:     srv,
 		FullMethod: CacheServer_GetSecret_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CacheServerServer).GetSecret(ctx, req.(*GetSecretRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CacheServer_DelSecret_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _CacheServer_DelSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DelSecretRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -258,7 +258,7 @@ func _CacheServer_DelSecret_Handler(srv any, ctx context.Context, dec func(any) 
 		Server:     srv,
 		FullMethod: CacheServer_DelSecret_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CacheServerServer).DelSecret(ctx, req.(*DelSecretRequest))
 	}
 	return interceptor(ctx, in, info, handler)

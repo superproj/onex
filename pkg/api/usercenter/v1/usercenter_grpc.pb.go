@@ -355,7 +355,7 @@ func RegisterUserCenterServer(s grpc.ServiceRegistrar, srv UserCenterServer) {
 	s.RegisterService(&UserCenter_ServiceDesc, srv)
 }
 
-func _UserCenter_Login_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -367,13 +367,13 @@ func _UserCenter_Login_Handler(srv any, ctx context.Context, dec func(any) error
 		Server:     srv,
 		FullMethod: UserCenter_Login_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).Login(ctx, req.(*LoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_Logout_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LogoutRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -385,13 +385,13 @@ func _UserCenter_Logout_Handler(srv any, ctx context.Context, dec func(any) erro
 		Server:     srv,
 		FullMethod: UserCenter_Logout_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).Logout(ctx, req.(*LogoutRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_RefreshToken_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_RefreshToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RefreshTokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -403,13 +403,13 @@ func _UserCenter_RefreshToken_Handler(srv any, ctx context.Context, dec func(any
 		Server:     srv,
 		FullMethod: UserCenter_RefreshToken_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).RefreshToken(ctx, req.(*RefreshTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_Authenticate_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_Authenticate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AuthenticateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -421,13 +421,13 @@ func _UserCenter_Authenticate_Handler(srv any, ctx context.Context, dec func(any
 		Server:     srv,
 		FullMethod: UserCenter_Authenticate_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).Authenticate(ctx, req.(*AuthenticateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_Authorize_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_Authorize_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AuthorizeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -439,13 +439,13 @@ func _UserCenter_Authorize_Handler(srv any, ctx context.Context, dec func(any) e
 		Server:     srv,
 		FullMethod: UserCenter_Authorize_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).Authorize(ctx, req.(*AuthorizeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_Auth_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_Auth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AuthRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -457,13 +457,13 @@ func _UserCenter_Auth_Handler(srv any, ctx context.Context, dec func(any) error,
 		Server:     srv,
 		FullMethod: UserCenter_Auth_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).Auth(ctx, req.(*AuthRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_CreateUser_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -475,13 +475,13 @@ func _UserCenter_CreateUser_Handler(srv any, ctx context.Context, dec func(any) 
 		Server:     srv,
 		FullMethod: UserCenter_CreateUser_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).CreateUser(ctx, req.(*CreateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_ListUser_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_ListUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -493,13 +493,13 @@ func _UserCenter_ListUser_Handler(srv any, ctx context.Context, dec func(any) er
 		Server:     srv,
 		FullMethod: UserCenter_ListUser_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).ListUser(ctx, req.(*ListUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_GetUser_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -511,13 +511,13 @@ func _UserCenter_GetUser_Handler(srv any, ctx context.Context, dec func(any) err
 		Server:     srv,
 		FullMethod: UserCenter_GetUser_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).GetUser(ctx, req.(*GetUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_UpdateUser_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -529,13 +529,13 @@ func _UserCenter_UpdateUser_Handler(srv any, ctx context.Context, dec func(any) 
 		Server:     srv,
 		FullMethod: UserCenter_UpdateUser_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).UpdateUser(ctx, req.(*UpdateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_DeleteUser_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -547,13 +547,13 @@ func _UserCenter_DeleteUser_Handler(srv any, ctx context.Context, dec func(any) 
 		Server:     srv,
 		FullMethod: UserCenter_DeleteUser_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).DeleteUser(ctx, req.(*DeleteUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_UpdatePassword_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_UpdatePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdatePasswordRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -565,13 +565,13 @@ func _UserCenter_UpdatePassword_Handler(srv any, ctx context.Context, dec func(a
 		Server:     srv,
 		FullMethod: UserCenter_UpdatePassword_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).UpdatePassword(ctx, req.(*UpdatePasswordRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_CreateSecret_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_CreateSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateSecretRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -583,13 +583,13 @@ func _UserCenter_CreateSecret_Handler(srv any, ctx context.Context, dec func(any
 		Server:     srv,
 		FullMethod: UserCenter_CreateSecret_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).CreateSecret(ctx, req.(*CreateSecretRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_ListSecret_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_ListSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListSecretRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -601,13 +601,13 @@ func _UserCenter_ListSecret_Handler(srv any, ctx context.Context, dec func(any) 
 		Server:     srv,
 		FullMethod: UserCenter_ListSecret_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).ListSecret(ctx, req.(*ListSecretRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_GetSecret_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_GetSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetSecretRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -619,13 +619,13 @@ func _UserCenter_GetSecret_Handler(srv any, ctx context.Context, dec func(any) e
 		Server:     srv,
 		FullMethod: UserCenter_GetSecret_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).GetSecret(ctx, req.(*GetSecretRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_UpdateSecret_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_UpdateSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateSecretRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -637,13 +637,13 @@ func _UserCenter_UpdateSecret_Handler(srv any, ctx context.Context, dec func(any
 		Server:     srv,
 		FullMethod: UserCenter_UpdateSecret_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).UpdateSecret(ctx, req.(*UpdateSecretRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserCenter_DeleteSecret_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
+func _UserCenter_DeleteSecret_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteSecretRequest)
 	if err := dec(in); err != nil {
 		return nil, err
@@ -655,7 +655,7 @@ func _UserCenter_DeleteSecret_Handler(srv any, ctx context.Context, dec func(any
 		Server:     srv,
 		FullMethod: UserCenter_DeleteSecret_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserCenterServer).DeleteSecret(ctx, req.(*DeleteSecretRequest))
 	}
 	return interceptor(ctx, in, info, handler)

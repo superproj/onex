@@ -109,6 +109,7 @@ func (r *SyncReconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager,
 	return nil
 }
 
+/*
 // NamespacedResourcesDeleterReconciler is a reconciler used to delete a namespace with all resources in it.
 type NamespacedResourcesDeleterReconciler struct {
 	Client         clientset.Interface
@@ -118,3 +119,4 @@ type NamespacedResourcesDeleterReconciler struct {
 func (r *NamespacedResourcesDeleterReconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager, options controller.Options) error {
 	return namespacecontroller.NewNamespacedResourcesDeleter(mgr, r.Client, r.MetadataClient).SetupWithManager(mgr, options)
 }
+*/

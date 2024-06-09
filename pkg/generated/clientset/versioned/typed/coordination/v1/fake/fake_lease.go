@@ -9,14 +9,16 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
+	coordinationv1 "github.com/superproj/onex/pkg/generated/applyconfigurations/coordination/v1"
+	v1 "k8s.io/api/coordination/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
-
-	v1 "github.com/superproj/onex/pkg/apis/coordination/v1"
 )
 
 // FakeLeases implements LeaseInterface
@@ -66,6 +68,7 @@ func (c *FakeLeases) List(ctx context.Context, opts metav1.ListOptions) (result 
 func (c *FakeLeases) Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(leasesResource, c.ns, opts))
+
 }
 
 // Create takes the representation of a lease and creates it.  Returns the server's representation of the lease, and an error, if there is any.
@@ -110,6 +113,28 @@ func (c *FakeLeases) DeleteCollection(ctx context.Context, opts metav1.DeleteOpt
 func (c *FakeLeases) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.Lease, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(leasesResource, c.ns, name, pt, data, subresources...), &v1.Lease{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1.Lease), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied lease.
+func (c *FakeLeases) Apply(ctx context.Context, lease *coordinationv1.LeaseApplyConfiguration, opts metav1.ApplyOptions) (result *v1.Lease, err error) {
+	if lease == nil {
+		return nil, fmt.Errorf("lease provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(lease)
+	if err != nil {
+		return nil, err
+	}
+	name := lease.Name
+	if name == nil {
+		return nil, fmt.Errorf("lease.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(leasesResource, c.ns, *name, types.ApplyPatchType, data), &v1.Lease{})
 
 	if obj == nil {
 		return nil, err

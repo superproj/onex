@@ -17,6 +17,8 @@ import (
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	"k8s.io/apiserver/pkg/server/dynamiccertificates"
 	genericoptions "k8s.io/apiserver/pkg/server/options"
+	"k8s.io/client-go/dynamic"
+	"k8s.io/client-go/kubernetes"
 	openapicommon "k8s.io/kube-openapi/pkg/common"
 )
 
@@ -48,6 +50,14 @@ func (o *RecommendedOptions) ApplyTo(config *genericapiserver.RecommendedConfig)
 	if err := o.SecureServing.ApplyTo(&config.Config.SecureServing, &config.Config.LoopbackClientConfig); err != nil {
 		return err
 	}
+	/* UPDATEME: When add authentication and authorization features.
+	if err := o.Authentication.ApplyTo(&config.Config.Authentication, config.SecureServing, config.OpenAPIConfig); err != nil {
+		return err
+	}
+	if err := o.Authorization.ApplyTo(&config.Config.Authorization); err != nil {
+		return err
+	}
+	*/
 	if err := authenticationApplyTo(o.Authentication, &config.Config.Authentication, config.SecureServing, config.OpenAPIConfig); err != nil {
 		return err
 	}
@@ -60,32 +70,34 @@ func (o *RecommendedOptions) ApplyTo(config *genericapiserver.RecommendedConfig)
 	if err := o.CoreAPI.ApplyTo(config); err != nil {
 		return err
 	}
-	// OneX does not depend on any package of k8s
-	/*
-		kubeClient, err := kubernetes.NewForConfig(config.ClientConfig)
+
+	var kubeClient *kubernetes.Clientset
+	var dynamicClient *dynamic.DynamicClient
+	if config.ClientConfig != nil {
+		var err error
+		kubeClient, err = kubernetes.NewForConfig(config.ClientConfig)
 		if err != nil {
 			return err
 		}
-		if err := o.Features.ApplyTo(&config.Config, nil, config.SharedInformerFactory); err != nil {
+		dynamicClient, err = dynamic.NewForConfig(config.ClientConfig)
+		if err != nil {
 			return err
 		}
-	*/
+	}
+	if err := o.Features.ApplyTo(&config.Config, kubeClient, config.SharedInformerFactory); err != nil {
+		return err
+	}
 
 	initializers, err := o.ExtraAdmissionInitializers(config)
 	if err != nil {
 		return err
 	}
-	// OneX does not depend on any package of k8s
-	/*
-		dynamicClient, err := dynamic.NewForConfig(config.ClientConfig)
-		if err != nil {
-			return err
-		}
-	*/
 
-	if err := admissionOptionsApplyTo(o.Admission, &config.Config, initializers...); err != nil {
+	if err := o.Admission.ApplyTo(&config.Config, config.SharedInformerFactory, kubeClient, dynamicClient, o.FeatureGate,
+		initializers...); err != nil {
 		return err
 	}
+
 	return nil
 }
 

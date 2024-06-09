@@ -15,5 +15,5 @@ import (
 )
 
 func main() {
-	app.NewApp("onex-cacheserver").Run()
+	app.NewApp().Run()
 }

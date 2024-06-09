@@ -46,11 +46,11 @@ func main() {
 	switch module {
 	case "onex-fakeserver":
 		// generate docs for onexfakeserver-
-		fakeserver := fakeserverapp.NewApp("onex-fakeserver").Command()
+		fakeserver := fakeserverapp.NewApp().Command()
 		_ = doc.GenMarkdownTree(fakeserver, outDir)
 	case "onex-usercenter":
 		// generate docs for onex-usercenter
-		usercenter := usercenterapp.NewApp("onex-usercenter").Command()
+		usercenter := usercenterapp.NewApp().Command()
 		_ = doc.GenMarkdownTree(usercenter, outDir)
 	case "onex-apiserver":
 		// generate docs for onex-apiserver
@@ -58,19 +58,19 @@ func main() {
 		_ = doc.GenMarkdownTree(apiserver, outDir)
 	case "onex-gateway":
 		// generate docs for onex-gateway
-		gwserver := gwapp.NewApp("onex-gateway").Command()
+		gwserver := gwapp.NewApp().Command()
 		_ = doc.GenMarkdownTree(gwserver, outDir)
 	case "onex-nightwatch":
 		// generate docs for onex-nightwatch
-		nw := watchapp.NewApp("onex-nightwatch").Command()
+		nw := watchapp.NewApp().Command()
 		_ = doc.GenMarkdownTree(nw, outDir)
 	case "onex-pump":
 		// generate docs for onex-pump
-		pump := pumpapp.NewApp("onex-pump").Command()
+		pump := pumpapp.NewApp().Command()
 		_ = doc.GenMarkdownTree(pump, outDir)
 	case "onex-toyblc":
 		// generate docs for onex-toyblc
-		toyblc := toyblcapp.NewApp("onex-toyblc").Command()
+		toyblc := toyblcapp.NewApp().Command()
 		_ = doc.GenMarkdownTree(toyblc, outDir)
 	case "onex-controller-manager":
 		// generate docs for onex-controller-manager

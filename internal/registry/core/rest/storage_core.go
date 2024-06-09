@@ -9,17 +9,18 @@ package rest
 import (
 	"time"
 
+	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apiserver/pkg/registry/generic"
 	"k8s.io/apiserver/pkg/registry/rest"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
+	api "k8s.io/kubernetes/pkg/apis/core"
 	configmapstore "k8s.io/kubernetes/pkg/registry/core/configmap/storage"
+	endpointsstore "k8s.io/kubernetes/pkg/registry/core/endpoint/storage"
 	eventstore "k8s.io/kubernetes/pkg/registry/core/event/storage"
 	namespacestore "k8s.io/kubernetes/pkg/registry/core/namespace/storage"
 	secretstore "k8s.io/kubernetes/pkg/registry/core/secret/storage"
-
-	api "github.com/superproj/onex/pkg/apis/core"
-	apiv1 "github.com/superproj/onex/pkg/apis/core/v1"
+	servicestore "k8s.io/kubernetes/pkg/registry/core/service/storage"
 
 	// configmapstore "github.com/superproj/onex/internal/registry/core/configmap/storage"
 	// eventstore "github.com/superproj/onex/internal/registry/core/event/storage"
@@ -58,6 +59,16 @@ func (p LegacyRESTStorageProvider) NewLegacyRESTStorage(restOptionsGetter generi
 		return genericapiserver.APIGroupInfo{}, err
 	}
 
+	endpointsStorage, err := endpointsstore.NewREST(restOptionsGetter)
+	if err != nil {
+		return genericapiserver.APIGroupInfo{}, err
+	}
+
+	serviceRESTStorage, serviceStatusStorage, serviceRESTProxy, err := servicestore.NewREST(restOptionsGetter, "", nil, nil, endpointsStorage, nil, nil)
+	if err != nil {
+		return genericapiserver.APIGroupInfo{}, err
+	}
+
 	restStorageMap := map[string]rest.Storage{
 		"namespaces":          namespaceStorage,
 		"namespaces/status":   namespaceStatusStorage,
@@ -67,6 +78,11 @@ func (p LegacyRESTStorageProvider) NewLegacyRESTStorage(restOptionsGetter generi
 
 		"configmaps": configMapStorage,
 		"secrets":    secretStorage,
+
+		"endpoints":       endpointsStorage,
+		"services":        serviceRESTStorage,
+		"services/proxy":  serviceRESTProxy,
+		"services/status": serviceStatusStorage,
 	}
 
 	apiGroupInfo.VersionedResourcesStorageMap[apiv1.SchemeGroupVersion.Version] = restStorageMap
