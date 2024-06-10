@@ -13,7 +13,7 @@ import (
 	"k8s.io/client-go/tools/cache"
 
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
-	informers "github.com/superproj/onex/pkg/generated/informers/externalversions"
+	"github.com/superproj/onex/pkg/generated/informers"
 	"github.com/superproj/onex/pkg/log"
 )
 

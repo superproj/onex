@@ -8,11 +8,10 @@
 package v1beta1
 
 import (
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/tools/cache"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )
 
 // MinerSetLister helps list MinerSets.
@@ -38,7 +37,7 @@ func NewMinerSetLister(indexer cache.Indexer) MinerSetLister {
 
 // List lists all MinerSets in the indexer.
 func (s *minerSetLister) List(selector labels.Selector) (ret []*v1beta1.MinerSet, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m any) {
+	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1beta1.MinerSet))
 	})
 	return ret, err
@@ -70,7 +69,7 @@ type minerSetNamespaceLister struct {
 
 // List lists all MinerSets in the indexer for a given namespace.
 func (s minerSetNamespaceLister) List(selector labels.Selector) (ret []*v1beta1.MinerSet, err error) {
-	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m any) {
+	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1beta1.MinerSet))
 	})
 	return ret, err

@@ -38,7 +38,7 @@ func NewNamespaceLister(indexer cache.Indexer) NamespaceLister {
 
 // List lists all Namespaces in the indexer.
 func (s *namespaceLister) List(selector labels.Selector) (ret []*v1.Namespace, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m any) {
+	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1.Namespace))
 	})
 	return ret, err

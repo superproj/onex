@@ -37,7 +37,7 @@ func NewConfigMapLister(indexer cache.Indexer) ConfigMapLister {
 
 // List lists all ConfigMaps in the indexer.
 func (s *configMapLister) List(selector labels.Selector) (ret []*v1.ConfigMap, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m any) {
+	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1.ConfigMap))
 	})
 	return ret, err
@@ -69,7 +69,7 @@ type configMapNamespaceLister struct {
 
 // List lists all ConfigMaps in the indexer for a given namespace.
 func (s configMapNamespaceLister) List(selector labels.Selector) (ret []*v1.ConfigMap, err error) {
-	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m any) {
+	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1.ConfigMap))
 	})
 	return ret, err

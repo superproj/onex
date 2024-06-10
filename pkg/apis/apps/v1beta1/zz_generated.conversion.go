@@ -13,14 +13,13 @@ package v1beta1
 import (
 	unsafe "unsafe"
 
+	apps "github.com/superproj/onex/pkg/apis/apps"
+	errors "github.com/superproj/onex/pkg/errors"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	core "k8s.io/kubernetes/pkg/apis/core"
-
-	apps "github.com/superproj/onex/pkg/apis/apps"
-	errors "github.com/superproj/onex/pkg/errors"
 )
 
 func init() {
@@ -30,182 +29,182 @@ func init() {
 // RegisterConversions adds conversion functions to the given scheme.
 // Public to allow building arbitrary schemes.
 func RegisterConversions(s *runtime.Scheme) error {
-	if err := s.AddGeneratedConversionFunc((*Chain)(nil), (*apps.Chain)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*Chain)(nil), (*apps.Chain)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_Chain_To_apps_Chain(a.(*Chain), b.(*apps.Chain), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.Chain)(nil), (*Chain)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.Chain)(nil), (*Chain)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_Chain_To_v1beta1_Chain(a.(*apps.Chain), b.(*Chain), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*ChainList)(nil), (*apps.ChainList)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*ChainList)(nil), (*apps.ChainList)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_ChainList_To_apps_ChainList(a.(*ChainList), b.(*apps.ChainList), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.ChainList)(nil), (*ChainList)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.ChainList)(nil), (*ChainList)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_ChainList_To_v1beta1_ChainList(a.(*apps.ChainList), b.(*ChainList), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*ChainSpec)(nil), (*apps.ChainSpec)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*ChainSpec)(nil), (*apps.ChainSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_ChainSpec_To_apps_ChainSpec(a.(*ChainSpec), b.(*apps.ChainSpec), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.ChainSpec)(nil), (*ChainSpec)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.ChainSpec)(nil), (*ChainSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_ChainSpec_To_v1beta1_ChainSpec(a.(*apps.ChainSpec), b.(*ChainSpec), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*ChainStatus)(nil), (*apps.ChainStatus)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*ChainStatus)(nil), (*apps.ChainStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_ChainStatus_To_apps_ChainStatus(a.(*ChainStatus), b.(*apps.ChainStatus), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.ChainStatus)(nil), (*ChainStatus)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.ChainStatus)(nil), (*ChainStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_ChainStatus_To_v1beta1_ChainStatus(a.(*apps.ChainStatus), b.(*ChainStatus), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*Condition)(nil), (*apps.Condition)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*Condition)(nil), (*apps.Condition)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_Condition_To_apps_Condition(a.(*Condition), b.(*apps.Condition), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.Condition)(nil), (*Condition)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.Condition)(nil), (*Condition)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_Condition_To_v1beta1_Condition(a.(*apps.Condition), b.(*Condition), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*LocalObjectReference)(nil), (*apps.LocalObjectReference)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*LocalObjectReference)(nil), (*apps.LocalObjectReference)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_LocalObjectReference_To_apps_LocalObjectReference(a.(*LocalObjectReference), b.(*apps.LocalObjectReference), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.LocalObjectReference)(nil), (*LocalObjectReference)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.LocalObjectReference)(nil), (*LocalObjectReference)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_LocalObjectReference_To_v1beta1_LocalObjectReference(a.(*apps.LocalObjectReference), b.(*LocalObjectReference), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*Miner)(nil), (*apps.Miner)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*Miner)(nil), (*apps.Miner)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_Miner_To_apps_Miner(a.(*Miner), b.(*apps.Miner), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.Miner)(nil), (*Miner)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.Miner)(nil), (*Miner)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_Miner_To_v1beta1_Miner(a.(*apps.Miner), b.(*Miner), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*MinerAddress)(nil), (*apps.MinerAddress)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerAddress)(nil), (*apps.MinerAddress)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerAddress_To_apps_MinerAddress(a.(*MinerAddress), b.(*apps.MinerAddress), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.MinerAddress)(nil), (*MinerAddress)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.MinerAddress)(nil), (*MinerAddress)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_MinerAddress_To_v1beta1_MinerAddress(a.(*apps.MinerAddress), b.(*MinerAddress), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*MinerList)(nil), (*apps.MinerList)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerList)(nil), (*apps.MinerList)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerList_To_apps_MinerList(a.(*MinerList), b.(*apps.MinerList), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.MinerList)(nil), (*MinerList)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.MinerList)(nil), (*MinerList)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_MinerList_To_v1beta1_MinerList(a.(*apps.MinerList), b.(*MinerList), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*MinerSet)(nil), (*apps.MinerSet)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerSet)(nil), (*apps.MinerSet)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerSet_To_apps_MinerSet(a.(*MinerSet), b.(*apps.MinerSet), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.MinerSet)(nil), (*MinerSet)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.MinerSet)(nil), (*MinerSet)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_MinerSet_To_v1beta1_MinerSet(a.(*apps.MinerSet), b.(*MinerSet), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*MinerSetList)(nil), (*apps.MinerSetList)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerSetList)(nil), (*apps.MinerSetList)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerSetList_To_apps_MinerSetList(a.(*MinerSetList), b.(*apps.MinerSetList), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.MinerSetList)(nil), (*MinerSetList)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.MinerSetList)(nil), (*MinerSetList)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_MinerSetList_To_v1beta1_MinerSetList(a.(*apps.MinerSetList), b.(*MinerSetList), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*MinerSetSpec)(nil), (*apps.MinerSetSpec)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerSetSpec)(nil), (*apps.MinerSetSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerSetSpec_To_apps_MinerSetSpec(a.(*MinerSetSpec), b.(*apps.MinerSetSpec), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.MinerSetSpec)(nil), (*MinerSetSpec)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.MinerSetSpec)(nil), (*MinerSetSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_MinerSetSpec_To_v1beta1_MinerSetSpec(a.(*apps.MinerSetSpec), b.(*MinerSetSpec), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*MinerSetStatus)(nil), (*apps.MinerSetStatus)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerSetStatus)(nil), (*apps.MinerSetStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerSetStatus_To_apps_MinerSetStatus(a.(*MinerSetStatus), b.(*apps.MinerSetStatus), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.MinerSetStatus)(nil), (*MinerSetStatus)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.MinerSetStatus)(nil), (*MinerSetStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_MinerSetStatus_To_v1beta1_MinerSetStatus(a.(*apps.MinerSetStatus), b.(*MinerSetStatus), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*MinerSpec)(nil), (*apps.MinerSpec)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerSpec)(nil), (*apps.MinerSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerSpec_To_apps_MinerSpec(a.(*MinerSpec), b.(*apps.MinerSpec), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.MinerSpec)(nil), (*MinerSpec)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.MinerSpec)(nil), (*MinerSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_MinerSpec_To_v1beta1_MinerSpec(a.(*apps.MinerSpec), b.(*MinerSpec), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*MinerStatus)(nil), (*apps.MinerStatus)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerStatus)(nil), (*apps.MinerStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerStatus_To_apps_MinerStatus(a.(*MinerStatus), b.(*apps.MinerStatus), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.MinerStatus)(nil), (*MinerStatus)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.MinerStatus)(nil), (*MinerStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_MinerStatus_To_v1beta1_MinerStatus(a.(*apps.MinerStatus), b.(*MinerStatus), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*MinerTemplateSpec)(nil), (*apps.MinerTemplateSpec)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerTemplateSpec)(nil), (*apps.MinerTemplateSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerTemplateSpec_To_apps_MinerTemplateSpec(a.(*MinerTemplateSpec), b.(*apps.MinerTemplateSpec), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.MinerTemplateSpec)(nil), (*MinerTemplateSpec)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.MinerTemplateSpec)(nil), (*MinerTemplateSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_MinerTemplateSpec_To_v1beta1_MinerTemplateSpec(a.(*apps.MinerTemplateSpec), b.(*MinerTemplateSpec), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*ObjectMeta)(nil), (*apps.ObjectMeta)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*ObjectMeta)(nil), (*apps.ObjectMeta)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_ObjectMeta_To_apps_ObjectMeta(a.(*ObjectMeta), b.(*apps.ObjectMeta), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.ObjectMeta)(nil), (*ObjectMeta)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.ObjectMeta)(nil), (*ObjectMeta)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_ObjectMeta_To_v1beta1_ObjectMeta(a.(*apps.ObjectMeta), b.(*ObjectMeta), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*PodInfo)(nil), (*apps.PodInfo)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*PodInfo)(nil), (*apps.PodInfo)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_PodInfo_To_apps_PodInfo(a.(*PodInfo), b.(*apps.PodInfo), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*apps.PodInfo)(nil), (*PodInfo)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*apps.PodInfo)(nil), (*PodInfo)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_PodInfo_To_v1beta1_PodInfo(a.(*apps.PodInfo), b.(*PodInfo), scope)
 	}); err != nil {
 		return err

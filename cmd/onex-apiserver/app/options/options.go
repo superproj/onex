@@ -23,7 +23,7 @@ import (
 
 	"github.com/superproj/onex/internal/pkg/options"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
-	informers "github.com/superproj/onex/pkg/generated/informers/externalversions"
+	"github.com/superproj/onex/pkg/generated/informers"
 )
 
 const defaultEtcdPathPrefix = "/registry/onex.io"

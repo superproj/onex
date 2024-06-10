@@ -18,7 +18,7 @@ import (
 	"github.com/superproj/onex/internal/pkg/client/usercenter"
 	"github.com/superproj/onex/pkg/db"
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
-	informers "github.com/superproj/onex/pkg/generated/informers/externalversions"
+	"github.com/superproj/onex/pkg/generated/informers"
 	"github.com/superproj/onex/pkg/log"
 	genericoptions "github.com/superproj/onex/pkg/options"
 	"github.com/superproj/onex/pkg/version"

@@ -23,11 +23,9 @@ import (
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
-var (
-	_ = proto.Marshal
-	_ = fmt.Errorf
-	_ = math.Inf
-)
+var _ = proto.Marshal
+var _ = fmt.Errorf
+var _ = math.Inf
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -40,11 +38,9 @@ func (*Lease) ProtoMessage() {}
 func (*Lease) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b760b42e087a13cc, []int{0}
 }
-
 func (m *Lease) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *Lease) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -53,15 +49,12 @@ func (m *Lease) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *Lease) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_Lease.Merge(m, src)
 }
-
 func (m *Lease) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *Lease) XXX_DiscardUnknown() {
 	xxx_messageInfo_Lease.DiscardUnknown(m)
 }
@@ -73,11 +66,9 @@ func (*LeaseList) ProtoMessage() {}
 func (*LeaseList) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b760b42e087a13cc, []int{1}
 }
-
 func (m *LeaseList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *LeaseList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -86,15 +77,12 @@ func (m *LeaseList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *LeaseList) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_LeaseList.Merge(m, src)
 }
-
 func (m *LeaseList) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *LeaseList) XXX_DiscardUnknown() {
 	xxx_messageInfo_LeaseList.DiscardUnknown(m)
 }
@@ -106,11 +94,9 @@ func (*LeaseSpec) ProtoMessage() {}
 func (*LeaseSpec) Descriptor() ([]byte, []int) {
 	return fileDescriptor_b760b42e087a13cc, []int{2}
 }
-
 func (m *LeaseSpec) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *LeaseSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -119,15 +105,12 @@ func (m *LeaseSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *LeaseSpec) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_LeaseSpec.Merge(m, src)
 }
-
 func (m *LeaseSpec) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *LeaseSpec) XXX_DiscardUnknown() {
 	xxx_messageInfo_LeaseSpec.DiscardUnknown(m)
 }
@@ -347,7 +330,6 @@ func encodeVarintGenerated(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-
 func (m *Lease) Size() (n int) {
 	if m == nil {
 		return 0
@@ -408,24 +390,20 @@ func (m *LeaseSpec) Size() (n int) {
 func sovGenerated(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
-
 func sozGenerated(x uint64) (n int) {
 	return sovGenerated(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-
 func (this *Lease) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&Lease{`,
+	s := strings.Join([]string{`&Lease{`,
 		`ObjectMeta:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ObjectMeta), "ObjectMeta", "v1.ObjectMeta", 1), `&`, ``, 1) + `,`,
 		`Spec:` + strings.Replace(strings.Replace(this.Spec.String(), "LeaseSpec", "LeaseSpec", 1), `&`, ``, 1) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *LeaseList) String() string {
 	if this == nil {
 		return "nil"
@@ -435,21 +413,18 @@ func (this *LeaseList) String() string {
 		repeatedStringForItems += strings.Replace(strings.Replace(f.String(), "Lease", "Lease", 1), `&`, ``, 1) + ","
 	}
 	repeatedStringForItems += "}"
-	s := strings.Join([]string{
-		`&LeaseList{`,
+	s := strings.Join([]string{`&LeaseList{`,
 		`ListMeta:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ListMeta), "ListMeta", "v1.ListMeta", 1), `&`, ``, 1) + `,`,
 		`Items:` + repeatedStringForItems + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *LeaseSpec) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&LeaseSpec{`,
+	s := strings.Join([]string{`&LeaseSpec{`,
 		`HolderIdentity:` + valueToStringGenerated(this.HolderIdentity) + `,`,
 		`LeaseDurationSeconds:` + valueToStringGenerated(this.LeaseDurationSeconds) + `,`,
 		`AcquireTime:` + strings.Replace(fmt.Sprintf("%v", this.AcquireTime), "MicroTime", "v1.MicroTime", 1) + `,`,
@@ -459,8 +434,7 @@ func (this *LeaseSpec) String() string {
 	}, "")
 	return s
 }
-
-func valueToStringGenerated(v any) string {
+func valueToStringGenerated(v interface{}) string {
 	rv := reflect.ValueOf(v)
 	if rv.IsNil() {
 		return "nil"
@@ -468,7 +442,6 @@ func valueToStringGenerated(v any) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("*%v", pv)
 }
-
 func (m *Lease) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -585,7 +558,6 @@ func (m *Lease) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *LeaseList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -703,7 +675,6 @@ func (m *LeaseList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *LeaseSpec) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -899,7 +870,6 @@ func (m *LeaseSpec) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func skipGenerated(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

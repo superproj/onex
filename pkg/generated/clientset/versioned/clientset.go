@@ -11,13 +11,12 @@ import (
 	"fmt"
 	"net/http"
 
-	discovery "k8s.io/client-go/discovery"
-	rest "k8s.io/client-go/rest"
-	flowcontrol "k8s.io/client-go/util/flowcontrol"
-
 	appsv1beta1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/apps/v1beta1"
 	coordinationv1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/coordination/v1"
 	corev1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/core/v1"
+	discovery "k8s.io/client-go/discovery"
+	rest "k8s.io/client-go/rest"
+	flowcontrol "k8s.io/client-go/util/flowcontrol"
 )
 
 type Interface interface {

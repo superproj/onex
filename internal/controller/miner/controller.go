@@ -20,7 +20,6 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
 	ctrl "sigs.k8s.io/controller-runtime"
-	builderruntime "sigs.k8s.io/controller-runtime/pkg/builder"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/cluster"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
@@ -80,15 +79,16 @@ func (r *Reconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager, opt
 		WithEventFilter(predicates.ResourceNotPausedAndHasFilterLabel(ctrl.LoggerFrom(ctx), r.WatchFilterValue))
 
 	if !r.DryRun {
+		var obj client.Object = &corev1.Pod{}
 		builder = builder.WatchesRawSource(
-			source.Kind(providerCluster.GetCache(), &corev1.Pod{}),
-			handler.EnqueueRequestsFromMapFunc(r.PodToMiners),
-			builderruntime.WithPredicates(
-				predicates.All(ctrl.LoggerFrom(ctx),
+			source.Kind(providerCluster.GetCache(), obj, handler.EnqueueRequestsFromMapFunc(r.PodToMiners),
+				predicates.All(
+					ctrl.LoggerFrom(ctx),
 					predicates.Any(ctrl.LoggerFrom(ctx), predicates.MinerSetUnpaused(ctrl.LoggerFrom(ctx))),
 					predicates.ResourceHasFilterLabel(ctrl.LoggerFrom(ctx), r.WatchFilterValue),
 				),
-			))
+			),
+		)
 	}
 
 	if _, err := builder.Build(r); err != nil {

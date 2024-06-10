@@ -8,12 +8,6 @@
 package fake
 
 import (
-	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/watch"
-	"k8s.io/client-go/discovery"
-	fakediscovery "k8s.io/client-go/discovery/fake"
-	"k8s.io/client-go/testing"
-
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
 	appsv1beta1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/apps/v1beta1"
 	fakeappsv1beta1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/apps/v1beta1/fake"
@@ -21,6 +15,11 @@ import (
 	fakecoordinationv1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/coordination/v1/fake"
 	corev1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/core/v1"
 	fakecorev1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/core/v1/fake"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/watch"
+	"k8s.io/client-go/discovery"
+	fakediscovery "k8s.io/client-go/discovery/fake"
+	"k8s.io/client-go/testing"
 )
 
 // NewSimpleClientset returns a clientset that will respond with the provided objects.

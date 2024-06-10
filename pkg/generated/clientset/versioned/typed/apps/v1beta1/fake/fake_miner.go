@@ -9,14 +9,16 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	appsv1beta1 "github.com/superproj/onex/pkg/generated/applyconfigurations/apps/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )
 
 // FakeMiners implements MinerInterface
@@ -66,6 +68,7 @@ func (c *FakeMiners) List(ctx context.Context, opts v1.ListOptions) (result *v1b
 func (c *FakeMiners) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(minersResource, c.ns, opts))
+
 }
 
 // Create takes the representation of a miner and creates it.  Returns the server's representation of the miner, and an error, if there is any.
@@ -122,6 +125,51 @@ func (c *FakeMiners) DeleteCollection(ctx context.Context, opts v1.DeleteOptions
 func (c *FakeMiners) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.Miner, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(minersResource, c.ns, name, pt, data, subresources...), &v1beta1.Miner{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.Miner), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied miner.
+func (c *FakeMiners) Apply(ctx context.Context, miner *appsv1beta1.MinerApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Miner, err error) {
+	if miner == nil {
+		return nil, fmt.Errorf("miner provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(miner)
+	if err != nil {
+		return nil, err
+	}
+	name := miner.Name
+	if name == nil {
+		return nil, fmt.Errorf("miner.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(minersResource, c.ns, *name, types.ApplyPatchType, data), &v1beta1.Miner{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.Miner), err
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *FakeMiners) ApplyStatus(ctx context.Context, miner *appsv1beta1.MinerApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Miner, err error) {
+	if miner == nil {
+		return nil, fmt.Errorf("miner provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(miner)
+	if err != nil {
+		return nil, err
+	}
+	name := miner.Name
+	if name == nil {
+		return nil, fmt.Errorf("miner.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(minersResource, c.ns, *name, types.ApplyPatchType, data, "status"), &v1beta1.Miner{})
 
 	if obj == nil {
 		return nil, err

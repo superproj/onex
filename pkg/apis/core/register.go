@@ -36,6 +36,7 @@ func Resource(resource string) schema.GroupResource {
 }
 
 // Adds the list of known types to the given scheme.
+// UPDATEME: When add new k8s resource.
 func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&core.Namespace{},

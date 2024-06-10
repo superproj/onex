@@ -9,16 +9,19 @@ package v1beta1
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 	"time"
 
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	appsv1beta1 "github.com/superproj/onex/pkg/generated/applyconfigurations/apps/v1beta1"
+	applyconfigurationsautoscalingv1 "github.com/superproj/onex/pkg/generated/applyconfigurations/autoscaling/v1"
+	scheme "github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 	autoscalingv1 "k8s.io/api/autoscaling/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
-	scheme "github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 )
 
 // MinerSetsGetter has a method to return a MinerSetInterface.
@@ -38,8 +41,11 @@ type MinerSetInterface interface {
 	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.MinerSetList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.MinerSet, err error)
+	Apply(ctx context.Context, minerSet *appsv1beta1.MinerSetApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.MinerSet, err error)
+	ApplyStatus(ctx context.Context, minerSet *appsv1beta1.MinerSetApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.MinerSet, err error)
 	GetScale(ctx context.Context, minerSetName string, options v1.GetOptions) (*autoscalingv1.Scale, error)
 	UpdateScale(ctx context.Context, minerSetName string, scale *autoscalingv1.Scale, opts v1.UpdateOptions) (*autoscalingv1.Scale, error)
+	ApplyScale(ctx context.Context, minerSetName string, scale *applyconfigurationsautoscalingv1.ScaleApplyConfiguration, opts v1.ApplyOptions) (*autoscalingv1.Scale, error)
 
 	MinerSetExpansion
 }
@@ -188,6 +194,62 @@ func (c *minerSets) Patch(ctx context.Context, name string, pt types.PatchType, 
 	return
 }
 
+// Apply takes the given apply declarative configuration, applies it and returns the applied minerSet.
+func (c *minerSets) Apply(ctx context.Context, minerSet *appsv1beta1.MinerSetApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.MinerSet, err error) {
+	if minerSet == nil {
+		return nil, fmt.Errorf("minerSet provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(minerSet)
+	if err != nil {
+		return nil, err
+	}
+	name := minerSet.Name
+	if name == nil {
+		return nil, fmt.Errorf("minerSet.Name must be provided to Apply")
+	}
+	result = &v1beta1.MinerSet{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("minersets").
+		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *minerSets) ApplyStatus(ctx context.Context, minerSet *appsv1beta1.MinerSetApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.MinerSet, err error) {
+	if minerSet == nil {
+		return nil, fmt.Errorf("minerSet provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(minerSet)
+	if err != nil {
+		return nil, err
+	}
+
+	name := minerSet.Name
+	if name == nil {
+		return nil, fmt.Errorf("minerSet.Name must be provided to Apply")
+	}
+
+	result = &v1beta1.MinerSet{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("minersets").
+		Name(*name).
+		SubResource("status").
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
 // GetScale takes name of the minerSet, and returns the corresponding autoscalingv1.Scale object, and an error if there is any.
 func (c *minerSets) GetScale(ctx context.Context, minerSetName string, options v1.GetOptions) (result *autoscalingv1.Scale, err error) {
 	result = &autoscalingv1.Scale{}
@@ -212,6 +274,31 @@ func (c *minerSets) UpdateScale(ctx context.Context, minerSetName string, scale 
 		SubResource("scale").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Body(scale).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// ApplyScale takes top resource name and the apply declarative configuration for scale,
+// applies it and returns the applied scale, and an error, if there is any.
+func (c *minerSets) ApplyScale(ctx context.Context, minerSetName string, scale *applyconfigurationsautoscalingv1.ScaleApplyConfiguration, opts v1.ApplyOptions) (result *autoscalingv1.Scale, err error) {
+	if scale == nil {
+		return nil, fmt.Errorf("scale provided to ApplyScale must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(scale)
+	if err != nil {
+		return nil, err
+	}
+
+	result = &autoscalingv1.Scale{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("minersets").
+		Name(minerSetName).
+		SubResource("scale").
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
 		Do(ctx).
 		Into(result)
 	return

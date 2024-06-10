@@ -9,15 +9,18 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	appsv1beta1 "github.com/superproj/onex/pkg/generated/applyconfigurations/apps/v1beta1"
+	applyconfigurationsautoscalingv1 "github.com/superproj/onex/pkg/generated/applyconfigurations/autoscaling/v1"
 	autoscalingv1 "k8s.io/api/autoscaling/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )
 
 // FakeMinerSets implements MinerSetInterface
@@ -67,6 +70,7 @@ func (c *FakeMinerSets) List(ctx context.Context, opts v1.ListOptions) (result *
 func (c *FakeMinerSets) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(minersetsResource, c.ns, opts))
+
 }
 
 // Create takes the representation of a minerSet and creates it.  Returns the server's representation of the minerSet, and an error, if there is any.
@@ -130,6 +134,51 @@ func (c *FakeMinerSets) Patch(ctx context.Context, name string, pt types.PatchTy
 	return obj.(*v1beta1.MinerSet), err
 }
 
+// Apply takes the given apply declarative configuration, applies it and returns the applied minerSet.
+func (c *FakeMinerSets) Apply(ctx context.Context, minerSet *appsv1beta1.MinerSetApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.MinerSet, err error) {
+	if minerSet == nil {
+		return nil, fmt.Errorf("minerSet provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(minerSet)
+	if err != nil {
+		return nil, err
+	}
+	name := minerSet.Name
+	if name == nil {
+		return nil, fmt.Errorf("minerSet.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(minersetsResource, c.ns, *name, types.ApplyPatchType, data), &v1beta1.MinerSet{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.MinerSet), err
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *FakeMinerSets) ApplyStatus(ctx context.Context, minerSet *appsv1beta1.MinerSetApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.MinerSet, err error) {
+	if minerSet == nil {
+		return nil, fmt.Errorf("minerSet provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(minerSet)
+	if err != nil {
+		return nil, err
+	}
+	name := minerSet.Name
+	if name == nil {
+		return nil, fmt.Errorf("minerSet.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(minersetsResource, c.ns, *name, types.ApplyPatchType, data, "status"), &v1beta1.MinerSet{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.MinerSet), err
+}
+
 // GetScale takes name of the minerSet, and returns the corresponding scale object, and an error if there is any.
 func (c *FakeMinerSets) GetScale(ctx context.Context, minerSetName string, options v1.GetOptions) (result *autoscalingv1.Scale, err error) {
 	obj, err := c.Fake.
@@ -145,6 +194,25 @@ func (c *FakeMinerSets) GetScale(ctx context.Context, minerSetName string, optio
 func (c *FakeMinerSets) UpdateScale(ctx context.Context, minerSetName string, scale *autoscalingv1.Scale, opts v1.UpdateOptions) (result *autoscalingv1.Scale, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewUpdateSubresourceAction(minersetsResource, "scale", c.ns, scale), &autoscalingv1.Scale{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*autoscalingv1.Scale), err
+}
+
+// ApplyScale takes top resource name and the apply declarative configuration for scale,
+// applies it and returns the applied scale, and an error, if there is any.
+func (c *FakeMinerSets) ApplyScale(ctx context.Context, minerSetName string, scale *applyconfigurationsautoscalingv1.ScaleApplyConfiguration, opts v1.ApplyOptions) (result *autoscalingv1.Scale, err error) {
+	if scale == nil {
+		return nil, fmt.Errorf("scale provided to ApplyScale must not be nil")
+	}
+	data, err := json.Marshal(scale)
+	if err != nil {
+		return nil, err
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(minersetsResource, c.ns, minerSetName, types.ApplyPatchType, data, "status"), &autoscalingv1.Scale{})
 
 	if obj == nil {
 		return nil, err

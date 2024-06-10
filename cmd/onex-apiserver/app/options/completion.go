@@ -20,7 +20,7 @@ import (
 	"github.com/superproj/onex/internal/admission/initializer"
 	"github.com/superproj/onex/internal/apiserver/storage"
 	"github.com/superproj/onex/pkg/generated/clientset/versioned"
-	informers "github.com/superproj/onex/pkg/generated/informers/externalversions"
+	"github.com/superproj/onex/pkg/generated/informers"
 )
 
 // completedOptions is a private wrapper that enforces a call of Complete() before Run can be invoked.

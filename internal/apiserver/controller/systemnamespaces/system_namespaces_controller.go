@@ -34,7 +34,7 @@ import (
 	"k8s.io/klog/v2"
 
 	"github.com/superproj/onex/pkg/generated/clientset/versioned"
-	coreinformers "github.com/superproj/onex/pkg/generated/informers/externalversions/core/v1"
+	coreinformers "github.com/superproj/onex/pkg/generated/informers/core/v1"
 	listers "github.com/superproj/onex/pkg/generated/listers/core/v1"
 )
 

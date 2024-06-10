@@ -37,7 +37,7 @@ func NewSecretLister(indexer cache.Indexer) SecretLister {
 
 // List lists all Secrets in the indexer.
 func (s *secretLister) List(selector labels.Selector) (ret []*v1.Secret, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m any) {
+	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1.Secret))
 	})
 	return ret, err
@@ -69,7 +69,7 @@ type secretNamespaceLister struct {
 
 // List lists all Secrets in the indexer for a given namespace.
 func (s secretNamespaceLister) List(selector labels.Selector) (ret []*v1.Secret, err error) {
-	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m any) {
+	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1.Secret))
 	})
 	return ret, err

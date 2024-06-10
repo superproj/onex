@@ -10,7 +10,7 @@ import (
 	"k8s.io/apiserver/pkg/admission"
 
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
-	informers "github.com/superproj/onex/pkg/generated/informers/externalversions"
+	"github.com/superproj/onex/pkg/generated/informers"
 )
 
 // WantsInternalMinerInformerFactory defines a function which sets InformerFactory for admission plugins that need it.

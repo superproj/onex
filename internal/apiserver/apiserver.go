@@ -31,7 +31,7 @@ import (
 	coordinationv1 "github.com/superproj/onex/pkg/apis/coordination/v1"
 	apiv1 "github.com/superproj/onex/pkg/apis/core/v1"
 	"github.com/superproj/onex/pkg/generated/clientset/versioned"
-	informers "github.com/superproj/onex/pkg/generated/informers/externalversions"
+	"github.com/superproj/onex/pkg/generated/informers"
 )
 
 // ExtraConfig defines extra configuration for the onex-apiserver.

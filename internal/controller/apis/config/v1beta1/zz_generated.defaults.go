@@ -18,7 +18,7 @@ import (
 // Public to allow building arbitrary schemes.
 // All generated defaulters are covering - they call all nested defaulters.
 func RegisterDefaults(scheme *runtime.Scheme) error {
-	scheme.AddTypeDefaultingFunc(&OneXControllerManagerConfiguration{}, func(obj any) {
+	scheme.AddTypeDefaultingFunc(&OneXControllerManagerConfiguration{}, func(obj interface{}) {
 		SetObjectDefaults_OneXControllerManagerConfiguration(obj.(*OneXControllerManagerConfiguration))
 	})
 	return nil

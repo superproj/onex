@@ -5,6 +5,7 @@
 //
 
 // +k8s:openapi-gen=true
+// +k8s:protobuf-gen=package
 // +k8s:deepcopy-gen=package
 // +k8s:conversion-gen=github.com/superproj/onex/pkg/apis/core
 // +k8s:conversion-gen=k8s.io/kubernetes/pkg/apis/core

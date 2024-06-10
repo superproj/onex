@@ -9,14 +9,16 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	appsv1beta1 "github.com/superproj/onex/pkg/generated/applyconfigurations/apps/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )
 
 // FakeChains implements ChainInterface
@@ -66,6 +68,7 @@ func (c *FakeChains) List(ctx context.Context, opts v1.ListOptions) (result *v1b
 func (c *FakeChains) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(chainsResource, c.ns, opts))
+
 }
 
 // Create takes the representation of a chain and creates it.  Returns the server's representation of the chain, and an error, if there is any.
@@ -122,6 +125,51 @@ func (c *FakeChains) DeleteCollection(ctx context.Context, opts v1.DeleteOptions
 func (c *FakeChains) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.Chain, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(chainsResource, c.ns, name, pt, data, subresources...), &v1beta1.Chain{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.Chain), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied chain.
+func (c *FakeChains) Apply(ctx context.Context, chain *appsv1beta1.ChainApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Chain, err error) {
+	if chain == nil {
+		return nil, fmt.Errorf("chain provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(chain)
+	if err != nil {
+		return nil, err
+	}
+	name := chain.Name
+	if name == nil {
+		return nil, fmt.Errorf("chain.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(chainsResource, c.ns, *name, types.ApplyPatchType, data), &v1beta1.Chain{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1beta1.Chain), err
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *FakeChains) ApplyStatus(ctx context.Context, chain *appsv1beta1.ChainApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Chain, err error) {
+	if chain == nil {
+		return nil, fmt.Errorf("chain provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(chain)
+	if err != nil {
+		return nil, err
+	}
+	name := chain.Name
+	if name == nil {
+		return nil, fmt.Errorf("chain.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(chainsResource, c.ns, *name, types.ApplyPatchType, data, "status"), &v1beta1.Chain{})
 
 	if obj == nil {
 		return nil, err

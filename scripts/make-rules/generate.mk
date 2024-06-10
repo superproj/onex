@@ -85,7 +85,7 @@ gen.protoc: ## Generate go source files from protobuf files.
 
 .PHONY: gen.apisprotobuf
 gen.apisprotobuf: ## Generate protobuf files from structs.
-	@$(SCRIPTS_DIR)/update-codegen.sh
+	#@$(SCRIPTS_DIR)/update-codegen.sh
 	@cp $(ONEX_ROOT)/manifests/generated.pb.go.fix $(ONEX_ROOT)/pkg/apis/apps/v1beta1/generated.pb.go
 
 .PHONY: go.generate

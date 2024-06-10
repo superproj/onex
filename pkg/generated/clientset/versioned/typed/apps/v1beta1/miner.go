@@ -9,15 +9,17 @@ package v1beta1
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 	"time"
 
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	appsv1beta1 "github.com/superproj/onex/pkg/generated/applyconfigurations/apps/v1beta1"
+	scheme "github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
-	scheme "github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 )
 
 // MinersGetter has a method to return a MinerInterface.
@@ -37,6 +39,8 @@ type MinerInterface interface {
 	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.MinerList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.Miner, err error)
+	Apply(ctx context.Context, miner *appsv1beta1.MinerApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Miner, err error)
+	ApplyStatus(ctx context.Context, miner *appsv1beta1.MinerApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Miner, err error)
 	MinerExpansion
 }
 
@@ -178,6 +182,62 @@ func (c *miners) Patch(ctx context.Context, name string, pt types.PatchType, dat
 		Name(name).
 		SubResource(subresources...).
 		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied miner.
+func (c *miners) Apply(ctx context.Context, miner *appsv1beta1.MinerApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Miner, err error) {
+	if miner == nil {
+		return nil, fmt.Errorf("miner provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(miner)
+	if err != nil {
+		return nil, err
+	}
+	name := miner.Name
+	if name == nil {
+		return nil, fmt.Errorf("miner.Name must be provided to Apply")
+	}
+	result = &v1beta1.Miner{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("miners").
+		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *miners) ApplyStatus(ctx context.Context, miner *appsv1beta1.MinerApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.Miner, err error) {
+	if miner == nil {
+		return nil, fmt.Errorf("miner provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(miner)
+	if err != nil {
+		return nil, err
+	}
+
+	name := miner.Name
+	if name == nil {
+		return nil, fmt.Errorf("miner.Name must be provided to Apply")
+	}
+
+	result = &v1beta1.Miner{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("miners").
+		Name(*name).
+		SubResource("status").
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
 		Body(data).
 		Do(ctx).
 		Into(result)

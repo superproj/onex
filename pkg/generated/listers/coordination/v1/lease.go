@@ -8,11 +8,10 @@
 package v1
 
 import (
+	v1 "github.com/superproj/onex/pkg/apis/coordination/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/tools/cache"
-
-	v1 "github.com/superproj/onex/pkg/apis/coordination/v1"
 )
 
 // LeaseLister helps list Leases.
@@ -38,7 +37,7 @@ func NewLeaseLister(indexer cache.Indexer) LeaseLister {
 
 // List lists all Leases in the indexer.
 func (s *leaseLister) List(selector labels.Selector) (ret []*v1.Lease, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m any) {
+	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1.Lease))
 	})
 	return ret, err
@@ -70,7 +69,7 @@ type leaseNamespaceLister struct {
 
 // List lists all Leases in the indexer for a given namespace.
 func (s leaseNamespaceLister) List(selector labels.Selector) (ret []*v1.Lease, err error) {
-	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m any) {
+	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1.Lease))
 	})
 	return ret, err

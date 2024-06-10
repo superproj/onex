@@ -25,7 +25,7 @@ import (
 
 	"github.com/superproj/onex/internal/admission/initializer"
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
-	informers "github.com/superproj/onex/pkg/generated/informers/externalversions"
+	"github.com/superproj/onex/pkg/generated/informers"
 	corelisters "github.com/superproj/onex/pkg/generated/listers/core/v1"
 )
 

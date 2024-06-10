@@ -15,10 +15,9 @@ import (
 
 	proto "github.com/gogo/protobuf/proto"
 	github_com_gogo_protobuf_sortkeys "github.com/gogo/protobuf/sortkeys"
+	github_com_superproj_onex_pkg_errors "github.com/superproj/onex/pkg/errors"
 	k8s_io_api_core_v1 "k8s.io/api/core/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	github_com_superproj_onex_pkg_errors "github.com/superproj/onex/pkg/errors"
 
 	math "math"
 	math_bits "math/bits"
@@ -27,11 +26,9 @@ import (
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
-var (
-	_ = proto.Marshal
-	_ = fmt.Errorf
-	_ = math.Inf
-)
+var _ = proto.Marshal
+var _ = fmt.Errorf
+var _ = math.Inf
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -44,11 +41,9 @@ func (*Chain) ProtoMessage() {}
 func (*Chain) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{1}
 }
-
 func (m *Chain) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *Chain) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -57,15 +52,12 @@ func (m *Chain) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *Chain) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_Chain.Merge(m, src)
 }
-
 func (m *Chain) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *Chain) XXX_DiscardUnknown() {
 	xxx_messageInfo_Chain.DiscardUnknown(m)
 }
@@ -77,11 +69,9 @@ func (*ChainList) ProtoMessage() {}
 func (*ChainList) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{2}
 }
-
 func (m *ChainList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *ChainList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -90,15 +80,12 @@ func (m *ChainList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *ChainList) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ChainList.Merge(m, src)
 }
-
 func (m *ChainList) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *ChainList) XXX_DiscardUnknown() {
 	xxx_messageInfo_ChainList.DiscardUnknown(m)
 }
@@ -110,11 +97,9 @@ func (*ChainSpec) ProtoMessage() {}
 func (*ChainSpec) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{3}
 }
-
 func (m *ChainSpec) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *ChainSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -123,15 +108,12 @@ func (m *ChainSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *ChainSpec) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ChainSpec.Merge(m, src)
 }
-
 func (m *ChainSpec) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *ChainSpec) XXX_DiscardUnknown() {
 	xxx_messageInfo_ChainSpec.DiscardUnknown(m)
 }
@@ -143,11 +125,9 @@ func (*ChainStatus) ProtoMessage() {}
 func (*ChainStatus) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{4}
 }
-
 func (m *ChainStatus) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *ChainStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -156,15 +136,12 @@ func (m *ChainStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 	}
 	return b[:n], nil
 }
-
 func (m *ChainStatus) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ChainStatus.Merge(m, src)
 }
-
 func (m *ChainStatus) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *ChainStatus) XXX_DiscardUnknown() {
 	xxx_messageInfo_ChainStatus.DiscardUnknown(m)
 }
@@ -176,11 +153,9 @@ func (*ChargeRequest) ProtoMessage() {}
 func (*ChargeRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{5}
 }
-
 func (m *ChargeRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *ChargeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -189,15 +164,12 @@ func (m *ChargeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error
 	}
 	return b[:n], nil
 }
-
 func (m *ChargeRequest) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ChargeRequest.Merge(m, src)
 }
-
 func (m *ChargeRequest) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *ChargeRequest) XXX_DiscardUnknown() {
 	xxx_messageInfo_ChargeRequest.DiscardUnknown(m)
 }
@@ -209,11 +181,9 @@ func (*ChargeRequestList) ProtoMessage() {}
 func (*ChargeRequestList) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{6}
 }
-
 func (m *ChargeRequestList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *ChargeRequestList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -222,15 +192,12 @@ func (m *ChargeRequestList) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 	}
 	return b[:n], nil
 }
-
 func (m *ChargeRequestList) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ChargeRequestList.Merge(m, src)
 }
-
 func (m *ChargeRequestList) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *ChargeRequestList) XXX_DiscardUnknown() {
 	xxx_messageInfo_ChargeRequestList.DiscardUnknown(m)
 }
@@ -242,11 +209,9 @@ func (*ChargeRequestSpec) ProtoMessage() {}
 func (*ChargeRequestSpec) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{7}
 }
-
 func (m *ChargeRequestSpec) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *ChargeRequestSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -255,15 +220,12 @@ func (m *ChargeRequestSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 	}
 	return b[:n], nil
 }
-
 func (m *ChargeRequestSpec) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ChargeRequestSpec.Merge(m, src)
 }
-
 func (m *ChargeRequestSpec) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *ChargeRequestSpec) XXX_DiscardUnknown() {
 	xxx_messageInfo_ChargeRequestSpec.DiscardUnknown(m)
 }
@@ -275,11 +237,9 @@ func (*ChargeRequestStatus) ProtoMessage() {}
 func (*ChargeRequestStatus) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{8}
 }
-
 func (m *ChargeRequestStatus) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *ChargeRequestStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -288,15 +248,12 @@ func (m *ChargeRequestStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 	}
 	return b[:n], nil
 }
-
 func (m *ChargeRequestStatus) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ChargeRequestStatus.Merge(m, src)
 }
-
 func (m *ChargeRequestStatus) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *ChargeRequestStatus) XXX_DiscardUnknown() {
 	xxx_messageInfo_ChargeRequestStatus.DiscardUnknown(m)
 }
@@ -308,11 +265,9 @@ func (*Condition) ProtoMessage() {}
 func (*Condition) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{9}
 }
-
 func (m *Condition) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *Condition) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -321,15 +276,12 @@ func (m *Condition) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *Condition) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_Condition.Merge(m, src)
 }
-
 func (m *Condition) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *Condition) XXX_DiscardUnknown() {
 	xxx_messageInfo_Condition.DiscardUnknown(m)
 }
@@ -341,11 +293,9 @@ func (*LocalObjectReference) ProtoMessage() {}
 func (*LocalObjectReference) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{10}
 }
-
 func (m *LocalObjectReference) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *LocalObjectReference) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -354,15 +304,12 @@ func (m *LocalObjectReference) XXX_Marshal(b []byte, deterministic bool) ([]byte
 	}
 	return b[:n], nil
 }
-
 func (m *LocalObjectReference) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_LocalObjectReference.Merge(m, src)
 }
-
 func (m *LocalObjectReference) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *LocalObjectReference) XXX_DiscardUnknown() {
 	xxx_messageInfo_LocalObjectReference.DiscardUnknown(m)
 }
@@ -374,11 +321,9 @@ func (*Miner) ProtoMessage() {}
 func (*Miner) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{11}
 }
-
 func (m *Miner) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *Miner) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -387,15 +332,12 @@ func (m *Miner) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *Miner) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_Miner.Merge(m, src)
 }
-
 func (m *Miner) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *Miner) XXX_DiscardUnknown() {
 	xxx_messageInfo_Miner.DiscardUnknown(m)
 }
@@ -407,11 +349,9 @@ func (*MinerAddress) ProtoMessage() {}
 func (*MinerAddress) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{12}
 }
-
 func (m *MinerAddress) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MinerAddress) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -420,15 +360,12 @@ func (m *MinerAddress) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 	}
 	return b[:n], nil
 }
-
 func (m *MinerAddress) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MinerAddress.Merge(m, src)
 }
-
 func (m *MinerAddress) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MinerAddress) XXX_DiscardUnknown() {
 	xxx_messageInfo_MinerAddress.DiscardUnknown(m)
 }
@@ -440,11 +377,9 @@ func (*MinerList) ProtoMessage() {}
 func (*MinerList) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{13}
 }
-
 func (m *MinerList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MinerList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -453,15 +388,12 @@ func (m *MinerList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *MinerList) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MinerList.Merge(m, src)
 }
-
 func (m *MinerList) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MinerList) XXX_DiscardUnknown() {
 	xxx_messageInfo_MinerList.DiscardUnknown(m)
 }
@@ -473,11 +405,9 @@ func (*MinerSet) ProtoMessage() {}
 func (*MinerSet) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{14}
 }
-
 func (m *MinerSet) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MinerSet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -486,15 +416,12 @@ func (m *MinerSet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *MinerSet) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MinerSet.Merge(m, src)
 }
-
 func (m *MinerSet) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MinerSet) XXX_DiscardUnknown() {
 	xxx_messageInfo_MinerSet.DiscardUnknown(m)
 }
@@ -506,11 +433,9 @@ func (*MinerSetList) ProtoMessage() {}
 func (*MinerSetList) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{15}
 }
-
 func (m *MinerSetList) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MinerSetList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -519,15 +444,12 @@ func (m *MinerSetList) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 	}
 	return b[:n], nil
 }
-
 func (m *MinerSetList) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MinerSetList.Merge(m, src)
 }
-
 func (m *MinerSetList) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MinerSetList) XXX_DiscardUnknown() {
 	xxx_messageInfo_MinerSetList.DiscardUnknown(m)
 }
@@ -539,11 +461,9 @@ func (*MinerSetSpec) ProtoMessage() {}
 func (*MinerSetSpec) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{16}
 }
-
 func (m *MinerSetSpec) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MinerSetSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -552,15 +472,12 @@ func (m *MinerSetSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error)
 	}
 	return b[:n], nil
 }
-
 func (m *MinerSetSpec) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MinerSetSpec.Merge(m, src)
 }
-
 func (m *MinerSetSpec) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MinerSetSpec) XXX_DiscardUnknown() {
 	xxx_messageInfo_MinerSetSpec.DiscardUnknown(m)
 }
@@ -572,11 +489,9 @@ func (*MinerSetStatus) ProtoMessage() {}
 func (*MinerSetStatus) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{17}
 }
-
 func (m *MinerSetStatus) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MinerSetStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -585,15 +500,12 @@ func (m *MinerSetStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, erro
 	}
 	return b[:n], nil
 }
-
 func (m *MinerSetStatus) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MinerSetStatus.Merge(m, src)
 }
-
 func (m *MinerSetStatus) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MinerSetStatus) XXX_DiscardUnknown() {
 	xxx_messageInfo_MinerSetStatus.DiscardUnknown(m)
 }
@@ -605,11 +517,9 @@ func (*MinerSpec) ProtoMessage() {}
 func (*MinerSpec) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{18}
 }
-
 func (m *MinerSpec) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MinerSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -618,15 +528,12 @@ func (m *MinerSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *MinerSpec) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MinerSpec.Merge(m, src)
 }
-
 func (m *MinerSpec) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MinerSpec) XXX_DiscardUnknown() {
 	xxx_messageInfo_MinerSpec.DiscardUnknown(m)
 }
@@ -638,11 +545,9 @@ func (*MinerStatus) ProtoMessage() {}
 func (*MinerStatus) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{19}
 }
-
 func (m *MinerStatus) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MinerStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -651,15 +556,12 @@ func (m *MinerStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) 
 	}
 	return b[:n], nil
 }
-
 func (m *MinerStatus) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MinerStatus.Merge(m, src)
 }
-
 func (m *MinerStatus) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MinerStatus) XXX_DiscardUnknown() {
 	xxx_messageInfo_MinerStatus.DiscardUnknown(m)
 }
@@ -671,11 +573,9 @@ func (*MinerTemplateSpec) ProtoMessage() {}
 func (*MinerTemplateSpec) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{20}
 }
-
 func (m *MinerTemplateSpec) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *MinerTemplateSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -684,15 +584,12 @@ func (m *MinerTemplateSpec) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 	}
 	return b[:n], nil
 }
-
 func (m *MinerTemplateSpec) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MinerTemplateSpec.Merge(m, src)
 }
-
 func (m *MinerTemplateSpec) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *MinerTemplateSpec) XXX_DiscardUnknown() {
 	xxx_messageInfo_MinerTemplateSpec.DiscardUnknown(m)
 }
@@ -704,11 +601,9 @@ func (*ObjectMeta) ProtoMessage() {}
 func (*ObjectMeta) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{21}
 }
-
 func (m *ObjectMeta) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *ObjectMeta) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -717,15 +612,12 @@ func (m *ObjectMeta) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *ObjectMeta) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_ObjectMeta.Merge(m, src)
 }
-
 func (m *ObjectMeta) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *ObjectMeta) XXX_DiscardUnknown() {
 	xxx_messageInfo_ObjectMeta.DiscardUnknown(m)
 }
@@ -737,11 +629,9 @@ func (*PodInfo) ProtoMessage() {}
 func (*PodInfo) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7f36063fbe370adf, []int{22}
 }
-
 func (m *PodInfo) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-
 func (m *PodInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	b = b[:cap(b)]
 	n, err := m.MarshalToSizedBuffer(b)
@@ -750,15 +640,12 @@ func (m *PodInfo) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	}
 	return b[:n], nil
 }
-
 func (m *PodInfo) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_PodInfo.Merge(m, src)
 }
-
 func (m *PodInfo) XXX_Size() int {
 	return m.Size()
 }
-
 func (m *PodInfo) XXX_DiscardUnknown() {
 	xxx_messageInfo_PodInfo.DiscardUnknown(m)
 }
@@ -2075,7 +1962,6 @@ func encodeVarintGenerated(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-
 func (m *Chain) Size() (n int) {
 	if m == nil {
 		return 0
@@ -2490,17 +2376,14 @@ func (m *PodInfo) Size() (n int) {
 func sovGenerated(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
-
 func sozGenerated(x uint64) (n int) {
 	return sovGenerated(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-
 func (this *Chain) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&Chain{`,
+	s := strings.Join([]string{`&Chain{`,
 		`ObjectMeta:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ObjectMeta), "ObjectMeta", "v1.ObjectMeta", 1), `&`, ``, 1) + `,`,
 		`Spec:` + strings.Replace(strings.Replace(this.Spec.String(), "ChainSpec", "ChainSpec", 1), `&`, ``, 1) + `,`,
 		`Status:` + strings.Replace(strings.Replace(this.Status.String(), "ChainStatus", "ChainStatus", 1), `&`, ``, 1) + `,`,
@@ -2508,7 +2391,6 @@ func (this *Chain) String() string {
 	}, "")
 	return s
 }
-
 func (this *ChainList) String() string {
 	if this == nil {
 		return "nil"
@@ -2518,21 +2400,18 @@ func (this *ChainList) String() string {
 		repeatedStringForItems += strings.Replace(strings.Replace(f.String(), "Chain", "Chain", 1), `&`, ``, 1) + ","
 	}
 	repeatedStringForItems += "}"
-	s := strings.Join([]string{
-		`&ChainList{`,
+	s := strings.Join([]string{`&ChainList{`,
 		`ListMeta:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ListMeta), "ListMeta", "v1.ListMeta", 1), `&`, ``, 1) + `,`,
 		`Items:` + repeatedStringForItems + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *ChainSpec) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&ChainSpec{`,
+	s := strings.Join([]string{`&ChainSpec{`,
 		`DisplayName:` + fmt.Sprintf("%v", this.DisplayName) + `,`,
 		`MinerType:` + fmt.Sprintf("%v", this.MinerType) + `,`,
 		`Image:` + fmt.Sprintf("%v", this.Image) + `,`,
@@ -2542,7 +2421,6 @@ func (this *ChainSpec) String() string {
 	}, "")
 	return s
 }
-
 func (this *ChainStatus) String() string {
 	if this == nil {
 		return "nil"
@@ -2552,8 +2430,7 @@ func (this *ChainStatus) String() string {
 		repeatedStringForConditions += strings.Replace(strings.Replace(f.String(), "Condition", "Condition", 1), `&`, ``, 1) + ","
 	}
 	repeatedStringForConditions += "}"
-	s := strings.Join([]string{
-		`&ChainStatus{`,
+	s := strings.Join([]string{`&ChainStatus{`,
 		`ConfigMapRef:` + strings.Replace(this.ConfigMapRef.String(), "LocalObjectReference", "LocalObjectReference", 1) + `,`,
 		`MinerRef:` + strings.Replace(this.MinerRef.String(), "LocalObjectReference", "LocalObjectReference", 1) + `,`,
 		`ObservedGeneration:` + fmt.Sprintf("%v", this.ObservedGeneration) + `,`,
@@ -2562,13 +2439,11 @@ func (this *ChainStatus) String() string {
 	}, "")
 	return s
 }
-
 func (this *ChargeRequest) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&ChargeRequest{`,
+	s := strings.Join([]string{`&ChargeRequest{`,
 		`ObjectMeta:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ObjectMeta), "ObjectMeta", "v1.ObjectMeta", 1), `&`, ``, 1) + `,`,
 		`Spec:` + strings.Replace(strings.Replace(this.Spec.String(), "ChargeRequestSpec", "ChargeRequestSpec", 1), `&`, ``, 1) + `,`,
 		`Status:` + strings.Replace(strings.Replace(this.Status.String(), "ChargeRequestStatus", "ChargeRequestStatus", 1), `&`, ``, 1) + `,`,
@@ -2576,7 +2451,6 @@ func (this *ChargeRequest) String() string {
 	}, "")
 	return s
 }
-
 func (this *ChargeRequestList) String() string {
 	if this == nil {
 		return "nil"
@@ -2586,28 +2460,24 @@ func (this *ChargeRequestList) String() string {
 		repeatedStringForItems += strings.Replace(strings.Replace(f.String(), "ChargeRequest", "ChargeRequest", 1), `&`, ``, 1) + ","
 	}
 	repeatedStringForItems += "}"
-	s := strings.Join([]string{
-		`&ChargeRequestList{`,
+	s := strings.Join([]string{`&ChargeRequestList{`,
 		`ListMeta:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ListMeta), "ListMeta", "v1.ListMeta", 1), `&`, ``, 1) + `,`,
 		`Items:` + repeatedStringForItems + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *ChargeRequestSpec) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&ChargeRequestSpec{`,
+	s := strings.Join([]string{`&ChargeRequestSpec{`,
 		`From:` + fmt.Sprintf("%v", this.From) + `,`,
 		`Password:` + fmt.Sprintf("%v", this.Password) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *ChargeRequestStatus) String() string {
 	if this == nil {
 		return "nil"
@@ -2617,20 +2487,17 @@ func (this *ChargeRequestStatus) String() string {
 		repeatedStringForConditions += strings.Replace(strings.Replace(f.String(), "Condition", "Condition", 1), `&`, ``, 1) + ","
 	}
 	repeatedStringForConditions += "}"
-	s := strings.Join([]string{
-		`&ChargeRequestStatus{`,
+	s := strings.Join([]string{`&ChargeRequestStatus{`,
 		`Conditions:` + repeatedStringForConditions + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *Condition) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&Condition{`,
+	s := strings.Join([]string{`&Condition{`,
 		`Type:` + fmt.Sprintf("%v", this.Type) + `,`,
 		`Status:` + fmt.Sprintf("%v", this.Status) + `,`,
 		`Severity:` + fmt.Sprintf("%v", this.Severity) + `,`,
@@ -2641,25 +2508,21 @@ func (this *Condition) String() string {
 	}, "")
 	return s
 }
-
 func (this *LocalObjectReference) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&LocalObjectReference{`,
+	s := strings.Join([]string{`&LocalObjectReference{`,
 		`Name:` + fmt.Sprintf("%v", this.Name) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *Miner) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&Miner{`,
+	s := strings.Join([]string{`&Miner{`,
 		`ObjectMeta:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ObjectMeta), "ObjectMeta", "v1.ObjectMeta", 1), `&`, ``, 1) + `,`,
 		`Spec:` + strings.Replace(strings.Replace(this.Spec.String(), "MinerSpec", "MinerSpec", 1), `&`, ``, 1) + `,`,
 		`Status:` + strings.Replace(strings.Replace(this.Status.String(), "MinerStatus", "MinerStatus", 1), `&`, ``, 1) + `,`,
@@ -2667,20 +2530,17 @@ func (this *Miner) String() string {
 	}, "")
 	return s
 }
-
 func (this *MinerAddress) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&MinerAddress{`,
+	s := strings.Join([]string{`&MinerAddress{`,
 		`Type:` + fmt.Sprintf("%v", this.Type) + `,`,
 		`Address:` + fmt.Sprintf("%v", this.Address) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *MinerList) String() string {
 	if this == nil {
 		return "nil"
@@ -2690,21 +2550,18 @@ func (this *MinerList) String() string {
 		repeatedStringForItems += strings.Replace(strings.Replace(f.String(), "Miner", "Miner", 1), `&`, ``, 1) + ","
 	}
 	repeatedStringForItems += "}"
-	s := strings.Join([]string{
-		`&MinerList{`,
+	s := strings.Join([]string{`&MinerList{`,
 		`ListMeta:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ListMeta), "ListMeta", "v1.ListMeta", 1), `&`, ``, 1) + `,`,
 		`Items:` + repeatedStringForItems + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *MinerSet) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&MinerSet{`,
+	s := strings.Join([]string{`&MinerSet{`,
 		`ObjectMeta:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ObjectMeta), "ObjectMeta", "v1.ObjectMeta", 1), `&`, ``, 1) + `,`,
 		`Spec:` + strings.Replace(strings.Replace(this.Spec.String(), "MinerSetSpec", "MinerSetSpec", 1), `&`, ``, 1) + `,`,
 		`Status:` + strings.Replace(strings.Replace(this.Status.String(), "MinerSetStatus", "MinerSetStatus", 1), `&`, ``, 1) + `,`,
@@ -2712,7 +2569,6 @@ func (this *MinerSet) String() string {
 	}, "")
 	return s
 }
-
 func (this *MinerSetList) String() string {
 	if this == nil {
 		return "nil"
@@ -2722,21 +2578,18 @@ func (this *MinerSetList) String() string {
 		repeatedStringForItems += strings.Replace(strings.Replace(f.String(), "MinerSet", "MinerSet", 1), `&`, ``, 1) + ","
 	}
 	repeatedStringForItems += "}"
-	s := strings.Join([]string{
-		`&MinerSetList{`,
+	s := strings.Join([]string{`&MinerSetList{`,
 		`ListMeta:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.ListMeta), "ListMeta", "v1.ListMeta", 1), `&`, ``, 1) + `,`,
 		`Items:` + repeatedStringForItems + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *MinerSetSpec) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&MinerSetSpec{`,
+	s := strings.Join([]string{`&MinerSetSpec{`,
 		`Replicas:` + valueToStringGenerated(this.Replicas) + `,`,
 		`Selector:` + strings.Replace(strings.Replace(fmt.Sprintf("%v", this.Selector), "LabelSelector", "v1.LabelSelector", 1), `&`, ``, 1) + `,`,
 		`Template:` + strings.Replace(strings.Replace(this.Template.String(), "MinerTemplateSpec", "MinerTemplateSpec", 1), `&`, ``, 1) + `,`,
@@ -2748,7 +2601,6 @@ func (this *MinerSetSpec) String() string {
 	}, "")
 	return s
 }
-
 func (this *MinerSetStatus) String() string {
 	if this == nil {
 		return "nil"
@@ -2758,8 +2610,7 @@ func (this *MinerSetStatus) String() string {
 		repeatedStringForConditions += strings.Replace(strings.Replace(f.String(), "Condition", "Condition", 1), `&`, ``, 1) + ","
 	}
 	repeatedStringForConditions += "}"
-	s := strings.Join([]string{
-		`&MinerSetStatus{`,
+	s := strings.Join([]string{`&MinerSetStatus{`,
 		`Replicas:` + fmt.Sprintf("%v", this.Replicas) + `,`,
 		`FullyLabeledReplicas:` + fmt.Sprintf("%v", this.FullyLabeledReplicas) + `,`,
 		`ReadyReplicas:` + fmt.Sprintf("%v", this.ReadyReplicas) + `,`,
@@ -2772,13 +2623,11 @@ func (this *MinerSetStatus) String() string {
 	}, "")
 	return s
 }
-
 func (this *MinerSpec) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&MinerSpec{`,
+	s := strings.Join([]string{`&MinerSpec{`,
 		`ObjectMeta:` + strings.Replace(strings.Replace(this.ObjectMeta.String(), "ObjectMeta", "ObjectMeta", 1), `&`, ``, 1) + `,`,
 		`DisplayName:` + fmt.Sprintf("%v", this.DisplayName) + `,`,
 		`MinerType:` + fmt.Sprintf("%v", this.MinerType) + `,`,
@@ -2789,7 +2638,6 @@ func (this *MinerSpec) String() string {
 	}, "")
 	return s
 }
-
 func (this *MinerStatus) String() string {
 	if this == nil {
 		return "nil"
@@ -2804,8 +2652,7 @@ func (this *MinerStatus) String() string {
 		repeatedStringForConditions += strings.Replace(strings.Replace(f.String(), "Condition", "Condition", 1), `&`, ``, 1) + ","
 	}
 	repeatedStringForConditions += "}"
-	s := strings.Join([]string{
-		`&MinerStatus{`,
+	s := strings.Join([]string{`&MinerStatus{`,
 		`PodRef:` + strings.Replace(this.PodRef.String(), "ObjectReference", "ObjectReference", 1) + `,`,
 		`LastUpdated:` + strings.Replace(fmt.Sprintf("%v", this.LastUpdated), "Time", "v1.Time", 1) + `,`,
 		`FailureReason:` + valueToStringGenerated(this.FailureReason) + `,`,
@@ -2818,20 +2665,17 @@ func (this *MinerStatus) String() string {
 	}, "")
 	return s
 }
-
 func (this *MinerTemplateSpec) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&MinerTemplateSpec{`,
+	s := strings.Join([]string{`&MinerTemplateSpec{`,
 		`ObjectMeta:` + strings.Replace(strings.Replace(this.ObjectMeta.String(), "ObjectMeta", "ObjectMeta", 1), `&`, ``, 1) + `,`,
 		`Spec:` + strings.Replace(strings.Replace(this.Spec.String(), "MinerSpec", "MinerSpec", 1), `&`, ``, 1) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *ObjectMeta) String() string {
 	if this == nil {
 		return "nil"
@@ -2856,28 +2700,24 @@ func (this *ObjectMeta) String() string {
 		mapStringForAnnotations += fmt.Sprintf("%v: %v,", k, this.Annotations[k])
 	}
 	mapStringForAnnotations += "}"
-	s := strings.Join([]string{
-		`&ObjectMeta{`,
+	s := strings.Join([]string{`&ObjectMeta{`,
 		`Labels:` + mapStringForLabels + `,`,
 		`Annotations:` + mapStringForAnnotations + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func (this *PodInfo) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{
-		`&PodInfo{`,
+	s := strings.Join([]string{`&PodInfo{`,
 		`OperatingSystem:` + fmt.Sprintf("%v", this.OperatingSystem) + `,`,
 		`Architecture:` + fmt.Sprintf("%v", this.Architecture) + `,`,
 		`}`,
 	}, "")
 	return s
 }
-
 func valueToStringGenerated(v any) string {
 	rv := reflect.ValueOf(v)
 	if rv.IsNil() {
@@ -2886,7 +2726,6 @@ func valueToStringGenerated(v any) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("*%v", pv)
 }
-
 func (m *Chain) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3036,7 +2875,6 @@ func (m *Chain) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *ChainList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3154,7 +2992,6 @@ func (m *ChainList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *ChainSpec) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3353,7 +3190,6 @@ func (m *ChainSpec) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *ChainStatus) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3529,7 +3365,6 @@ func (m *ChainStatus) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *ChargeRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3679,7 +3514,6 @@ func (m *ChargeRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *ChargeRequestList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3797,7 +3631,6 @@ func (m *ChargeRequestList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *ChargeRequestSpec) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3912,7 +3745,6 @@ func (m *ChargeRequestSpec) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *ChargeRequestStatus) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -3997,7 +3829,6 @@ func (m *ChargeRequestStatus) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *Condition) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4241,7 +4072,6 @@ func (m *Condition) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *LocalObjectReference) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4324,7 +4154,6 @@ func (m *LocalObjectReference) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *Miner) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4474,7 +4303,6 @@ func (m *Miner) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MinerAddress) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4589,7 +4417,6 @@ func (m *MinerAddress) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MinerList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4707,7 +4534,6 @@ func (m *MinerList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MinerSet) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4857,7 +4683,6 @@ func (m *MinerSet) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MinerSetList) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -4975,7 +4800,6 @@ func (m *MinerSetList) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MinerSetSpec) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -5215,7 +5039,6 @@ func (m *MinerSetSpec) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MinerSetStatus) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -5461,7 +5284,6 @@ func (m *MinerSetStatus) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MinerSpec) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -5709,7 +5531,6 @@ func (m *MinerSpec) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MinerStatus) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -6017,7 +5838,6 @@ func (m *MinerStatus) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *MinerTemplateSpec) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -6134,7 +5954,6 @@ func (m *MinerTemplateSpec) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *ObjectMeta) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -6439,7 +6258,6 @@ func (m *ObjectMeta) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func (m *PodInfo) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -6554,7 +6372,6 @@ func (m *PodInfo) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-
 func skipGenerated(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

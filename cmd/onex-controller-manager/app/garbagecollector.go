@@ -150,6 +150,7 @@ func startGarbageCollectorController(ctx context.Context, controllerContext Cont
 		ignoredResources[schema.GroupResource{Group: r.Group, Resource: r.Resource}] = struct{}{}
 	}
 	garbageCollector, err := garbagecollector.NewGarbageCollector(
+		ctx,
 		gcClientset,
 		metadataClient,
 		controllerContext.RESTMapper,

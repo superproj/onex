@@ -41,7 +41,7 @@ import (
 	"github.com/superproj/onex/internal/apiserver"
 	"github.com/superproj/onex/internal/apiserver/storage"
 	"github.com/superproj/onex/pkg/generated/clientset/versioned"
-	informers "github.com/superproj/onex/pkg/generated/informers/externalversions"
+	"github.com/superproj/onex/pkg/generated/informers"
 	generatedopenapi "github.com/superproj/onex/pkg/generated/openapi"
 	"github.com/superproj/onex/pkg/version"
 )

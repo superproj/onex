@@ -9,7 +9,10 @@ package fake
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 
+	corev1 "github.com/superproj/onex/pkg/generated/applyconfigurations/core/v1"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
@@ -65,6 +68,7 @@ func (c *FakeEvents) List(ctx context.Context, opts metav1.ListOptions) (result 
 func (c *FakeEvents) Watch(ctx context.Context, opts metav1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(eventsResource, c.ns, opts))
+
 }
 
 // Create takes the representation of a event and creates it.  Returns the server's representation of the event, and an error, if there is any.
@@ -109,6 +113,28 @@ func (c *FakeEvents) DeleteCollection(ctx context.Context, opts metav1.DeleteOpt
 func (c *FakeEvents) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts metav1.PatchOptions, subresources ...string) (result *v1.Event, err error) {
 	obj, err := c.Fake.
 		Invokes(testing.NewPatchSubresourceAction(eventsResource, c.ns, name, pt, data, subresources...), &v1.Event{})
+
+	if obj == nil {
+		return nil, err
+	}
+	return obj.(*v1.Event), err
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied event.
+func (c *FakeEvents) Apply(ctx context.Context, event *corev1.EventApplyConfiguration, opts metav1.ApplyOptions) (result *v1.Event, err error) {
+	if event == nil {
+		return nil, fmt.Errorf("event provided to Apply must not be nil")
+	}
+	data, err := json.Marshal(event)
+	if err != nil {
+		return nil, err
+	}
+	name := event.Name
+	if name == nil {
+		return nil, fmt.Errorf("event.Name must be provided to Apply")
+	}
+	obj, err := c.Fake.
+		Invokes(testing.NewPatchSubresourceAction(eventsResource, c.ns, *name, types.ApplyPatchType, data), &v1.Event{})
 
 	if obj == nil {
 		return nil, err

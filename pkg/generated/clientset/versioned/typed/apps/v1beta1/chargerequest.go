@@ -9,15 +9,17 @@ package v1beta1
 
 import (
 	"context"
+	json "encoding/json"
+	"fmt"
 	"time"
 
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	appsv1beta1 "github.com/superproj/onex/pkg/generated/applyconfigurations/apps/v1beta1"
+	scheme "github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
-	scheme "github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 )
 
 // ChargeRequestsGetter has a method to return a ChargeRequestInterface.
@@ -37,6 +39,8 @@ type ChargeRequestInterface interface {
 	List(ctx context.Context, opts v1.ListOptions) (*v1beta1.ChargeRequestList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1beta1.ChargeRequest, err error)
+	Apply(ctx context.Context, chargeRequest *appsv1beta1.ChargeRequestApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.ChargeRequest, err error)
+	ApplyStatus(ctx context.Context, chargeRequest *appsv1beta1.ChargeRequestApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.ChargeRequest, err error)
 	ChargeRequestExpansion
 }
 
@@ -178,6 +182,62 @@ func (c *chargeRequests) Patch(ctx context.Context, name string, pt types.PatchT
 		Name(name).
 		SubResource(subresources...).
 		VersionedParams(&opts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// Apply takes the given apply declarative configuration, applies it and returns the applied chargeRequest.
+func (c *chargeRequests) Apply(ctx context.Context, chargeRequest *appsv1beta1.ChargeRequestApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.ChargeRequest, err error) {
+	if chargeRequest == nil {
+		return nil, fmt.Errorf("chargeRequest provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(chargeRequest)
+	if err != nil {
+		return nil, err
+	}
+	name := chargeRequest.Name
+	if name == nil {
+		return nil, fmt.Errorf("chargeRequest.Name must be provided to Apply")
+	}
+	result = &v1beta1.ChargeRequest{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("chargerequests").
+		Name(*name).
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
+		Body(data).
+		Do(ctx).
+		Into(result)
+	return
+}
+
+// ApplyStatus was generated because the type contains a Status member.
+// Add a +genclient:noStatus comment above the type to avoid generating ApplyStatus().
+func (c *chargeRequests) ApplyStatus(ctx context.Context, chargeRequest *appsv1beta1.ChargeRequestApplyConfiguration, opts v1.ApplyOptions) (result *v1beta1.ChargeRequest, err error) {
+	if chargeRequest == nil {
+		return nil, fmt.Errorf("chargeRequest provided to Apply must not be nil")
+	}
+	patchOpts := opts.ToPatchOptions()
+	data, err := json.Marshal(chargeRequest)
+	if err != nil {
+		return nil, err
+	}
+
+	name := chargeRequest.Name
+	if name == nil {
+		return nil, fmt.Errorf("chargeRequest.Name must be provided to Apply")
+	}
+
+	result = &v1beta1.ChargeRequest{}
+	err = c.client.Patch(types.ApplyPatchType).
+		Namespace(c.ns).
+		Resource("chargerequests").
+		Name(*name).
+		SubResource("status").
+		VersionedParams(&patchOpts, scheme.ParameterCodec).
 		Body(data).
 		Do(ctx).
 		Into(result)

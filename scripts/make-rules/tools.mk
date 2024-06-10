@@ -47,12 +47,12 @@ _install.ci: $(addprefix tools.install., $(CI_WORKFLOW_TOOLS)) ## Install necess
 _install.other: $(addprefix tools.install., $(OTHER_TOOLS))
 
 .PHONY: _install.code-generator
-_install.code-generator: $(addprefix tools.install.code-generator., $(CODE_GENERATOR_TOOLS)) ## Install all necessary code-generator tools.
+_install.code-generator: $(addprefix _install.code-generator., $(CODE_GENERATOR_TOOLS)) ## Install all necessary code-generator tools.
 
 .PHONY: _install.code-generator.%
 _install.code-generator.%: ## Install specified code-generator tool.
-	@$(GO) install k8s.io/code-generator/cmd/$*@$(CODE_GENERATOR_VERSION)
-	#@$(GO) install github.com/colin404/code-generator/cmd/$*@$(CODE_GENERATOR_VERSION)
+	@echo "===========> Installing code-generator: $*"
+	$(GO) install k8s.io/code-generator/cmd/$*@$(CODE_GENERATOR_VERSION)
 
 .PHONY: _install.swagger
 _install.swagger:
