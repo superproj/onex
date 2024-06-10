@@ -10,13 +10,13 @@ package fake
 import (
 	"context"
 
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
+	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )
 
 // FakeChains implements ChainInterface
@@ -25,9 +25,9 @@ type FakeChains struct {
 	ns   string
 }
 
-var chainsResource = v1beta1.SchemeGroupVersion.WithResource("chains")
+var chainsResource = schema.GroupVersionResource{Group: "apps.onex.io", Version: "v1beta1", Resource: "chains"}
 
-var chainsKind = v1beta1.SchemeGroupVersion.WithKind("Chain")
+var chainsKind = schema.GroupVersionKind{Group: "apps.onex.io", Version: "v1beta1", Kind: "Chain"}
 
 // Get takes name of the chain, and returns the corresponding chain object, and an error if there is any.
 func (c *FakeChains) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.Chain, err error) {
@@ -66,6 +66,7 @@ func (c *FakeChains) List(ctx context.Context, opts v1.ListOptions) (result *v1b
 func (c *FakeChains) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(chainsResource, c.ns, opts))
+
 }
 
 // Create takes the representation of a chain and creates it.  Returns the server's representation of the chain, and an error, if there is any.

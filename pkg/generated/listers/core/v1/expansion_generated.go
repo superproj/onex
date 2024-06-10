@@ -9,28 +9,28 @@ package v1
 
 // ConfigMapListerExpansion allows custom methods to be added to
 // ConfigMapLister.
-type ConfigMapListerExpansion any
+type ConfigMapListerExpansion interface{}
 
 // ConfigMapNamespaceListerExpansion allows custom methods to be added to
 // ConfigMapNamespaceLister.
-type ConfigMapNamespaceListerExpansion any
+type ConfigMapNamespaceListerExpansion interface{}
 
 // EventListerExpansion allows custom methods to be added to
 // EventLister.
-type EventListerExpansion any
+type EventListerExpansion interface{}
 
 // EventNamespaceListerExpansion allows custom methods to be added to
 // EventNamespaceLister.
-type EventNamespaceListerExpansion any
+type EventNamespaceListerExpansion interface{}
 
 // NamespaceListerExpansion allows custom methods to be added to
 // NamespaceLister.
-type NamespaceListerExpansion any
+type NamespaceListerExpansion interface{}
 
 // SecretListerExpansion allows custom methods to be added to
 // SecretLister.
-type SecretListerExpansion any
+type SecretListerExpansion interface{}
 
 // SecretNamespaceListerExpansion allows custom methods to be added to
 // SecretNamespaceLister.
-type SecretNamespaceListerExpansion any
+type SecretNamespaceListerExpansion interface{}

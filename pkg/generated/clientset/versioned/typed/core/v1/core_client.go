@@ -10,10 +10,9 @@ package v1
 import (
 	"net/http"
 
+	"github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 	v1 "k8s.io/api/core/v1"
 	rest "k8s.io/client-go/rest"
-
-	"github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 )
 
 type CoreV1Interface interface {

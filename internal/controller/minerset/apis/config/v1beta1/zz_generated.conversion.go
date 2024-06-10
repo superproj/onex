@@ -13,11 +13,10 @@ package v1beta1
 import (
 	unsafe "unsafe"
 
+	config "github.com/superproj/onex/internal/controller/minerset/apis/config"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	v1alpha1 "k8s.io/component-base/config/v1alpha1"
-
-	config "github.com/superproj/onex/internal/controller/minerset/apis/config"
 )
 
 func init() {
@@ -27,12 +26,12 @@ func init() {
 // RegisterConversions adds conversion functions to the given scheme.
 // Public to allow building arbitrary schemes.
 func RegisterConversions(s *runtime.Scheme) error {
-	if err := s.AddGeneratedConversionFunc((*MinerSetControllerConfiguration)(nil), (*config.MinerSetControllerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*MinerSetControllerConfiguration)(nil), (*config.MinerSetControllerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MinerSetControllerConfiguration_To_config_MinerSetControllerConfiguration(a.(*MinerSetControllerConfiguration), b.(*config.MinerSetControllerConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddGeneratedConversionFunc((*config.MinerSetControllerConfiguration)(nil), (*MinerSetControllerConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddGeneratedConversionFunc((*config.MinerSetControllerConfiguration)(nil), (*MinerSetControllerConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_config_MinerSetControllerConfiguration_To_v1beta1_MinerSetControllerConfiguration(a.(*config.MinerSetControllerConfiguration), b.(*MinerSetControllerConfiguration), scope)
 	}); err != nil {
 		return err

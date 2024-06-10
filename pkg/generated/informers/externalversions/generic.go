@@ -10,12 +10,11 @@ package externalversions
 import (
 	"fmt"
 
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	v1 "github.com/superproj/onex/pkg/apis/coordination/v1"
 	corev1 "k8s.io/api/core/v1"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	cache "k8s.io/client-go/tools/cache"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
-	v1 "github.com/superproj/onex/pkg/apis/coordination/v1"
 )
 
 // GenericInformer is type of SharedIndexInformer which will locate and delegate to other

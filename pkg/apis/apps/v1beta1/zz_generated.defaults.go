@@ -18,12 +18,12 @@ import (
 // Public to allow building arbitrary schemes.
 // All generated defaulters are covering - they call all nested defaulters.
 func RegisterDefaults(scheme *runtime.Scheme) error {
-	scheme.AddTypeDefaultingFunc(&Chain{}, func(obj any) { SetObjectDefaults_Chain(obj.(*Chain)) })
-	scheme.AddTypeDefaultingFunc(&ChainList{}, func(obj any) { SetObjectDefaults_ChainList(obj.(*ChainList)) })
-	scheme.AddTypeDefaultingFunc(&Miner{}, func(obj any) { SetObjectDefaults_Miner(obj.(*Miner)) })
-	scheme.AddTypeDefaultingFunc(&MinerList{}, func(obj any) { SetObjectDefaults_MinerList(obj.(*MinerList)) })
-	scheme.AddTypeDefaultingFunc(&MinerSet{}, func(obj any) { SetObjectDefaults_MinerSet(obj.(*MinerSet)) })
-	scheme.AddTypeDefaultingFunc(&MinerSetList{}, func(obj any) { SetObjectDefaults_MinerSetList(obj.(*MinerSetList)) })
+	scheme.AddTypeDefaultingFunc(&Chain{}, func(obj interface{}) { SetObjectDefaults_Chain(obj.(*Chain)) })
+	scheme.AddTypeDefaultingFunc(&ChainList{}, func(obj interface{}) { SetObjectDefaults_ChainList(obj.(*ChainList)) })
+	scheme.AddTypeDefaultingFunc(&Miner{}, func(obj interface{}) { SetObjectDefaults_Miner(obj.(*Miner)) })
+	scheme.AddTypeDefaultingFunc(&MinerList{}, func(obj interface{}) { SetObjectDefaults_MinerList(obj.(*MinerList)) })
+	scheme.AddTypeDefaultingFunc(&MinerSet{}, func(obj interface{}) { SetObjectDefaults_MinerSet(obj.(*MinerSet)) })
+	scheme.AddTypeDefaultingFunc(&MinerSetList{}, func(obj interface{}) { SetObjectDefaults_MinerSetList(obj.(*MinerSetList)) })
 	return nil
 }
 

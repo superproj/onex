@@ -8,11 +8,10 @@
 package v1beta1
 
 import (
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/tools/cache"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )
 
 // ChainLister helps list Chains.
@@ -38,7 +37,7 @@ func NewChainLister(indexer cache.Indexer) ChainLister {
 
 // List lists all Chains in the indexer.
 func (s *chainLister) List(selector labels.Selector) (ret []*v1beta1.Chain, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m any) {
+	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1beta1.Chain))
 	})
 	return ret, err
@@ -70,7 +69,7 @@ type chainNamespaceLister struct {
 
 // List lists all Chains in the indexer for a given namespace.
 func (s chainNamespaceLister) List(selector labels.Selector) (ret []*v1beta1.Chain, err error) {
-	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m any) {
+	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1beta1.Chain))
 	})
 	return ret, err

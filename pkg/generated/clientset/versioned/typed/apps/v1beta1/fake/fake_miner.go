@@ -10,13 +10,13 @@ package fake
 import (
 	"context"
 
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	labels "k8s.io/apimachinery/pkg/labels"
+	schema "k8s.io/apimachinery/pkg/runtime/schema"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	testing "k8s.io/client-go/testing"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )
 
 // FakeMiners implements MinerInterface
@@ -25,9 +25,9 @@ type FakeMiners struct {
 	ns   string
 }
 
-var minersResource = v1beta1.SchemeGroupVersion.WithResource("miners")
+var minersResource = schema.GroupVersionResource{Group: "apps.onex.io", Version: "v1beta1", Resource: "miners"}
 
-var minersKind = v1beta1.SchemeGroupVersion.WithKind("Miner")
+var minersKind = schema.GroupVersionKind{Group: "apps.onex.io", Version: "v1beta1", Kind: "Miner"}
 
 // Get takes name of the miner, and returns the corresponding miner object, and an error if there is any.
 func (c *FakeMiners) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1beta1.Miner, err error) {
@@ -66,6 +66,7 @@ func (c *FakeMiners) List(ctx context.Context, opts v1.ListOptions) (result *v1b
 func (c *FakeMiners) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	return c.Fake.
 		InvokesWatch(testing.NewWatchAction(minersResource, c.ns, opts))
+
 }
 
 // Create takes the representation of a miner and creates it.  Returns the server's representation of the miner, and an error, if there is any.

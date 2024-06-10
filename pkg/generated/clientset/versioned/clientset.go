@@ -11,13 +11,12 @@ import (
 	"fmt"
 	"net/http"
 
-	discovery "k8s.io/client-go/discovery"
-	rest "k8s.io/client-go/rest"
-	flowcontrol "k8s.io/client-go/util/flowcontrol"
-
 	appsv1beta1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/apps/v1beta1"
 	coordinationv1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/coordination/v1"
 	corev1 "github.com/superproj/onex/pkg/generated/clientset/versioned/typed/core/v1"
+	discovery "k8s.io/client-go/discovery"
+	rest "k8s.io/client-go/rest"
+	flowcontrol "k8s.io/client-go/util/flowcontrol"
 )
 
 type Interface interface {
@@ -27,7 +26,8 @@ type Interface interface {
 	CoreV1() corev1.CoreV1Interface
 }
 
-// Clientset contains the clients for groups.
+// Clientset contains the clients for groups. Each group has exactly one
+// version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
 	appsV1beta1    *appsv1beta1.AppsV1beta1Client

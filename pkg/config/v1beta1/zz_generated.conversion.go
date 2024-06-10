@@ -11,10 +11,9 @@
 package v1beta1
 
 import (
+	config "github.com/superproj/onex/pkg/config"
 	conversion "k8s.io/apimachinery/pkg/conversion"
 	runtime "k8s.io/apimachinery/pkg/runtime"
-
-	config "github.com/superproj/onex/pkg/config"
 )
 
 func init() {
@@ -24,22 +23,22 @@ func init() {
 // RegisterConversions adds conversion functions to the given scheme.
 // Public to allow building arbitrary schemes.
 func RegisterConversions(s *runtime.Scheme) error {
-	if err := s.AddConversionFunc((*config.MySQLConfiguration)(nil), (*MySQLConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddConversionFunc((*config.MySQLConfiguration)(nil), (*MySQLConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_config_MySQLConfiguration_To_v1beta1_MySQLConfiguration(a.(*config.MySQLConfiguration), b.(*MySQLConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddConversionFunc((*config.RedisConfiguration)(nil), (*RedisConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddConversionFunc((*config.RedisConfiguration)(nil), (*RedisConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_config_RedisConfiguration_To_v1beta1_RedisConfiguration(a.(*config.RedisConfiguration), b.(*RedisConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddConversionFunc((*MySQLConfiguration)(nil), (*config.MySQLConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddConversionFunc((*MySQLConfiguration)(nil), (*config.MySQLConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_MySQLConfiguration_To_config_MySQLConfiguration(a.(*MySQLConfiguration), b.(*config.MySQLConfiguration), scope)
 	}); err != nil {
 		return err
 	}
-	if err := s.AddConversionFunc((*RedisConfiguration)(nil), (*config.RedisConfiguration)(nil), func(a, b any, scope conversion.Scope) error {
+	if err := s.AddConversionFunc((*RedisConfiguration)(nil), (*config.RedisConfiguration)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_RedisConfiguration_To_config_RedisConfiguration(a.(*RedisConfiguration), b.(*config.RedisConfiguration), scope)
 	}); err != nil {
 		return err

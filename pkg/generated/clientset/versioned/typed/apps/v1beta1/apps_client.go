@@ -10,10 +10,9 @@ package v1beta1
 import (
 	"net/http"
 
-	rest "k8s.io/client-go/rest"
-
 	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	"github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
+	rest "k8s.io/client-go/rest"
 )
 
 type AppsV1beta1Interface interface {

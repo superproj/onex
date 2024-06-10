@@ -11,15 +11,14 @@ import (
 	"context"
 	time "time"
 
+	versioned "github.com/superproj/onex/pkg/generated/clientset/versioned"
+	internalinterfaces "github.com/superproj/onex/pkg/generated/informers/externalversions/internalinterfaces"
+	v1 "github.com/superproj/onex/pkg/generated/listers/core/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	watch "k8s.io/apimachinery/pkg/watch"
 	cache "k8s.io/client-go/tools/cache"
-
-	versioned "github.com/superproj/onex/pkg/generated/clientset/versioned"
-	internalinterfaces "github.com/superproj/onex/pkg/generated/informers/externalversions/internalinterfaces"
-	v1 "github.com/superproj/onex/pkg/generated/listers/core/v1"
 )
 
 // ConfigMapInformer provides access to a shared informer and lister for

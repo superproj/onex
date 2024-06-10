@@ -8,11 +8,10 @@
 package v1beta1
 
 import (
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/tools/cache"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )
 
 // ChargeRequestLister helps list ChargeRequests.
@@ -38,7 +37,7 @@ func NewChargeRequestLister(indexer cache.Indexer) ChargeRequestLister {
 
 // List lists all ChargeRequests in the indexer.
 func (s *chargeRequestLister) List(selector labels.Selector) (ret []*v1beta1.ChargeRequest, err error) {
-	err = cache.ListAll(s.indexer, selector, func(m any) {
+	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1beta1.ChargeRequest))
 	})
 	return ret, err
@@ -70,7 +69,7 @@ type chargeRequestNamespaceLister struct {
 
 // List lists all ChargeRequests in the indexer for a given namespace.
 func (s chargeRequestNamespaceLister) List(selector labels.Selector) (ret []*v1beta1.ChargeRequest, err error) {
-	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m any) {
+	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1beta1.ChargeRequest))
 	})
 	return ret, err

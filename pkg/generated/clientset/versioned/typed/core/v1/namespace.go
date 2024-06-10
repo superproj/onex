@@ -11,13 +11,12 @@ import (
 	"context"
 	"time"
 
+	scheme "github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
-
-	scheme "github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 )
 
 // NamespacesGetter has a method to return a NamespaceInterface.

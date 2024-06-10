@@ -19,16 +19,16 @@ import (
 // Public to allow building arbitrary schemes.
 // All generated defaulters are covering - they call all nested defaulters.
 func RegisterDefaults(scheme *runtime.Scheme) error {
-	scheme.AddTypeDefaultingFunc(&v1.Pod{}, func(obj any) { SetObjectDefaults_Pod(obj.(*v1.Pod)) })
-	scheme.AddTypeDefaultingFunc(&v1.PodList{}, func(obj any) { SetObjectDefaults_PodList(obj.(*v1.PodList)) })
-	scheme.AddTypeDefaultingFunc(&v1.PodTemplate{}, func(obj any) { SetObjectDefaults_PodTemplate(obj.(*v1.PodTemplate)) })
-	scheme.AddTypeDefaultingFunc(&v1.PodTemplateList{}, func(obj any) { SetObjectDefaults_PodTemplateList(obj.(*v1.PodTemplateList)) })
-	scheme.AddTypeDefaultingFunc(&v1.ReplicationController{}, func(obj any) { SetObjectDefaults_ReplicationController(obj.(*v1.ReplicationController)) })
-	scheme.AddTypeDefaultingFunc(&v1.ReplicationControllerList{}, func(obj any) {
+	scheme.AddTypeDefaultingFunc(&v1.Pod{}, func(obj interface{}) { SetObjectDefaults_Pod(obj.(*v1.Pod)) })
+	scheme.AddTypeDefaultingFunc(&v1.PodList{}, func(obj interface{}) { SetObjectDefaults_PodList(obj.(*v1.PodList)) })
+	scheme.AddTypeDefaultingFunc(&v1.PodTemplate{}, func(obj interface{}) { SetObjectDefaults_PodTemplate(obj.(*v1.PodTemplate)) })
+	scheme.AddTypeDefaultingFunc(&v1.PodTemplateList{}, func(obj interface{}) { SetObjectDefaults_PodTemplateList(obj.(*v1.PodTemplateList)) })
+	scheme.AddTypeDefaultingFunc(&v1.ReplicationController{}, func(obj interface{}) { SetObjectDefaults_ReplicationController(obj.(*v1.ReplicationController)) })
+	scheme.AddTypeDefaultingFunc(&v1.ReplicationControllerList{}, func(obj interface{}) {
 		SetObjectDefaults_ReplicationControllerList(obj.(*v1.ReplicationControllerList))
 	})
-	scheme.AddTypeDefaultingFunc(&v1.Service{}, func(obj any) { SetObjectDefaults_Service(obj.(*v1.Service)) })
-	scheme.AddTypeDefaultingFunc(&v1.ServiceList{}, func(obj any) { SetObjectDefaults_ServiceList(obj.(*v1.ServiceList)) })
+	scheme.AddTypeDefaultingFunc(&v1.Service{}, func(obj interface{}) { SetObjectDefaults_Service(obj.(*v1.Service)) })
+	scheme.AddTypeDefaultingFunc(&v1.ServiceList{}, func(obj interface{}) { SetObjectDefaults_ServiceList(obj.(*v1.ServiceList)) })
 	return nil
 }
 

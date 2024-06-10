@@ -11,14 +11,13 @@ import (
 	"context"
 	"time"
 
+	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	scheme "github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 	autoscalingv1 "k8s.io/api/autoscaling/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	types "k8s.io/apimachinery/pkg/types"
 	watch "k8s.io/apimachinery/pkg/watch"
 	rest "k8s.io/client-go/rest"
-
-	v1beta1 "github.com/superproj/onex/pkg/apis/apps/v1beta1"
-	scheme "github.com/superproj/onex/pkg/generated/clientset/versioned/scheme"
 )
 
 // MinerSetsGetter has a method to return a MinerSetInterface.
