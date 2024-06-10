@@ -5,7 +5,8 @@
 # like `make _install.gotests`, you should run `make tools.install.gotests` instead.
 #
 # Specify tools category.
-CODE_GENERATOR_TOOLS= client-gen lister-gen informer-gen defaulter-gen deepcopy-gen prerelease-lifecycle-gen conversion-gen openapi-gen
+CODE_GENERATOR_TOOLS= client-gen conversion-gen deepcopy-gen defaulter-gen informer-gen lister-gen prerelease-lifecycle-gen \
+					  register-gen applyconfiguration-gen go-to-protobuf
 # code-generator is a makefile target not a real tool.
 CI_WORKFLOW_TOOLS := code-generator golangci-lint goimports wire 
 # unused tools in this project: gentool
