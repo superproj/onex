@@ -8,6 +8,7 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -54,7 +55,8 @@ func init() {
 func NewControllerCommand() *cobra.Command {
 	o, err := options.NewOptions()
 	if err != nil {
-		klog.Fatalf("Unable to initialize command options: %v", err)
+		klog.Background().Error(err, "Unable to initialize command options")
+		klog.FlushAndExit(klog.ExitFlushTimeout, 1)
 	}
 
 	cmd := &cobra.Command{
@@ -80,12 +82,12 @@ current state towards the desired state.`,
 			if err := logsapi.ValidateAndApply(o.Logs, utilfeature.DefaultFeatureGate); err != nil {
 				return err
 			}
-			// klog.Background will automatically use the right logger. Here use the
-			// global klog.logging initialized by `logsapi.ValidateAndApply`.
 			ctrl.SetLogger(klog.Background())
 
 			cliflag.PrintFlags(cmd.Flags())
 
+			// klog.Background will automatically use the right logger. Here use the
+			// global klog.logging initialized by `logsapi.ValidateAndApply`.
 			if err := o.Complete(); err != nil {
 				return err
 			}
@@ -106,7 +108,7 @@ current state towards the desired state.`,
 
 			// add feature enablement metrics
 			utilfeature.DefaultMutableFeatureGate.AddMetrics()
-			return Run(cc, wait.NeverStop)
+			return Run(context.Background(), cc)
 		},
 		Args: func(cmd *cobra.Command, args []string) error {
 			for _, arg := range args {
@@ -129,11 +131,15 @@ current state towards the desired state.`,
 	cols, _, _ := term.TerminalSize(cmd.OutOrStdout())
 	cliflag.SetUsageAndHelpFunc(cmd, namedFlagSets, cols)
 
+	if err := cmd.MarkFlagFilename("config", "yaml", "yml", "json"); err != nil {
+		klog.Background().Error(err, "Failed to mark flag filename")
+	}
+
 	return cmd
 }
 
 // Run runs the controller options. This should never exit.
-func Run(c *config.CompletedConfig, stopCh <-chan struct{}) error {
+func Run(ctx context.Context, c *config.CompletedConfig) error {
 	// To help debugging, immediately log version
 	klog.InfoS("Starting miner controller", "version", version.Get().String())
 
@@ -185,7 +191,6 @@ func Run(c *config.CompletedConfig, stopCh <-chan struct{}) error {
 	// Initialize event recorder.
 	record.InitFromRecorder(mgr.GetEventRecorderFor("onex-miner-controller"))
 
-	ctx := wait.ContextForChannel(stopCh)
 	if err := index.AddDefaultIndexes(ctx, mgr); err != nil {
 		klog.ErrorS(err, "Unable to setup indexes")
 		return err

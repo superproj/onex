@@ -21,9 +21,9 @@ Find more onex-fakeserver information at:
     https://github.com/superproj/onex/blob/master/docs/guide/en-US/cmd/onex-fakeserver.md`
 
 // NewApp creates an App object with default parameters.
-func NewApp(name string) *app.App {
+func NewApp() *app.App {
 	opts := options.NewOptions()
-	application := app.NewApp(name, "Launch a onex fake server",
+	application := app.NewApp(fakeserver.Name, "Launch a onex fake server",
 		app.WithDescription(commandDesc),
 		app.WithOptions(opts),
 		app.WithDefaultValidArgs(),

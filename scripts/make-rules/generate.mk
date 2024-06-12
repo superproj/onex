@@ -31,7 +31,7 @@ gen.docgo.check: gen.docgo.doc ## Check missing doc.go for go packages.
 
 .PHONY: gen.docs
 gen.docs: ## Update generated swagger docs.
-	@${SCRIPTS_DIR}/update-generated-swagger-docs.sh
+	@${SCRIPTS_DIR}/update-codegen.sh swagger
 
 .PHONY: gen.appdocs
 gen.appdocs: ## Update generated application docs.

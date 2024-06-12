@@ -23,8 +23,8 @@ onex::util::ensure-temp-dir
 
 BINS=(
   gen-docs
-  gen-man
   gen-onex-docs
+  gen-man
   gen-yaml
 )
 make build -C "${ONEX_ROOT}" BINS="${BINS[*]}"

@@ -27,9 +27,9 @@ Find more onex-pump information at:
     https://github.com/superproj/onex/blob/master/docs/guide/en-US/cmd/onex-pump.md`
 
 // NewApp creates an App object with default parameters.
-func NewApp(name string) *app.App {
+func NewApp() *app.App {
 	opts := options.NewOptions()
-	application := app.NewApp(name, "Launch a onex pump server",
+	application := app.NewApp("onex-pump", "Launch a onex pump server",
 		app.WithDescription(commandDesc),
 		app.WithOptions(opts),
 		app.WithDefaultValidArgs(),

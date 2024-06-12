@@ -106,8 +106,8 @@ push.multiarch: ## Build docker images for multiple platforms and push images to
 ##@ Deploy
 
 .PHONY: deploy
-deploy: ## Build docker images for host arch, and deploy it in kind cluster.
-	$(MAKE) deploy.kind
+deploy: ## Build and push docker images for host arch, and deploy it in kubernetes cluster.
+	$(MAKE) deploy.run
 
 .PHONY: docker-install
 docker-install: ## Deploy onex with docker.

@@ -14,5 +14,5 @@ import (
 )
 
 func main() {
-	app.NewApp("onex-toyblc").Run()
+	app.NewApp().Run()
 }

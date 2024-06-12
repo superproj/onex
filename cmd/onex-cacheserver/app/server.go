@@ -21,9 +21,9 @@ Find more onex-cacheserver information at:
     https://github.com/superproj/onex/blob/master/docs/guide/en-US/cmd/onex-cacheserver.md`
 
 // NewApp creates an App object with default parameters.
-func NewApp(name string) *app.App {
+func NewApp() *app.App {
 	opts := options.NewOptions()
-	application := app.NewApp(name, "Launch a onex cache server",
+	application := app.NewApp("onex-cacheserver", "Launch a onex cache server",
 		app.WithDescription(commandDesc),
 		app.WithOptions(opts),
 		app.WithDefaultValidArgs(),

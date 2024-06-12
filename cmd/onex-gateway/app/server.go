@@ -19,9 +19,9 @@ requests from the front-end will arrive at the gateway, requests will be uniform
 and distributed by the gateway.`
 
 // NewApp creates an App object with default parameters.
-func NewApp(name string) *app.App {
+func NewApp() *app.App {
 	opts := options.NewOptions()
-	application := app.NewApp(name, "Launch a onex gateway server",
+	application := app.NewApp(gateway.Name, "Launch a onex gateway server",
 		app.WithDescription(commandDesc),
 		app.WithOptions(opts),
 		app.WithDefaultValidArgs(),

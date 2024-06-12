@@ -128,7 +128,7 @@ current state towards the desired state.`,
 
 			// add feature enablement metrics
 			utilfeature.DefaultMutableFeatureGate.AddMetrics()
-			return Run(context.Background(), cc, wait.NeverStop)
+			return Run(context.Background(), cc)
 		},
 		Args: func(cmd *cobra.Command, args []string) error {
 			for _, arg := range args {
@@ -151,11 +151,15 @@ current state towards the desired state.`,
 	cols, _, _ := term.TerminalSize(cmd.OutOrStdout())
 	cliflag.SetUsageAndHelpFunc(cmd, namedFlagSets, cols)
 
+	if err := cmd.MarkFlagFilename("config", "yaml", "yml", "json"); err != nil {
+		klog.Background().Error(err, "Failed to mark flag filename")
+	}
+
 	return cmd
 }
 
 // Run runs the controller manager options. This should never exit.
-func Run(ctx context.Context, c *config.CompletedConfig, stopCh <-chan struct{}) error {
+func Run(ctx context.Context, c *config.CompletedConfig) error {
 	// To help debugging, immediately log version
 	klog.InfoS("Starting controller manager", "version", version.Get().String())
 

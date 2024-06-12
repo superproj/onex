@@ -16,5 +16,5 @@ import (
 
 func main() {
 	// Creating a new instance of the usercenter application and running it
-	app.NewApp("onex-usercenter").Run()
+	app.NewApp().Run()
 }

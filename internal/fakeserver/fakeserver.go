@@ -19,6 +19,14 @@ import (
 	genericoptions "github.com/superproj/onex/pkg/options"
 )
 
+var (
+	// Name is the name of the compiled software.
+	Name = "onex-fakeserver"
+
+	// ID contains the host name and any error encountered during the retrieval.
+	ID, _ = os.Hostname()
+)
+
 // Config represents the configuration of the service.
 type Config struct {
 	FakeStore     bool

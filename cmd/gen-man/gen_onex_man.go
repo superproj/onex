@@ -57,14 +57,14 @@ func main() {
 	switch module {
 	case "onex-fakeserver":
 		// generate manpage for onexfakeserver-
-		fakeserver := fakeserverapp.NewApp("onex-fakeserver").Command()
+		fakeserver := fakeserverapp.NewApp().Command()
 		genMarkdown(fakeserver, "", outDir)
 		for _, c := range fakeserver.Commands() {
 			genMarkdown(c, "onex-fakeserver", outDir)
 		}
 	case "onex-usercenter":
 		// generate manpage for onex-usercenter
-		usercenter := usercenterapp.NewApp("onex-usercenter").Command()
+		usercenter := usercenterapp.NewApp().Command()
 		genMarkdown(usercenter, "", outDir)
 		for _, c := range usercenter.Commands() {
 			genMarkdown(c, "onex-usercenter", outDir)
@@ -78,28 +78,28 @@ func main() {
 		}
 	case "onex-gateway":
 		// generate manpage for onex-gateway
-		gwserver := gwapp.NewApp("onex-gateway").Command()
+		gwserver := gwapp.NewApp().Command()
 		genMarkdown(gwserver, "", outDir)
 		for _, c := range gwserver.Commands() {
 			genMarkdown(c, "onex-gateway", outDir)
 		}
 	case "onex-nightwatch":
 		// generate manpage for onex-nightwatch
-		nw := nwapp.NewApp("onex-nightwatch").Command()
+		nw := nwapp.NewApp().Command()
 		genMarkdown(nw, "", outDir)
 		for _, c := range nw.Commands() {
 			genMarkdown(c, "onex-nightwatch", outDir)
 		}
 	case "onex-pump":
 		// generate manpage for onex-pump
-		pump := pumpapp.NewApp("onex-pump").Command()
+		pump := pumpapp.NewApp().Command()
 		genMarkdown(pump, "", outDir)
 		for _, c := range pump.Commands() {
 			genMarkdown(c, "onex-pump", outDir)
 		}
 	case "onex-toyblc":
 		// generate manpage for onex-toyblc
-		toyblc := toyblcapp.NewApp("onex-toyblc").Command()
+		toyblc := toyblcapp.NewApp().Command()
 		genMarkdown(toyblc, "", outDir)
 		for _, c := range toyblc.Commands() {
 			genMarkdown(c, "onex-toyblc", outDir)

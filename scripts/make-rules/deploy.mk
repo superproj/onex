@@ -5,19 +5,18 @@
 
 KUBECTL := kubectl
 NAMESPACE ?= onex
-CONTEXT ?= kind-onex
 
-DEPLOYS=onex-usercenter onex-gateway
+DEPLOYS ?= onex-usercenter onex-gateway
 
-.PHONY: deploy.kind
-deploy.kind: $(addprefix deploy.deploy., $(addprefix $(PLATFORM)., $(DEPLOYS))) ## Deploy all configured services.
+.PHONY: deploy.run
+deploy.run: $(addprefix deploy.run., $(addprefix $(PLATFORM)., $(DEPLOYS))) ## Deploy all configured services.
 
-.PHONY: deploy.kind.%
-deploy.kind.%: image.build.% ## Deploy a specified service. (Note: Use `make deploy.<service>` to deploy a specific service.)
+.PHONY: deploy.run.%
+deploy.run.%: image.push.% ## Deploy a specified service.
 	$(eval ARCH := $(word 2,$(subst _, ,$(PLATFORM)))) 
 	$(eval DEPLOY := $(word 2,$(subst ., ,$*)))
 	@echo "===========> Deploying $(REGISTRY_PREFIX)/$(DEPLOY)-$(ARCH):$(VERSION)"
-	@$(KUBECTL) -n $(NAMESPACE) --context=$(CONTEXT) set image deployment/$(DEPLOY) $(DEPLOY)=$(REGISTRY_PREFIX)/$(DEPLOY)-$(ARCH):$(VERSION)
+	@$(KUBECTL) -n $(NAMESPACE) set image deployment/$(DEPLOY) $(DEPLOY)=$(REGISTRY_PREFIX)/$(DEPLOY)-$(ARCH):$(VERSION)
 
 .PHONY: deploy.docker
 deploy.docker:

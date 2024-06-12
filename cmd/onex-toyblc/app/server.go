@@ -18,9 +18,9 @@ import (
 const commandDesc = `The toy blc is used to start a naive and simple blockchain node.`
 
 // NewApp creates and returns a new App object with default parameters.
-func NewApp(name string) *app.App {
+func NewApp() *app.App {
 	opts := options.NewOptions()
-	application := app.NewApp(name, "Launch a onex toy blockchain node",
+	application := app.NewApp("onex-toyblc", "Launch a onex toy blockchain node",
 		app.WithDescription(commandDesc),
 		app.WithOptions(opts),
 		app.WithDefaultValidArgs(),
