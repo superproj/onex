@@ -489,7 +489,7 @@ function k8s_tag_files_except() {
 # Any package that wants open-api functions generated must include a
 # comment-tag in column 0 of one file of the form:
 #     // +k8s:openapi-gen=true
-function codegen::openapi() {
+function todo::codegen::openapi() {
     # Build the tool.
     GOPROXY=off go install \
         k8s.io/kube-openapi/cmd/openapi-gen
@@ -561,6 +561,84 @@ function codegen::openapi() {
         echo -e "\tAPI rule check failed - reported violations differ from known violations"
         echo -e "\tPlease read api/api-rules/README.md to resolve the failure in ${known_filename}"
     fi
+
+    if [[ "${DBG_CODEGEN}" == 1 ]]; then
+        onex::log::status "Generated openapi code"
+    fi
+}
+
+# OpenAPI generation
+#
+# Any package that wants open-api functions generated must include a
+# comment-tag in column 0 of one file of the form:
+#     // +k8s:openapi-gen=true
+function codegen::openapi() {
+    # Build the tool.
+    # Please make sure to use openapi-gen version v0.29.3 here.
+    if ! command -v gen-swaggertype-docs &> /dev/null ; then
+        GOPROXY=off go install k8s.io/code-generator/cmd/openapi-gen@v0.29.3
+    fi
+
+    # The result file, in each pkg, of open-api generation.
+    local output_file="${GENERATED_FILE_PREFIX}openapi"
+
+    local output_dir="pkg/generated/openapi"
+    local output_pkg="github.com/superproj/onex/${output_dir}"
+    local known_violations_file="${API_KNOWN_VIOLATIONS_DIR}/violation_exceptions.list"
+
+    local report_file="${OUT_DIR}/api_violations.report"
+    # When UPDATE_API_KNOWN_VIOLATIONS is set to be true, let the generator to write
+    # updated API violations to the known API violation exceptions list.
+    if [[ "${UPDATE_API_KNOWN_VIOLATIONS}" == true ]]; then
+        report_file="${known_violations_file}"
+    fi
+
+    if [[ "${DBG_CODEGEN}" == 1 ]]; then
+        onex::log::status "DBG: finding all +k8s:openapi-gen tags"
+    fi
+
+    local tag_files=()
+    onex::util::read-array tag_files < <(
+        k8s_tag_files_except \
+            staging/src/k8s.io/code-generator \
+            staging/src/k8s.io/sample-apiserver
+        )
+
+    local tag_dirs=()
+    onex::util::read-array tag_dirs < <(
+        grep -l --null '+k8s:openapi-gen=' "${tag_files[@]}" \
+            | while read -r -d $'\0' F; do dirname "${F}"; done \
+            | sort -u)
+
+    if [[ "${DBG_CODEGEN}" == 1 ]]; then
+        onex::log::status "DBG: found ${#tag_dirs[@]} +k8s:openapi-gen tagged dirs"
+    fi
+
+    local tag_pkgs=()
+    for dir in "${tag_dirs[@]}"; do
+        tag_pkgs+=("./$dir")
+    done
+
+    onex::log::status "Generating openapi code"
+    if [[ "${DBG_CODEGEN}" == 1 ]]; then
+        onex::log::status "DBG: running openapi-gen for:"
+        for dir in "${tag_dirs[@]}"; do
+            onex::log::status "DBG:     $dir"
+        done
+    fi
+
+    git_find -z ':(glob)pkg/generated/**'/"${output_file}" | xargs -0 rm -f
+
+    openapi-gen \
+        -v "${KUBE_VERBOSE}" \
+        --go-header-file "${BOILERPLATE_FILENAME}" \
+        -O "${output_file}" \
+        -i 'k8s.io/apimachinery/pkg/apis/meta/v1,k8s.io/apimachinery/pkg/runtime,k8s.io/apimachinery/pkg/version,k8s.io/kubernetes/pkg/apis/core,k8s.io/api/core/v1,k8s.io/api/autoscaling/v1,k8s.io/api/coordination/v1,github.com/superproj/onex/pkg/apis/apps/v1beta1' \
+        --output-base "${GOPATH}/src" \
+        -p "${output_pkg}" \
+        --report-filename "${report_file}" \
+        "${tag_pkgs[@]}" \
+        "$@"
 
     if [[ "${DBG_CODEGEN}" == 1 ]]; then
         onex::log::status "Generated openapi code"

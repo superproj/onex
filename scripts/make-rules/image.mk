@@ -73,7 +73,12 @@ image.build.%: go.build.% image.dockerfile.% ## Build specified docker image.
 	$(eval ARCH := $(word 2,$(subst _, ,$(PLATFORM))))
 	$(eval DOCKERFILE := Dockerfile)
 	$(eval DST_DIR := $(TMP_DIR)/$(IMAGE))
-	@echo "===========> Building docker image $(IMAGE) $(VERSION) for $(IMAGE_PLAT)"
+	# In the SemVer versioning specification, the use of the "+" sign is possible, but container image tag names 
+	# do not support the "+" character. Therefore, it is necessary to replace the "+" with "-" in the version number. 
+	# For example, the version number "v0.18.0+20240121235656" should be transformed into "v0.18.0-20240121235656" for 
+	# use as a container tag name.
+	$(eval IMAGE_TAG := $(subst +,-,$(VERSION)))
+	@echo "===========> Building docker image $(IMAGE) $(IMAGE_TAG) for $(IMAGE_PLAT)"
 
 	@mkdir -p $(TMP_DIR)/$(IMAGE)
 	@cp -r $(OUTPUT_DIR)/platforms/$(IMAGE_PLAT)/$(IMAGE) $(TMP_DIR)/$(IMAGE)/
@@ -86,7 +91,8 @@ image.build.%: image.dockerfile.% ## Build specified docker image in multistage 
 	$(eval ARCH := $(word 2,$(subst _, ,$(PLATFORM))))
 	$(eval DOCKERFILE := Dockerfile.multistage)
 	$(eval DST_DIR := $(ONEX_ROOT))
-	@echo "===========> Building docker image $(IMAGE) $(VERSION) for $(IMAGE_PLAT)"
+	$(eval IMAGE_TAG := $(subst +,-,$(VERSION)))
+	@echo "===========> Building docker image $(IMAGE) $(IMAGE_TAG) for $(IMAGE_PLAT)"
 endif
 	@export OUTPUT_DIR=$(OUTPUT_DIR)
 	@if [ -f  $(ONEX_ROOT)/build/docker/$(IMAGE)/build.sh ] ; then \
@@ -99,7 +105,7 @@ endif
 		--build-arg ARCH=$(ARCH) \
 		--build-arg goproxy=$($(GO) env GOPROXY) \
 		--label $(DOCKER_LABELS) \
-		-t $(REGISTRY_PREFIX)/$(IMAGE)-$(ARCH):$(VERSION) \
+		-t $(REGISTRY_PREFIX)/$(IMAGE)-$(ARCH):$(IMAGE_TAG) \
 		$(DST_DIR))
 	@if [ $(shell $(GO) env GOARCH) != $(ARCH) ] ; then \
 		$(MAKE) image.daemon.verify ; \
@@ -117,8 +123,9 @@ image.push.multiarch: image.verify go.build.verify $(foreach p,$(PLATFORMS),$(ad
 
 .PHONY: image.push.%
 image.push.%: image.build.% ## Build and push specified docker image.
-	@echo "===========> Pushing image $(IMAGE) $(VERSION) to $(REGISTRY_PREFIX)"
-	$(DOCKER) push $(REGISTRY_PREFIX)/$(IMAGE)-$(ARCH):$(VERSION)
+	# NOTICE: The `IMAGE_TAG` variable is inherited from the `image.build.%` makefile rule.
+	@echo "===========> Pushing image $(IMAGE) $(IMAGE_TAG) to $(REGISTRY_PREFIX)"
+	$(DOCKER) push $(REGISTRY_PREFIX)/$(IMAGE)-$(ARCH):$(IMAGE_TAG)
 
 .PHONY: image.manifest.push
 image.manifest.push: export DOCKER_CLI_EXPERIMENTAL := enabled
@@ -126,13 +133,13 @@ image.manifest.push: image.verify go.build.verify $(addprefix image.manifest.pus
 
 .PHONY: image.manifest.push.%
 image.manifest.push.%: image.push.% image.manifest.remove.%
-	@echo "===========> Pushing manifest $(IMAGE) $(VERSION) to $(REGISTRY_PREFIX) and then remove the local manifest list"
-	@$(DOCKER) manifest create $(REGISTRY_PREFIX)/$(IMAGE):$(VERSION) \
-		$(REGISTRY_PREFIX)/$(IMAGE)-$(ARCH):$(VERSION)
-	@$(DOCKER) manifest annotate $(REGISTRY_PREFIX)/$(IMAGE):$(VERSION) \
-		$(REGISTRY_PREFIX)/$(IMAGE)-$(ARCH):$(VERSION) \
+	@echo "===========> Pushing manifest $(IMAGE) $(IMAGE_TAG) to $(REGISTRY_PREFIX) and then remove the local manifest list"
+	@$(DOCKER) manifest create $(REGISTRY_PREFIX)/$(IMAGE):$(IMAGE_TAG) \
+		$(REGISTRY_PREFIX)/$(IMAGE)-$(ARCH):$(IMAGE_TAG)
+	@$(DOCKER) manifest annotate $(REGISTRY_PREFIX)/$(IMAGE):$(IMAGE_TAG) \
+		$(REGISTRY_PREFIX)/$(IMAGE)-$(ARCH):$(IMAGE_TAG) \
 		--os $(OS) --arch ${ARCH}
-	@$(DOCKER) manifest push --purge $(REGISTRY_PREFIX)/$(IMAGE):$(VERSION)
+	@$(DOCKER) manifest push --purge $(REGISTRY_PREFIX)/$(IMAGE):$(IMAGE_TAG)
 
 # Docker cli has a bug: https://github.com/docker/cli/issues/954
 # If you find your manifests were not updated,
@@ -140,13 +147,13 @@ image.manifest.push.%: image.push.% image.manifest.remove.%
 # and re-run.
 .PHONY: image.manifest.remove.%
 image.manifest.remove.%:
-	@rm -rf ${HOME}/.docker/manifests/docker.io_$(REGISTRY_PREFIX)_$(IMAGE)-$(VERSION)
+	@rm -rf ${HOME}/.docker/manifests/docker.io_$(REGISTRY_PREFIX)_$(IMAGE)-$(IMAGE_TAG)
 
 .PHONY: image.manifest.push.multiarch
 image.manifest.push.multiarch: image.push.multiarch $(addprefix image.manifest.push.multiarch., $(IMAGES))
 
 .PHONY: image.manifest.push.multiarch.%
 image.manifest.push.multiarch.%:
-	@echo "===========> Pushing manifest $* $(VERSION) to $(REGISTRY_PREFIX) and then remove the local manifest list"
-	REGISTRY_PREFIX=$(REGISTRY_PREFIX) PLATFROMS="$(PLATFORMS)" IMAGE=$* VERSION=$(VERSION) DOCKER_CLI_EXPERIMENTAL=enabled \
+	@echo "===========> Pushing manifest $* $(IMAGE_TAG) to $(REGISTRY_PREFIX) and then remove the local manifest list"
+	REGISTRY_PREFIX=$(REGISTRY_PREFIX) PLATFROMS="$(PLATFORMS)" IMAGE=$* VERSION=$(IMAGE_TAG) DOCKER_CLI_EXPERIMENTAL=enabled \
 	  $(ONEX_ROOT)/build/lib/create-manifest.sh

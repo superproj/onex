@@ -15,8 +15,13 @@ deploy.run: $(addprefix deploy.run., $(addprefix $(PLATFORM)., $(DEPLOYS))) ## D
 deploy.run.%: image.push.% ## Deploy a specified service.
 	$(eval ARCH := $(word 2,$(subst _, ,$(PLATFORM)))) 
 	$(eval DEPLOY := $(word 2,$(subst ., ,$*)))
-	@echo "===========> Deploying $(REGISTRY_PREFIX)/$(DEPLOY)-$(ARCH):$(VERSION)"
-	@$(KUBECTL) -n $(NAMESPACE) set image deployment/$(DEPLOY) $(DEPLOY)=$(REGISTRY_PREFIX)/$(DEPLOY)-$(ARCH):$(VERSION)
+	# In the SemVer versioning specification, the use of the "+" sign is possible, but container image tag names
+	# do not support the "+" character. Therefore, it is necessary to replace the "+" with "-" in the version number.
+	# For example, the version number "v0.18.0+20240121235656" should be transformed into "v0.18.0-20240121235656" for
+	# use as a container tag name.
+	$(eval IMAGE_TAG := $(subst +,-,$(VERSION)))
+	@echo "===========> Deploying $(REGISTRY_PREFIX)/$(DEPLOY)-$(ARCH):$(IMAGE_TAG)"
+	@$(KUBECTL) -n $(NAMESPACE) set image deployment/$(DEPLOY) $(DEPLOY)=$(REGISTRY_PREFIX)/$(DEPLOY)-$(ARCH):$(IMAGE_TAG)
 
 .PHONY: deploy.docker
 deploy.docker:

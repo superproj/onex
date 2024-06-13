@@ -360,3 +360,4 @@ apiserver.local.config
 node_modules
 _book
 /test/data
+/test-scripts
