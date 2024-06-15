@@ -30,8 +30,13 @@ source "${ONEX_ROOT}/scripts/lib/protoc.sh"
 onex::protoc::check_protoc
 onex::golang::setup_env
 
-GOPROXY=off go install k8s.io/code-generator/cmd/go-to-protobuf
-GOPROXY=off go install k8s.io/code-generator/cmd/go-to-protobuf/protoc-gen-gogo
+if ! command -v go-to-protobuf &> /dev/null ; then
+  GOPROXY=off go install k8s.io/code-generator/cmd/go-to-protobuf
+fi
+
+if ! command -v protoc-gen-gogo &> /dev/null ; then
+  GOPROXY=off go install k8s.io/code-generator/cmd/go-to-protobuf/protoc-gen-gogo
+fi
 
 # requires the 'proto' tag to build (will remove when ready)
 # searches for the protoc-gen-gogo extension in the output directory

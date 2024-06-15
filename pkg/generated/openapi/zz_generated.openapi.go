@@ -29,6 +29,12 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.ChargeRequestSpec":    schema_pkg_apis_apps_v1beta1_ChargeRequestSpec(ref),
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.ChargeRequestStatus":  schema_pkg_apis_apps_v1beta1_ChargeRequestStatus(ref),
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.Condition":            schema_pkg_apis_apps_v1beta1_Condition(ref),
+		"github.com/superproj/onex/pkg/apis/apps/v1beta1.Evaluate":             schema_pkg_apis_apps_v1beta1_Evaluate(ref),
+		"github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateAddresses":    schema_pkg_apis_apps_v1beta1_EvaluateAddresses(ref),
+		"github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateList":         schema_pkg_apis_apps_v1beta1_EvaluateList(ref),
+		"github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateSpec":         schema_pkg_apis_apps_v1beta1_EvaluateSpec(ref),
+		"github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateStatus":       schema_pkg_apis_apps_v1beta1_EvaluateStatus(ref),
+		"github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateTemplateSpec": schema_pkg_apis_apps_v1beta1_EvaluateTemplateSpec(ref),
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.LocalObjectReference": schema_pkg_apis_apps_v1beta1_LocalObjectReference(ref),
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.Miner":                schema_pkg_apis_apps_v1beta1_Miner(ref),
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.MinerAddress":         schema_pkg_apis_apps_v1beta1_MinerAddress(ref),
@@ -40,6 +46,10 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.MinerSpec":            schema_pkg_apis_apps_v1beta1_MinerSpec(ref),
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.MinerStatus":          schema_pkg_apis_apps_v1beta1_MinerStatus(ref),
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.MinerTemplateSpec":    schema_pkg_apis_apps_v1beta1_MinerTemplateSpec(ref),
+		"github.com/superproj/onex/pkg/apis/apps/v1beta1.ModelCompare":         schema_pkg_apis_apps_v1beta1_ModelCompare(ref),
+		"github.com/superproj/onex/pkg/apis/apps/v1beta1.ModelCompareList":     schema_pkg_apis_apps_v1beta1_ModelCompareList(ref),
+		"github.com/superproj/onex/pkg/apis/apps/v1beta1.ModelCompareSpec":     schema_pkg_apis_apps_v1beta1_ModelCompareSpec(ref),
+		"github.com/superproj/onex/pkg/apis/apps/v1beta1.ModelCompareStatus":   schema_pkg_apis_apps_v1beta1_ModelCompareStatus(ref),
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.ObjectMeta":           schema_pkg_apis_apps_v1beta1_ObjectMeta(ref),
 		"github.com/superproj/onex/pkg/apis/apps/v1beta1.PodInfo":              schema_pkg_apis_apps_v1beta1_PodInfo(ref),
 		"k8s.io/api/autoscaling/v1.ContainerResourceMetricSource":              schema_k8sio_api_autoscaling_v1_ContainerResourceMetricSource(ref),
@@ -754,6 +764,305 @@ func schema_pkg_apis_apps_v1beta1_Condition(ref common.ReferenceCallback) common
 	}
 }
 
+func schema_pkg_apis_apps_v1beta1_Evaluate(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "Evaluate is the Schema for the evaluates API.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"),
+						},
+					},
+					"spec": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Specification of the desired behavior of the evaluate. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateSpec"),
+						},
+					},
+					"status": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Most recently observed status of the evaluate. This data may not be up to date. Populated by the system. Read-only. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateStatus"),
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateSpec", "github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
+	}
+}
+
+func schema_pkg_apis_apps_v1beta1_EvaluateAddresses(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "EvaluateAddresses XXXX",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"hdfsRoot": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"hdfsPTPath": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"tosTrainDataPath": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"tosTestDataPath": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"tosTrainDataCount": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"integer"},
+							Format: "int64",
+						},
+					},
+					"tosTestDataCount": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"integer"},
+							Format: "int64",
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
+func schema_pkg_apis_apps_v1beta1_EvaluateList(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "EvaluateList is a list of Evaluate objects.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"),
+						},
+					},
+					"items": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Items is a list of schema objects.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.Evaluate"),
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"items"},
+			},
+		},
+		Dependencies: []string{
+			"github.com/superproj/onex/pkg/apis/apps/v1beta1.Evaluate", "k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"},
+	}
+}
+
+func schema_pkg_apis_apps_v1beta1_EvaluateSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "EvaluateSpec defines the desired state of Evaluate.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"displayName": {
+						SchemaProps: spec.SchemaProps{
+							Description: "The display name of the evaluate.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"provider": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Evaluate machine configuration.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"modelID": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Evaluate machine configuration.",
+							Type:        []string{"integer"},
+							Format:      "int64",
+						},
+					},
+					"sampleID": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"integer"},
+							Format: "int64",
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
+func schema_pkg_apis_apps_v1beta1_EvaluateStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "EvaluateStatus defines the observed state of Evaluate.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"failureReason": {
+						SchemaProps: spec.SchemaProps{
+							Description: "time (like service outages), but instead indicate that something is fundamentally wrong with the Evaluate's spec or the configuration of the controller, and that manual intervention is required. Examples of terminal errors would be invalid combinations of settings in the spec, values that are unsupported by the controller, or the responsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of Evaluates can be added as events to the Evaluate object and/or logged in the controller's output.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"failureMessage": {
+						SchemaProps: spec.SchemaProps{
+							Description: "FailureMessage will be set in the event that there is a terminal problem reconciling the Evaluate and will contain a more verbose string suitable for logging and human consumption.\n\nThis field should not be set for transitive errors that a controller faces that are expected to be fixed automatically over time (like service outages), but instead indicate that something is fundamentally wrong with the Evaluate's spec or the configuration of the controller, and that manual intervention is required. Examples of terminal errors would be invalid combinations of settings in the spec, values that are unsupported by the controller, or the responsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of Evaluates can be added as events to the Evaluate object and/or logged in the controller's output.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"addresses": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Addresses is a list of addresses assigned to the evaluate. Queried from kind cluster, if available.",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateAddresses"),
+						},
+					},
+					"startedAt": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Addresses is a list of addresses assigned to the modelcompare. Queried from kind cluster, if available.",
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.Time"),
+						},
+					},
+					"endedAt": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("k8s.io/apimachinery/pkg/apis/meta/v1.Time"),
+						},
+					},
+					"arthurID": {
+						SchemaProps: spec.SchemaProps{
+							Type:   []string{"string"},
+							Format: "",
+						},
+					},
+					"phase": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Phase represents the current phase of evaluate actuation. One of: Failed, Provisioning, Provisioned, Running, Deleting This field is maintained by evaluate controller.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"conditions": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-patch-merge-key": "type",
+								"x-kubernetes-patch-strategy":  "merge",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "Conditions defines the current state of the Evaluate",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.Condition"),
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"github.com/superproj/onex/pkg/apis/apps/v1beta1.Condition", "github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateAddresses", "k8s.io/apimachinery/pkg/apis/meta/v1.Time"},
+	}
+}
+
+func schema_pkg_apis_apps_v1beta1_EvaluateTemplateSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "EvaluateTemplateSpec describes the data needed to create a Evaluate from a template.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.ObjectMeta"),
+						},
+					},
+					"spec": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Specification of the desired behavior of the miner. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateSpec"),
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateSpec", "github.com/superproj/onex/pkg/apis/apps/v1beta1.ObjectMeta"},
+	}
+}
+
 func schema_pkg_apis_apps_v1beta1_LocalObjectReference(ref common.ReferenceCallback) common.OpenAPIDefinition {
 	return common.OpenAPIDefinition{
 		Schema: spec.Schema{
@@ -1222,7 +1531,7 @@ func schema_pkg_apis_apps_v1beta1_MinerStatus(ref common.ReferenceCallback) comm
 				Properties: map[string]spec.Schema{
 					"podRef": {
 						SchemaProps: spec.SchemaProps{
-							Description: "PodRef will point to the corresponding Pod if it exists.",
+							Description: "PodRef will point to the corresponding Pod if it exists. PodRef *corev1.ObjectReference `json:\"podRef,omitempty\" protobuf:\"bytes,1,opt,name=podRef,casttype=k8s.io/api/core/v1.ObjectReference\"`",
 							Ref:         ref("k8s.io/api/core/v1.ObjectReference"),
 						},
 					},
@@ -1328,6 +1637,226 @@ func schema_pkg_apis_apps_v1beta1_MinerTemplateSpec(ref common.ReferenceCallback
 		},
 		Dependencies: []string{
 			"github.com/superproj/onex/pkg/apis/apps/v1beta1.MinerSpec", "github.com/superproj/onex/pkg/apis/apps/v1beta1.ObjectMeta"},
+	}
+}
+
+func schema_pkg_apis_apps_v1beta1_ModelCompare(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "ModelCompare is the Schema for the modelcompares API.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"),
+						},
+					},
+					"spec": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Specification of the desired behavior of the modelcompare. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.ModelCompareSpec"),
+						},
+					},
+					"status": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Most recently observed status of the modelcompare. This data may not be up to date. Populated by the system. Read-only. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.ModelCompareStatus"),
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"github.com/superproj/onex/pkg/apis/apps/v1beta1.ModelCompareSpec", "github.com/superproj/onex/pkg/apis/apps/v1beta1.ModelCompareStatus", "k8s.io/apimachinery/pkg/apis/meta/v1.ObjectMeta"},
+	}
+}
+
+func schema_pkg_apis_apps_v1beta1_ModelCompareList(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "ModelCompareList is a list of ModelCompare objects.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"),
+						},
+					},
+					"items": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Items is a list of schema objects.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.ModelCompare"),
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"items"},
+			},
+		},
+		Dependencies: []string{
+			"github.com/superproj/onex/pkg/apis/apps/v1beta1.ModelCompare", "k8s.io/apimachinery/pkg/apis/meta/v1.ListMeta"},
+	}
+}
+
+func schema_pkg_apis_apps_v1beta1_ModelCompareSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "ModelCompareSpec defines the desired state of ModelCompare.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"selector": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Selector is a label query over miners that should match the replica count. Label keys and values that must match in order to be controlled by this MinerSet. It must match the miner template's labels. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors",
+							Default:     map[string]interface{}{},
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.LabelSelector"),
+						},
+					},
+					"template": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Template is the object that describes the miner that will be created if insufficient replicas are detected.",
+							Default:     map[string]interface{}{},
+							Ref:         ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateTemplateSpec"),
+						},
+					},
+					"displayName": {
+						SchemaProps: spec.SchemaProps{
+							Description: "The display name of the modelcompare.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"modelIDs": {
+						SchemaProps: spec.SchemaProps{
+							Description: "ModelCompare machine configuration.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: 0,
+										Type:    []string{"integer"},
+										Format:  "int64",
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"selector"},
+			},
+		},
+		Dependencies: []string{
+			"github.com/superproj/onex/pkg/apis/apps/v1beta1.EvaluateTemplateSpec", "k8s.io/apimachinery/pkg/apis/meta/v1.LabelSelector"},
+	}
+}
+
+func schema_pkg_apis_apps_v1beta1_ModelCompareStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "ModelCompareStatus defines the observed state of ModelCompare.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"failureReason": {
+						SchemaProps: spec.SchemaProps{
+							Description: "time (like service outages), but instead indicate that something is fundamentally wrong with the ModelCompare's spec or the configuration of the controller, and that manual intervention is required. Examples of terminal errors would be invalid combinations of settings in the spec, values that are unsupported by the controller, or the responsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of ModelCompares can be added as events to the ModelCompare object and/or logged in the controller's output.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"failureMessage": {
+						SchemaProps: spec.SchemaProps{
+							Description: "FailureMessage will be set in the event that there is a terminal problem reconciling the ModelCompare and will contain a more verbose string suitable for logging and human consumption.\n\nThis field should not be set for transitive errors that a controller faces that are expected to be fixed automatically over time (like service outages), but instead indicate that something is fundamentally wrong with the ModelCompare's spec or the configuration of the controller, and that manual intervention is required. Examples of terminal errors would be invalid combinations of settings in the spec, values that are unsupported by the controller, or the responsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of ModelCompares can be added as events to the ModelCompare object and/or logged in the controller's output.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"startedAt": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Addresses is a list of addresses assigned to the modelcompare. Queried from kind cluster, if available.",
+							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.Time"),
+						},
+					},
+					"endedAt": {
+						SchemaProps: spec.SchemaProps{
+							Ref: ref("k8s.io/apimachinery/pkg/apis/meta/v1.Time"),
+						},
+					},
+					"phase": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Phase represents the current phase of modelcompare actuation. One of: Failed, Provisioning, Provisioned, Running, Deleting This field is maintained by modelcompare controller.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"conditions": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-patch-merge-key": "type",
+								"x-kubernetes-patch-strategy":  "merge",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "Conditions defines the current state of the Evaluate",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: map[string]interface{}{},
+										Ref:     ref("github.com/superproj/onex/pkg/apis/apps/v1beta1.Condition"),
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"github.com/superproj/onex/pkg/apis/apps/v1beta1.Condition", "k8s.io/apimachinery/pkg/apis/meta/v1.Time"},
 	}
 }
 

@@ -14,7 +14,6 @@ import (
 
 	"github.com/superproj/onex/internal/gateway"
 	"github.com/superproj/onex/internal/pkg/client"
-	"github.com/superproj/onex/internal/pkg/client/usercenter"
 	"github.com/superproj/onex/internal/pkg/feature"
 	kubeutil "github.com/superproj/onex/internal/pkg/util/kube"
 	"github.com/superproj/onex/pkg/app"
@@ -32,17 +31,16 @@ var _ app.CliOptions = (*Options)(nil)
 // Options contains state for master/api server.
 type Options struct {
 	// GenericOptions *genericoptions.Options       `json:"server"   mapstructure:"server"`
-	GRPCOptions       *genericoptions.GRPCOptions    `json:"grpc" mapstructure:"grpc"`
-	HTTPOptions       *genericoptions.HTTPOptions    `json:"http" mapstructure:"http"`
-	TLSOptions        *genericoptions.TLSOptions     `json:"tls" mapstructure:"tls"`
-	MySQLOptions      *genericoptions.MySQLOptions   `json:"mysql" mapstructure:"mysql"`
-	RedisOptions      *genericoptions.RedisOptions   `json:"redis" mapstructure:"redis"`
-	EtcdOptions       *genericoptions.EtcdOptions    `json:"etcd" mapstructure:"etcd"`
-	JaegerOptions     *genericoptions.JaegerOptions  `json:"jaeger" mapstructure:"jaeger"`
-	ConsulOptions     *genericoptions.ConsulOptions  `json:"consul" mapstructure:"consul"`
-	UserCenterOptions *usercenter.UserCenterOptions  `json:"usercenter" mapstructure:"usercenter"`
-	Metrics           *genericoptions.MetricsOptions `json:"metrics" mapstructure:"metrics"`
-	EnableTLS         bool                           `json:"enable-tls" mapstructure:"enable-tls"`
+	GRPCOptions   *genericoptions.GRPCOptions    `json:"grpc" mapstructure:"grpc"`
+	HTTPOptions   *genericoptions.HTTPOptions    `json:"http" mapstructure:"http"`
+	TLSOptions    *genericoptions.TLSOptions     `json:"tls" mapstructure:"tls"`
+	MySQLOptions  *genericoptions.MySQLOptions   `json:"mysql" mapstructure:"mysql"`
+	RedisOptions  *genericoptions.RedisOptions   `json:"redis" mapstructure:"redis"`
+	EtcdOptions   *genericoptions.EtcdOptions    `json:"etcd" mapstructure:"etcd"`
+	JaegerOptions *genericoptions.JaegerOptions  `json:"jaeger" mapstructure:"jaeger"`
+	ConsulOptions *genericoptions.ConsulOptions  `json:"consul" mapstructure:"consul"`
+	Metrics       *genericoptions.MetricsOptions `json:"metrics" mapstructure:"metrics"`
+	EnableTLS     bool                           `json:"enable-tls" mapstructure:"enable-tls"`
 	// Path to kubeconfig file with authorization and master location information.
 	Kubeconfig   string          `json:"kubeconfig" mapstructure:"kubeconfig"`
 	FeatureGates map[string]bool `json:"feature-gates"`
@@ -54,17 +52,16 @@ type Options struct {
 func NewOptions() *Options {
 	o := &Options{
 		// GenericOptions: genericoptions.NewOptions(),
-		GRPCOptions:       genericoptions.NewGRPCOptions(),
-		HTTPOptions:       genericoptions.NewHTTPOptions(),
-		TLSOptions:        genericoptions.NewTLSOptions(),
-		MySQLOptions:      genericoptions.NewMySQLOptions(),
-		RedisOptions:      genericoptions.NewRedisOptions(),
-		EtcdOptions:       genericoptions.NewEtcdOptions(),
-		JaegerOptions:     genericoptions.NewJaegerOptions(),
-		ConsulOptions:     genericoptions.NewConsulOptions(),
-		UserCenterOptions: usercenter.NewUserCenterOptions(),
-		Metrics:           genericoptions.NewMetricsOptions(),
-		Log:               log.NewOptions(),
+		GRPCOptions:   genericoptions.NewGRPCOptions(),
+		HTTPOptions:   genericoptions.NewHTTPOptions(),
+		TLSOptions:    genericoptions.NewTLSOptions(),
+		MySQLOptions:  genericoptions.NewMySQLOptions(),
+		RedisOptions:  genericoptions.NewRedisOptions(),
+		EtcdOptions:   genericoptions.NewEtcdOptions(),
+		JaegerOptions: genericoptions.NewJaegerOptions(),
+		ConsulOptions: genericoptions.NewConsulOptions(),
+		Metrics:       genericoptions.NewMetricsOptions(),
+		Log:           log.NewOptions(),
 	}
 
 	return o
@@ -80,7 +77,6 @@ func (o *Options) Flags() (fss cliflag.NamedFlagSets) {
 	o.EtcdOptions.AddFlags(fss.FlagSet("etcd"))
 	o.JaegerOptions.AddFlags(fss.FlagSet("jaeger"))
 	o.ConsulOptions.AddFlags(fss.FlagSet("consul"))
-	o.UserCenterOptions.AddFlags(fss.FlagSet("usercenter"))
 	o.Metrics.AddFlags(fss.FlagSet("metrics"))
 	o.Log.AddFlags(fss.FlagSet("log"))
 
@@ -115,7 +111,6 @@ func (o *Options) Validate() error {
 	errs = append(errs, o.EtcdOptions.Validate()...)
 	errs = append(errs, o.JaegerOptions.Validate()...)
 	errs = append(errs, o.ConsulOptions.Validate()...)
-	errs = append(errs, o.UserCenterOptions.Validate()...)
 	errs = append(errs, o.Metrics.Validate()...)
 	errs = append(errs, o.Log.Validate()...)
 
@@ -127,7 +122,6 @@ func (o *Options) ApplyTo(c *gateway.Config) error {
 	c.GRPCOptions = o.GRPCOptions
 	c.HTTPOptions = o.HTTPOptions
 	c.TLSOptions = o.TLSOptions
-	c.UserCenterOptions = o.UserCenterOptions
 	c.MySQLOptions = o.MySQLOptions
 	c.RedisOptions = o.RedisOptions
 	c.EtcdOptions = o.EtcdOptions

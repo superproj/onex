@@ -7,6 +7,9 @@
 package v1beta1
 
 const (
+	// ModelCompareNameLabel is the label set on evaluates linked to a modelcompare.
+	ModelCompareNameLabel = "apps.onex.io/modelcompare-name"
+
 	// ChainNameLabel is the label set on miners linked to a chain.
 	ChainNameLabel = "apps.onex.io/chain-name"
 

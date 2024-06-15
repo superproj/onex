@@ -21,11 +21,7 @@ import (
 	"github.com/superproj/onex/internal/gateway/server"
 	"github.com/superproj/onex/internal/gateway/service"
 	"github.com/superproj/onex/internal/gateway/store"
-	customvalidation "github.com/superproj/onex/internal/gateway/validation"
 	"github.com/superproj/onex/internal/pkg/bootstrap"
-	"github.com/superproj/onex/internal/pkg/client/usercenter"
-	"github.com/superproj/onex/internal/pkg/idempotent"
-	"github.com/superproj/onex/internal/pkg/validation"
 	"github.com/superproj/onex/pkg/db"
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
 	genericoptions "github.com/superproj/onex/pkg/options"
@@ -39,7 +35,6 @@ func wireApp(
 	clientset.Interface,
 	*db.MySQLOptions,
 	*db.RedisOptions,
-	*usercenter.UserCenterOptions,
 	*genericoptions.RedisOptions,
 	*genericoptions.EtcdOptions,
 ) (*kratos.App, func(), error) {
@@ -48,13 +43,9 @@ func wireApp(
 		bootstrap.NewEtcdRegistrar,
 		server.ProviderSet,
 		store.ProviderSet,
-		usercenter.ProviderSet,
 		db.ProviderSet,
 		biz.ProviderSet,
 		service.ProviderSet,
-		validation.ProviderSet,
-		idempotent.ProviderSet,
-		customvalidation.ProviderSet,
 		createInformers,
 	)
 

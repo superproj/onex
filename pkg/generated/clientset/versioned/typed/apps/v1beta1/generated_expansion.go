@@ -11,6 +11,10 @@ type ChainExpansion interface{}
 
 type ChargeRequestExpansion interface{}
 
+type EvaluateExpansion interface{}
+
 type MinerExpansion interface{}
 
 type MinerSetExpansion interface{}
+
+type ModelCompareExpansion interface{}

@@ -79,6 +79,66 @@ func RegisterConversions(s *runtime.Scheme) error {
 	}); err != nil {
 		return err
 	}
+	if err := s.AddGeneratedConversionFunc((*Evaluate)(nil), (*apps.Evaluate)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_Evaluate_To_apps_Evaluate(a.(*Evaluate), b.(*apps.Evaluate), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*apps.Evaluate)(nil), (*Evaluate)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_apps_Evaluate_To_v1beta1_Evaluate(a.(*apps.Evaluate), b.(*Evaluate), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*EvaluateAddresses)(nil), (*apps.EvaluateAddresses)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_EvaluateAddresses_To_apps_EvaluateAddresses(a.(*EvaluateAddresses), b.(*apps.EvaluateAddresses), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*apps.EvaluateAddresses)(nil), (*EvaluateAddresses)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_apps_EvaluateAddresses_To_v1beta1_EvaluateAddresses(a.(*apps.EvaluateAddresses), b.(*EvaluateAddresses), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*EvaluateList)(nil), (*apps.EvaluateList)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_EvaluateList_To_apps_EvaluateList(a.(*EvaluateList), b.(*apps.EvaluateList), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*apps.EvaluateList)(nil), (*EvaluateList)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_apps_EvaluateList_To_v1beta1_EvaluateList(a.(*apps.EvaluateList), b.(*EvaluateList), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*EvaluateSpec)(nil), (*apps.EvaluateSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_EvaluateSpec_To_apps_EvaluateSpec(a.(*EvaluateSpec), b.(*apps.EvaluateSpec), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*apps.EvaluateSpec)(nil), (*EvaluateSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_apps_EvaluateSpec_To_v1beta1_EvaluateSpec(a.(*apps.EvaluateSpec), b.(*EvaluateSpec), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*EvaluateStatus)(nil), (*apps.EvaluateStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_EvaluateStatus_To_apps_EvaluateStatus(a.(*EvaluateStatus), b.(*apps.EvaluateStatus), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*apps.EvaluateStatus)(nil), (*EvaluateStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_apps_EvaluateStatus_To_v1beta1_EvaluateStatus(a.(*apps.EvaluateStatus), b.(*EvaluateStatus), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*EvaluateTemplateSpec)(nil), (*apps.EvaluateTemplateSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_EvaluateTemplateSpec_To_apps_EvaluateTemplateSpec(a.(*EvaluateTemplateSpec), b.(*apps.EvaluateTemplateSpec), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*apps.EvaluateTemplateSpec)(nil), (*EvaluateTemplateSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_apps_EvaluateTemplateSpec_To_v1beta1_EvaluateTemplateSpec(a.(*apps.EvaluateTemplateSpec), b.(*EvaluateTemplateSpec), scope)
+	}); err != nil {
+		return err
+	}
 	if err := s.AddGeneratedConversionFunc((*LocalObjectReference)(nil), (*apps.LocalObjectReference)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_v1beta1_LocalObjectReference_To_apps_LocalObjectReference(a.(*LocalObjectReference), b.(*apps.LocalObjectReference), scope)
 	}); err != nil {
@@ -186,6 +246,46 @@ func RegisterConversions(s *runtime.Scheme) error {
 	}
 	if err := s.AddGeneratedConversionFunc((*apps.MinerTemplateSpec)(nil), (*MinerTemplateSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
 		return Convert_apps_MinerTemplateSpec_To_v1beta1_MinerTemplateSpec(a.(*apps.MinerTemplateSpec), b.(*MinerTemplateSpec), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ModelCompare)(nil), (*apps.ModelCompare)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ModelCompare_To_apps_ModelCompare(a.(*ModelCompare), b.(*apps.ModelCompare), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*apps.ModelCompare)(nil), (*ModelCompare)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_apps_ModelCompare_To_v1beta1_ModelCompare(a.(*apps.ModelCompare), b.(*ModelCompare), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ModelCompareList)(nil), (*apps.ModelCompareList)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ModelCompareList_To_apps_ModelCompareList(a.(*ModelCompareList), b.(*apps.ModelCompareList), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*apps.ModelCompareList)(nil), (*ModelCompareList)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_apps_ModelCompareList_To_v1beta1_ModelCompareList(a.(*apps.ModelCompareList), b.(*ModelCompareList), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ModelCompareSpec)(nil), (*apps.ModelCompareSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ModelCompareSpec_To_apps_ModelCompareSpec(a.(*ModelCompareSpec), b.(*apps.ModelCompareSpec), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*apps.ModelCompareSpec)(nil), (*ModelCompareSpec)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_apps_ModelCompareSpec_To_v1beta1_ModelCompareSpec(a.(*apps.ModelCompareSpec), b.(*ModelCompareSpec), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*ModelCompareStatus)(nil), (*apps.ModelCompareStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_v1beta1_ModelCompareStatus_To_apps_ModelCompareStatus(a.(*ModelCompareStatus), b.(*apps.ModelCompareStatus), scope)
+	}); err != nil {
+		return err
+	}
+	if err := s.AddGeneratedConversionFunc((*apps.ModelCompareStatus)(nil), (*ModelCompareStatus)(nil), func(a, b interface{}, scope conversion.Scope) error {
+		return Convert_apps_ModelCompareStatus_To_v1beta1_ModelCompareStatus(a.(*apps.ModelCompareStatus), b.(*ModelCompareStatus), scope)
 	}); err != nil {
 		return err
 	}
@@ -348,6 +448,204 @@ func autoConvert_apps_Condition_To_v1beta1_Condition(in *apps.Condition, out *Co
 // Convert_apps_Condition_To_v1beta1_Condition is an autogenerated conversion function.
 func Convert_apps_Condition_To_v1beta1_Condition(in *apps.Condition, out *Condition, s conversion.Scope) error {
 	return autoConvert_apps_Condition_To_v1beta1_Condition(in, out, s)
+}
+
+func autoConvert_v1beta1_Evaluate_To_apps_Evaluate(in *Evaluate, out *apps.Evaluate, s conversion.Scope) error {
+	out.ObjectMeta = in.ObjectMeta
+	if err := Convert_v1beta1_EvaluateSpec_To_apps_EvaluateSpec(&in.Spec, &out.Spec, s); err != nil {
+		return err
+	}
+	if err := Convert_v1beta1_EvaluateStatus_To_apps_EvaluateStatus(&in.Status, &out.Status, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_v1beta1_Evaluate_To_apps_Evaluate is an autogenerated conversion function.
+func Convert_v1beta1_Evaluate_To_apps_Evaluate(in *Evaluate, out *apps.Evaluate, s conversion.Scope) error {
+	return autoConvert_v1beta1_Evaluate_To_apps_Evaluate(in, out, s)
+}
+
+func autoConvert_apps_Evaluate_To_v1beta1_Evaluate(in *apps.Evaluate, out *Evaluate, s conversion.Scope) error {
+	out.ObjectMeta = in.ObjectMeta
+	if err := Convert_apps_EvaluateSpec_To_v1beta1_EvaluateSpec(&in.Spec, &out.Spec, s); err != nil {
+		return err
+	}
+	if err := Convert_apps_EvaluateStatus_To_v1beta1_EvaluateStatus(&in.Status, &out.Status, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_apps_Evaluate_To_v1beta1_Evaluate is an autogenerated conversion function.
+func Convert_apps_Evaluate_To_v1beta1_Evaluate(in *apps.Evaluate, out *Evaluate, s conversion.Scope) error {
+	return autoConvert_apps_Evaluate_To_v1beta1_Evaluate(in, out, s)
+}
+
+func autoConvert_v1beta1_EvaluateAddresses_To_apps_EvaluateAddresses(in *EvaluateAddresses, out *apps.EvaluateAddresses, s conversion.Scope) error {
+	out.HDFSRoot = in.HDFSRoot
+	out.HDFSPtPath = in.HDFSPtPath
+	out.TOSTrainDataPath = in.TOSTrainDataPath
+	out.TOSTestDataPath = in.TOSTestDataPath
+	out.TOSTrainDataCount = in.TOSTrainDataCount
+	out.TOSTestDataConut = in.TOSTestDataConut
+	return nil
+}
+
+// Convert_v1beta1_EvaluateAddresses_To_apps_EvaluateAddresses is an autogenerated conversion function.
+func Convert_v1beta1_EvaluateAddresses_To_apps_EvaluateAddresses(in *EvaluateAddresses, out *apps.EvaluateAddresses, s conversion.Scope) error {
+	return autoConvert_v1beta1_EvaluateAddresses_To_apps_EvaluateAddresses(in, out, s)
+}
+
+func autoConvert_apps_EvaluateAddresses_To_v1beta1_EvaluateAddresses(in *apps.EvaluateAddresses, out *EvaluateAddresses, s conversion.Scope) error {
+	out.HDFSRoot = in.HDFSRoot
+	out.HDFSPtPath = in.HDFSPtPath
+	out.TOSTrainDataPath = in.TOSTrainDataPath
+	out.TOSTestDataPath = in.TOSTestDataPath
+	out.TOSTrainDataCount = in.TOSTrainDataCount
+	out.TOSTestDataConut = in.TOSTestDataConut
+	return nil
+}
+
+// Convert_apps_EvaluateAddresses_To_v1beta1_EvaluateAddresses is an autogenerated conversion function.
+func Convert_apps_EvaluateAddresses_To_v1beta1_EvaluateAddresses(in *apps.EvaluateAddresses, out *EvaluateAddresses, s conversion.Scope) error {
+	return autoConvert_apps_EvaluateAddresses_To_v1beta1_EvaluateAddresses(in, out, s)
+}
+
+func autoConvert_v1beta1_EvaluateList_To_apps_EvaluateList(in *EvaluateList, out *apps.EvaluateList, s conversion.Scope) error {
+	out.ListMeta = in.ListMeta
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]apps.Evaluate, len(*in))
+		for i := range *in {
+			if err := Convert_v1beta1_Evaluate_To_apps_Evaluate(&(*in)[i], &(*out)[i], s); err != nil {
+				return err
+			}
+		}
+	} else {
+		out.Items = nil
+	}
+	return nil
+}
+
+// Convert_v1beta1_EvaluateList_To_apps_EvaluateList is an autogenerated conversion function.
+func Convert_v1beta1_EvaluateList_To_apps_EvaluateList(in *EvaluateList, out *apps.EvaluateList, s conversion.Scope) error {
+	return autoConvert_v1beta1_EvaluateList_To_apps_EvaluateList(in, out, s)
+}
+
+func autoConvert_apps_EvaluateList_To_v1beta1_EvaluateList(in *apps.EvaluateList, out *EvaluateList, s conversion.Scope) error {
+	out.ListMeta = in.ListMeta
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]Evaluate, len(*in))
+		for i := range *in {
+			if err := Convert_apps_Evaluate_To_v1beta1_Evaluate(&(*in)[i], &(*out)[i], s); err != nil {
+				return err
+			}
+		}
+	} else {
+		out.Items = nil
+	}
+	return nil
+}
+
+// Convert_apps_EvaluateList_To_v1beta1_EvaluateList is an autogenerated conversion function.
+func Convert_apps_EvaluateList_To_v1beta1_EvaluateList(in *apps.EvaluateList, out *EvaluateList, s conversion.Scope) error {
+	return autoConvert_apps_EvaluateList_To_v1beta1_EvaluateList(in, out, s)
+}
+
+func autoConvert_v1beta1_EvaluateSpec_To_apps_EvaluateSpec(in *EvaluateSpec, out *apps.EvaluateSpec, s conversion.Scope) error {
+	out.DisplayName = in.DisplayName
+	out.Provider = in.Provider
+	out.ModelID = in.ModelID
+	out.SampleID = in.SampleID
+	return nil
+}
+
+// Convert_v1beta1_EvaluateSpec_To_apps_EvaluateSpec is an autogenerated conversion function.
+func Convert_v1beta1_EvaluateSpec_To_apps_EvaluateSpec(in *EvaluateSpec, out *apps.EvaluateSpec, s conversion.Scope) error {
+	return autoConvert_v1beta1_EvaluateSpec_To_apps_EvaluateSpec(in, out, s)
+}
+
+func autoConvert_apps_EvaluateSpec_To_v1beta1_EvaluateSpec(in *apps.EvaluateSpec, out *EvaluateSpec, s conversion.Scope) error {
+	out.DisplayName = in.DisplayName
+	out.ModelID = in.ModelID
+	out.Provider = in.Provider
+	out.SampleID = in.SampleID
+	return nil
+}
+
+// Convert_apps_EvaluateSpec_To_v1beta1_EvaluateSpec is an autogenerated conversion function.
+func Convert_apps_EvaluateSpec_To_v1beta1_EvaluateSpec(in *apps.EvaluateSpec, out *EvaluateSpec, s conversion.Scope) error {
+	return autoConvert_apps_EvaluateSpec_To_v1beta1_EvaluateSpec(in, out, s)
+}
+
+func autoConvert_v1beta1_EvaluateStatus_To_apps_EvaluateStatus(in *EvaluateStatus, out *apps.EvaluateStatus, s conversion.Scope) error {
+	out.FailureReason = (*errors.MinerStatusError)(unsafe.Pointer(in.FailureReason))
+	out.FailureMessage = (*string)(unsafe.Pointer(in.FailureMessage))
+	if err := Convert_v1beta1_EvaluateAddresses_To_apps_EvaluateAddresses(&in.Addresses, &out.Addresses, s); err != nil {
+		return err
+	}
+	out.StartedAt = (*metav1.Time)(unsafe.Pointer(in.StartedAt))
+	out.EndedAt = (*metav1.Time)(unsafe.Pointer(in.EndedAt))
+	out.ArthurID = (*string)(unsafe.Pointer(in.ArthurID))
+	out.Phase = in.Phase
+	out.Conditions = *(*apps.Conditions)(unsafe.Pointer(&in.Conditions))
+	return nil
+}
+
+// Convert_v1beta1_EvaluateStatus_To_apps_EvaluateStatus is an autogenerated conversion function.
+func Convert_v1beta1_EvaluateStatus_To_apps_EvaluateStatus(in *EvaluateStatus, out *apps.EvaluateStatus, s conversion.Scope) error {
+	return autoConvert_v1beta1_EvaluateStatus_To_apps_EvaluateStatus(in, out, s)
+}
+
+func autoConvert_apps_EvaluateStatus_To_v1beta1_EvaluateStatus(in *apps.EvaluateStatus, out *EvaluateStatus, s conversion.Scope) error {
+	out.FailureReason = (*errors.MinerStatusError)(unsafe.Pointer(in.FailureReason))
+	out.FailureMessage = (*string)(unsafe.Pointer(in.FailureMessage))
+	if err := Convert_apps_EvaluateAddresses_To_v1beta1_EvaluateAddresses(&in.Addresses, &out.Addresses, s); err != nil {
+		return err
+	}
+	out.StartedAt = (*metav1.Time)(unsafe.Pointer(in.StartedAt))
+	out.EndedAt = (*metav1.Time)(unsafe.Pointer(in.EndedAt))
+	out.ArthurID = (*string)(unsafe.Pointer(in.ArthurID))
+	out.Phase = in.Phase
+	out.Conditions = *(*Conditions)(unsafe.Pointer(&in.Conditions))
+	return nil
+}
+
+// Convert_apps_EvaluateStatus_To_v1beta1_EvaluateStatus is an autogenerated conversion function.
+func Convert_apps_EvaluateStatus_To_v1beta1_EvaluateStatus(in *apps.EvaluateStatus, out *EvaluateStatus, s conversion.Scope) error {
+	return autoConvert_apps_EvaluateStatus_To_v1beta1_EvaluateStatus(in, out, s)
+}
+
+func autoConvert_v1beta1_EvaluateTemplateSpec_To_apps_EvaluateTemplateSpec(in *EvaluateTemplateSpec, out *apps.EvaluateTemplateSpec, s conversion.Scope) error {
+	if err := Convert_v1beta1_ObjectMeta_To_apps_ObjectMeta(&in.ObjectMeta, &out.ObjectMeta, s); err != nil {
+		return err
+	}
+	if err := Convert_v1beta1_EvaluateSpec_To_apps_EvaluateSpec(&in.Spec, &out.Spec, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_v1beta1_EvaluateTemplateSpec_To_apps_EvaluateTemplateSpec is an autogenerated conversion function.
+func Convert_v1beta1_EvaluateTemplateSpec_To_apps_EvaluateTemplateSpec(in *EvaluateTemplateSpec, out *apps.EvaluateTemplateSpec, s conversion.Scope) error {
+	return autoConvert_v1beta1_EvaluateTemplateSpec_To_apps_EvaluateTemplateSpec(in, out, s)
+}
+
+func autoConvert_apps_EvaluateTemplateSpec_To_v1beta1_EvaluateTemplateSpec(in *apps.EvaluateTemplateSpec, out *EvaluateTemplateSpec, s conversion.Scope) error {
+	if err := Convert_apps_ObjectMeta_To_v1beta1_ObjectMeta(&in.ObjectMeta, &out.ObjectMeta, s); err != nil {
+		return err
+	}
+	if err := Convert_apps_EvaluateSpec_To_v1beta1_EvaluateSpec(&in.Spec, &out.Spec, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_apps_EvaluateTemplateSpec_To_v1beta1_EvaluateTemplateSpec is an autogenerated conversion function.
+func Convert_apps_EvaluateTemplateSpec_To_v1beta1_EvaluateTemplateSpec(in *apps.EvaluateTemplateSpec, out *EvaluateTemplateSpec, s conversion.Scope) error {
+	return autoConvert_apps_EvaluateTemplateSpec_To_v1beta1_EvaluateTemplateSpec(in, out, s)
 }
 
 func autoConvert_v1beta1_LocalObjectReference_To_apps_LocalObjectReference(in *LocalObjectReference, out *apps.LocalObjectReference, s conversion.Scope) error {
@@ -666,6 +964,140 @@ func autoConvert_apps_MinerTemplateSpec_To_v1beta1_MinerTemplateSpec(in *apps.Mi
 // Convert_apps_MinerTemplateSpec_To_v1beta1_MinerTemplateSpec is an autogenerated conversion function.
 func Convert_apps_MinerTemplateSpec_To_v1beta1_MinerTemplateSpec(in *apps.MinerTemplateSpec, out *MinerTemplateSpec, s conversion.Scope) error {
 	return autoConvert_apps_MinerTemplateSpec_To_v1beta1_MinerTemplateSpec(in, out, s)
+}
+
+func autoConvert_v1beta1_ModelCompare_To_apps_ModelCompare(in *ModelCompare, out *apps.ModelCompare, s conversion.Scope) error {
+	out.ObjectMeta = in.ObjectMeta
+	if err := Convert_v1beta1_ModelCompareSpec_To_apps_ModelCompareSpec(&in.Spec, &out.Spec, s); err != nil {
+		return err
+	}
+	if err := Convert_v1beta1_ModelCompareStatus_To_apps_ModelCompareStatus(&in.Status, &out.Status, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_v1beta1_ModelCompare_To_apps_ModelCompare is an autogenerated conversion function.
+func Convert_v1beta1_ModelCompare_To_apps_ModelCompare(in *ModelCompare, out *apps.ModelCompare, s conversion.Scope) error {
+	return autoConvert_v1beta1_ModelCompare_To_apps_ModelCompare(in, out, s)
+}
+
+func autoConvert_apps_ModelCompare_To_v1beta1_ModelCompare(in *apps.ModelCompare, out *ModelCompare, s conversion.Scope) error {
+	out.ObjectMeta = in.ObjectMeta
+	if err := Convert_apps_ModelCompareSpec_To_v1beta1_ModelCompareSpec(&in.Spec, &out.Spec, s); err != nil {
+		return err
+	}
+	if err := Convert_apps_ModelCompareStatus_To_v1beta1_ModelCompareStatus(&in.Status, &out.Status, s); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Convert_apps_ModelCompare_To_v1beta1_ModelCompare is an autogenerated conversion function.
+func Convert_apps_ModelCompare_To_v1beta1_ModelCompare(in *apps.ModelCompare, out *ModelCompare, s conversion.Scope) error {
+	return autoConvert_apps_ModelCompare_To_v1beta1_ModelCompare(in, out, s)
+}
+
+func autoConvert_v1beta1_ModelCompareList_To_apps_ModelCompareList(in *ModelCompareList, out *apps.ModelCompareList, s conversion.Scope) error {
+	out.ListMeta = in.ListMeta
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]apps.ModelCompare, len(*in))
+		for i := range *in {
+			if err := Convert_v1beta1_ModelCompare_To_apps_ModelCompare(&(*in)[i], &(*out)[i], s); err != nil {
+				return err
+			}
+		}
+	} else {
+		out.Items = nil
+	}
+	return nil
+}
+
+// Convert_v1beta1_ModelCompareList_To_apps_ModelCompareList is an autogenerated conversion function.
+func Convert_v1beta1_ModelCompareList_To_apps_ModelCompareList(in *ModelCompareList, out *apps.ModelCompareList, s conversion.Scope) error {
+	return autoConvert_v1beta1_ModelCompareList_To_apps_ModelCompareList(in, out, s)
+}
+
+func autoConvert_apps_ModelCompareList_To_v1beta1_ModelCompareList(in *apps.ModelCompareList, out *ModelCompareList, s conversion.Scope) error {
+	out.ListMeta = in.ListMeta
+	if in.Items != nil {
+		in, out := &in.Items, &out.Items
+		*out = make([]ModelCompare, len(*in))
+		for i := range *in {
+			if err := Convert_apps_ModelCompare_To_v1beta1_ModelCompare(&(*in)[i], &(*out)[i], s); err != nil {
+				return err
+			}
+		}
+	} else {
+		out.Items = nil
+	}
+	return nil
+}
+
+// Convert_apps_ModelCompareList_To_v1beta1_ModelCompareList is an autogenerated conversion function.
+func Convert_apps_ModelCompareList_To_v1beta1_ModelCompareList(in *apps.ModelCompareList, out *ModelCompareList, s conversion.Scope) error {
+	return autoConvert_apps_ModelCompareList_To_v1beta1_ModelCompareList(in, out, s)
+}
+
+func autoConvert_v1beta1_ModelCompareSpec_To_apps_ModelCompareSpec(in *ModelCompareSpec, out *apps.ModelCompareSpec, s conversion.Scope) error {
+	out.Selector = in.Selector
+	if err := Convert_v1beta1_EvaluateTemplateSpec_To_apps_EvaluateTemplateSpec(&in.Template, &out.Template, s); err != nil {
+		return err
+	}
+	out.DisplayName = in.DisplayName
+	out.ModelIDs = *(*[]int64)(unsafe.Pointer(&in.ModelIDs))
+	return nil
+}
+
+// Convert_v1beta1_ModelCompareSpec_To_apps_ModelCompareSpec is an autogenerated conversion function.
+func Convert_v1beta1_ModelCompareSpec_To_apps_ModelCompareSpec(in *ModelCompareSpec, out *apps.ModelCompareSpec, s conversion.Scope) error {
+	return autoConvert_v1beta1_ModelCompareSpec_To_apps_ModelCompareSpec(in, out, s)
+}
+
+func autoConvert_apps_ModelCompareSpec_To_v1beta1_ModelCompareSpec(in *apps.ModelCompareSpec, out *ModelCompareSpec, s conversion.Scope) error {
+	out.Selector = in.Selector
+	if err := Convert_apps_EvaluateTemplateSpec_To_v1beta1_EvaluateTemplateSpec(&in.Template, &out.Template, s); err != nil {
+		return err
+	}
+	out.DisplayName = in.DisplayName
+	out.ModelIDs = *(*[]int64)(unsafe.Pointer(&in.ModelIDs))
+	return nil
+}
+
+// Convert_apps_ModelCompareSpec_To_v1beta1_ModelCompareSpec is an autogenerated conversion function.
+func Convert_apps_ModelCompareSpec_To_v1beta1_ModelCompareSpec(in *apps.ModelCompareSpec, out *ModelCompareSpec, s conversion.Scope) error {
+	return autoConvert_apps_ModelCompareSpec_To_v1beta1_ModelCompareSpec(in, out, s)
+}
+
+func autoConvert_v1beta1_ModelCompareStatus_To_apps_ModelCompareStatus(in *ModelCompareStatus, out *apps.ModelCompareStatus, s conversion.Scope) error {
+	out.FailureReason = (*errors.MinerStatusError)(unsafe.Pointer(in.FailureReason))
+	out.FailureMessage = (*string)(unsafe.Pointer(in.FailureMessage))
+	out.StartedAt = (*metav1.Time)(unsafe.Pointer(in.StartedAt))
+	out.EndedAt = (*metav1.Time)(unsafe.Pointer(in.EndedAt))
+	out.Phase = in.Phase
+	out.Conditions = *(*apps.Conditions)(unsafe.Pointer(&in.Conditions))
+	return nil
+}
+
+// Convert_v1beta1_ModelCompareStatus_To_apps_ModelCompareStatus is an autogenerated conversion function.
+func Convert_v1beta1_ModelCompareStatus_To_apps_ModelCompareStatus(in *ModelCompareStatus, out *apps.ModelCompareStatus, s conversion.Scope) error {
+	return autoConvert_v1beta1_ModelCompareStatus_To_apps_ModelCompareStatus(in, out, s)
+}
+
+func autoConvert_apps_ModelCompareStatus_To_v1beta1_ModelCompareStatus(in *apps.ModelCompareStatus, out *ModelCompareStatus, s conversion.Scope) error {
+	out.FailureReason = (*errors.MinerStatusError)(unsafe.Pointer(in.FailureReason))
+	out.FailureMessage = (*string)(unsafe.Pointer(in.FailureMessage))
+	out.StartedAt = (*metav1.Time)(unsafe.Pointer(in.StartedAt))
+	out.EndedAt = (*metav1.Time)(unsafe.Pointer(in.EndedAt))
+	out.Phase = in.Phase
+	out.Conditions = *(*Conditions)(unsafe.Pointer(&in.Conditions))
+	return nil
+}
+
+// Convert_apps_ModelCompareStatus_To_v1beta1_ModelCompareStatus is an autogenerated conversion function.
+func Convert_apps_ModelCompareStatus_To_v1beta1_ModelCompareStatus(in *apps.ModelCompareStatus, out *ModelCompareStatus, s conversion.Scope) error {
+	return autoConvert_apps_ModelCompareStatus_To_v1beta1_ModelCompareStatus(in, out, s)
 }
 
 func autoConvert_v1beta1_ObjectMeta_To_apps_ObjectMeta(in *ObjectMeta, out *apps.ObjectMeta, s conversion.Scope) error {

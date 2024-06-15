@@ -44,6 +44,7 @@ import (
 	"github.com/superproj/onex/cmd/onex-controller-manager/app/options"
 	onexcontroller "github.com/superproj/onex/internal/controller"
 	configv1beta1 "github.com/superproj/onex/internal/controller/apis/config/v1beta1"
+	modelcomparecontroller "github.com/superproj/onex/internal/controller/modelcompare"
 	"github.com/superproj/onex/internal/gateway/store"
 	"github.com/superproj/onex/internal/pkg/metrics"
 	"github.com/superproj/onex/internal/pkg/util/ratelimiter"
@@ -237,7 +238,7 @@ func Run(ctx context.Context, c *config.CompletedConfig) error {
 	record.InitFromRecorder(mgr.GetEventRecorderFor("onex-controller-manager"))
 
 	// setup resource cleaner controller
-	clean := newCleaner(mgr.GetClient(), storeClient, &cleaner.Miner{}, &cleaner.MinerSet{}, &cleaner.Chain{})
+	clean := newCleaner(mgr.GetClient(), storeClient, &cleaner.ModelCompare{})
 	if err := mgr.Add(clean); err != nil {
 		klog.ErrorS(err, "Unable to create resource cleaner", "controller", "ResourceCleaner")
 		return err
@@ -283,19 +284,19 @@ func setupReconcilers(ctx context.Context, c *config.CompletedConfig, storeClien
 		RateLimiter:             ratelimiter.DefaultControllerRateLimiter(),
 	}
 
-	// setup chain controller
-	if err := (&onexcontroller.ChainReconciler{
-		ComponentConfig:  &c.ComponentConfig.ChainController,
-		WatchFilterValue: c.ComponentConfig.Generic.WatchFilterValue,
-	}).SetupWithManager(ctx, mgr, defaultOptions); err != nil {
-		klog.Exitf("Unable to create Chain controller: %v", err)
+	// setup modelcompare controller
+	if err := (&modelcomparecontroller.Reconciler{}).SetupWithManager(ctx, mgr, defaultOptions); err != nil {
+		klog.Exitf("Unable to create ModelCompare controller: %v", err)
 	}
 
 	// setup sync controller
-	if err := (&onexcontroller.SyncReconciler{
-		Store: storeClient,
-	}).SetupWithManager(ctx, mgr, defaultOptions); err != nil {
-		klog.Exitf("Unable to create Sync controller: %v", err)
+	if err := (&onexcontroller.EvaluateReconciler{}).SetupWithManager(ctx, mgr, defaultOptions); err != nil {
+		klog.Exitf("Unable to create Evaluate controller: %v", err)
+	}
+
+	// setup minerSetSync controller
+	if err := (&onexcontroller.SyncReconciler{Store: storeClient}).SetupWithManager(ctx, mgr, defaultOptions); err != nil {
+		klog.Exitf("Unable to create ModelCompareSync controller: %v", err)
 	}
 
 	metadataClient, err := metadata.NewForConfig(c.Kubeconfig)

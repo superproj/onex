@@ -111,7 +111,7 @@ function codegen::protobuf() {
         git grep --untracked --null -l \
             -e '// +k8s:protobuf-gen=package' \
             -- \
-            cmd pkg staging \
+            cmd pkg \
             | while read -r -d $'\0' F; do dirname "${F}"; done \
             | sed 's|^|github.com/superproj/onex/|;s|k8s.io/kubernetes/staging/src/||' \
             | sort -u)
@@ -123,6 +123,10 @@ function codegen::protobuf() {
             onex::log::status "DBG:     $dir"
         done
     fi
+    # NOTICE: must include k8s.io/api/core/v1, otherwise it will generate the message ObjectReference
+    # in pkg/apis/apps/v1beta1/generated.proto, which will cause a compilation error when compiling
+    # onex-apiserver: undefined: ObjectReference.
+    apis+=("${EXTRA_GENERATE_PKG}")
 
     git_find -z \
         ':(glob)**/generated.proto' \
@@ -137,7 +141,7 @@ function codegen::protobuf() {
     fi
 
     # Fix `pkg/apis/apps/v1beta1/generated.pb.go:49:10: undefined: ObjectReference` compile errors
-    cp ${ONEX_ROOT}/manifests/generated.pb.go.fix ${ONEX_ROOT}/pkg/apis/apps/v1beta1/generated.pb.go
+    # cp ${ONEX_ROOT}/manifests/generated.pb.go.fix ${ONEX_ROOT}/pkg/apis/apps/v1beta1/generated.pb.go
 }
 
 # Deep-copy generation

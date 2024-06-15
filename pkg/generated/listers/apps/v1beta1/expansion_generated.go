@@ -23,6 +23,14 @@ type ChargeRequestListerExpansion interface{}
 // ChargeRequestNamespaceLister.
 type ChargeRequestNamespaceListerExpansion interface{}
 
+// EvaluateListerExpansion allows custom methods to be added to
+// EvaluateLister.
+type EvaluateListerExpansion interface{}
+
+// EvaluateNamespaceListerExpansion allows custom methods to be added to
+// EvaluateNamespaceLister.
+type EvaluateNamespaceListerExpansion interface{}
+
 // MinerListerExpansion allows custom methods to be added to
 // MinerLister.
 type MinerListerExpansion interface{}
@@ -38,3 +46,11 @@ type MinerSetListerExpansion interface{}
 // MinerSetNamespaceListerExpansion allows custom methods to be added to
 // MinerSetNamespaceLister.
 type MinerSetNamespaceListerExpansion interface{}
+
+// ModelCompareListerExpansion allows custom methods to be added to
+// ModelCompareLister.
+type ModelCompareListerExpansion interface{}
+
+// ModelCompareNamespaceListerExpansion allows custom methods to be added to
+// ModelCompareNamespaceLister.
+type ModelCompareNamespaceListerExpansion interface{}

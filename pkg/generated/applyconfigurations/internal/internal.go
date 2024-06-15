@@ -48,6 +48,16 @@ var schemaYAML = typed.YAMLObject(`types:
     elementType:
       namedType: __untyped_deduced_
     elementRelationship: separable
+- name: com.github.superproj.onex.pkg.apis.apps.v1beta1.Evaluate
+  scalar: untyped
+  list:
+    elementType:
+      namedType: __untyped_atomic_
+    elementRelationship: atomic
+  map:
+    elementType:
+      namedType: __untyped_deduced_
+    elementRelationship: separable
 - name: com.github.superproj.onex.pkg.apis.apps.v1beta1.Miner
   scalar: untyped
   list:
@@ -59,6 +69,16 @@ var schemaYAML = typed.YAMLObject(`types:
       namedType: __untyped_deduced_
     elementRelationship: separable
 - name: com.github.superproj.onex.pkg.apis.apps.v1beta1.MinerSet
+  scalar: untyped
+  list:
+    elementType:
+      namedType: __untyped_atomic_
+    elementRelationship: atomic
+  map:
+    elementType:
+      namedType: __untyped_deduced_
+    elementRelationship: separable
+- name: com.github.superproj.onex.pkg.apis.apps.v1beta1.ModelCompare
   scalar: untyped
   list:
     elementType:

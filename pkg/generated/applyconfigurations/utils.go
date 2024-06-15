@@ -41,6 +41,16 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &appsv1beta1.ChargeRequestStatusApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Condition"):
 		return &appsv1beta1.ConditionApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("Evaluate"):
+		return &appsv1beta1.EvaluateApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("EvaluateAddresses"):
+		return &appsv1beta1.EvaluateAddressesApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("EvaluateSpec"):
+		return &appsv1beta1.EvaluateSpecApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("EvaluateStatus"):
+		return &appsv1beta1.EvaluateStatusApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("EvaluateTemplateSpec"):
+		return &appsv1beta1.EvaluateTemplateSpecApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("LocalObjectReference"):
 		return &appsv1beta1.LocalObjectReferenceApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("Miner"):
@@ -59,6 +69,12 @@ func ForKind(kind schema.GroupVersionKind) interface{} {
 		return &appsv1beta1.MinerStatusApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("MinerTemplateSpec"):
 		return &appsv1beta1.MinerTemplateSpecApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ModelCompare"):
+		return &appsv1beta1.ModelCompareApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ModelCompareSpec"):
+		return &appsv1beta1.ModelCompareSpecApplyConfiguration{}
+	case v1beta1.SchemeGroupVersion.WithKind("ModelCompareStatus"):
+		return &appsv1beta1.ModelCompareStatusApplyConfiguration{}
 	case v1beta1.SchemeGroupVersion.WithKind("ObjectMeta"):
 		return &appsv1beta1.ObjectMetaApplyConfiguration{}
 

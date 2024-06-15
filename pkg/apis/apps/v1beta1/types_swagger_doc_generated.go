@@ -162,7 +162,7 @@ func (MinerSpec) SwaggerDoc() map[string]string {
 
 var map_MinerStatus = map[string]string{
 	"":                   "MinerStatus defines the observed state of Miner.",
-	"podRef":             "PodRef will point to the corresponding Pod if it exists.",
+	"podRef":             "PodRef will point to the corresponding Pod if it exists. PodRef *corev1.ObjectReference `json:\"podRef,omitempty\" protobuf:\"bytes,1,opt,name=podRef,casttype=k8s.io/api/core/v1.ObjectReference\"`",
 	"lastUpdated":        "LastUpdated identifies when this status was last observed.",
 	"failureReason":      "FailureReason will be set in the event that there is a terminal problem reconciling the Miner and will contain a succinct value suitable for miner interpretation.\n\nThis field should not be set for transitive errors that a controller faces that are expected to be fixed automatically over time (like service outages), but instead indicate that something is fundamentally wrong with the Miner's spec or the configuration of the controller, and that manual intervention is required. Examples of terminal errors would be invalid combinations of settings in the spec, values that are unsupported by the controller, or the responsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of Miners can be added as events to the Miner object and/or logged in the controller's output.",
 	"failureMessage":     "FailureMessage will be set in the event that there is a terminal problem reconciling the Miner and will contain a more verbose string suitable for logging and human consumption.\n\nThis field should not be set for transitive errors that a controller faces that are expected to be fixed automatically over time (like service outages), but instead indicate that something is fundamentally wrong with the Miner's spec or the configuration of the controller, and that manual intervention is required. Examples of terminal errors would be invalid combinations of settings in the spec, values that are unsupported by the controller, or the responsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of Miners can be added as events to the Miner object and/or logged in the controller's output.",
@@ -248,6 +248,60 @@ func (MinerTemplateSpec) SwaggerDoc() map[string]string {
 	return map_MinerTemplateSpec
 }
 
+var map_Evaluate = map[string]string{
+	"":         "Evaluate is the Schema for the evaluates API.",
+	"metadata": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+	"spec":     "Specification of the desired behavior of the evaluate. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+	"status":   "Most recently observed status of the evaluate. This data may not be up to date. Populated by the system. Read-only. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+}
+
+func (Evaluate) SwaggerDoc() map[string]string {
+	return map_Evaluate
+}
+
+var map_EvaluateAddresses = map[string]string{
+	"": "EvaluateAddresses XXXX",
+}
+
+func (EvaluateAddresses) SwaggerDoc() map[string]string {
+	return map_EvaluateAddresses
+}
+
+var map_EvaluateList = map[string]string{
+	"":         "EvaluateList is a list of Evaluate objects.",
+	"metadata": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+	"items":    "Items is a list of schema objects.",
+}
+
+func (EvaluateList) SwaggerDoc() map[string]string {
+	return map_EvaluateList
+}
+
+var map_EvaluateSpec = map[string]string{
+	"":            "EvaluateSpec defines the desired state of Evaluate.",
+	"displayName": "The display name of the evaluate.",
+	"provider":    "Evaluate machine configuration.",
+	"modelID":     "Evaluate machine configuration.",
+}
+
+func (EvaluateSpec) SwaggerDoc() map[string]string {
+	return map_EvaluateSpec
+}
+
+var map_EvaluateStatus = map[string]string{
+	"":               "EvaluateStatus defines the observed state of Evaluate.",
+	"failureReason":  "time (like service outages), but instead indicate that something is fundamentally wrong with the Evaluate's spec or the configuration of the controller, and that manual intervention is required. Examples of terminal errors would be invalid combinations of settings in the spec, values that are unsupported by the controller, or the responsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of Evaluates can be added as events to the Evaluate object and/or logged in the controller's output.",
+	"failureMessage": "FailureMessage will be set in the event that there is a terminal problem reconciling the Evaluate and will contain a more verbose string suitable for logging and human consumption.\n\nThis field should not be set for transitive errors that a controller faces that are expected to be fixed automatically over time (like service outages), but instead indicate that something is fundamentally wrong with the Evaluate's spec or the configuration of the controller, and that manual intervention is required. Examples of terminal errors would be invalid combinations of settings in the spec, values that are unsupported by the controller, or the responsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of Evaluates can be added as events to the Evaluate object and/or logged in the controller's output.",
+	"addresses":      "Addresses is a list of addresses assigned to the evaluate. Queried from kind cluster, if available.",
+	"startedAt":      "Addresses is a list of addresses assigned to the modelcompare. Queried from kind cluster, if available.",
+	"phase":          "Phase represents the current phase of evaluate actuation. One of: Failed, Provisioning, Provisioned, Running, Deleting This field is maintained by evaluate controller.",
+	"conditions":     "Conditions defines the current state of the Evaluate",
+}
+
+func (EvaluateStatus) SwaggerDoc() map[string]string {
+	return map_EvaluateStatus
+}
+
 var map_Condition = map[string]string{
 	"":                   "Condition defines an observation of a cloud miner resource operational state.",
 	"type":               "Type of condition in CamelCase or in foo.example.com/CamelCase. Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be useful (see .node.status.conditions), the ability to deconflict is important.",
@@ -260,6 +314,62 @@ var map_Condition = map[string]string{
 
 func (Condition) SwaggerDoc() map[string]string {
 	return map_Condition
+}
+
+var map_EvaluateTemplateSpec = map[string]string{
+	"":         "EvaluateTemplateSpec describes the data needed to create a Evaluate from a template.",
+	"metadata": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+	"spec":     "Specification of the desired behavior of the miner. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+}
+
+func (EvaluateTemplateSpec) SwaggerDoc() map[string]string {
+	return map_EvaluateTemplateSpec
+}
+
+var map_ModelCompare = map[string]string{
+	"":         "ModelCompare is the Schema for the modelcompares API.",
+	"metadata": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+	"spec":     "Specification of the desired behavior of the modelcompare. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+	"status":   "Most recently observed status of the modelcompare. This data may not be up to date. Populated by the system. Read-only. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+}
+
+func (ModelCompare) SwaggerDoc() map[string]string {
+	return map_ModelCompare
+}
+
+var map_ModelCompareList = map[string]string{
+	"":         "ModelCompareList is a list of ModelCompare objects.",
+	"metadata": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+	"items":    "Items is a list of schema objects.",
+}
+
+func (ModelCompareList) SwaggerDoc() map[string]string {
+	return map_ModelCompareList
+}
+
+var map_ModelCompareSpec = map[string]string{
+	"":            "ModelCompareSpec defines the desired state of ModelCompare.",
+	"selector":    "Selector is a label query over miners that should match the replica count. Label keys and values that must match in order to be controlled by this MinerSet. It must match the miner template's labels. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors",
+	"template":    "Template is the object that describes the miner that will be created if insufficient replicas are detected.",
+	"displayName": "The display name of the modelcompare.",
+	"modelIDs":    "ModelCompare machine configuration.",
+}
+
+func (ModelCompareSpec) SwaggerDoc() map[string]string {
+	return map_ModelCompareSpec
+}
+
+var map_ModelCompareStatus = map[string]string{
+	"":               "ModelCompareStatus defines the observed state of ModelCompare.",
+	"failureReason":  "time (like service outages), but instead indicate that something is fundamentally wrong with the ModelCompare's spec or the configuration of the controller, and that manual intervention is required. Examples of terminal errors would be invalid combinations of settings in the spec, values that are unsupported by the controller, or the responsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of ModelCompares can be added as events to the ModelCompare object and/or logged in the controller's output.",
+	"failureMessage": "FailureMessage will be set in the event that there is a terminal problem reconciling the ModelCompare and will contain a more verbose string suitable for logging and human consumption.\n\nThis field should not be set for transitive errors that a controller faces that are expected to be fixed automatically over time (like service outages), but instead indicate that something is fundamentally wrong with the ModelCompare's spec or the configuration of the controller, and that manual intervention is required. Examples of terminal errors would be invalid combinations of settings in the spec, values that are unsupported by the controller, or the responsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of ModelCompares can be added as events to the ModelCompare object and/or logged in the controller's output.",
+	"startedAt":      "Addresses is a list of addresses assigned to the modelcompare. Queried from kind cluster, if available.",
+	"phase":          "Phase represents the current phase of modelcompare actuation. One of: Failed, Provisioning, Provisioned, Running, Deleting This field is maintained by modelcompare controller.",
+	"conditions":     "Conditions defines the current state of the Evaluate",
+}
+
+func (ModelCompareStatus) SwaggerDoc() map[string]string {
+	return map_ModelCompareStatus
 }
 
 // AUTO-GENERATED FUNCTIONS END HERE

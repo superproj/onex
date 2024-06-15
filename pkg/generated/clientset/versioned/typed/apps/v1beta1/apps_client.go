@@ -19,8 +19,10 @@ type AppsV1beta1Interface interface {
 	RESTClient() rest.Interface
 	ChainsGetter
 	ChargeRequestsGetter
+	EvaluatesGetter
 	MinersGetter
 	MinerSetsGetter
+	ModelComparesGetter
 }
 
 // AppsV1beta1Client is used to interact with features provided by the apps.onex.io group.
@@ -36,12 +38,20 @@ func (c *AppsV1beta1Client) ChargeRequests(namespace string) ChargeRequestInterf
 	return newChargeRequests(c, namespace)
 }
 
+func (c *AppsV1beta1Client) Evaluates(namespace string) EvaluateInterface {
+	return newEvaluates(c, namespace)
+}
+
 func (c *AppsV1beta1Client) Miners(namespace string) MinerInterface {
 	return newMiners(c, namespace)
 }
 
 func (c *AppsV1beta1Client) MinerSets(namespace string) MinerSetInterface {
 	return newMinerSets(c, namespace)
+}
+
+func (c *AppsV1beta1Client) ModelCompares(namespace string) ModelCompareInterface {
+	return newModelCompares(c, namespace)
 }
 
 // NewForConfig creates a new AppsV1beta1Client for the given config.

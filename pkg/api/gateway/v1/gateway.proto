@@ -17,191 +17,72 @@ option go_package = "github.com/superproj/onex/pkg/api/gateway/v1;v1";
 
 // Peer lists  hubble peers and notifies of changes.
 service Gateway {
-  // GetVersion
-  rpc GetVersion(google.protobuf.Empty) returns (GetVersionResponse) {
-    option (google.api.http) = {get: "/version"};
-  }
-
-  // GetIdempotentToken
-  rpc GetIdempotentToken(google.protobuf.Empty) returns (IdempotentResponse) {
-    option (google.api.http) = {get: "/v1/idempotents"};
-  }
-
-  // CreateMinerSet
-  rpc CreateMinerSet(github.com.superproj.onex.pkg.apis.apps.v1beta1.MinerSet) returns (google.protobuf.Empty) {
+  // CreateModelCompare
+  rpc CreateModelCompare(github.com.superproj.onex.pkg.apis.apps.v1beta1.ModelCompare) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post: "/v1/minersets",
+      post: "/v1/modelcompares",
       body: "*",
     };
   }
 
-  // ListMinerSet
-  rpc ListMinerSet(ListMinerSetRequest) returns (ListMinerSetResponse) {
-    option (google.api.http) = {get: "/v1/minersets"};
+  // ListModelCompare
+  rpc ListModelCompare(ListModelCompareRequest) returns (ListModelCompareResponse) {
+    option (google.api.http) = {get: "/v1/modelcompares"};
   }
 
-  // GetMinerSet
-  rpc GetMinerSet(GetMinerSetRequest) returns (github.com.superproj.onex.pkg.apis.apps.v1beta1.MinerSet) {
-    option (google.api.http) = {get: "/v1/minersets/{name}"};
+  // GetModelCompare
+  rpc GetModelCompare(GetModelCompareRequest) returns (github.com.superproj.onex.pkg.apis.apps.v1beta1.ModelCompare) {
+    option (google.api.http) = {get: "/v1/modelcompares/{name}"};
   }
 
-  // UpdateMinerSet
-  rpc UpdateMinerSet(github.com.superproj.onex.pkg.apis.apps.v1beta1.MinerSet) returns (google.protobuf.Empty) {
+  // UpdateModelCompare
+  rpc UpdateModelCompare(github.com.superproj.onex.pkg.apis.apps.v1beta1.ModelCompare) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      put: "/v1/minersets",
+      put: "/v1/modelcompares",
       body: "*",
     };
   }
 
-  // DeleteMinerSet
-  rpc DeleteMinerSet(DeleteMinerSetRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {delete: "/v1/minersets/{name}"};
-  }
-
-  // ScaleMinerSet
-  rpc ScaleMinerSet(ScaleMinerSetRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      put: "/v1/minersets/{name}/scale",
-      body: "*",
-    };
-  }
-
-  // CreateMiner
-  rpc CreateMiner(github.com.superproj.onex.pkg.apis.apps.v1beta1.Miner) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      post: "/v1/miners",
-      body: "*",
-    };
-  }
-
-  // ListMiner
-  rpc ListMiner(ListMinerRequest) returns (ListMinerResponse) {
-    option (google.api.http) = {get: "/v1/miners"};
-  }
-
-  // GetMiner
-  rpc GetMiner(GetMinerRequest) returns (github.com.superproj.onex.pkg.apis.apps.v1beta1.Miner) {
-    option (google.api.http) = {get: "/v1/miners/{name}"};
-  }
-
-  // UpdateMiner
-  rpc UpdateMiner(github.com.superproj.onex.pkg.apis.apps.v1beta1.Miner) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      put: "/v1/miners",
-      body: "*",
-    };
-  }
-
-  // DeleteMiner
-  rpc DeleteMiner(DeleteMinerRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {delete: "/v1/miners/{name}"};
+  // DeleteModelCompare
+  rpc DeleteModelCompare(DeleteModelCompareRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {delete: "/v1/modelcompares/{name}"};
   }
 }
 
-message IdempotentResponse {
-  string token = 1;
+
+message ModelCompare {
+  int64 compareID = 1;
+  string compareName = 2;
+  int64 sceneID = 3;
+  string creator = 4;
+  string sampleID = 5;
+  repeated string modelIDs = 6;
+  string status = 7;
+  google.protobuf.Timestamp startedAt= 8;
+  google.protobuf.Timestamp endedAt = 9;
+  google.protobuf.Timestamp createTime= 10;
+  google.protobuf.Timestamp updateTime= 11;
 }
 
-message GetVersionResponse {
-  string GitVersion = 1;
-  string GitCommit = 2;
-  string GitTreeState = 3;
-  string BuildDate = 4;
-  string GoVersion = 5; 
-  string Compiler = 6;
-  string Platform = 7;
-}
-
-message MinerSet {
-  string name = 1;
-  int32 replicas = 2;
-  string displayName  = 3;
-  string deletePolicy = 4;
-  MinerTemplate MinerTemplate = 5;
-  google.protobuf.Timestamp createdAt = 6;
-  google.protobuf.Timestamp updatedAt = 7;
-}
-
-message MinerTemplate {
-  string minerType = 1;
-  string chainName = 2;
-  string dataDir = 3;
-}
-
-message CreateMinerSetRequest {
-  int32 replicas = 1;
-  string displayName  = 2;
-  string deletePolicy = 3;
-  MinerTemplate MinerTemplate = 4;
-}                  
-
-message ListMinerSetRequest {
+message ListModelCompareRequest {
   int64 limit = 1;         
   int64 offset = 2;
 }                  
  
-message ListMinerSetResponse {
+message ListModelCompareResponse {
   int64 totalCount = 1; 
-  repeated MinerSet MinerSets= 2;
+  repeated ModelCompare compares = 2;
 }
 
-message GetMinerSetRequest {
+message GetModelCompareRequest {
   string name = 1;
 }                  
 
-message UpdateMinerSetRequest {
+message UpdateModelCompareRequest {
   string name = 1;
-  optional string displayName  = 2;
-  optional string deletePolicy = 3;
+  optional string sampleID = 2;
 }
 
-message DeleteMinerSetRequest {
+message DeleteModelCompareRequest {
   string name = 1;
 }                  
-
-message ScaleMinerSetRequest {
-  string name = 1;
-  int32 replicas = 2;
-}                  
-
-message Miner {
-  string name = 1;
-  string displayName  = 2;
-  string minerType = 3;
-  string chainName = 4;
-  string dataDir = 5;
-  string status = 6;
-  google.protobuf.Timestamp createdAt = 7;
-  google.protobuf.Timestamp updatedAt= 8;
-}
-
-message CreateMinerRequest {
-  string displayName  = 1;
-  string minerType = 2;
-  string chainName = 3;
-  string dataDir = 4;
-}                  
-
-message ListMinerRequest {
-  int64 limit = 1;         
-  int64 offset = 2;
-}                  
- 
-message ListMinerResponse {
-  int64 totalCount = 1; 
-  repeated Miner Miners= 2;
-}
-
-message GetMinerRequest {
-  string name = 1;
-}
-
-message UpdateMinerRequest {
-  string name = 1;
-  optional string displayName  = 2;
-  optional string deletePolicy = 3;
-}
-
-message DeleteMinerRequest {
-  string name = 1;
-}

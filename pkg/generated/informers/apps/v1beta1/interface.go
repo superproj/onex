@@ -17,10 +17,14 @@ type Interface interface {
 	Chains() ChainInformer
 	// ChargeRequests returns a ChargeRequestInformer.
 	ChargeRequests() ChargeRequestInformer
+	// Evaluates returns a EvaluateInformer.
+	Evaluates() EvaluateInformer
 	// Miners returns a MinerInformer.
 	Miners() MinerInformer
 	// MinerSets returns a MinerSetInformer.
 	MinerSets() MinerSetInformer
+	// ModelCompares returns a ModelCompareInformer.
+	ModelCompares() ModelCompareInformer
 }
 
 type version struct {
@@ -44,6 +48,11 @@ func (v *version) ChargeRequests() ChargeRequestInformer {
 	return &chargeRequestInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
 
+// Evaluates returns a EvaluateInformer.
+func (v *version) Evaluates() EvaluateInformer {
+	return &evaluateInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
 // Miners returns a MinerInformer.
 func (v *version) Miners() MinerInformer {
 	return &minerInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
@@ -52,4 +61,9 @@ func (v *version) Miners() MinerInformer {
 // MinerSets returns a MinerSetInformer.
 func (v *version) MinerSets() MinerSetInformer {
 	return &minerSetInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// ModelCompares returns a ModelCompareInformer.
+func (v *version) ModelCompares() ModelCompareInformer {
+	return &modelCompareInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

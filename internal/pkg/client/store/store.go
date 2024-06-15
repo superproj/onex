@@ -12,7 +12,6 @@ import (
 	"github.com/google/wire"
 
 	gwstore "github.com/superproj/onex/internal/gateway/store"
-	ucstore "github.com/superproj/onex/internal/usercenter/store"
 )
 
 // ProviderSet is store providers.
@@ -26,12 +25,10 @@ var (
 // Interface defines the storage interface.
 type Interface interface {
 	Gateway() gwstore.IStore
-	UserCenter() ucstore.IStore
 }
 
 type datastore struct {
 	gw gwstore.IStore
-	uc ucstore.IStore
 }
 
 var _ Interface = (*datastore)(nil)
@@ -40,11 +37,7 @@ func (ds *datastore) Gateway() gwstore.IStore {
 	return ds.gw
 }
 
-func (ds *datastore) UserCenter() ucstore.IStore {
-	return ds.uc
-}
-
-func NewStore(gw gwstore.IStore, uc ucstore.IStore) *datastore {
+func NewStore(gw gwstore.IStore) *datastore {
 	once.Do(func() {
 		S = &datastore{gw: gw, uc: uc}
 	})

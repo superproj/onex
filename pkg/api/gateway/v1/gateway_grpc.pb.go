@@ -27,51 +27,27 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Gateway_GetVersion_FullMethodName         = "/gateway.v1.Gateway/GetVersion"
-	Gateway_GetIdempotentToken_FullMethodName = "/gateway.v1.Gateway/GetIdempotentToken"
-	Gateway_CreateMinerSet_FullMethodName     = "/gateway.v1.Gateway/CreateMinerSet"
-	Gateway_ListMinerSet_FullMethodName       = "/gateway.v1.Gateway/ListMinerSet"
-	Gateway_GetMinerSet_FullMethodName        = "/gateway.v1.Gateway/GetMinerSet"
-	Gateway_UpdateMinerSet_FullMethodName     = "/gateway.v1.Gateway/UpdateMinerSet"
-	Gateway_DeleteMinerSet_FullMethodName     = "/gateway.v1.Gateway/DeleteMinerSet"
-	Gateway_ScaleMinerSet_FullMethodName      = "/gateway.v1.Gateway/ScaleMinerSet"
-	Gateway_CreateMiner_FullMethodName        = "/gateway.v1.Gateway/CreateMiner"
-	Gateway_ListMiner_FullMethodName          = "/gateway.v1.Gateway/ListMiner"
-	Gateway_GetMiner_FullMethodName           = "/gateway.v1.Gateway/GetMiner"
-	Gateway_UpdateMiner_FullMethodName        = "/gateway.v1.Gateway/UpdateMiner"
-	Gateway_DeleteMiner_FullMethodName        = "/gateway.v1.Gateway/DeleteMiner"
+	Gateway_CreateModelCompare_FullMethodName = "/gateway.v1.Gateway/CreateModelCompare"
+	Gateway_ListModelCompare_FullMethodName   = "/gateway.v1.Gateway/ListModelCompare"
+	Gateway_GetModelCompare_FullMethodName    = "/gateway.v1.Gateway/GetModelCompare"
+	Gateway_UpdateModelCompare_FullMethodName = "/gateway.v1.Gateway/UpdateModelCompare"
+	Gateway_DeleteModelCompare_FullMethodName = "/gateway.v1.Gateway/DeleteModelCompare"
 )
 
 // GatewayClient is the client API for Gateway service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GatewayClient interface {
-	// GetVersion
-	GetVersion(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetVersionResponse, error)
-	// GetIdempotentToken
-	GetIdempotentToken(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*IdempotentResponse, error)
-	// CreateMinerSet
-	CreateMinerSet(ctx context.Context, in *v1beta1.MinerSet, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// ListMinerSet
-	ListMinerSet(ctx context.Context, in *ListMinerSetRequest, opts ...grpc.CallOption) (*ListMinerSetResponse, error)
-	// GetMinerSet
-	GetMinerSet(ctx context.Context, in *GetMinerSetRequest, opts ...grpc.CallOption) (*v1beta1.MinerSet, error)
-	// UpdateMinerSet
-	UpdateMinerSet(ctx context.Context, in *v1beta1.MinerSet, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// DeleteMinerSet
-	DeleteMinerSet(ctx context.Context, in *DeleteMinerSetRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// ScaleMinerSet
-	ScaleMinerSet(ctx context.Context, in *ScaleMinerSetRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// CreateMiner
-	CreateMiner(ctx context.Context, in *v1beta1.Miner, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// ListMiner
-	ListMiner(ctx context.Context, in *ListMinerRequest, opts ...grpc.CallOption) (*ListMinerResponse, error)
-	// GetMiner
-	GetMiner(ctx context.Context, in *GetMinerRequest, opts ...grpc.CallOption) (*v1beta1.Miner, error)
-	// UpdateMiner
-	UpdateMiner(ctx context.Context, in *v1beta1.Miner, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	// DeleteMiner
-	DeleteMiner(ctx context.Context, in *DeleteMinerRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// CreateModelCompare
+	CreateModelCompare(ctx context.Context, in *v1beta1.ModelCompare, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// ListModelCompare
+	ListModelCompare(ctx context.Context, in *ListModelCompareRequest, opts ...grpc.CallOption) (*ListModelCompareResponse, error)
+	// GetModelCompare
+	GetModelCompare(ctx context.Context, in *GetModelCompareRequest, opts ...grpc.CallOption) (*v1beta1.ModelCompare, error)
+	// UpdateModelCompare
+	UpdateModelCompare(ctx context.Context, in *v1beta1.ModelCompare, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// DeleteModelCompare
+	DeleteModelCompare(ctx context.Context, in *DeleteModelCompareRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type gatewayClient struct {
@@ -82,117 +58,45 @@ func NewGatewayClient(cc grpc.ClientConnInterface) GatewayClient {
 	return &gatewayClient{cc}
 }
 
-func (c *gatewayClient) GetVersion(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetVersionResponse, error) {
-	out := new(GetVersionResponse)
-	err := c.cc.Invoke(ctx, Gateway_GetVersion_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) GetIdempotentToken(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*IdempotentResponse, error) {
-	out := new(IdempotentResponse)
-	err := c.cc.Invoke(ctx, Gateway_GetIdempotentToken_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) CreateMinerSet(ctx context.Context, in *v1beta1.MinerSet, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *gatewayClient) CreateModelCompare(ctx context.Context, in *v1beta1.ModelCompare, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Gateway_CreateMinerSet_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Gateway_CreateModelCompare_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gatewayClient) ListMinerSet(ctx context.Context, in *ListMinerSetRequest, opts ...grpc.CallOption) (*ListMinerSetResponse, error) {
-	out := new(ListMinerSetResponse)
-	err := c.cc.Invoke(ctx, Gateway_ListMinerSet_FullMethodName, in, out, opts...)
+func (c *gatewayClient) ListModelCompare(ctx context.Context, in *ListModelCompareRequest, opts ...grpc.CallOption) (*ListModelCompareResponse, error) {
+	out := new(ListModelCompareResponse)
+	err := c.cc.Invoke(ctx, Gateway_ListModelCompare_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gatewayClient) GetMinerSet(ctx context.Context, in *GetMinerSetRequest, opts ...grpc.CallOption) (*v1beta1.MinerSet, error) {
-	out := new(v1beta1.MinerSet)
-	err := c.cc.Invoke(ctx, Gateway_GetMinerSet_FullMethodName, in, out, opts...)
+func (c *gatewayClient) GetModelCompare(ctx context.Context, in *GetModelCompareRequest, opts ...grpc.CallOption) (*v1beta1.ModelCompare, error) {
+	out := new(v1beta1.ModelCompare)
+	err := c.cc.Invoke(ctx, Gateway_GetModelCompare_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gatewayClient) UpdateMinerSet(ctx context.Context, in *v1beta1.MinerSet, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *gatewayClient) UpdateModelCompare(ctx context.Context, in *v1beta1.ModelCompare, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Gateway_UpdateMinerSet_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Gateway_UpdateModelCompare_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gatewayClient) DeleteMinerSet(ctx context.Context, in *DeleteMinerSetRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *gatewayClient) DeleteModelCompare(ctx context.Context, in *DeleteModelCompareRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Gateway_DeleteMinerSet_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) ScaleMinerSet(ctx context.Context, in *ScaleMinerSetRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Gateway_ScaleMinerSet_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) CreateMiner(ctx context.Context, in *v1beta1.Miner, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Gateway_CreateMiner_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) ListMiner(ctx context.Context, in *ListMinerRequest, opts ...grpc.CallOption) (*ListMinerResponse, error) {
-	out := new(ListMinerResponse)
-	err := c.cc.Invoke(ctx, Gateway_ListMiner_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) GetMiner(ctx context.Context, in *GetMinerRequest, opts ...grpc.CallOption) (*v1beta1.Miner, error) {
-	out := new(v1beta1.Miner)
-	err := c.cc.Invoke(ctx, Gateway_GetMiner_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) UpdateMiner(ctx context.Context, in *v1beta1.Miner, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Gateway_UpdateMiner_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gatewayClient) DeleteMiner(ctx context.Context, in *DeleteMinerRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Gateway_DeleteMiner_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, Gateway_DeleteModelCompare_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -203,32 +107,16 @@ func (c *gatewayClient) DeleteMiner(ctx context.Context, in *DeleteMinerRequest,
 // All implementations must embed UnimplementedGatewayServer
 // for forward compatibility
 type GatewayServer interface {
-	// GetVersion
-	GetVersion(context.Context, *emptypb.Empty) (*GetVersionResponse, error)
-	// GetIdempotentToken
-	GetIdempotentToken(context.Context, *emptypb.Empty) (*IdempotentResponse, error)
-	// CreateMinerSet
-	CreateMinerSet(context.Context, *v1beta1.MinerSet) (*emptypb.Empty, error)
-	// ListMinerSet
-	ListMinerSet(context.Context, *ListMinerSetRequest) (*ListMinerSetResponse, error)
-	// GetMinerSet
-	GetMinerSet(context.Context, *GetMinerSetRequest) (*v1beta1.MinerSet, error)
-	// UpdateMinerSet
-	UpdateMinerSet(context.Context, *v1beta1.MinerSet) (*emptypb.Empty, error)
-	// DeleteMinerSet
-	DeleteMinerSet(context.Context, *DeleteMinerSetRequest) (*emptypb.Empty, error)
-	// ScaleMinerSet
-	ScaleMinerSet(context.Context, *ScaleMinerSetRequest) (*emptypb.Empty, error)
-	// CreateMiner
-	CreateMiner(context.Context, *v1beta1.Miner) (*emptypb.Empty, error)
-	// ListMiner
-	ListMiner(context.Context, *ListMinerRequest) (*ListMinerResponse, error)
-	// GetMiner
-	GetMiner(context.Context, *GetMinerRequest) (*v1beta1.Miner, error)
-	// UpdateMiner
-	UpdateMiner(context.Context, *v1beta1.Miner) (*emptypb.Empty, error)
-	// DeleteMiner
-	DeleteMiner(context.Context, *DeleteMinerRequest) (*emptypb.Empty, error)
+	// CreateModelCompare
+	CreateModelCompare(context.Context, *v1beta1.ModelCompare) (*emptypb.Empty, error)
+	// ListModelCompare
+	ListModelCompare(context.Context, *ListModelCompareRequest) (*ListModelCompareResponse, error)
+	// GetModelCompare
+	GetModelCompare(context.Context, *GetModelCompareRequest) (*v1beta1.ModelCompare, error)
+	// UpdateModelCompare
+	UpdateModelCompare(context.Context, *v1beta1.ModelCompare) (*emptypb.Empty, error)
+	// DeleteModelCompare
+	DeleteModelCompare(context.Context, *DeleteModelCompareRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedGatewayServer()
 }
 
@@ -236,44 +124,20 @@ type GatewayServer interface {
 type UnimplementedGatewayServer struct {
 }
 
-func (UnimplementedGatewayServer) GetVersion(context.Context, *emptypb.Empty) (*GetVersionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetVersion not implemented")
+func (UnimplementedGatewayServer) CreateModelCompare(context.Context, *v1beta1.ModelCompare) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateModelCompare not implemented")
 }
-func (UnimplementedGatewayServer) GetIdempotentToken(context.Context, *emptypb.Empty) (*IdempotentResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetIdempotentToken not implemented")
+func (UnimplementedGatewayServer) ListModelCompare(context.Context, *ListModelCompareRequest) (*ListModelCompareResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListModelCompare not implemented")
 }
-func (UnimplementedGatewayServer) CreateMinerSet(context.Context, *v1beta1.MinerSet) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateMinerSet not implemented")
+func (UnimplementedGatewayServer) GetModelCompare(context.Context, *GetModelCompareRequest) (*v1beta1.ModelCompare, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetModelCompare not implemented")
 }
-func (UnimplementedGatewayServer) ListMinerSet(context.Context, *ListMinerSetRequest) (*ListMinerSetResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListMinerSet not implemented")
+func (UnimplementedGatewayServer) UpdateModelCompare(context.Context, *v1beta1.ModelCompare) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateModelCompare not implemented")
 }
-func (UnimplementedGatewayServer) GetMinerSet(context.Context, *GetMinerSetRequest) (*v1beta1.MinerSet, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMinerSet not implemented")
-}
-func (UnimplementedGatewayServer) UpdateMinerSet(context.Context, *v1beta1.MinerSet) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateMinerSet not implemented")
-}
-func (UnimplementedGatewayServer) DeleteMinerSet(context.Context, *DeleteMinerSetRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteMinerSet not implemented")
-}
-func (UnimplementedGatewayServer) ScaleMinerSet(context.Context, *ScaleMinerSetRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ScaleMinerSet not implemented")
-}
-func (UnimplementedGatewayServer) CreateMiner(context.Context, *v1beta1.Miner) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateMiner not implemented")
-}
-func (UnimplementedGatewayServer) ListMiner(context.Context, *ListMinerRequest) (*ListMinerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListMiner not implemented")
-}
-func (UnimplementedGatewayServer) GetMiner(context.Context, *GetMinerRequest) (*v1beta1.Miner, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMiner not implemented")
-}
-func (UnimplementedGatewayServer) UpdateMiner(context.Context, *v1beta1.Miner) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateMiner not implemented")
-}
-func (UnimplementedGatewayServer) DeleteMiner(context.Context, *DeleteMinerRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteMiner not implemented")
+func (UnimplementedGatewayServer) DeleteModelCompare(context.Context, *DeleteModelCompareRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteModelCompare not implemented")
 }
 func (UnimplementedGatewayServer) mustEmbedUnimplementedGatewayServer() {}
 
@@ -288,236 +152,92 @@ func RegisterGatewayServer(s grpc.ServiceRegistrar, srv GatewayServer) {
 	s.RegisterService(&Gateway_ServiceDesc, srv)
 }
 
-func _Gateway_GetVersion_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(emptypb.Empty)
+func _Gateway_CreateModelCompare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1beta1.ModelCompare)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GatewayServer).GetVersion(ctx, in)
+		return srv.(GatewayServer).CreateModelCompare(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Gateway_GetVersion_FullMethodName,
+		FullMethod: Gateway_CreateModelCompare_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).GetVersion(ctx, req.(*emptypb.Empty))
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GatewayServer).CreateModelCompare(ctx, req.(*v1beta1.ModelCompare))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_GetIdempotentToken_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(emptypb.Empty)
+func _Gateway_ListModelCompare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListModelCompareRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GatewayServer).GetIdempotentToken(ctx, in)
+		return srv.(GatewayServer).ListModelCompare(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Gateway_GetIdempotentToken_FullMethodName,
+		FullMethod: Gateway_ListModelCompare_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).GetIdempotentToken(ctx, req.(*emptypb.Empty))
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GatewayServer).ListModelCompare(ctx, req.(*ListModelCompareRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_CreateMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(v1beta1.MinerSet)
+func _Gateway_GetModelCompare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetModelCompareRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GatewayServer).CreateMinerSet(ctx, in)
+		return srv.(GatewayServer).GetModelCompare(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Gateway_CreateMinerSet_FullMethodName,
+		FullMethod: Gateway_GetModelCompare_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).CreateMinerSet(ctx, req.(*v1beta1.MinerSet))
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GatewayServer).GetModelCompare(ctx, req.(*GetModelCompareRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_ListMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(ListMinerSetRequest)
+func _Gateway_UpdateModelCompare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(v1beta1.ModelCompare)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GatewayServer).ListMinerSet(ctx, in)
+		return srv.(GatewayServer).UpdateModelCompare(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Gateway_ListMinerSet_FullMethodName,
+		FullMethod: Gateway_UpdateModelCompare_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).ListMinerSet(ctx, req.(*ListMinerSetRequest))
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GatewayServer).UpdateModelCompare(ctx, req.(*v1beta1.ModelCompare))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Gateway_GetMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(GetMinerSetRequest)
+func _Gateway_DeleteModelCompare_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteModelCompareRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GatewayServer).GetMinerSet(ctx, in)
+		return srv.(GatewayServer).DeleteModelCompare(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Gateway_GetMinerSet_FullMethodName,
+		FullMethod: Gateway_DeleteModelCompare_FullMethodName,
 	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).GetMinerSet(ctx, req.(*GetMinerSetRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_UpdateMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(v1beta1.MinerSet)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).UpdateMinerSet(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_UpdateMinerSet_FullMethodName,
-	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).UpdateMinerSet(ctx, req.(*v1beta1.MinerSet))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_DeleteMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(DeleteMinerSetRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).DeleteMinerSet(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_DeleteMinerSet_FullMethodName,
-	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).DeleteMinerSet(ctx, req.(*DeleteMinerSetRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_ScaleMinerSet_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(ScaleMinerSetRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).ScaleMinerSet(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_ScaleMinerSet_FullMethodName,
-	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).ScaleMinerSet(ctx, req.(*ScaleMinerSetRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_CreateMiner_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(v1beta1.Miner)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).CreateMiner(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_CreateMiner_FullMethodName,
-	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).CreateMiner(ctx, req.(*v1beta1.Miner))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_ListMiner_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(ListMinerRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).ListMiner(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_ListMiner_FullMethodName,
-	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).ListMiner(ctx, req.(*ListMinerRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_GetMiner_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(GetMinerRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).GetMiner(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_GetMiner_FullMethodName,
-	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).GetMiner(ctx, req.(*GetMinerRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_UpdateMiner_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(v1beta1.Miner)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).UpdateMiner(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_UpdateMiner_FullMethodName,
-	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).UpdateMiner(ctx, req.(*v1beta1.Miner))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Gateway_DeleteMiner_Handler(srv any, ctx context.Context, dec func(any) error, interceptor grpc.UnaryServerInterceptor) (any, error) {
-	in := new(DeleteMinerRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(GatewayServer).DeleteMiner(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Gateway_DeleteMiner_FullMethodName,
-	}
-	handler := func(ctx context.Context, req any) (any, error) {
-		return srv.(GatewayServer).DeleteMiner(ctx, req.(*DeleteMinerRequest))
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GatewayServer).DeleteModelCompare(ctx, req.(*DeleteModelCompareRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -530,56 +250,24 @@ var Gateway_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*GatewayServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetVersion",
-			Handler:    _Gateway_GetVersion_Handler,
+			MethodName: "CreateModelCompare",
+			Handler:    _Gateway_CreateModelCompare_Handler,
 		},
 		{
-			MethodName: "GetIdempotentToken",
-			Handler:    _Gateway_GetIdempotentToken_Handler,
+			MethodName: "ListModelCompare",
+			Handler:    _Gateway_ListModelCompare_Handler,
 		},
 		{
-			MethodName: "CreateMinerSet",
-			Handler:    _Gateway_CreateMinerSet_Handler,
+			MethodName: "GetModelCompare",
+			Handler:    _Gateway_GetModelCompare_Handler,
 		},
 		{
-			MethodName: "ListMinerSet",
-			Handler:    _Gateway_ListMinerSet_Handler,
+			MethodName: "UpdateModelCompare",
+			Handler:    _Gateway_UpdateModelCompare_Handler,
 		},
 		{
-			MethodName: "GetMinerSet",
-			Handler:    _Gateway_GetMinerSet_Handler,
-		},
-		{
-			MethodName: "UpdateMinerSet",
-			Handler:    _Gateway_UpdateMinerSet_Handler,
-		},
-		{
-			MethodName: "DeleteMinerSet",
-			Handler:    _Gateway_DeleteMinerSet_Handler,
-		},
-		{
-			MethodName: "ScaleMinerSet",
-			Handler:    _Gateway_ScaleMinerSet_Handler,
-		},
-		{
-			MethodName: "CreateMiner",
-			Handler:    _Gateway_CreateMiner_Handler,
-		},
-		{
-			MethodName: "ListMiner",
-			Handler:    _Gateway_ListMiner_Handler,
-		},
-		{
-			MethodName: "GetMiner",
-			Handler:    _Gateway_GetMiner_Handler,
-		},
-		{
-			MethodName: "UpdateMiner",
-			Handler:    _Gateway_UpdateMiner_Handler,
-		},
-		{
-			MethodName: "DeleteMiner",
-			Handler:    _Gateway_DeleteMiner_Handler,
+			MethodName: "DeleteModelCompare",
+			Handler:    _Gateway_DeleteModelCompare_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

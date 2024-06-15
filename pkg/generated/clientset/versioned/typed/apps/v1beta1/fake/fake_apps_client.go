@@ -25,12 +25,20 @@ func (c *FakeAppsV1beta1) ChargeRequests(namespace string) v1beta1.ChargeRequest
 	return &FakeChargeRequests{c, namespace}
 }
 
+func (c *FakeAppsV1beta1) Evaluates(namespace string) v1beta1.EvaluateInterface {
+	return &FakeEvaluates{c, namespace}
+}
+
 func (c *FakeAppsV1beta1) Miners(namespace string) v1beta1.MinerInterface {
 	return &FakeMiners{c, namespace}
 }
 
 func (c *FakeAppsV1beta1) MinerSets(namespace string) v1beta1.MinerSetInterface {
 	return &FakeMinerSets{c, namespace}
+}
+
+func (c *FakeAppsV1beta1) ModelCompares(namespace string) v1beta1.ModelCompareInterface {
+	return &FakeModelCompares{c, namespace}
 }
 
 // RESTClient returns a RESTClient that is used to communicate

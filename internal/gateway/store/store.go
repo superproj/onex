@@ -6,8 +6,6 @@
 
 package store
 
-//go:generate mockgen -self_package github.com/superproj/onex/internal/gateway/store -destination mock_store.go -package store github.com/superproj/onex/internal/gateway/store IStore,ChainStore,MinerStore,MinerSetStore
-
 import (
 	"context"
 	"sync"
@@ -29,9 +27,7 @@ type transactionKey struct{}
 // IStore is an interface defining the required methods for a Store.
 type IStore interface {
 	TX(context.Context, func(ctx context.Context) error) error
-	Chains() ChainStore
-	Miners() MinerStore
-	MinerSets() MinerSetStore
+	ModelCompares() ModelCompareStore
 }
 
 // datastore is a concrete implementation of IStore interface.
@@ -79,17 +75,7 @@ func (ds *datastore) TX(ctx context.Context, fn func(ctx context.Context) error)
 	)
 }
 
-// Chains returns a ChainStore that interacts with datastore.
-func (ds *datastore) Chains() ChainStore {
-	return newChainStore(ds)
-}
-
-// MinerSets returns a MinerSetStore that interacts with datastore.
-func (ds *datastore) MinerSets() MinerSetStore {
-	return newMinerSetStore(ds)
-}
-
-// Miners returns a MinerStore that interacts with datastore.
-func (ds *datastore) Miners() MinerStore {
-	return newMinerStore(ds)
+// ModelCompares returns a ModelCompareStore that interacts with datastore.
+func (ds *datastore) ModelCompares() ModelCompareStore {
+	return newModelCompareStore(ds)
 }

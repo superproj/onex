@@ -16,8 +16,10 @@ import (
 	"github.com/superproj/onex/internal/apiserver/storage"
 	serializerutil "github.com/superproj/onex/internal/pkg/util/serializer"
 	chainstore "github.com/superproj/onex/internal/registry/apps/chain/storage"
+	evaluatestore "github.com/superproj/onex/internal/registry/apps/evaluate/storage"
 	minerstore "github.com/superproj/onex/internal/registry/apps/miner/storage"
 	minersetstore "github.com/superproj/onex/internal/registry/apps/minerset/storage"
+	modelcomparestore "github.com/superproj/onex/internal/registry/apps/modelcompare/storage"
 	"github.com/superproj/onex/pkg/apis/apps"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )
@@ -53,6 +55,28 @@ func (p RESTStorageProvider) v1beta1Storage(
 	restOptionsGetter generic.RESTOptionsGetter,
 ) (map[string]rest.Storage, error) {
 	storage := map[string]rest.Storage{}
+
+	// modelcompares
+	if resource := "modelcompares"; apiResourceConfigSource.ResourceEnabled(v1beta1.SchemeGroupVersion.WithResource(resource)) {
+		modelcompareStorage, err := modelcomparestore.NewStorage(restOptionsGetter)
+		if err != nil {
+			return storage, err
+		}
+
+		storage[resource] = modelcompareStorage.ModelCompare
+		storage[resource+"/status"] = modelcompareStorage.Status
+	}
+
+	// evaluates
+	if resource := "evaluates"; apiResourceConfigSource.ResourceEnabled(v1beta1.SchemeGroupVersion.WithResource(resource)) {
+		evaluateStorage, err := evaluatestore.NewStorage(restOptionsGetter)
+		if err != nil {
+			return storage, err
+		}
+
+		storage[resource] = evaluateStorage.Evaluate
+		storage[resource+"/status"] = evaluateStorage.Status
+	}
 
 	//nolint:goconst
 	// chains

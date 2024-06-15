@@ -15,7 +15,6 @@ import (
 
 	"github.com/superproj/onex/internal/gateway/server"
 	"github.com/superproj/onex/internal/pkg/bootstrap"
-	"github.com/superproj/onex/internal/pkg/client/usercenter"
 	"github.com/superproj/onex/pkg/db"
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
 	"github.com/superproj/onex/pkg/generated/informers"
@@ -33,15 +32,14 @@ var (
 
 // Config defines the config for the apiserver.
 type Config struct {
-	GRPCOptions       *genericoptions.GRPCOptions
-	HTTPOptions       *genericoptions.HTTPOptions
-	TLSOptions        *genericoptions.TLSOptions
-	UserCenterOptions *usercenter.UserCenterOptions
-	MySQLOptions      *genericoptions.MySQLOptions
-	RedisOptions      *genericoptions.RedisOptions
-	EtcdOptions       *genericoptions.EtcdOptions
-	JaegerOptions     *genericoptions.JaegerOptions
-	ConsulOptions     *genericoptions.ConsulOptions
+	GRPCOptions   *genericoptions.GRPCOptions
+	HTTPOptions   *genericoptions.HTTPOptions
+	TLSOptions    *genericoptions.TLSOptions
+	MySQLOptions  *genericoptions.MySQLOptions
+	RedisOptions  *genericoptions.RedisOptions
+	EtcdOptions   *genericoptions.EtcdOptions
+	JaegerOptions *genericoptions.JaegerOptions
+	ConsulOptions *genericoptions.ConsulOptions
 
 	// the rest config for the onex-apiserver
 	Kubeconfig *rest.Config
@@ -84,7 +82,7 @@ func (c completedConfig) New(stopCh <-chan struct{}) (*Server, error) {
 	_ = copier.Copy(&mysqlOptions, c.MySQLOptions)
 	_ = copier.Copy(&redisOptions, c.RedisOptions)
 
-	app, cleanup, err := wireApp(stopCh, appInfo, conf, client, &mysqlOptions, &redisOptions, c.UserCenterOptions, c.RedisOptions, c.EtcdOptions)
+	app, cleanup, err := wireApp(stopCh, appInfo, conf, client, &mysqlOptions, &redisOptions, c.RedisOptions, c.EtcdOptions)
 	if err != nil {
 		return nil, err
 	}

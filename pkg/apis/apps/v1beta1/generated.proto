@@ -10,54 +10,13 @@ syntax = "proto2";
 
 package github.com.superproj.onex.pkg.apis.apps.v1beta1;
 
+import "k8s.io/api/core/v1/generated.proto";
 import "k8s.io/apimachinery/pkg/apis/meta/v1/generated.proto";
 import "k8s.io/apimachinery/pkg/runtime/generated.proto";
 import "k8s.io/apimachinery/pkg/runtime/schema/generated.proto";
 
 // Package-wide variables from generator "generated".
 option go_package = "github.com/superproj/onex/pkg/apis/apps/v1beta1";
-
-message ObjectReference {
-  // Kind of the referent.
-  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
-  // +optional
-  optional string kind = 1;
-
-  // Namespace of the referent.
-  // More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
-  // +optional
-  optional string namespace = 2;
-
-  // Name of the referent.
-  // More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
-  // +optional
-  optional string name = 3;
-
-  // UID of the referent.
-  // More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids
-  // +optional
-  optional string uid = 4;
-
-  // API version of the referent.
-  // +optional
-  optional string apiVersion = 5;
-
-  // Specific resourceVersion to which this reference is made, if any.
-  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency
-  // +optional
-  optional string resourceVersion = 6;
-
-  // If referring to a piece of an object instead of an entire object, this string
-  // should contain a valid JSON/Go field access statement, such as desiredState.manifest.containers[2].
-  // For example, if the object reference is to a container within a pod, this would take on a value like:
-  // "spec.containers{name}" (where "name" refers to the name of the container that triggered
-  // the event) or if no container name is specified "spec.containers[2]" (container with
-  // index 2 in this pod). This syntax is chosen only to have some well-defined way of
-  // referencing a part of an object.
-  // TODO: this design is not final and this field is subject to change in the future.
-  // +optional
-  optional string fieldPath = 7;
-}
 
 // Chain is the Schema for the chains API.
 message Chain {
@@ -209,6 +168,145 @@ message Condition {
   // This field may be empty.
   // +optional
   optional string message = 6;
+}
+
+// Evaluate is the Schema for the evaluates API.
+message Evaluate {
+  // Standard object's metadata.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.ObjectMeta metadata = 1;
+
+  // Specification of the desired behavior of the evaluate.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+  // +optional
+  optional EvaluateSpec spec = 2;
+
+  // Most recently observed status of the evaluate.
+  // This data may not be up to date.
+  // Populated by the system.
+  // Read-only.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+  // +optional
+  optional EvaluateStatus status = 3;
+}
+
+// EvaluateAddresses XXXX
+message EvaluateAddresses {
+  optional string hdfsRoot = 1;
+
+  optional string hdfsPTPath = 2;
+
+  optional string tosTrainDataPath = 3;
+
+  optional string tosTestDataPath = 4;
+
+  optional int64 tosTrainDataCount = 5;
+
+  optional int64 tosTestDataCount = 6;
+}
+
+// EvaluateList is a list of Evaluate objects.
+message EvaluateList {
+  // Standard list metadata.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.ListMeta metadata = 1;
+
+  // Items is a list of schema objects.
+  repeated Evaluate items = 2;
+}
+
+// EvaluateSpec defines the desired state of Evaluate.
+message EvaluateSpec {
+  // The display name of the evaluate.
+  // +optional
+  optional string displayName = 1;
+
+  // Evaluate machine configuration.
+  // +optional
+  optional string provider = 3;
+
+  // Evaluate machine configuration.
+  // +optional
+  optional int64 modelID = 2;
+
+  // +optional
+  optional int64 sampleID = 4;
+}
+
+// EvaluateStatus defines the observed state of Evaluate.
+message EvaluateStatus {
+  // time (like service outages), but instead indicate that something is
+  // fundamentally wrong with the Evaluate's spec or the configuration of
+  // the controller, and that manual intervention is required. Examples
+  // of terminal errors would be invalid combinations of settings in the
+  // spec, values that are unsupported by the controller, or the
+  // responsible controller itself being critically misconfigured.
+  //
+  // Any transient errors that occur during the reconciliation of Evaluates
+  // can be added as events to the Evaluate object and/or logged in the
+  // controller's output.
+  // +optional
+  optional string failureReason = 1;
+
+  // FailureMessage will be set in the event that there is a terminal problem
+  // reconciling the Evaluate and will contain a more verbose string suitable
+  // for logging and human consumption.
+  //
+  // This field should not be set for transitive errors that a controller
+  // faces that are expected to be fixed automatically over
+  // time (like service outages), but instead indicate that something is
+  // fundamentally wrong with the Evaluate's spec or the configuration of
+  // the controller, and that manual intervention is required. Examples
+  // of terminal errors would be invalid combinations of settings in the
+  // spec, values that are unsupported by the controller, or the
+  // responsible controller itself being critically misconfigured.
+  //
+  // Any transient errors that occur during the reconciliation of Evaluates
+  // can be added as events to the Evaluate object and/or logged in the
+  // controller's output.
+  // +optional
+  optional string failureMessage = 2;
+
+  // Addresses is a list of addresses assigned to the evaluate. Queried from kind cluster, if available.
+  // +optional
+  optional EvaluateAddresses addresses = 3;
+
+  // Addresses is a list of addresses assigned to the modelcompare. Queried from kind cluster, if available.
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.Time startedAt = 4;
+
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.Time endedAt = 5;
+
+  // +optional
+  optional string arthurID = 6;
+
+  // Phase represents the current phase of evaluate actuation.
+  // One of: Failed, Provisioning, Provisioned, Running, Deleting
+  // This field is maintained by evaluate controller.
+  // +optional
+  optional string phase = 7;
+
+  // Conditions defines the current state of the Evaluate
+  // +optional
+  // +patchMergeKey=type
+  // +patchStrategy=merge
+  repeated Condition conditions = 8;
+}
+
+// EvaluateTemplateSpec describes the data needed to create a Evaluate from a template.
+message EvaluateTemplateSpec {
+  // Standard object's metadata.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+  // +optional
+  optional ObjectMeta metadata = 1;
+
+  // Specification of the desired behavior of the miner.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+  // +optional
+  optional EvaluateSpec spec = 2;
 }
 
 // LocalObjectReference contains enough information to let you locate the
@@ -443,7 +541,8 @@ message MinerSpec {
 message MinerStatus {
   // PodRef will point to the corresponding Pod if it exists.
   // +optional
-  optional ObjectReference podRef = 1;
+  // PodRef *corev1.ObjectReference `json:"podRef,omitempty" protobuf:"bytes,1,opt,name=podRef,casttype=k8s.io/api/core/v1.ObjectReference"`
+  optional k8s.io.api.core.v1.ObjectReference podRef = 1;
 
   // LastUpdated identifies when this status was last observed.
   // +optional
@@ -519,6 +618,114 @@ message MinerTemplateSpec {
   // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
   // +optional
   optional MinerSpec spec = 2;
+}
+
+// ModelCompare is the Schema for the modelcompares API.
+message ModelCompare {
+  // Standard object's metadata.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.ObjectMeta metadata = 1;
+
+  // Specification of the desired behavior of the modelcompare.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+  // +optional
+  optional ModelCompareSpec spec = 2;
+
+  // Most recently observed status of the modelcompare.
+  // This data may not be up to date.
+  // Populated by the system.
+  // Read-only.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
+  // +optional
+  optional ModelCompareStatus status = 3;
+}
+
+// ModelCompareList is a list of ModelCompare objects.
+message ModelCompareList {
+  // Standard list metadata.
+  // More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.ListMeta metadata = 1;
+
+  // Items is a list of schema objects.
+  repeated ModelCompare items = 2;
+}
+
+// ModelCompareSpec defines the desired state of ModelCompare.
+message ModelCompareSpec {
+  // Selector is a label query over miners that should match the replica count.
+  // Label keys and values that must match in order to be controlled by this MinerSet.
+  // It must match the miner template's labels.
+  // More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.LabelSelector selector = 1;
+
+  // Template is the object that describes the miner that will be created if
+  // insufficient replicas are detected.
+  // +optional
+  optional EvaluateTemplateSpec template = 2;
+
+  // The display name of the modelcompare.
+  // +optional
+  optional string displayName = 3;
+
+  // ModelCompare machine configuration.
+  // +optional
+  repeated int64 modelIDs = 4;
+}
+
+// ModelCompareStatus defines the observed state of ModelCompare.
+message ModelCompareStatus {
+  // time (like service outages), but instead indicate that something is
+  // fundamentally wrong with the ModelCompare's spec or the configuration of
+  // the controller, and that manual intervention is required. Examples
+  // of terminal errors would be invalid combinations of settings in the
+  // spec, values that are unsupported by the controller, or the
+  // responsible controller itself being critically misconfigured.
+  //
+  // Any transient errors that occur during the reconciliation of ModelCompares
+  // can be added as events to the ModelCompare object and/or logged in the
+  // controller's output.
+  // +optional
+  optional string failureReason = 1;
+
+  // FailureMessage will be set in the event that there is a terminal problem
+  // reconciling the ModelCompare and will contain a more verbose string suitable
+  // for logging and human consumption.
+  //
+  // This field should not be set for transitive errors that a controller
+  // faces that are expected to be fixed automatically over
+  // time (like service outages), but instead indicate that something is
+  // fundamentally wrong with the ModelCompare's spec or the configuration of
+  // the controller, and that manual intervention is required. Examples
+  // of terminal errors would be invalid combinations of settings in the
+  // spec, values that are unsupported by the controller, or the
+  // responsible controller itself being critically misconfigured.
+  //
+  // Any transient errors that occur during the reconciliation of ModelCompares
+  // can be added as events to the ModelCompare object and/or logged in the
+  // controller's output.
+  // +optional
+  optional string failureMessage = 2;
+
+  // Addresses is a list of addresses assigned to the modelcompare. Queried from kind cluster, if available.
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.Time startedAt = 3;
+
+  // +optional
+  optional k8s.io.apimachinery.pkg.apis.meta.v1.Time endedAt = 4;
+
+  // Phase represents the current phase of modelcompare actuation.
+  // One of: Failed, Provisioning, Provisioned, Running, Deleting
+  // This field is maintained by modelcompare controller.
+  // +optional
+  optional string phase = 5;
+
+  // Conditions defines the current state of the Evaluate
+  // +optional
+  // +patchMergeKey=type
+  // +patchStrategy=merge
+  repeated Condition conditions = 6;
 }
 
 // ObjectMeta is metadata that all persisted resources must have, which includes all objects

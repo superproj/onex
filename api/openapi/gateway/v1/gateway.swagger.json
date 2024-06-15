@@ -16,38 +16,15 @@
     "application/json"
   ],
   "paths": {
-    "/v1/idempotents": {
+    "/v1/modelcompares": {
       "get": {
-        "summary": "GetIdempotentToken",
-        "operationId": "Gateway_GetIdempotentToken",
+        "summary": "ListModelCompare",
+        "operationId": "Gateway_ListModelCompare",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1IdempotentResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/googlerpcStatus"
-            }
-          }
-        },
-        "tags": [
-          "Gateway"
-        ]
-      }
-    },
-    "/v1/miners": {
-      "get": {
-        "summary": "ListMiner",
-        "operationId": "Gateway_ListMiner",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListMinerResponse"
+              "$ref": "#/definitions/v1ListModelCompareResponse"
             }
           },
           "default": {
@@ -78,8 +55,8 @@
         ]
       },
       "post": {
-        "summary": "CreateMiner",
-        "operationId": "Gateway_CreateMiner",
+        "summary": "CreateModelCompare",
+        "operationId": "Gateway_CreateModelCompare",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -98,11 +75,11 @@
         "parameters": [
           {
             "name": "body",
-            "description": "Miner is the Schema for the miners API.",
+            "description": "ModelCompare is the Schema for the modelcompares API.",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/appsv1beta1Miner"
+              "$ref": "#/definitions/appsv1beta1ModelCompare"
             }
           }
         ],
@@ -111,8 +88,8 @@
         ]
       },
       "put": {
-        "summary": "UpdateMiner",
-        "operationId": "Gateway_UpdateMiner",
+        "summary": "UpdateModelCompare",
+        "operationId": "Gateway_UpdateModelCompare",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -131,11 +108,11 @@
         "parameters": [
           {
             "name": "body",
-            "description": "Miner is the Schema for the miners API.",
+            "description": "ModelCompare is the Schema for the modelcompares API.",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/appsv1beta1Miner"
+              "$ref": "#/definitions/appsv1beta1ModelCompare"
             }
           }
         ],
@@ -144,15 +121,15 @@
         ]
       }
     },
-    "/v1/miners/{name}": {
+    "/v1/modelcompares/{name}": {
       "get": {
-        "summary": "GetMiner",
-        "operationId": "Gateway_GetMiner",
+        "summary": "GetModelCompare",
+        "operationId": "Gateway_GetModelCompare",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/appsv1beta1Miner"
+              "$ref": "#/definitions/appsv1beta1ModelCompare"
             }
           },
           "default": {
@@ -175,8 +152,8 @@
         ]
       },
       "delete": {
-        "summary": "DeleteMiner",
-        "operationId": "Gateway_DeleteMiner",
+        "summary": "DeleteModelCompare",
+        "operationId": "Gateway_DeleteModelCompare",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -200,241 +177,6 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "Gateway"
-        ]
-      }
-    },
-    "/v1/minersets": {
-      "get": {
-        "summary": "ListMinerSet",
-        "operationId": "Gateway_ListMinerSet",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1ListMinerSetResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/googlerpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          }
-        ],
-        "tags": [
-          "Gateway"
-        ]
-      },
-      "post": {
-        "summary": "CreateMinerSet",
-        "operationId": "Gateway_CreateMinerSet",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/googlerpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "description": "MinerSet ensures that a specified number of miners replicas are running at any given time.",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/appsv1beta1MinerSet"
-            }
-          }
-        ],
-        "tags": [
-          "Gateway"
-        ]
-      },
-      "put": {
-        "summary": "UpdateMinerSet",
-        "operationId": "Gateway_UpdateMinerSet",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/googlerpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "description": "MinerSet ensures that a specified number of miners replicas are running at any given time.",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/appsv1beta1MinerSet"
-            }
-          }
-        ],
-        "tags": [
-          "Gateway"
-        ]
-      }
-    },
-    "/v1/minersets/{name}": {
-      "get": {
-        "summary": "GetMinerSet",
-        "operationId": "Gateway_GetMinerSet",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/appsv1beta1MinerSet"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/googlerpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Gateway"
-        ]
-      },
-      "delete": {
-        "summary": "DeleteMinerSet",
-        "operationId": "Gateway_DeleteMinerSet",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/googlerpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Gateway"
-        ]
-      }
-    },
-    "/v1/minersets/{name}/scale": {
-      "put": {
-        "summary": "ScaleMinerSet",
-        "operationId": "Gateway_ScaleMinerSet",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "type": "object",
-              "properties": {}
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/googlerpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "replicas": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "Gateway"
-        ]
-      }
-    },
-    "/version": {
-      "get": {
-        "summary": "GetVersion",
-        "operationId": "Gateway_GetVersion",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1GetVersionResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/googlerpcStatus"
-            }
-          }
-        },
         "tags": [
           "Gateway"
         ]
@@ -472,7 +214,7 @@
       },
       "description": "Condition defines an observation of a cloud miner resource operational state."
     },
-    "appsv1beta1Miner": {
+    "appsv1beta1ModelCompare": {
       "type": "object",
       "properties": {
         "metadata": {
@@ -480,33 +222,15 @@
           "title": "Standard object's metadata.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata\n+optional"
         },
         "spec": {
-          "$ref": "#/definitions/v1beta1MinerSpec",
-          "title": "Specification of the desired behavior of the miner.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status\n+optional"
+          "$ref": "#/definitions/v1beta1ModelCompareSpec",
+          "title": "Specification of the desired behavior of the modelcompare.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status\n+optional"
         },
         "status": {
-          "$ref": "#/definitions/v1beta1MinerStatus",
-          "title": "Most recently observed status of the miner.\nThis data may not be up to date.\nPopulated by the system.\nRead-only.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status\n+optional"
+          "$ref": "#/definitions/v1beta1ModelCompareStatus",
+          "title": "Most recently observed status of the modelcompare.\nThis data may not be up to date.\nPopulated by the system.\nRead-only.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status\n+optional"
         }
       },
-      "description": "Miner is the Schema for the miners API."
-    },
-    "appsv1beta1MinerSet": {
-      "type": "object",
-      "properties": {
-        "metadata": {
-          "$ref": "#/definitions/metav1ObjectMeta",
-          "title": "If the Labels of a MinerSet are empty, they are defaulted to\nbe the same as the Miner(s) that the MinerSet manages.\nStandard object's metadata.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata\n+optional"
-        },
-        "spec": {
-          "$ref": "#/definitions/v1beta1MinerSetSpec",
-          "title": "Spec defines the specification of the desired behavior of the MinerSet.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status\n+optional"
-        },
-        "status": {
-          "$ref": "#/definitions/v1beta1MinerSetStatus",
-          "title": "Status is the most recently observed status of the MinerSet.\nThis data may be out of date by some window of time.\nPopulated by the system.\nRead-only.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status\n+optional"
-        }
-      },
-      "description": "MinerSet ensures that a specified number of miners replicas are running at any given time."
+      "description": "ModelCompare is the Schema for the modelcompares API."
     },
     "appsv1beta1ObjectMeta": {
       "type": "object",
@@ -528,61 +252,48 @@
       },
       "description": "ObjectMeta is metadata that all persisted resources must have, which includes all objects\nusers must create. This is a copy of customizable fields from metav1.ObjectMeta.\n\nObjectMeta is embedded in `Miner.Spec` and `MinerSet.Template`,\nwhich are not top-level Kubernetes objects. Given that metav1.ObjectMeta has lots of special cases\nand read-only fields which end up in the generated CRD validation, having it as a subset simplifies\nthe API and some issues that can impact user experience.\n\nDuring the [upgrade to controller-tools@v2](https://github.com/kubernetes-sigs/cluster-api/pull/1054)\nfor v1alpha2, we noticed a failure would occur running Cluster API test suite against the new CRDs,\nspecifically `spec.metadata.creationTimestamp in body must be of type string: \"null\"`.\nThe investigation showed that `controller-tools@v2` behaves differently than its previous version\nwhen handling types from [metav1](k8s.io/apimachinery/pkg/apis/meta/v1) package.\n\nIn more details, we found that embedded (non-top level) types that embedded `metav1.ObjectMeta`\nhad validation properties, including for `creationTimestamp` (metav1.Time).\nThe `metav1.Time` type specifies a custom json marshaller that, when IsZero() is true, returns `null`\nwhich breaks validation because the field isn't marked as nullable.\n\nIn future versions, controller-tools@v2 might allow overriding the type and validation for embedded\ntypes. When that happens, this hack should be revisited."
     },
-    "gatewayv1Miner": {
+    "gatewayv1ModelCompare": {
       "type": "object",
       "properties": {
-        "name": {
+        "compareID": {
+          "type": "string",
+          "format": "int64"
+        },
+        "compareName": {
           "type": "string"
         },
-        "displayName": {
+        "sceneID": {
+          "type": "string",
+          "format": "int64"
+        },
+        "creator": {
           "type": "string"
         },
-        "minerType": {
+        "sampleID": {
           "type": "string"
         },
-        "chainName": {
-          "type": "string"
-        },
-        "dataDir": {
-          "type": "string"
+        "modelIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "status": {
           "type": "string"
         },
-        "createdAt": {
+        "startedAt": {
           "type": "string",
           "format": "date-time"
         },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "gatewayv1MinerSet": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "replicas": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "displayName": {
-          "type": "string"
-        },
-        "deletePolicy": {
-          "type": "string"
-        },
-        "MinerTemplate": {
-          "$ref": "#/definitions/v1MinerTemplate"
-        },
-        "createdAt": {
+        "endedAt": {
           "type": "string",
           "format": "date-time"
         },
-        "updatedAt": {
+        "createTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updateTime": {
           "type": "string",
           "format": "date-time"
         }
@@ -605,16 +316,6 @@
           }
         }
       }
-    },
-    "metav1Duration": {
-      "type": "object",
-      "properties": {
-        "duration": {
-          "type": "string",
-          "format": "int64"
-        }
-      },
-      "description": "Duration is a wrapper around time.Duration which supports correct\nmarshaling to YAML and JSON. In particular, it marshals into strings, which\ncan be used as map keys in json."
     },
     "metav1ObjectMeta": {
       "type": "object",
@@ -703,12 +404,10 @@
       "type": "object",
       "properties": {
         "@type": {
-          "type": "string",
-          "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+          "type": "string"
         }
       },
-      "additionalProperties": {},
-      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\nExample 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\nExample 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := anypb.New(foo)\n     if err != nil {\n       ...\n     }\n     ...\n     foo := \u0026pb.Foo{}\n     if err := any.UnmarshalTo(foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+      "additionalProperties": {}
     },
     "v1FieldsV1": {
       "type": "object",
@@ -720,40 +419,6 @@
         }
       },
       "description": "FieldsV1 stores a set of fields in a data structure like a Trie, in JSON format.\n\nEach key is either a '.' representing the field itself, and will always map to an empty set,\nor a string representing a sub-field or item. The string will follow one of these four formats:\n'f:\u003cname\u003e', where \u003cname\u003e is the name of a field in a struct, or key in a map\n'v:\u003cvalue\u003e', where \u003cvalue\u003e is the exact json formatted value of a list item\n'i:\u003cindex\u003e', where \u003cindex\u003e is position of a item in a list\n'k:\u003ckeys\u003e', where \u003ckeys\u003e is a map of  a list item's key fields to their unique values\nIf a key maps to an empty Fields value, the field that key represents is part of the set.\n\nThe exact format is defined in sigs.k8s.io/structured-merge-diff\n+protobuf.options.(gogoproto.goproto_stringer)=false"
-    },
-    "v1GetVersionResponse": {
-      "type": "object",
-      "properties": {
-        "GitVersion": {
-          "type": "string"
-        },
-        "GitCommit": {
-          "type": "string"
-        },
-        "GitTreeState": {
-          "type": "string"
-        },
-        "BuildDate": {
-          "type": "string"
-        },
-        "GoVersion": {
-          "type": "string"
-        },
-        "Compiler": {
-          "type": "string"
-        },
-        "Platform": {
-          "type": "string"
-        }
-      }
-    },
-    "v1IdempotentResponse": {
-      "type": "object",
-      "properties": {
-        "token": {
-          "type": "string"
-        }
-      }
     },
     "v1LabelSelector": {
       "type": "object",
@@ -796,32 +461,17 @@
       },
       "description": "A label selector requirement is a selector that contains values, a key, and an operator that\nrelates the key and values."
     },
-    "v1ListMinerResponse": {
+    "v1ListModelCompareResponse": {
       "type": "object",
       "properties": {
         "totalCount": {
           "type": "string",
           "format": "int64"
         },
-        "Miners": {
+        "compares": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/gatewayv1Miner"
-          }
-        }
-      }
-    },
-    "v1ListMinerSetResponse": {
-      "type": "object",
-      "properties": {
-        "totalCount": {
-          "type": "string",
-          "format": "int64"
-        },
-        "MinerSets": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/gatewayv1MinerSet"
+            "$ref": "#/definitions/gatewayv1ModelCompare"
           }
         }
       }
@@ -859,20 +509,6 @@
         }
       },
       "description": "ManagedFieldsEntry is a workflow-id, a FieldSet and the group version of the resource\nthat the fieldset applies to."
-    },
-    "v1MinerTemplate": {
-      "type": "object",
-      "properties": {
-        "minerType": {
-          "type": "string"
-        },
-        "chainName": {
-          "type": "string"
-        },
-        "dataDir": {
-          "type": "string"
-        }
-      }
     },
     "v1OwnerReference": {
       "type": "object",
@@ -920,179 +556,31 @@
       },
       "description": "Time is a wrapper around time.Time which supports correct\nmarshaling to YAML and JSON.  Wrappers are provided for many\nof the factory methods that the time package offers.\n\n+protobuf.options.marshal=false\n+protobuf.as=Timestamp\n+protobuf.options.(gogoproto.goproto_stringer)=false"
     },
-    "v1beta1MinerAddress": {
+    "v1beta1EvaluateSpec": {
       "type": "object",
       "properties": {
-        "type": {
-          "type": "string",
-          "description": "Miner address type, one of Hostname, ExternalIP or InternalIP."
-        },
-        "address": {
-          "type": "string",
-          "description": "The machine address."
-        }
-      },
-      "description": "MinerAddress contains information for the miner's address."
-    },
-    "v1beta1MinerSetSpec": {
-      "type": "object",
-      "properties": {
-        "replicas": {
-          "type": "integer",
-          "format": "int32",
-          "title": "Replicas is the number of desired replicas.\nThis is a pointer to distinguish between explicit zero and unspecified.\nDefaults to 1.\nMore info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller/#what-is-a-replicationcontroller\n+optional"
-        },
-        "selector": {
-          "$ref": "#/definitions/v1LabelSelector",
-          "title": "Selector is a label query over miners that should match the replica count.\nLabel keys and values that must match in order to be controlled by this MinerSet.\nIt must match the miner template's labels.\nMore info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors"
-        },
-        "template": {
-          "$ref": "#/definitions/v1beta1MinerTemplateSpec",
-          "title": "Template is the object that describes the miner that will be created if\ninsufficient replicas are detected.\n+optional"
-        },
         "displayName": {
           "type": "string",
-          "description": "The display name of the minerset."
+          "title": "The display name of the evaluate.\n+optional"
         },
-        "deletePolicy": {
+        "provider": {
           "type": "string",
-          "title": "DeletePolicy defines the policy used to identify miners to delete when downscaling.\nDefaults to \"Random\". Valid values are \"Random, \"Newest\", \"Oldest\"\n+kubebuilder:validation:Enum=Random;Newest;Oldest\n+optional"
+          "title": "Evaluate machine configuration.\n+optional"
         },
-        "minReadySeconds": {
-          "type": "integer",
-          "format": "int32",
-          "title": "Minimum number of seconds for which a newly created miner should be ready\nwithout any of its component crashing, for it to be considered available.\nDefaults to 0 (miner will be considered available as soon as it is ready)\n+optional"
-        },
-        "progressDeadlineSeconds": {
-          "type": "integer",
-          "format": "int32",
-          "description": "The maximum time in seconds for a minerset to make progress before it\nis considered to be failed. The deployment controller will continue to\nprocess failed deployments and a condition with a ProgressDeadlineExceeded\nreason will be surfaced in the deployment status. Note that progress will\nnot be estimated during the time a deployment is paused. Defaults to 600s."
-        }
-      },
-      "description": "MinerSetSpec defines the desired state of MinerSet."
-    },
-    "v1beta1MinerSetStatus": {
-      "type": "object",
-      "properties": {
-        "replicas": {
-          "type": "integer",
-          "format": "int32",
-          "description": "Replicas is the most recently observed number of replicas."
-        },
-        "fullyLabeledReplicas": {
-          "type": "integer",
-          "format": "int32",
-          "title": "The number of miners that have labels matching the labels of the miner template of the minerset.\n+optional"
-        },
-        "readyReplicas": {
-          "type": "integer",
-          "format": "int32",
-          "title": "readyReplicas is the number of miners targeted by this MinerSet with a Ready Condition.\n+optional"
-        },
-        "availableReplicas": {
-          "type": "integer",
-          "format": "int32",
-          "title": "The number of available replicas (ready for at least minReadySeconds) for this minerset.\n+optional"
-        },
-        "observedGeneration": {
+        "modelID": {
           "type": "string",
           "format": "int64",
-          "title": "ObservedGeneration reflects the generation of the most recently observed MinerSet.\n+optional"
+          "title": "Evaluate machine configuration.\n+optional"
         },
-        "failureReason": {
+        "sampleID": {
           "type": "string",
-          "description": "In the event that there is a terminal problem reconciling the\nreplicas, both FailureReason and FailureMessage will be set. FailureReason\nwill be populated with a succinct value suitable for miner\ninterpretation, while FailureMessage will contain a more verbose\nstring suitable for logging and human consumption.\n\nThese fields should not be set for transitive errors that a\ncontroller faces that are expected to be fixed automatically over\ntime (like service outages), but instead indicate that something is\nfundamentally wrong with the MinerTemplate's spec or the configuration of\nthe miner controller, and that manual intervention is required. Examples\nof terminal errors would be invalid combinations of settings in the\nspec, values that are unsupported by the miner controller, or the\nresponsible miner controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of Miners\ncan be added as events to the MinerSet object and/or logged in the\ncontroller's output.\n+optional"
-        },
-        "failureMessage": {
-          "type": "string",
-          "description": "FailureMessage will be set in the event that there is a terminal problem\nreconciling the MinerSet and will contain a more verbose string suitable\nfor logging and human consumption.\n\nThis field should not be set for transitive errors that a controller\nfaces that are expected to be fixed automatically over\ntime (like service outages), but instead indicate that something is\nfundamentally wrong with the MinerSet's spec or the configuration of\nthe controller, and that manual intervention is required. Examples\nof terminal errors would be invalid combinations of settings in the\nspec, values that are unsupported by the controller, or the\nresponsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of MinerSets\ncan be added as events to the MinerSet object and/or logged in the\ncontroller's output.\n+optional"
-        },
-        "conditions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/appsv1beta1Condition"
-          },
-          "title": "Represents the latest available observations of a miner set's current state.\n+optional\n+patchMergeKey=type\n+patchStrategy=merge"
-        }
-      },
-      "description": "MinerSetStatus represents the current status of a MinerSet."
-    },
-    "v1beta1MinerSpec": {
-      "type": "object",
-      "properties": {
-        "metadata": {
-          "$ref": "#/definitions/appsv1beta1ObjectMeta",
-          "title": "ObjectMeta will autopopulate the Pod created. Use this to\nindicate what labels, annotations, name prefix, etc., should be used\nwhen creating the Pod.\n+optional"
-        },
-        "displayName": {
-          "type": "string",
-          "title": "The display name of the miner.\n+optional"
-        },
-        "minerType": {
-          "type": "string",
-          "title": "Miner machine configuration.\n+optional"
-        },
-        "chainName": {
-          "type": "string",
+          "format": "int64",
           "title": "+optional"
-        },
-        "restartPolicy": {
-          "type": "string",
-          "title": "Restart policy for the miner.\nOne of Always, OnFailure, Never.\nDefault to Always.\n+optional"
-        },
-        "podDeletionTimeout": {
-          "$ref": "#/definitions/metav1Duration",
-          "title": "PodDeletionTimeout defines how long the controller will attempt to delete the Pod that the Machine\nhosts after the Machine is marked for deletion. A duration of 0 will retry deletion indefinitely.\nDefaults to 10 seconds.\n+optional"
         }
       },
-      "description": "MinerSpec defines the desired state of Miner."
+      "description": "EvaluateSpec defines the desired state of Evaluate."
     },
-    "v1beta1MinerStatus": {
-      "type": "object",
-      "properties": {
-        "podRef": {
-          "$ref": "#/definitions/v1beta1ObjectReference",
-          "title": "PodRef will point to the corresponding Pod if it exists.\n+optional"
-        },
-        "lastUpdated": {
-          "$ref": "#/definitions/v1Time",
-          "title": "LastUpdated identifies when this status was last observed.\n+optional"
-        },
-        "failureReason": {
-          "type": "string",
-          "description": "FailureReason will be set in the event that there is a terminal problem\nreconciling the Miner and will contain a succinct value suitable\nfor miner interpretation.\n\nThis field should not be set for transitive errors that a controller\nfaces that are expected to be fixed automatically over\ntime (like service outages), but instead indicate that something is\nfundamentally wrong with the Miner's spec or the configuration of\nthe controller, and that manual intervention is required. Examples\nof terminal errors would be invalid combinations of settings in the\nspec, values that are unsupported by the controller, or the\nresponsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of Miners\ncan be added as events to the Miner object and/or logged in the\ncontroller's output.\n+optional"
-        },
-        "failureMessage": {
-          "type": "string",
-          "description": "FailureMessage will be set in the event that there is a terminal problem\nreconciling the Miner and will contain a more verbose string suitable\nfor logging and human consumption.\n\nThis field should not be set for transitive errors that a controller\nfaces that are expected to be fixed automatically over\ntime (like service outages), but instead indicate that something is\nfundamentally wrong with the Miner's spec or the configuration of\nthe controller, and that manual intervention is required. Examples\nof terminal errors would be invalid combinations of settings in the\nspec, values that are unsupported by the controller, or the\nresponsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of Miners\ncan be added as events to the Miner object and/or logged in the\ncontroller's output.\n+optional"
-        },
-        "addresses": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v1beta1MinerAddress"
-          },
-          "title": "Addresses is a list of addresses assigned to the miner. Queried from kind cluster, if available.\n+optional\n+patchMergeKey=type\n+patchStrategy=merge"
-        },
-        "phase": {
-          "type": "string",
-          "title": "Phase represents the current phase of miner actuation.\nOne of: Failed, Provisioning, Provisioned, Running, Deleting\nThis field is maintained by miner controller.\n+optional"
-        },
-        "observedGeneration": {
-          "type": "string",
-          "format": "int64",
-          "title": "ObservedGeneration is the latest generation observed by the controller.\n+optional"
-        },
-        "conditions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/appsv1beta1Condition"
-          },
-          "title": "Conditions defines the current state of the Miner\n+optional"
-        }
-      },
-      "description": "MinerStatus defines the observed state of Miner."
-    },
-    "v1beta1MinerTemplateSpec": {
+    "v1beta1EvaluateTemplateSpec": {
       "type": "object",
       "properties": {
         "metadata": {
@@ -1100,44 +588,70 @@
           "title": "Standard object's metadata.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata\n+optional"
         },
         "spec": {
-          "$ref": "#/definitions/v1beta1MinerSpec",
+          "$ref": "#/definitions/v1beta1EvaluateSpec",
           "title": "Specification of the desired behavior of the miner.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status\n+optional"
         }
       },
-      "description": "MinerTemplateSpec describes the data needed to create a Miner from a template."
+      "description": "EvaluateTemplateSpec describes the data needed to create a Evaluate from a template."
     },
-    "v1beta1ObjectReference": {
+    "v1beta1ModelCompareSpec": {
       "type": "object",
       "properties": {
-        "kind": {
-          "type": "string",
-          "title": "Kind of the referent.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds\n+optional"
+        "selector": {
+          "$ref": "#/definitions/v1LabelSelector",
+          "title": "Selector is a label query over miners that should match the replica count.\nLabel keys and values that must match in order to be controlled by this MinerSet.\nIt must match the miner template's labels.\nMore info: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors"
         },
-        "namespace": {
-          "type": "string",
-          "title": "Namespace of the referent.\nMore info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/\n+optional"
+        "template": {
+          "$ref": "#/definitions/v1beta1EvaluateTemplateSpec",
+          "title": "Template is the object that describes the miner that will be created if\ninsufficient replicas are detected.\n+optional"
         },
-        "name": {
+        "displayName": {
           "type": "string",
-          "title": "Name of the referent.\nMore info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names\n+optional"
+          "title": "The display name of the modelcompare.\n+optional"
         },
-        "uid": {
-          "type": "string",
-          "title": "UID of the referent.\nMore info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids\n+optional"
-        },
-        "apiVersion": {
-          "type": "string",
-          "title": "API version of the referent.\n+optional"
-        },
-        "resourceVersion": {
-          "type": "string",
-          "title": "Specific resourceVersion to which this reference is made, if any.\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#concurrency-control-and-consistency\n+optional"
-        },
-        "fieldPath": {
-          "type": "string",
-          "title": "If referring to a piece of an object instead of an entire object, this string\nshould contain a valid JSON/Go field access statement, such as desiredState.manifest.containers[2].\nFor example, if the object reference is to a container within a pod, this would take on a value like:\n\"spec.containers{name}\" (where \"name\" refers to the name of the container that triggered\nthe event) or if no container name is specified \"spec.containers[2]\" (container with\nindex 2 in this pod). This syntax is chosen only to have some well-defined way of\nreferencing a part of an object.\nTODO: this design is not final and this field is subject to change in the future.\n+optional"
+        "modelIDs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          },
+          "title": "ModelCompare machine configuration.\n+optional"
         }
-      }
+      },
+      "description": "ModelCompareSpec defines the desired state of ModelCompare."
+    },
+    "v1beta1ModelCompareStatus": {
+      "type": "object",
+      "properties": {
+        "failureReason": {
+          "type": "string",
+          "description": "time (like service outages), but instead indicate that something is\nfundamentally wrong with the ModelCompare's spec or the configuration of\nthe controller, and that manual intervention is required. Examples\nof terminal errors would be invalid combinations of settings in the\nspec, values that are unsupported by the controller, or the\nresponsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of ModelCompares\ncan be added as events to the ModelCompare object and/or logged in the\ncontroller's output.\n+optional"
+        },
+        "failureMessage": {
+          "type": "string",
+          "description": "FailureMessage will be set in the event that there is a terminal problem\nreconciling the ModelCompare and will contain a more verbose string suitable\nfor logging and human consumption.\n\nThis field should not be set for transitive errors that a controller\nfaces that are expected to be fixed automatically over\ntime (like service outages), but instead indicate that something is\nfundamentally wrong with the ModelCompare's spec or the configuration of\nthe controller, and that manual intervention is required. Examples\nof terminal errors would be invalid combinations of settings in the\nspec, values that are unsupported by the controller, or the\nresponsible controller itself being critically misconfigured.\n\nAny transient errors that occur during the reconciliation of ModelCompares\ncan be added as events to the ModelCompare object and/or logged in the\ncontroller's output.\n+optional"
+        },
+        "startedAt": {
+          "$ref": "#/definitions/v1Time",
+          "title": "Addresses is a list of addresses assigned to the modelcompare. Queried from kind cluster, if available.\n+optional"
+        },
+        "endedAt": {
+          "$ref": "#/definitions/v1Time",
+          "title": "+optional"
+        },
+        "phase": {
+          "type": "string",
+          "title": "Phase represents the current phase of modelcompare actuation.\nOne of: Failed, Provisioning, Provisioned, Running, Deleting\nThis field is maintained by modelcompare controller.\n+optional"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/appsv1beta1Condition"
+          },
+          "title": "Conditions defines the current state of the Evaluate\n+optional\n+patchMergeKey=type\n+patchStrategy=merge"
+        }
+      },
+      "description": "ModelCompareStatus defines the observed state of ModelCompare."
     }
   }
 }

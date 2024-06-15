@@ -48,10 +48,14 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Apps().V1beta1().Chains().Informer()}, nil
 	case v1beta1.SchemeGroupVersion.WithResource("chargerequests"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Apps().V1beta1().ChargeRequests().Informer()}, nil
+	case v1beta1.SchemeGroupVersion.WithResource("evaluates"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Apps().V1beta1().Evaluates().Informer()}, nil
 	case v1beta1.SchemeGroupVersion.WithResource("miners"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Apps().V1beta1().Miners().Informer()}, nil
 	case v1beta1.SchemeGroupVersion.WithResource("minersets"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Apps().V1beta1().MinerSets().Informer()}, nil
+	case v1beta1.SchemeGroupVersion.WithResource("modelcompares"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Apps().V1beta1().ModelCompares().Informer()}, nil
 
 		// Group=coordination.k8s.io, Version=v1
 	case v1.SchemeGroupVersion.WithResource("leases"):

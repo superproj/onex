@@ -10,7 +10,6 @@ import (
 	"github.com/google/wire"
 
 	"github.com/superproj/onex/internal/gateway/biz"
-	"github.com/superproj/onex/internal/pkg/idempotent"
 	v1 "github.com/superproj/onex/pkg/api/gateway/v1"
 )
 
@@ -21,10 +20,8 @@ type GatewayService struct {
 	v1.UnimplementedGatewayServer
 
 	biz biz.IBiz
-	idt *idempotent.Idempotent
 }
 
-// func NewGatewayService(biz biz.IBiz, lister appsv1beta1.Interface, client clientset.Interface) *GatewayService {.
-func NewGatewayService(biz biz.IBiz, idt *idempotent.Idempotent) *GatewayService {
-	return &GatewayService{biz: biz, idt: idt}
+func NewGatewayService(biz biz.IBiz) *GatewayService {
+	return &GatewayService{biz: biz}
 }

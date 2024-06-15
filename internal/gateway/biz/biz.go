@@ -11,8 +11,7 @@ package biz
 import (
 	"github.com/google/wire"
 
-	"github.com/superproj/onex/internal/gateway/biz/miner"
-	"github.com/superproj/onex/internal/gateway/biz/minerset"
+	"github.com/superproj/onex/internal/gateway/biz/modelcompare"
 	"github.com/superproj/onex/internal/gateway/store"
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
 	"github.com/superproj/onex/pkg/generated/informers"
@@ -23,8 +22,7 @@ var ProviderSet = wire.NewSet(NewBiz, wire.Bind(new(IBiz), new(*biz)))
 
 // IBiz defines functions used to return resource interface.
 type IBiz interface {
-	Miners() miner.MinerBiz
-	MinerSets() minerset.MinerSetBiz
+	ModelCompares() modelcompare.ModelCompareBiz
 }
 
 type biz struct {
@@ -38,10 +36,6 @@ func NewBiz(ds store.IStore, cl clientset.Interface, f informers.SharedInformerF
 	return &biz{ds, cl, f}
 }
 
-func (b *biz) MinerSets() minerset.MinerSetBiz {
-	return minerset.New(b.ds, b.cl, b.f)
-}
-
-func (b *biz) Miners() miner.MinerBiz {
-	return miner.New(b.ds, b.cl, b.f)
+func (b *biz) ModelCompares() modelcompare.ModelCompareBiz {
+	return modelcompare.New(b.ds, b.cl, b.f)
 }

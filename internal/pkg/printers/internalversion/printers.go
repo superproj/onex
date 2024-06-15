@@ -98,9 +98,28 @@ func AddHandlers(h printers.PrintHandler) {
 		// {Name: "Status", Type: "string", Description: "The status of the miner"},
 		{Name: "Age", Type: "string", Description: metav1.ObjectMeta{}.SwaggerDoc()["creationTimestamp"]},
 	}
-
 	h.TableHandler(chainColumnDefinitions, printChain)
 	h.TableHandler(chainColumnDefinitions, printChainList)
+
+	evaluateColumnDefinitions := []metav1.TableColumnDefinition{
+		{Name: "Name", Type: "string", Format: "name", Description: metav1.ObjectMeta{}.SwaggerDoc()["name"]},
+		{Name: "Status", Type: "string", Description: "The status of the miner"},
+		{Name: "ModelID", Type: "string", Description: v1beta1.EvaluateSpec{}.SwaggerDoc()["modelID"]},
+		{Name: "Age", Type: "string", Description: metav1.ObjectMeta{}.SwaggerDoc()["creationTimestamp"]},
+		{Name: "Provider", Type: "string", Priority: 1, Description: v1beta1.EvaluateSpec{}.SwaggerDoc()["provider"]},
+	}
+	h.TableHandler(evaluateColumnDefinitions, printEvaluate)
+	h.TableHandler(evaluateColumnDefinitions, printEvaluateList)
+
+	modelCompareColumnDefinitions := []metav1.TableColumnDefinition{
+		{Name: "Name", Type: "string", Format: "name", Description: metav1.ObjectMeta{}.SwaggerDoc()["name"]},
+		{Name: "Status", Type: "string", Description: v1beta1.ModelCompareStatus{}.SwaggerDoc()["phase"]},
+		{Name: "Age", Type: "string", Description: metav1.ObjectMeta{}.SwaggerDoc()["creationTimestamp"]},
+		{Name: "Selector", Type: "string", Priority: 1, Description: v1beta1.ModelCompareSpec{}.SwaggerDoc()["selector"]},
+	}
+	h.TableHandler(modelCompareColumnDefinitions, printModelCompare)
+	h.TableHandler(modelCompareColumnDefinitions, printModelCompareList)
+
 }
 
 func printNamespace(obj *api.Namespace, options printers.GenerateOptions) ([]metav1.TableRow, error) {
@@ -213,6 +232,41 @@ func printMinerSet(obj *apps.MinerSet, options printers.GenerateOptions) ([]meta
 		ready,
 		int64(currentReplicas),
 		int64(availableReplicas),
+		printersutil.TranslateTimestampSince(obj.CreationTimestamp),
+	)
+	if options.Wide {
+		row.Cells = append(row.Cells, metav1.FormatLabelSelector(&obj.Spec.Selector))
+	}
+
+	return []metav1.TableRow{row}, nil
+}
+
+func printModelCompareList(mcList *apps.ModelCompareList, options printers.GenerateOptions) ([]metav1.TableRow, error) {
+	rows := make([]metav1.TableRow, 0, len(mcList.Items))
+	for i := range mcList.Items {
+		r, err := printModelCompare(&mcList.Items[i], options)
+		if err != nil {
+			return nil, err
+		}
+		rows = append(rows, r...)
+	}
+	return rows, nil
+}
+
+func printModelCompare(obj *apps.ModelCompare, options printers.GenerateOptions) ([]metav1.TableRow, error) {
+	row := metav1.TableRow{
+		Object: runtime.RawExtension{Object: obj},
+	}
+
+	phase := string(v1beta1.ModelComparePhasePending)
+	if obj.Status.Phase != "" {
+		phase = obj.Status.Phase
+	}
+
+	row.Cells = append(
+		row.Cells,
+		obj.Name,
+		phase,
 		printersutil.TranslateTimestampSince(obj.CreationTimestamp),
 	)
 	if options.Wide {
@@ -347,6 +401,43 @@ func printChainList(list *apps.ChainList, options printers.GenerateOptions) ([]m
 	rows := make([]metav1.TableRow, 0, len(list.Items))
 	for i := range list.Items {
 		r, err := printChain(&list.Items[i], options)
+		if err != nil {
+			return nil, err
+		}
+		rows = append(rows, r...)
+	}
+	return rows, nil
+}
+
+func printEvaluate(obj *apps.Evaluate, options printers.GenerateOptions) ([]metav1.TableRow, error) {
+	row := metav1.TableRow{
+		Object: runtime.RawExtension{Object: obj},
+	}
+
+	phase := string(v1beta1.EvaluatePhasePending)
+	if obj.Status.Phase != "" {
+		phase = obj.Status.Phase
+	}
+
+	row.Cells = append(
+		row.Cells,
+		obj.Name,
+		phase,
+		obj.Spec.ModelID,
+		printersutil.TranslateTimestampSince(obj.CreationTimestamp),
+	)
+
+	if options.Wide {
+		row.Cells = append(row.Cells, obj.Spec.Provider)
+	}
+
+	return []metav1.TableRow{row}, nil
+}
+
+func printEvaluateList(list *apps.EvaluateList, options printers.GenerateOptions) ([]metav1.TableRow, error) {
+	rows := make([]metav1.TableRow, 0, len(list.Items))
+	for i := range list.Items {
+		r, err := printEvaluate(&list.Items[i], options)
 		if err != nil {
 			return nil, err
 		}

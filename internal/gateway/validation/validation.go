@@ -31,8 +31,8 @@ func New(ds store.IStore) (*validator, error) {
 	return vd, nil
 }
 
-// ValidateListMinerSetRequest is a method that validates the ListMinerSetRequest input.
+// ValidateListModelCompareRequest is a method that validates the ListModelCompareRequest input.
 // In this particular case, no validation is performed and it always returns nil.
-func (vd *validator) ValidateListMinerSetRequest(ctx context.Context, rq *v1.ListMinerSetRequest) error {
+func (vd *validator) ValidateListModelCompareRequest(ctx context.Context, rq *v1.ListModelCompareRequest) error {
 	return nil
 }

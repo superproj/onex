@@ -19,8 +19,8 @@ import (
 
 func createInformers(stopCh <-chan struct{}, client clientset.Interface) (informers.SharedInformerFactory, error) {
 	f := informers.NewSharedInformerFactory(client, time.Minute)
-	msinfor := f.Apps().V1beta1().MinerSets().Informer()
-	minfor := f.Apps().V1beta1().Miners().Informer()
+	msinfor := f.Apps().V1beta1().ModelCompares().Informer()
+	minfor := f.Apps().V1beta1().Evaluates().Informer()
 
 	f.Start(stopCh)
 	if !cache.WaitForCacheSync(stopCh, msinfor.HasSynced, minfor.HasSynced) {
