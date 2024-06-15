@@ -9,7 +9,6 @@ package apps
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/kubernetes/pkg/apis/autoscaling"
 )
 
 var (
@@ -42,13 +41,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ModelCompareList{},
 		&Evaluate{},
 		&EvaluateList{},
-		&Chain{},
-		&ChainList{},
-		&Miner{},
-		&MinerList{},
-		&MinerSet{},
-		&MinerSetList{},
-		&autoscaling.Scale{},
 	)
 	return nil
 }

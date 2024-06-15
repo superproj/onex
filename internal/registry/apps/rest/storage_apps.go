@@ -15,10 +15,7 @@ import (
 
 	"github.com/superproj/onex/internal/apiserver/storage"
 	serializerutil "github.com/superproj/onex/internal/pkg/util/serializer"
-	chainstore "github.com/superproj/onex/internal/registry/apps/chain/storage"
 	evaluatestore "github.com/superproj/onex/internal/registry/apps/evaluate/storage"
-	minerstore "github.com/superproj/onex/internal/registry/apps/miner/storage"
-	minersetstore "github.com/superproj/onex/internal/registry/apps/minerset/storage"
 	modelcomparestore "github.com/superproj/onex/internal/registry/apps/modelcompare/storage"
 	"github.com/superproj/onex/pkg/apis/apps"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
@@ -76,41 +73,6 @@ func (p RESTStorageProvider) v1beta1Storage(
 
 		storage[resource] = evaluateStorage.Evaluate
 		storage[resource+"/status"] = evaluateStorage.Status
-	}
-
-	//nolint:goconst
-	// chains
-	if resource := "chains"; apiResourceConfigSource.ResourceEnabled(v1beta1.SchemeGroupVersion.WithResource(resource)) {
-		chainStorage, err := chainstore.NewStorage(restOptionsGetter)
-		if err != nil {
-			return storage, err
-		}
-
-		storage[resource] = chainStorage.Chain
-		storage[resource+"/status"] = chainStorage.Status
-	}
-
-	// miners
-	if resource := "miners"; apiResourceConfigSource.ResourceEnabled(v1beta1.SchemeGroupVersion.WithResource(resource)) {
-		minerStorage, err := minerstore.NewStorage(restOptionsGetter)
-		if err != nil {
-			return storage, err
-		}
-
-		storage[resource] = minerStorage.Miner
-		storage[resource+"/status"] = minerStorage.Status
-	}
-
-	// minersets
-	if resource := "minersets"; apiResourceConfigSource.ResourceEnabled(v1beta1.SchemeGroupVersion.WithResource(resource)) {
-		minerSetStorage, err := minersetstore.NewStorage(restOptionsGetter)
-		if err != nil {
-			return storage, err
-		}
-
-		storage[resource] = minerSetStorage.MinerSet
-		storage[resource+"/status"] = minerSetStorage.Status
-		storage[resource+"/scale"] = minerSetStorage.Scale
 	}
 
 	return storage, nil

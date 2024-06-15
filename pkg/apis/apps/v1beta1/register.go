@@ -10,7 +10,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-	"k8s.io/kubernetes/pkg/apis/autoscaling"
 )
 
 // GroupName is the group name used in this package.
@@ -39,13 +38,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&ModelCompareList{},
 		&Evaluate{},
 		&EvaluateList{},
-		&Chain{},
-		&ChainList{},
-		&Miner{},
-		&MinerList{},
-		&MinerSet{},
-		&MinerSetList{},
-		&autoscaling.Scale{},
 	)
 	// Add the watch version that applies
 	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)

@@ -18,29 +18,11 @@ import (
 // Public to allow building arbitrary schemes.
 // All generated defaulters are covering - they call all nested defaulters.
 func RegisterDefaults(scheme *runtime.Scheme) error {
-	scheme.AddTypeDefaultingFunc(&Chain{}, func(obj interface{}) { SetObjectDefaults_Chain(obj.(*Chain)) })
-	scheme.AddTypeDefaultingFunc(&ChainList{}, func(obj interface{}) { SetObjectDefaults_ChainList(obj.(*ChainList)) })
 	scheme.AddTypeDefaultingFunc(&Evaluate{}, func(obj interface{}) { SetObjectDefaults_Evaluate(obj.(*Evaluate)) })
 	scheme.AddTypeDefaultingFunc(&EvaluateList{}, func(obj interface{}) { SetObjectDefaults_EvaluateList(obj.(*EvaluateList)) })
-	scheme.AddTypeDefaultingFunc(&Miner{}, func(obj interface{}) { SetObjectDefaults_Miner(obj.(*Miner)) })
-	scheme.AddTypeDefaultingFunc(&MinerList{}, func(obj interface{}) { SetObjectDefaults_MinerList(obj.(*MinerList)) })
-	scheme.AddTypeDefaultingFunc(&MinerSet{}, func(obj interface{}) { SetObjectDefaults_MinerSet(obj.(*MinerSet)) })
-	scheme.AddTypeDefaultingFunc(&MinerSetList{}, func(obj interface{}) { SetObjectDefaults_MinerSetList(obj.(*MinerSetList)) })
 	scheme.AddTypeDefaultingFunc(&ModelCompare{}, func(obj interface{}) { SetObjectDefaults_ModelCompare(obj.(*ModelCompare)) })
 	scheme.AddTypeDefaultingFunc(&ModelCompareList{}, func(obj interface{}) { SetObjectDefaults_ModelCompareList(obj.(*ModelCompareList)) })
 	return nil
-}
-
-func SetObjectDefaults_Chain(in *Chain) {
-	SetDefaults_Chain(in)
-	SetDefaults_ChainSpec(&in.Spec)
-}
-
-func SetObjectDefaults_ChainList(in *ChainList) {
-	for i := range in.Items {
-		a := &in.Items[i]
-		SetObjectDefaults_Chain(a)
-	}
 }
 
 func SetObjectDefaults_Evaluate(in *Evaluate) {
@@ -52,29 +34,6 @@ func SetObjectDefaults_EvaluateList(in *EvaluateList) {
 	for i := range in.Items {
 		a := &in.Items[i]
 		SetObjectDefaults_Evaluate(a)
-	}
-}
-
-func SetObjectDefaults_Miner(in *Miner) {
-	SetDefaults_Miner(in)
-	SetDefaults_MinerSpec(&in.Spec)
-}
-
-func SetObjectDefaults_MinerList(in *MinerList) {
-	for i := range in.Items {
-		a := &in.Items[i]
-		SetObjectDefaults_Miner(a)
-	}
-}
-
-func SetObjectDefaults_MinerSet(in *MinerSet) {
-	SetDefaults_MinerSpec(&in.Spec.Template.Spec)
-}
-
-func SetObjectDefaults_MinerSetList(in *MinerSetList) {
-	for i := range in.Items {
-		a := &in.Items[i]
-		SetObjectDefaults_MinerSet(a)
 	}
 }
 

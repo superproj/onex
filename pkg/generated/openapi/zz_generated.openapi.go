@@ -1531,7 +1531,7 @@ func schema_pkg_apis_apps_v1beta1_MinerStatus(ref common.ReferenceCallback) comm
 				Properties: map[string]spec.Schema{
 					"podRef": {
 						SchemaProps: spec.SchemaProps{
-							Description: "PodRef will point to the corresponding Pod if it exists. PodRef *corev1.ObjectReference `json:\"podRef,omitempty\" protobuf:\"bytes,1,opt,name=podRef,casttype=k8s.io/api/core/v1.ObjectReference\"`",
+							Description: "PodRef will point to the corresponding Pod if it exists.",
 							Ref:         ref("k8s.io/api/core/v1.ObjectReference"),
 						},
 					},

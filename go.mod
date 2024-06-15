@@ -9,7 +9,6 @@ require (
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/blang/semver/v4 v4.0.0
-	github.com/caarlos0/env/v8 v8.0.0
 	github.com/dgraph-io/ristretto v0.1.1
 	github.com/distribution/reference v0.5.0
 	github.com/fatih/color v1.15.0
@@ -57,7 +56,7 @@ require (
 	gorm.io/gen v0.3.23
 	gorm.io/gorm v1.25.1-0.20230505075827-e61b98d69677
 	k8s.io/api v0.30.1
-	k8s.io/apimachinery v0.30.1
+	k8s.io/apimachinery v0.30.2
 	k8s.io/apiserver v0.30.1
 	k8s.io/client-go v0.30.1
 	k8s.io/code-generator v0.30.1
@@ -201,7 +200,7 @@ require (
 	golang.org/x/mod v0.15.0 // indirect
 	golang.org/x/net v0.23.0 // indirect
 	golang.org/x/oauth2 v0.12.0 // indirect
-	golang.org/x/sync v0.6.0
+	golang.org/x/sync v0.6.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/term v0.18.0 // indirect
 	golang.org/x/text v0.14.0

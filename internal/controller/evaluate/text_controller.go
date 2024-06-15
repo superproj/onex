@@ -9,9 +9,14 @@ package evaluate
 
 import (
 	"context"
+	"fmt"
+	"strconv"
+	"sync"
 	"time"
 
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/types"
 	kerrors "k8s.io/apimachinery/pkg/util/errors"
 	"k8s.io/utils/ptr"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -34,6 +39,57 @@ const eventControllerName = "controller-manager.evaluate"
 type TextReconciler struct {
 	client client.Client
 }
+
+// EvaluateCache struct represents a simple map cache
+type EvaluateCache struct {
+	mu   sync.RWMutex
+	data map[string]EvaluateResult
+}
+
+type EvaluateResult struct {
+	ArthurID  string
+	Addresses v1beta1.EvaluateAddresses
+}
+
+// NewEvaluateCache creates a new Cache instance
+func NewEvaluateCache() *EvaluateCache {
+	return &EvaluateCache{
+		data: make(map[string]EvaluateResult),
+	}
+}
+
+// Set method sets a key-value pair in the cache
+func (c *EvaluateCache) Set(eva *v1beta1.Evaluate, arthurID string, addresses v1beta1.EvaluateAddresses) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+
+	key := cacheKey(eva)
+	c.data[key] = EvaluateResult{arthurID, addresses}
+}
+
+// Get method retrieves a value from the cache based on the key
+func (c *EvaluateCache) Get(eva *v1beta1.Evaluate) EvaluateResult {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	key := cacheKey(eva)
+	return c.data[key]
+}
+
+func (c *EvaluateCache) Exist(eva *v1beta1.Evaluate) bool {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+
+	key := cacheKey(eva)
+	_, ok := c.data[key]
+	return ok
+}
+
+func cacheKey(eva *v1beta1.Evaluate) string {
+	return fmt.Sprintf("%s-%s-%s", eva.Spec.Provider, eva.Spec.ModelID, eva.Spec.SampleID)
+}
+
+var evaluateStore = NewEvaluateCache()
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *TextReconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager, options controller.Options) error {
@@ -60,7 +116,6 @@ func (r *TextReconciler) Reconcile(ctx context.Context, rq ctrl.Request) (_ ctrl
 		return ctrl.Result{}, nil
 	}
 
-	// AddOwners adds the owners of Chain as k/v pairs to the logger.
 	log.V(4).Info("Reconcile evaluate")
 
 	// Return early if the object is paused.
@@ -114,31 +169,36 @@ func (r *TextReconciler) reconcile(ctx context.Context, eva *v1beta1.Evaluate) (
 		return ctrl.Result{}, nil
 	}
 
-	/*
-		if eva.Status.Phase == string(v1beta1.EvaluatePhaseSucceeded) {
-			log.V(1).Info("Evaluate has gone `Succeeded` phase. It won't reconcile")
-			return ctrl.Result{}, nil
-		}
-	*/
+	if eva.Status.Phase == string(v1beta1.EvaluatePhaseSucceeded) {
+		log.V(1).Info("Evaluate has gone `Succeeded` phase. It won't reconcile")
+		return ctrl.Result{}, nil
+	}
 
 	// 模拟训练任务
-	duration := time.Now().Sub(eva.GetCreationTimestamp().Time)
+	duration := time.Now().Sub(eva.Status.StartedAt.Time)
 	if duration.Seconds() > 10 && duration.Seconds() < 30 {
 		eva.Status.Phase = string(v1beta1.EvaluatePhaseEvaluating)
 		return ctrl.Result{Requeue: true, RequeueAfter: 1 * time.Second}, nil
 	}
 
+	addresses := v1beta1.EvaluateAddresses{
+		HDFSRoot:          "hdfs://testroot",
+		HDFSPtPath:        "hdfs://test-pt-path",
+		TOSTrainDataPath:  "cos://test-train-data-path",
+		TOSTestDataPath:   "cos://test-test-data-path",
+		TOSTrainDataCount: 31,
+		TOSTestDataConut:  16,
+	}
+	arthurID := strconv.FormatInt(time.Now().Unix(), 10)
+
 	if duration.Seconds() > 30 && eva.Spec.ModelID != 1004 {
 		eva.Status.Phase = string(v1beta1.EvaluatePhaseSucceeded)
-		eva.Status.ArthurID = ptr.To("4001")
-		eva.Status.Addresses = v1beta1.EvaluateAddresses{
-			HDFSRoot:          "hdfs://testroot",
-			HDFSPtPath:        "hdfs://test-pt-path",
-			TOSTrainDataPath:  "cos://test-train-data-path",
-			TOSTestDataPath:   "cos://test-test-data-path",
-			TOSTrainDataCount: 31,
-			TOSTestDataConut:  16,
-		}
+		eva.Status.ArthurID = &arthurID
+		eva.Status.Addresses = addresses
+
+		// cache traing result
+		evaluateStore.Set(eva, arthurID, addresses)
+
 		record.Eventf(eva, "SuccessfulCreate", "Created evaluate %q", eva.Name)
 		return ctrl.Result{}, nil
 	}
@@ -162,4 +222,49 @@ func (r *TextReconciler) reconcilePhase(_ context.Context, eva *v1beta1.Evaluate
 	if eva.Status.Phase == string(v1beta1.EvaluatePhaseSucceeded) || eva.Status.Phase == string(v1beta1.EvaluatePhaseFailed) {
 		eva.Status.EndedAt = ptr.To(metav1.Now())
 	}
+}
+
+func (r *TextReconciler) CheckResult(ctx context.Context, eva *v1beta1.Evaluate) error {
+	compare := metav1.GetControllerOf(eva)
+
+	// 不存在 Owner
+	if compare == nil {
+		// 不存在 owner，说明是个游离的 Evaluate, 只要训练结果不存在就重新训练
+		if !evaluateStore.Exist(eva) {
+			SetRestartStatus(eva)
+		}
+		return nil
+	}
+
+	// 存在 Owner
+	mc := &v1beta1.ModelCompare{}
+	if err := r.client.Get(ctx, types.NamespacedName{eva.Namespace, compare.Name}, mc); err != nil {
+		// Owner 不存在，说明这个 Evaluate 将要被 GC，直接忽略
+		if apierrors.IsNotFound(err) {
+			return nil
+		}
+
+		return err
+	}
+
+	// 如果跟 ModelCompare 中的 SampleID 不一致，不需要重新训练
+	if mc.Spec.Template.Spec.SampleID != eva.Spec.SampleID {
+		return nil
+	}
+
+	// 跟 Owner SampleID 一致但是训练结果不存在，则重新训练
+	SetRestartStatus(eva)
+	return nil
+}
+
+func SetRestartStatus(eva *v1beta1.Evaluate) {
+	eva.Status.Phase = ""
+	eva.Status.Addresses = v1beta1.EvaluateAddresses{}
+
+	now := metav1.Now()
+	eva.Status.StartedAt = &now
+	eva.Status.EndedAt = nil
+
+	eva.Status.FailureReason = nil
+	eva.Status.FailureMessage = nil
 }

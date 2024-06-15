@@ -463,23 +463,6 @@ func (r *Reconciler) getModelComparesForEvaluate(ctx context.Context, eva *v1bet
 	return mcs, nil
 }
 
-// shouldAdopt returns true if the ModelCompare should be adopted as a stand-alone ModelCompare directly owned by the Chain.
-func (r *Reconciler) shouldAdopt(mc *v1beta1.ModelCompare) bool {
-	// if the ModelCompare is controlled by a MinerDeployment, or if it is a stand-alone ModelCompare directly owned by the Chain, then no-op.
-	if coreutil.HasOwner(mc.GetOwnerReferences(), v1beta1.SchemeGroupVersion.String(), []string{"MinerDeployment"}) {
-		return false
-	}
-
-	// If the ModelCompare is originated by a MinerDeployment object, it should not be adopted directly by the Chain as a stand-alone ModelCompare.
-	// Note: this is rquired because after restore from a backup both the ModelCompare controller and the
-	// MinerDeployment controller are racing to adopt ModelCompares.
-	if _, ok := mc.Labels[v1beta1.MinerDeploymentNameLabel]; ok {
-		return false
-	}
-
-	return true
-}
-
 // updateStatus updates the Status field for the ModelCompare
 // It checks for the current state of the replicas and updates the Status of the ModelCompare.
 func (r *Reconciler) updateStatus(ctx context.Context, mc *v1beta1.ModelCompare, filteredEvaluates []*v1beta1.Evaluate) error {
@@ -498,52 +481,6 @@ func (r *Reconciler) updateStatus(ctx context.Context, mc *v1beta1.ModelCompare,
 	if mc.Status.Phase != newStatus.Phase {
 		newStatus.DeepCopyInto(&mc.Status)
 	}
-	/*
-		switch {
-			// We are scaling up
-		case newStatus.Replicas < desiredReplicas:
-			conditions.MarkFalse(
-				ms,
-				v1beta1.ResizedCondition,
-				v1beta1.ScalingUpReason,
-				v1beta1.ConditionSeverityWarning,
-				"Scaling up ModelCompare to %d replicas (actual %d)", desiredReplicas, newStatus.Replicas,
-			)
-			// We are scaling down
-		case newStatus.Replicas > desiredReplicas:
-			conditions.MarkFalse(
-				ms,
-				v1beta1.ResizedCondition,
-				v1beta1.ScalingDownReason,
-				v1beta1.ConditionSeverityWarning,
-				"Scaling down ModelCompare to %d replicas (actual %d)", desiredReplicas, newStatus.Replicas,
-			)
-			// This means that there was no error in generating the desired number of miner objects
-			conditions.MarkTrue(ms, v1beta1.MinersCreatedCondition)
-		default:
-			// Make sure last resize operation is marked as completed.
-			// NOTE: we are checking the number of miners ready so we report resize completed only when the miners
-			// are actually provisioned (vs reporting completed immediately after the last miner object is created). This convention is also used by KCP.
-			if newStatus.ReadyReplicas == newStatus.Replicas {
-				if conditions.IsFalse(ms, v1beta1.ResizedCondition) {
-					log.V(2).Info("All the replicas are ready", "replicas", newStatus.ReadyReplicas)
-				}
-				conditions.MarkTrue(ms, v1beta1.ResizedCondition)
-			}
-			// This means that there was no error in generating the desired number of miner objects
-			conditions.MarkTrue(ms, v1beta1.MinersCreatedCondition)
-		}
-
-		// Aggregate the operational state of all the miners; while aggregating we are adding the
-		// source ref (reason@miner/name) so the problem can be easily tracked down to its source miner.
-		conditions.SetAggregate(
-			ms,
-			v1beta1.MinersReadyCondition,
-			collections.FromMiners(filteredMiners...).ConditionGetters(),
-			conditions.AddSourceRef(),
-			conditions.WithStepCounterIf(false),
-		)
-	*/
 
 	return nil
 }

@@ -42,27 +42,6 @@ func AddHandlers(h printers.PrintHandler) {
 	h.TableHandler(configMapColumnDefinitions, printConfigMap)
 	h.TableHandler(configMapColumnDefinitions, printConfigMapList)
 
-	minerSetColumnDefinitions := []metav1.TableColumnDefinition{
-		{Name: "Name", Type: "string", Format: "name", Description: metav1.ObjectMeta{}.SwaggerDoc()["name"]},
-		{Name: "Ready", Type: "integer", Description: v1beta1.MinerSetStatus{}.SwaggerDoc()["readyReplicas"]},
-		{Name: "Current", Type: "integer", Description: v1beta1.MinerSetStatus{}.SwaggerDoc()["replicas"]},
-		{Name: "Available", Type: "string", Description: v1beta1.MinerSetStatus{}.SwaggerDoc()["availableReplicas"]},
-		{Name: "Age", Type: "string", Description: metav1.ObjectMeta{}.SwaggerDoc()["creationTimestamp"]},
-		{Name: "Selector", Type: "string", Priority: 1, Description: v1beta1.MinerSetSpec{}.SwaggerDoc()["selector"]},
-	}
-	h.TableHandler(minerSetColumnDefinitions, printMinerSet)
-	h.TableHandler(minerSetColumnDefinitions, printMinerSetList)
-
-	minerColumnDefinitions := []metav1.TableColumnDefinition{
-		{Name: "Name", Type: "string", Format: "name", Description: metav1.ObjectMeta{}.SwaggerDoc()["name"]},
-		{Name: "Status", Type: "string", Description: "The status of the miner"},
-		{Name: "Age", Type: "string", Description: metav1.ObjectMeta{}.SwaggerDoc()["creationTimestamp"]},
-		{Name: "Type", Type: "string", Priority: 1, Description: metav1.ObjectMeta{}.SwaggerDoc()["minerType"]},
-	}
-
-	h.TableHandler(minerColumnDefinitions, printMiner)
-	h.TableHandler(minerColumnDefinitions, printMinerList)
-
 	leaseColumnDefinitions := []metav1.TableColumnDefinition{
 		{Name: "Name", Type: "string", Format: "name", Description: metav1.ObjectMeta{}.SwaggerDoc()["name"]},
 		{Name: "Holder", Type: "string", Description: coordinationv1.LeaseSpec{}.SwaggerDoc()["holderIdentity"]},
@@ -92,14 +71,6 @@ func AddHandlers(h printers.PrintHandler) {
 	}
 	h.TableHandler(eventColumnDefinitions, printEvent)
 	h.TableHandler(eventColumnDefinitions, printEventList)
-
-	chainColumnDefinitions := []metav1.TableColumnDefinition{
-		{Name: "Name", Type: "string", Format: "name", Description: metav1.ObjectMeta{}.SwaggerDoc()["name"]},
-		// {Name: "Status", Type: "string", Description: "The status of the miner"},
-		{Name: "Age", Type: "string", Description: metav1.ObjectMeta{}.SwaggerDoc()["creationTimestamp"]},
-	}
-	h.TableHandler(chainColumnDefinitions, printChain)
-	h.TableHandler(chainColumnDefinitions, printChainList)
 
 	evaluateColumnDefinitions := []metav1.TableColumnDefinition{
 		{Name: "Name", Type: "string", Format: "name", Description: metav1.ObjectMeta{}.SwaggerDoc()["name"]},
@@ -165,80 +136,6 @@ func printConfigMapList(list *api.ConfigMapList, options printers.GenerateOption
 		rows = append(rows, r...)
 	}
 	return rows, nil
-}
-
-func printMiner(obj *apps.Miner, options printers.GenerateOptions) ([]metav1.TableRow, error) {
-	row := metav1.TableRow{
-		Object: runtime.RawExtension{Object: obj},
-	}
-
-	phase := string(v1beta1.MinerPhasePending)
-	if obj.Status.Phase != "" {
-		phase = obj.Status.Phase
-	}
-
-	row.Cells = append(
-		row.Cells,
-		obj.Name,
-		phase,
-		printersutil.TranslateTimestampSince(obj.CreationTimestamp),
-	)
-
-	if options.Wide {
-		row.Cells = append(row.Cells, obj.Spec.MinerType)
-	}
-
-	return []metav1.TableRow{row}, nil
-}
-
-func printMinerList(list *apps.MinerList, options printers.GenerateOptions) ([]metav1.TableRow, error) {
-	rows := make([]metav1.TableRow, 0, len(list.Items))
-	for i := range list.Items {
-		r, err := printMiner(&list.Items[i], options)
-		if err != nil {
-			return nil, err
-		}
-		rows = append(rows, r...)
-	}
-	return rows, nil
-}
-
-func printMinerSetList(minerSetList *apps.MinerSetList, options printers.GenerateOptions) ([]metav1.TableRow, error) {
-	rows := make([]metav1.TableRow, 0, len(minerSetList.Items))
-	for i := range minerSetList.Items {
-		r, err := printMinerSet(&minerSetList.Items[i], options)
-		if err != nil {
-			return nil, err
-		}
-		rows = append(rows, r...)
-	}
-	return rows, nil
-}
-
-func printMinerSet(obj *apps.MinerSet, options printers.GenerateOptions) ([]metav1.TableRow, error) {
-	row := metav1.TableRow{
-		Object: runtime.RawExtension{Object: obj},
-	}
-
-	desiredReplicas := obj.Spec.Replicas
-	currentReplicas := obj.Status.Replicas
-	readyReplicas := obj.Status.ReadyReplicas
-	availableReplicas := obj.Status.AvailableReplicas
-
-	ready := fmt.Sprintf("%d/%d", int64(readyReplicas), int64(*desiredReplicas))
-	row.Cells = append(
-		row.Cells,
-		obj.Name,
-		ready,
-		int64(currentReplicas),
-		int64(availableReplicas),
-		printersutil.TranslateTimestampSince(obj.CreationTimestamp),
-	)
-	if options.Wide {
-		row.Cells = append(row.Cells, metav1.FormatLabelSelector(&obj.Spec.Selector))
-	}
-
-	return []metav1.TableRow{row}, nil
 }
 
 func printModelCompareList(mcList *apps.ModelCompareList, options printers.GenerateOptions) ([]metav1.TableRow, error) {
@@ -371,36 +268,6 @@ func printEventList(list *api.EventList, options printers.GenerateOptions) ([]me
 	rows := make([]metav1.TableRow, 0, len(list.Items))
 	for i := range list.Items {
 		r, err := printEvent(&list.Items[i], options)
-		if err != nil {
-			return nil, err
-		}
-		rows = append(rows, r...)
-	}
-	return rows, nil
-}
-
-func printChain(obj *apps.Chain, options printers.GenerateOptions) ([]metav1.TableRow, error) {
-	row := metav1.TableRow{
-		Object: runtime.RawExtension{Object: obj},
-	}
-
-	row.Cells = append(
-		row.Cells,
-		obj.Name,
-		printersutil.TranslateTimestampSince(obj.CreationTimestamp),
-	)
-
-	if options.Wide {
-		// row.Cells = append(row.Cells, getMinerInternalIP(obj), getMinerExternalIP(obj), getInstanceID(obj))
-	}
-
-	return []metav1.TableRow{row}, nil
-}
-
-func printChainList(list *apps.ChainList, options printers.GenerateOptions) ([]metav1.TableRow, error) {
-	rows := make([]metav1.TableRow, 0, len(list.Items))
-	for i := range list.Items {
-		r, err := printChain(&list.Items[i], options)
 		if err != nil {
 			return nil, err
 		}

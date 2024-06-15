@@ -21,20 +21,15 @@ import (
 	"github.com/pkg/errors"
 	corev1 "k8s.io/api/core/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	k8sversion "k8s.io/apimachinery/pkg/version"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
-	"sigs.k8s.io/controller-runtime/pkg/handler"
 
 	"github.com/superproj/onex/internal/pkg/util/contract"
-	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )
 
 const (
@@ -44,10 +39,6 @@ const (
 
 var (
 	rnd = rand.New(rand.NewSource(time.Now().UnixNano())) //nolint:gosec
-
-	// ErrNoChain is returned when the cluster
-	// label could not be found on the object passed in.
-	ErrNoChain = fmt.Errorf("no %q label present", v1beta1.ChainNameLabel)
 
 	// ErrUnstructuredFieldNotFound determines that a field
 	// in an unstructured object could not be found.
@@ -96,26 +87,6 @@ func IsExternalManagedControlPlane(controlPlane *unstructured.Unstructured) bool
 	return managed
 }
 
-// GetMinerIfExists gets a miner from the API server if it exists.
-func GetMinerIfExists(ctx context.Context, c client.Client, namespace, name string) (*v1beta1.Miner, error) {
-	if c == nil {
-		// Being called before k8s is setup as part of control plane VM creation
-		return nil, nil
-	}
-
-	// Miners are identified by name
-	miner := &v1beta1.Miner{}
-	err := c.Get(ctx, client.ObjectKey{Namespace: namespace, Name: name}, miner)
-	if err != nil {
-		if apierrors.IsNotFound(err) {
-			return nil, nil
-		}
-		return nil, err
-	}
-
-	return miner, nil
-}
-
 // IsNodeReady returns true if a node is ready.
 func IsNodeReady(node *corev1.Node) bool {
 	for _, condition := range node.Status.Conditions {
@@ -127,76 +98,12 @@ func IsNodeReady(node *corev1.Node) bool {
 	return false
 }
 
-// GetChainFromMetadata returns the Chain object (if present) using the object metadata.
-func GetChainFromMetadata(ctx context.Context, c client.Client, obj metav1.ObjectMeta) (*v1beta1.Chain, error) {
-	if obj.Labels[v1beta1.ChainNameLabel] == "" {
-		return nil, errors.WithStack(ErrNoChain)
-	}
-	return GetChainByName(ctx, c, obj.Namespace, obj.Labels[v1beta1.ChainNameLabel])
-}
-
-// GetOwnerChain returns the Chain object owning the current resource.
-func GetOwnerChain(ctx context.Context, c client.Client, obj metav1.ObjectMeta) (*v1beta1.Chain, error) {
-	for _, ref := range obj.GetOwnerReferences() {
-		if ref.Kind != "Chain" {
-			continue
-		}
-		gv, err := schema.ParseGroupVersion(ref.APIVersion)
-		if err != nil {
-			return nil, errors.WithStack(err)
-		}
-		if gv.Group == v1beta1.SchemeGroupVersion.Group {
-			return GetChainByName(ctx, c, obj.Namespace, ref.Name)
-		}
-	}
-	return nil, nil
-}
-
-// GetChainByName finds and return a Chain object using the specified params.
-func GetChainByName(ctx context.Context, c client.Client, namespace, name string) (*v1beta1.Chain, error) {
-	chain := &v1beta1.Chain{}
-	key := client.ObjectKey{
-		Namespace: namespace,
-		Name:      name,
-	}
-
-	if err := c.Get(ctx, key, chain); err != nil {
-		return nil, errors.Wrapf(err, "failed to get Chain/%s", name)
-	}
-
-	return chain, nil
-}
-
 // ObjectKey returns client.ObjectKey for the object.
 func ObjectKey(object metav1.Object) client.ObjectKey {
 	return client.ObjectKey{
 		Namespace: object.GetNamespace(),
 		Name:      object.GetName(),
 	}
-}
-
-// GetOwnerMiner returns the Miner object owning the current resource.
-func GetOwnerMiner(ctx context.Context, c client.Client, obj metav1.ObjectMeta) (*v1beta1.Miner, error) {
-	for _, ref := range obj.GetOwnerReferences() {
-		gv, err := schema.ParseGroupVersion(ref.APIVersion)
-		if err != nil {
-			return nil, err
-		}
-		if ref.Kind == "Miner" && gv.Group == v1beta1.SchemeGroupVersion.Group {
-			return GetMinerByName(ctx, c, obj.Namespace, ref.Name)
-		}
-	}
-	return nil, nil
-}
-
-// GetMinerByName finds and return a Miner object using the specified params.
-func GetMinerByName(ctx context.Context, c client.Client, namespace, name string) (*v1beta1.Miner, error) {
-	m := &v1beta1.Miner{}
-	key := client.ObjectKey{Name: name, Namespace: namespace}
-	if err := c.Get(ctx, key, m); err != nil {
-		return nil, err
-	}
-	return m, nil
 }
 
 // HasOwnerRef returns true if the OwnerReference is already in the slice. It matches based on Group, Kind and Name.
@@ -375,72 +282,6 @@ func (k KubeAwareAPIVersions) Len() int      { return len(k) }
 func (k KubeAwareAPIVersions) Swap(i, j int) { k[i], k[j] = k[j], k[i] }
 func (k KubeAwareAPIVersions) Less(i, j int) bool {
 	return k8sversion.CompareKubeAwareVersionStrings(k[i], k[j]) < 0
-}
-
-// ChainToTypedObjectsMapper returns a mapper function that gets a cluster and lists all objects for the object passed in
-// and returns a list of requests.
-// Note: This function uses the passed in typed ObjectList and thus with the default client configuration all list calls
-// will be cached.
-// NB: The objects are required to have `v1beta1.ChainNameLabel` applied.
-func ChainToTypedObjectsMapper(c client.Client, ro client.ObjectList, scheme *runtime.Scheme) (handler.MapFunc, error) {
-	gvk, err := apiutil.GVKForObject(ro, scheme)
-	if err != nil {
-		return nil, err
-	}
-
-	// Note: we create the typed ObjectList once here, so we don't have to use
-	// reflection in every execution of the actual event handler.
-	obj, err := scheme.New(gvk)
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to construct object of type %s", gvk)
-	}
-	objectList, ok := obj.(client.ObjectList)
-	if !ok {
-		return nil, errors.Errorf("expected objject to be a client.ObjectList, is actually %T", obj)
-	}
-
-	isNamespaced, err := isAPINamespaced(gvk, c.RESTMapper())
-	if err != nil {
-		return nil, err
-	}
-
-	return func(ctx context.Context, o client.Object) []ctrl.Request {
-		cluster, ok := o.(*v1beta1.Chain)
-		if !ok {
-			return nil
-		}
-
-		listOpts := []client.ListOption{
-			client.MatchingLabels{
-				v1beta1.ChainNameLabel: cluster.Name,
-			},
-		}
-
-		if isNamespaced {
-			listOpts = append(listOpts, client.InNamespace(cluster.Namespace))
-		}
-
-		objectList = objectList.DeepCopyObject().(client.ObjectList)
-		if err := c.List(ctx, objectList, listOpts...); err != nil {
-			return nil
-		}
-
-		objects, err := meta.ExtractList(objectList)
-		if err != nil {
-			return nil
-		}
-
-		results := []ctrl.Request{}
-		for _, obj := range objects {
-			// Note: We don't check if the type cast succeeds as all items in an client.ObjectList
-			// are client.Objects.
-			o := obj.(client.Object)
-			results = append(results, ctrl.Request{
-				NamespacedName: client.ObjectKey{Namespace: o.GetNamespace(), Name: o.GetName()},
-			})
-		}
-		return results
-	}, nil
 }
 
 // isAPINamespaced detects if a GroupVersionKind is namespaced.

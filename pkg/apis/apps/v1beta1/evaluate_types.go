@@ -83,11 +83,11 @@ type EvaluateSpec struct {
 
 	// Evaluate machine configuration.
 	// +optional
-	Provider string `json:"provider,omitempty" protobuf:"bytes,3,opt,name=provider"`
+	Provider string `json:"provider,omitempty" protobuf:"bytes,2,opt,name=provider"`
 
 	// Evaluate machine configuration.
 	// +optional
-	ModelID int64 `json:"modelID,omitempty" protobuf:"bytes,2,opt,name=modelID"`
+	ModelID int64 `json:"modelID,omitempty" protobuf:"bytes,3,opt,name=modelID"`
 
 	// +optional
 	SampleID int64 `json:"sampleID,omitempty" protobuf:"bytes,4,opt,name=sampleID"`

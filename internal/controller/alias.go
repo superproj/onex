@@ -38,7 +38,6 @@ type SyncReconciler struct {
 }
 
 func (r *SyncReconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager, options controller.Options) error {
-	// setup chainSync controller
 	if err := (&synccontroller.ModelCompareSyncReconciler{
 		Store: r.Store,
 	}).SetupWithManager(ctx, mgr, options); err != nil {
@@ -60,7 +59,6 @@ func (r *SyncReconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager,
 type EvaluateReconciler struct{}
 
 func (r *EvaluateReconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager, options controller.Options) error {
-	// setup chainSync controller
 	if err := (&evaluatecontroller.TextReconciler{}).SetupWithManager(ctx, mgr, options); err != nil {
 		return err
 	}

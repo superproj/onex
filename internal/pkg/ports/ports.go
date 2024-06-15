@@ -16,20 +16,6 @@ const (
 	// May be overridden by a flag at startup.
 	ControllerManagerHealthzPort = 20250
 
-	// MinerSetControllerStatusPort is the default port for the minerset controller status server.
-	// May be overridden by a flag at startup.
-	MinerSetControllerStatusPort = 20251
-	// MinerSetControllerHealthzPort is the default port for the minerset controller healthz server.
-	// May be overridden by a flag at startup.
-	MinerSetControllerHealthzPort = 20250
-
-	// MinerControllerStatusPort is the default port for the miner controller status server.
-	// May be overridden by a flag at startup.
-	MinerControllerStatusPort = 20251
-	// MinerControllerHealthzPort is the default port for the miner controller healthz server.
-	// May be overridden by a flag at startup.
-	MinerControllerHealthzPort = 20250
-
 	// KubeletPort is the default port for the kubelet server on each host machine.
 	// May be overridden by a flag at startup.
 	KubeletPort = 10250

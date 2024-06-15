@@ -80,8 +80,7 @@ type MinerSpec struct {
 type MinerStatus struct {
 	// PodRef will point to the corresponding Pod if it exists.
 	// +optional
-	//PodRef *corev1.ObjectReference `json:"podRef,omitempty" protobuf:"bytes,1,opt,name=podRef,casttype=k8s.io/api/core/v1.ObjectReference"`
-	PodRef *corev1.ObjectReference `json:"podRef,omitempty" protobuf:"bytes,1,opt,name=podRef"`
+	PodRef *corev1.ObjectReference `json:"podRef,omitempty" protobuf:"bytes,1,opt,name=podRef,casttype=k8s.io/api/core/v1.ObjectReference"`
 
 	// LastUpdated identifies when this status was last observed.
 	// +optional

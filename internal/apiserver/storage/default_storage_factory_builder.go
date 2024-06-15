@@ -87,9 +87,6 @@ func (c *completedStorageFactoryConfig) New() (*serverstorage.DefaultStorageFact
 
 	storageFactory.AddCohabitatingResources(apps.Resource("modelcompares"), extensions.Resource("modelcompares"))
 	storageFactory.AddCohabitatingResources(apps.Resource("evaluates"), extensions.Resource("evaluates"))
-	storageFactory.AddCohabitatingResources(apps.Resource("chains"), extensions.Resource("chains"))
-	storageFactory.AddCohabitatingResources(apps.Resource("minersets"), extensions.Resource("minersets"))
-	storageFactory.AddCohabitatingResources(apps.Resource("miners"), extensions.Resource("miners"))
 	storageFactory.AddCohabitatingResources(api.Resource("events"), events.Resource("events"))
 
 	for _, override := range c.EtcdServersOverrides {

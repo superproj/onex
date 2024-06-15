@@ -84,7 +84,6 @@ func (r *ModelCompareSyncReconciler) Reconcile(ctx context.Context, rq ctrl.Requ
 	return ctrl.Result{}, nil
 }
 
-// create chain record.
 func addModelCompare(ctx context.Context, dbcli store.IStore, ch *v1beta1.ModelCompare) error {
 	return dbcli.ModelCompares().Create(ctx, applyToModelCompare(&gwmodel.WalleModelCompare{}, ch))
 }
