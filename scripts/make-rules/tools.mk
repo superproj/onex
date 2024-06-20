@@ -213,6 +213,7 @@ _install.kubebuilder : ## Install kubebuilder tool which is used to building Kub
 	@curl -sL -o kubebuilder https://go.kubebuilder.io/dl/latest/$(shell $(GO) env GOOS)/$(shell $(GO) env GOARCH)
 	@mkdir -p ${HOME}/bin
 	@chmod +x kubebuilder && mv kubebuilder ${HOME}/bin
+	@$(SCRIPTS_DIR)/add-completion.sh kubebuilder bash
 
 # gomodifytags -all -add-tags json -w -transform camelcase --skip-unexported -file *.go
 .PHONY: _install.gomodifytags
