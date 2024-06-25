@@ -84,8 +84,8 @@ func (w *userWatcher) Run() {
 	wp.StopWait()
 }
 
-// Init initializes the watcher for later execution.
-func (w *userWatcher) Init(ctx context.Context, config *watcher.Config) error {
+// Initialize initializes the watcher for later execution.
+func (w *userWatcher) Initialize(ctx context.Context, config *watcher.Config) error {
 	w.store = config.Store
 	w.maxWorkers = config.UserWatcherMaxWorkers
 	return nil
