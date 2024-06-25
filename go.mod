@@ -46,6 +46,7 @@ require (
 	github.com/jinzhu/copier v0.3.5
 	github.com/kisielk/errcheck v1.5.0
 	github.com/likexian/host-stat-go v0.0.0-20190516151207-c9cf36dd6ce9
+	github.com/looplab/fsm v1.0.2
 	github.com/mitchellh/go-wordwrap v1.0.1
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
 	github.com/olekukonko/tablewriter v0.0.5

@@ -21,6 +21,10 @@ import (
 	"github.com/superproj/onex/pkg/log"
 )
 
+const (
+	defaultMaxWorkers = 100
+)
+
 // List retrieves a list of all users from the database.
 func (b *userBiz) List(ctx context.Context, rq *v1.ListUserRequest) (*v1.ListUserResponse, error) {
 	count, list, err := b.ds.Users().List(ctx, meta.WithOffset(rq.Offset), meta.WithLimit(rq.Limit))
@@ -81,8 +85,7 @@ func (b *userBiz) ListWithWorkerPool(ctx context.Context, rq *v1.ListUserRequest
 	}
 
 	var m sync.Map
-	wp := workerpool.New(100)
-
+	wp := workerpool.New(defaultMaxWorkers)
 	// Use goroutine to improve interface performance
 	for _, user := range list {
 		wp.Submit(func() {

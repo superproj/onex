@@ -10,14 +10,9 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
+	known "github.com/superproj/onex/internal/pkg/known/usercenter"
 	"github.com/superproj/onex/internal/pkg/zid"
 	"github.com/superproj/onex/pkg/authn"
-)
-
-// User status constants.
-const (
-	StatusUserDisabled = iota // Status used for disabling a user.
-	StatusUserNormal          // Status used for enabling a user.
 )
 
 // Secret status constants.
@@ -58,7 +53,7 @@ func (u *UserM) BeforeCreate(tx *gorm.DB) (err error) {
 		return err // Return error if there's a problem with encryption.
 	}
 
-	u.Status = StatusUserNormal // Set the default status for the user as normal.
+	u.Status = known.UserStatusActive // Set the default status for the user as active.
 
 	return nil
 }

@@ -42,5 +42,5 @@ func (w *cleanWatcher) Init(ctx context.Context, config *watcher.Config) error {
 }
 
 func init() {
-	watcher.Register(&cleanWatcher{})
+	watcher.Register("clean", &cleanWatcher{})
 }
