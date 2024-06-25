@@ -50,5 +50,5 @@ func (w *secretsCleanWatcher) Init(ctx context.Context, config *watcher.Config) 
 }
 
 func init() {
-	watcher.Register(&secretsCleanWatcher{})
+	watcher.Register("secretsclean", &secretsCleanWatcher{})
 }

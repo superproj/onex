@@ -10,4 +10,5 @@ package all
 import (
 	_ "github.com/superproj/onex/internal/nightwatch/watcher/clean"
 	_ "github.com/superproj/onex/internal/nightwatch/watcher/secretsclean"
+	_ "github.com/superproj/onex/internal/nightwatch/watcher/user"
 )

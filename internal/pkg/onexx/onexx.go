@@ -11,6 +11,8 @@ import (
 	"context"
 
 	"github.com/golang-jwt/jwt/v4"
+
+	"github.com/superproj/onex/internal/usercenter/model"
 )
 
 // 定义全局上下文中的键.
@@ -25,6 +27,7 @@ type (
 type (
 	authKey        struct{}
 	userKey        struct{}
+	userMKey       struct{}
 	accessTokenKey struct{}
 )
 
@@ -59,4 +62,15 @@ func NewAccessToken(ctx context.Context, accessToken string) context.Context {
 func FromAccessToken(ctx context.Context) string {
 	accessToken, _ := ctx.Value(accessTokenKey{}).(string)
 	return accessToken
+}
+
+// NewUserM put *UserM into context.
+func NewUserM(ctx context.Context, user *model.UserM) context.Context {
+	return context.WithValue(ctx, userMKey{}, user)
+}
+
+// FromUserM extract *UserM from extract.
+func FromUserM(ctx context.Context) *model.UserM {
+	user, _ := ctx.Value(userMKey{}).(*model.UserM)
+	return user
 }

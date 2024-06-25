@@ -20,4 +20,7 @@ type Config struct {
 
 	// Client is the client for onex-apiserver.
 	Client clientset.Interface
+
+	// Then maximum concurrency event of user watcher.
+	UserWatcherMaxWorkers int64
 }

@@ -25,6 +25,7 @@ import (
 	// trigger init functions in `internal/nightwatch/watcher/all`.
 	_ "github.com/superproj/onex/internal/nightwatch/watcher/all"
 	genericoptions "github.com/superproj/onex/pkg/options"
+	stringsutil "github.com/superproj/onex/pkg/util/strings"
 )
 
 var (
@@ -37,15 +38,20 @@ var (
 type nightWatch struct {
 	runner *cron.Cron
 	// distributed lock
-	locker *redsync.Mutex
-	config *watcher.Config
+	locker          *redsync.Mutex
+	config          *watcher.Config
+	disableWatchers []string
 }
 
 // Config is the configuration for the nightwatch server.
 type Config struct {
 	MySQLOptions *genericoptions.MySQLOptions
 	RedisOptions *genericoptions.RedisOptions
-	Client       clientset.Interface
+	// The maximum concurrency event of user watcher.
+	UserWatcherMaxWorkers int64
+	// The list of watchers that should be disabled.
+	DisableWatchers []string
+	Client          clientset.Interface
 }
 
 // CompletedConfig same as Config, just to swap private object.
@@ -68,7 +74,11 @@ func (c *Config) CreateWatcherConfig() (*watcher.Config, error) {
 		return nil, err
 	}
 
-	return &watcher.Config{Store: storeClient, Client: c.Client}, nil
+	return &watcher.Config{
+		Store:                 storeClient,
+		Client:                c.Client,
+		UserWatcherMaxWorkers: c.UserWatcherMaxWorkers,
+	}, nil
 }
 
 // New creates an asynchronous task instance.
@@ -104,7 +114,7 @@ func (c *Config) New() (*nightWatch, error) {
 		return nil, err
 	}
 
-	nw := &nightWatch{runner: runner, locker: locker, config: cfg}
+	nw := &nightWatch{runner: runner, locker: locker, config: cfg, disableWatchers: c.DisableWatchers}
 	if err := nw.addWatchers(); err != nil {
 		return nil, err
 	}
@@ -115,6 +125,10 @@ func (c *Config) New() (*nightWatch, error) {
 // addWatchers used to initialize all registered watchers and add the watchers as a Cron job.
 func (nw *nightWatch) addWatchers() error {
 	for n, w := range watcher.ListWatchers() {
+		if stringsutil.StringIn(n, nw.disableWatchers) {
+			continue
+		}
+
 		if err := w.Init(context.Background(), nw.config); err != nil {
 			log.Errorw(err, "Failed to construct watcher", "watcher", n)
 			return err

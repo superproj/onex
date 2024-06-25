@@ -73,6 +73,7 @@ func AddConfigFlag(fs *pflag.FlagSet, name string, watch bool) {
 		if err := viper.ReadInConfig(); err != nil {
 			log.Debugw("Failed to read configuration file", "file", cfgFile, "err", err)
 		}
+		log.Debugw("Success to read configuration file", "file", viper.ConfigFileUsed())
 
 		if watch {
 			viper.WatchConfig()

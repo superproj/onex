@@ -26,7 +26,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 	"sigs.k8s.io/controller-runtime/pkg/handler"
-
 	"sigs.k8s.io/controller-runtime/pkg/source"
 
 	"github.com/superproj/onex/internal/controller/miner/apis/config"

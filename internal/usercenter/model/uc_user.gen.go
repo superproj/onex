@@ -21,7 +21,7 @@ type UserM struct {
 	ID        int64     `gorm:"column:id;type:bigint(20) unsigned;primaryKey;autoIncrement:true;comment:主键 ID" json:"id"`                    // 主键 ID
 	UserID    string    `gorm:"column:user_id;type:varchar(253);not null;uniqueIndex:idx_user_id,priority:1;comment:用户 ID" json:"user_id"`   // 用户 ID
 	Username  string    `gorm:"column:username;type:varchar(253);not null;uniqueIndex:idx_username,priority:1;comment:用户名称" json:"username"` // 用户名称
-	Status    int32     `gorm:"column:status;type:tinyint(3) unsigned;not null;default:1;comment:用户状态，0-禁用；1-启用" json:"status"`              // 用户状态，0-禁用；1-启用
+	Status    string `gorm:"column:status;type:tinyint(3) unsigned;not null;default:1;comment:用户状态，0-禁用；1-启用" json:"status"`              // 用户状态，0-禁用；1-启用
 	Nickname  string    `gorm:"column:nickname;type:varchar(253);not null;comment:用户昵称" json:"nickname"`                                     // 用户昵称
 	Password  string    `gorm:"column:password;type:varchar(64);not null;comment:用户加密后的密码" json:"password"`                                  // 用户加密后的密码
 	Email     string    `gorm:"column:email;type:varchar(253);not null;comment:用户电子邮箱" json:"email"`                                         // 用户电子邮箱

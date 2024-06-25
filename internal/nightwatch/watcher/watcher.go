@@ -12,8 +12,6 @@ import (
 	"sync"
 
 	"github.com/robfig/cron/v3"
-
-	reflectutil "github.com/superproj/onex/pkg/util/reflect"
 )
 
 const (
@@ -49,11 +47,10 @@ var (
 )
 
 // Register registers a watcher and save in global variable `registry`.
-func Register(watcher Watcher) {
+func Register(name string, watcher Watcher) {
 	registryLock.Lock()
 	defer registryLock.Unlock()
 
-	name := reflectutil.StructName(watcher)
 	if _, ok := registry[name]; ok {
 		panic("duplicate watcher entry: " + name)
 	}
