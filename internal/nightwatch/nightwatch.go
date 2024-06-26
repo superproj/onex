@@ -29,7 +29,7 @@ import (
 )
 
 var (
-	lockName          = "onex-nightwatch-lock"
+	lockName          = "onex-nightwatch-lock2"
 	jobStopTimeout    = 3 * time.Minute
 	extendExpiration  = 5 * time.Second
 	defaultExpiration = 10 * extendExpiration
