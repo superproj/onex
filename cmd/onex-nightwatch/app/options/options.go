@@ -34,7 +34,7 @@ var _ app.CliOptions = (*Options)(nil)
 // Options contains everything necessary to create and run a nightwatch server.
 type Options struct {
 	HealthOptions         *genericoptions.HealthOptions  `json:"health" mapstructure:"health"`
-	MySQLOptions          *genericoptions.MySQLOptions   `json:"db" mapstructure:"db"`
+	MySQLOptions          *genericoptions.MySQLOptions   `json:"mysql" mapstructure:"mysql"`
 	RedisOptions          *genericoptions.RedisOptions   `json:"redis" mapstructure:"redis"`
 	UserWatcherMaxWorkers int64                          `json:"user-watcher-max-workers" mapstructure:"user-watcher-max-workers"`
 	DisableWatchers       []string                       `json:"disable-watchers" mapstructure:"disable-watchers"`
@@ -63,7 +63,7 @@ func NewOptions() *Options {
 // Flags returns flags for a specific server by section name.
 func (o *Options) Flags() (fss cliflag.NamedFlagSets) {
 	o.HealthOptions.AddFlags(fss.FlagSet("health"))
-	o.MySQLOptions.AddFlags(fss.FlagSet("db"))
+	o.MySQLOptions.AddFlags(fss.FlagSet("mysql"))
 	o.RedisOptions.AddFlags(fss.FlagSet("redis"))
 	o.Metrics.AddFlags(fss.FlagSet("metrics"))
 	o.Log.AddFlags(fss.FlagSet("log"))

@@ -15,12 +15,6 @@ import (
 	"github.com/superproj/onex/pkg/authn"
 )
 
-// Secret status constants.
-const (
-	StatusSecretDisabled = iota // Status used for disabling a secret.
-	StatusSecretNormal          // Status used for enabling a secret.
-)
-
 // BeforeCreate runs before creating a SecretM database record and initializes various fields.
 func (s *SecretM) BeforeCreate(tx *gorm.DB) (err error) {
 	// Supports custom SecretKey, but users need to ensure the uniqueness of the SecretKey themselves.
@@ -34,7 +28,7 @@ func (s *SecretM) BeforeCreate(tx *gorm.DB) (err error) {
 	s.SecretKey = uuid.New().String()
 
 	// Set the default status for the secret as normal.
-	s.Status = StatusSecretNormal
+	s.Status = known.SecretStatusNormal
 
 	return nil
 }

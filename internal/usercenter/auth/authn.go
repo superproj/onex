@@ -119,7 +119,7 @@ func (a *authnImpl) Verify(accessToken string) (string, error) {
 			return "", err
 		}
 
-		if secret.Status == model.StatusSecretDisabled {
+		if secret.Status == known.SecretStatusDisabled {
 			return "", ErrSecretDisabled
 		}
 

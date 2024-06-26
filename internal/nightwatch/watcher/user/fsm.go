@@ -26,9 +26,15 @@ func NewFSM(initial string, w *userWatcher) *fsm.FSM {
 	return fsm.NewFSM(
 		initial,
 		fsm.Events{
+			// Define status events.
 			{Name: known.UserStatusRegistered, Src: []string{known.UserStatusRegistered}, Dst: known.UserStatusActive},
 			{Name: known.UserStatusBlacklisted, Src: []string{known.UserStatusBlacklisted}, Dst: known.UserStatusDisabled},
-			{Name: known.UserStatusDisabled, Src: []string{known.UserStatusDisabled}, Dst: known.UserStatusDeleted},
+			// Define need events.
+			{Name: known.UserStatusNeedActive, Src: []string{known.UserStatusNeedActive}, Dst: known.UserStatusActive},
+			{Name: known.UserStatusNeedDisable, Src: []string{known.UserStatusNeedDisable}, Dst: known.UserStatusDisabled},
+			// After disabling the user, they can be deleted, and the FSM will automatically transition to the next deleted state.
+			// I have decided not to delete the user in the code, so the state transition here is commented out.
+			// {Name: known.UserStatusDisabled, Src: []string{known.UserStatusDisabled}, Dst: known.UserStatusDeleted},
 		},
 		fsm.Callbacks{
 			known.UserStatusActive:   NewActiveUserCallback(w.store),

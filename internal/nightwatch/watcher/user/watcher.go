@@ -45,9 +45,12 @@ func (w *userWatcher) Run() {
 	}
 
 	allowOperations := []string{
+		// Need active user.
 		known.UserStatusRegistered,
+		// Need disable user.
 		known.UserStatusBlacklisted,
-		known.UserStatusDisabled,
+		known.UserStatusNeedActive,
+		known.UserStatusNeedDisable,
 	}
 
 	wp := workerpool.New(int(w.maxWorkers))

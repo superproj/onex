@@ -1,5 +1,6 @@
 package usercenter
 
+// Define user status.
 const (
 	// User has submitted registration information, the account is in a pending.
 	// The user needs to complete email/phone number verification steps to transition to an active state.
@@ -20,4 +21,20 @@ const (
 	// The user has actively deleted their own account, or the administrator has deleted the user account.
 	// The deleted account can be chosen to be soft-deleted (with some data retained) or completely deleted.
 	UserStatusDeleted = "deleted"
+)
+
+// Define need status.
+// We can directly update the database to the "Need" state to inform
+// onex-nightwatch of what needs to be done.
+const (
+	// UserStatusNeedActive informs onex-nightwatch that the user needs to be activated.
+	UserStatusNeedActive = "need_active"
+	// UserStatusNeedDisable informs onex-nightwatch that the user needs to be disabled.
+	UserStatusNeedDisable = "need_disable"
+)
+
+// Define secret status.
+const (
+	SecretStatusDisabled = iota // Status used for disabling a secret.
+	SecretStatusNormal          // Status used for enabling a secret.
 )
