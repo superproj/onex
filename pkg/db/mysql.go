@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/superproj/onex/pkg/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -24,6 +25,7 @@ type MySQLOptions struct {
 	MaxIdleConnections    int
 	MaxOpenConnections    int
 	MaxConnectionLifeTime time.Duration
+	LogLevel              int
 	// +optional
 	Logger logger.Interface
 }
@@ -84,6 +86,9 @@ func setDefaults(opts *MySQLOptions) {
 	}
 	if opts.MaxConnectionLifeTime == 0 {
 		opts.MaxConnectionLifeTime = time.Duration(10) * time.Second
+	}
+	if 1 <= opts.LogLevel && opts.LogLevel <= 4 {
+		opts.Logger = log.Default().LogMode(logger.LogLevel(opts.LogLevel))
 	}
 	if opts.Logger == nil {
 		opts.Logger = logger.Default
