@@ -11,12 +11,12 @@ import (
 // The FSM is configured with the following events and callbacks:
 //
 // Events:
-// - UserStatusRegistered -> UserStatusActive
+// - UserStatusRegistered -> UserStatusActived
 // - UserStatusBlacklisted -> UserStatusDisabled
 // - UserStatusDisabled -> UserStatusDeleted
 //
 // Callbacks:
-// - UserStatusActive: Calls the NewActiveUserCallback function to handle the "active user" event.
+// - UserStatusActived: Calls the NewActiveUserCallback function to handle the "active user" event.
 // - UserStatusDisabled: Calls the NewDisableUserCallback function to handle the "disable user" event.
 // - UserStatusDeleted: Calls the NewDeleteUserCallback function to handle the "delete user" event.
 // - UserEventAfterEvent: Calls the NewUserEventAfterEvent function after any user-related event is handled.
@@ -27,17 +27,17 @@ func NewFSM(initial string, w *userWatcher) *fsm.FSM {
 		initial,
 		fsm.Events{
 			// Define status events.
-			{Name: known.UserStatusRegistered, Src: []string{known.UserStatusRegistered}, Dst: known.UserStatusActive},
+			{Name: known.UserStatusRegistered, Src: []string{known.UserStatusRegistered}, Dst: known.UserStatusActived},
 			{Name: known.UserStatusBlacklisted, Src: []string{known.UserStatusBlacklisted}, Dst: known.UserStatusDisabled},
 			// Define need events.
-			{Name: known.UserStatusNeedActive, Src: []string{known.UserStatusNeedActive}, Dst: known.UserStatusActive},
+			{Name: known.UserStatusNeedActive, Src: []string{known.UserStatusNeedActive}, Dst: known.UserStatusActived},
 			{Name: known.UserStatusNeedDisable, Src: []string{known.UserStatusNeedDisable}, Dst: known.UserStatusDisabled},
 			// After disabling the user, they can be deleted, and the FSM will automatically transition to the next deleted state.
 			// I have decided not to delete the user in the code, so the state transition here is commented out.
 			// {Name: known.UserStatusDisabled, Src: []string{known.UserStatusDisabled}, Dst: known.UserStatusDeleted},
 		},
 		fsm.Callbacks{
-			known.UserStatusActive:   NewActiveUserCallback(w.store),
+			known.UserStatusActived:   NewActiveUserCallback(w.store),
 			known.UserStatusDisabled: NewDisableUserCallback(w.store),
 			known.UserStatusDeleted:  NewDeleteUserCallback(w.store),
 			// log, alert, save to stoer, etc for all events.

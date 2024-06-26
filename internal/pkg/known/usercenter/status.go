@@ -8,7 +8,7 @@ const (
 	UserStatusRegistered = "registered"
 	// The user has registered and been verified, and can use the system normally.
 	// Most user operations are performed in this state.
-	UserStatusActive = "active"
+	UserStatusActived = "actived"
 	// The user has entered the incorrect password too many times, and the account has been locked by the system.
 	// The user needs to recover the password or contact the administrator to unlock the account.
 	UserStatusLocked = "locked"
@@ -24,8 +24,8 @@ const (
 )
 
 // Define need status.
-// We can directly update the database to the "Need" state to inform
-// onex-nightwatch of what needs to be done.
+// We can directly update the database to the "Need" state to inform onex-nightwatch of what needs to be done.
+// These statuses are only used for operation and maintenance purposes.
 const (
 	// UserStatusNeedActive informs onex-nightwatch that the user needs to be activated.
 	UserStatusNeedActive = "need_active"

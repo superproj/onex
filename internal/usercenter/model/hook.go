@@ -47,7 +47,7 @@ func (u *UserM) BeforeCreate(tx *gorm.DB) (err error) {
 		return err // Return error if there's a problem with encryption.
 	}
 
-	u.Status = known.UserStatusActive // Set the default status for the user as active.
+	u.Status = known.UserStatusActived // Set the default status for the user as active.
 
 	return nil
 }
