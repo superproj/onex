@@ -95,11 +95,8 @@ func NewUserEventAfterEvent(store store.Interface) fsm.Callback {
 		user.Status = event.FSM.Current()
 		if err := store.UserCenter().Users().Update(ctx, user); err != nil {
 			log.Errorw(err, "Failed to update status into database", "event", event.Event)
-		}
-
-		if user.Status == known.UserStatusDeleted {
-			// We can add some lark card here in the future.
-			log.Infow("Finish to handle user", "event", event.Event, "username", user.Username)
+			event.Err = err
+			return
 		}
 	}
 }

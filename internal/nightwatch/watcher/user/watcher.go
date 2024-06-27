@@ -30,10 +30,10 @@ type userWatcher struct {
 	maxWorkers int64
 }
 
-// User is a struct that represents a user finite state machine.
-type User struct {
-	*model.UserM
-	*fsm.FSM
+// UserStateMachine is a struct that represents a user finite state machine.
+type UserStateMachine struct {
+	UserM *model.UserM
+	FSM   *fsm.FSM
 }
 
 // Run runs the watcher.
@@ -51,6 +51,9 @@ func (w *userWatcher) Run() {
 		known.UserStatusBlacklisted,
 		known.UserStatusNeedActive,
 		known.UserStatusNeedDisable,
+		// After disabling the user, they can be deleted, and the FSM will automatically transition to the next deleted state.
+		// I have decided not to delete the user in the code, so the state transition here is commented out.
+		// known.UserStatusDisabled,
 	}
 
 	wp := workerpool.New(int(w.maxWorkers))
@@ -62,10 +65,16 @@ func (w *userWatcher) Run() {
 		wp.Submit(func() {
 			ctx := onexx.NewUserM(context.Background(), user)
 
-			u := &User{UserM: user, FSM: NewFSM(user.Status, w)}
-			if err := u.Event(ctx, user.Status); err != nil {
+			usm := &UserStateMachine{UserM: user, FSM: NewFSM(user.Status, w)}
+			if err := usm.FSM.Event(ctx, user.Status); err != nil {
 				log.Errorw(err, "Failed to event user", "username", user.Username, "status", user.Status)
 				return
+			}
+
+			// When the entire state machine reaches the final state, print a message and send a notification.
+			if usm.FSM.Current() == known.UserStatusDeleted {
+				// We can add some lark card here in the future.
+				log.Infow("Finish to handle user", "username", usm.UserM.Username)
 			}
 
 			return
