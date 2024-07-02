@@ -6,6 +6,47 @@ GO := go
 # Minimum supported go version.
 GO_MINIMUM_VERSION ?= 1.22
 
+ifeq ($(PRJ_SRC_PATH),)
+	$(error the variable PRJ_SRC_PATH must be set prior to including golang.mk)
+endif
+ifeq ($(ONEX_ROOT),)
+	$(error the variable ONEX_ROOT must be set prior to including golang.mk)
+endif
+
+
+VERSION_PACKAGE := github.com/superproj/onex/pkg/version
+# Check if the tree is dirty.  default to dirty
+GIT_TREE_STATE:="dirty"
+ifeq (, $(shell git status --porcelain 2>/dev/null))
+    GIT_TREE_STATE="clean"
+endif
+GIT_COMMIT:=$(shell git rev-parse HEAD)
+
+GO_LDFLAGS += \
+	-X $(VERSION_PACKAGE).gitVersion=$(VERSION) \
+	-X $(VERSION_PACKAGE).gitCommit=$(GIT_COMMIT) \
+	-X $(VERSION_PACKAGE).gitTreeState=$(GIT_TREE_STATE) \
+	-X $(VERSION_PACKAGE).buildDate=$(shell date -u +'%Y-%m-%dT%H:%M:%SZ') \
+	-X main.Version=$(VERSION)
+ifneq ($(DLV),)
+	GO_BUILD_FLAGS += -gcflags "all=-N -l"
+else
+	# -s removes symbol information; -w removes DWARF debugging information; The final program cannot be debugged with gdb
+	GO_BUILD_FLAGS += -ldflags "-s -w"
+endif
+
+# Available cpus for compiling, please refer to https://github.com/caicloud/engineering/issues/8186#issuecomment-518656946 for more info
+CPUS := $(shell /bin/bash $(ONEX_ROOT)/scripts/read_cpus_available.sh)
+
+# Default golang flags used in build and test
+# -p: the number of programs that can be run in parallel
+# -ldflags: arguments to pass on each go tool link invocation
+GO_BUILD_FLAGS += -p="$(CPUS)" -ldflags "$(GO_LDFLAGS)"
+
+ifeq ($(GOOS),windows)
+	GO_OUT_EXT := .exe
+endif
+
 GOPATH := $(shell go env GOPATH)
 ifeq ($(origin GOBIN), undefined)
 	GOBIN := $(GOPATH)/bin

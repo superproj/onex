@@ -1,0 +1,29 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: validating-webhook-example #  配置的名称，用于唯一标识这个 webhook 配置
+webhooks:
+  - name: validate.example.com # Webhook 的名称，必须是唯一的
+    clientConfig: # 配置 webhook 服务的连接信息
+      service:
+        name: validating-webhook-service # Webhook 服务的名称
+        namespace: default # Webhook 服务所在的命名空间
+        path: "/validate" # Webhook 服务的路径
+      # caBundle 这里应该是 Base64 编码的 CA 证书，用于校验 webhook 服务的 TLS 证书
+      caBundle: "YOUR_CA_BUNDLE"
+    rules: # 定义 webhook 应用的规则
+      - operations: ["CREATE", "UPDATE"] # Webhook 触发的操作类型，如 CREATE、UPDATE。还有一个类型：DELETE
+        apiGroups: [""] # 目标资源所在的 API 组
+        apiVersions: ["v1"] # 目标资源的 API 版本
+        resources: ["pods"] # 目标资源类型，如 pods
+    failurePolicy: Fail #  Webhook 服务失败时的策略，Fail 或 Ignore
+    matchPolicy: Equivalent # 资源匹配策略，Exact 或 Equivalent
+    namespaceSelector: #  基于命名空间标签选择应用于哪些命名空间
+      matchLabels:
+        webhook: enabled 
+    objectSelector: # 基于资源标签选择应用于哪些资源
+      matchLabels:
+        apply-webhook: "true"
+    sideEffects: None # Webhook 的副作用，None、Some 或 Unknown
+    timeoutSeconds: 5 # Webhook 请求的超时时间（秒）
+    admissionReviewVersions: ["v1", "v1beta1"] # 支持的 AdmissionReview 版本

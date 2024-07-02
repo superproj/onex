@@ -64,30 +64,30 @@ type Option func(*App)
 // WithOptions to open the application's function to read from the command line
 // or read parameters from the configuration file.
 func WithOptions(opts CliOptions) Option {
-	return func(a *App) {
-		a.options = opts
+	return func(app *App) {
+		app.options = opts
 	}
 }
 
 // WithRunFunc is used to set the application startup callback function option.
 func WithRunFunc(run RunFunc) Option {
-	return func(a *App) {
-		a.run = run
+	return func(app *App) {
+		app.run = run
 	}
 }
 
 // WithDescription is used to set the description of the application.
 func WithDescription(desc string) Option {
-	return func(a *App) {
-		a.description = desc
+	return func(app *App) {
+		app.description = desc
 	}
 }
 
 // WithHealthCheckFunc is used to set the health check function for the application.
 // The app framework will use the function to start a health check server.
 func WithHealthCheckFunc(fn HealthCheckFunc) Option {
-	return func(a *App) {
-		a.healthCheckFunc = fn
+	return func(app *App) {
+		app.healthCheckFunc = fn
 	}
 }
 
@@ -108,29 +108,29 @@ func WithDefaultHealthCheckFunc() Option {
 // information, configuration information, and version information are not
 // printed in the console.
 func WithSilence() Option {
-	return func(a *App) {
-		a.silence = true
+	return func(app *App) {
+		app.silence = true
 	}
 }
 
 // WithNoConfig set the application does not provide config flag.
 func WithNoConfig() Option {
-	return func(a *App) {
-		a.noConfig = true
+	return func(app *App) {
+		app.noConfig = true
 	}
 }
 
 // WithValidArgs set the validation function to valid non-flag arguments.
 func WithValidArgs(args cobra.PositionalArgs) Option {
-	return func(a *App) {
-		a.args = args
+	return func(app *App) {
+		app.args = args
 	}
 }
 
 // WithDefaultValidArgs set default validation function to valid non-flag arguments.
 func WithDefaultValidArgs() Option {
-	return func(a *App) {
-		a.args = func(cmd *cobra.Command, args []string) error {
+	return func(app *App) {
+		app.args = func(cmd *cobra.Command, args []string) error {
 			for _, arg := range args {
 				if len(arg) > 0 {
 					return fmt.Errorf("%q does not take any arguments, got %q", cmd.CommandPath(), args)
@@ -144,40 +144,40 @@ func WithDefaultValidArgs() Option {
 
 // WithWatchConfig watching and re-reading config files.
 func WithWatchConfig() Option {
-	return func(a *App) {
-		a.watch = true
+	return func(app *App) {
+		app.watch = true
 	}
 }
 
 // NewApp creates a new application instance based on the given application name,
 // binary name, and other options.
 func NewApp(name string, shortDesc string, opts ...Option) *App {
-	a := &App{
+	app := &App{
 		name:      name,
 		run:       func() error { return nil },
 		shortDesc: shortDesc,
 	}
 
 	for _, o := range opts {
-		o(a)
+		o(app)
 	}
 
-	a.buildCommand()
+	app.buildCommand()
 
-	return a
+	return app
 }
 
 // buildCommand is used to build a cobra command.
-func (a *App) buildCommand() {
+func (app *App) buildCommand() {
 	cmd := &cobra.Command{
-		Use:   formatBaseName(a.name),
-		Short: a.shortDesc,
-		Long:  a.description,
-		RunE:  a.runCommand,
+		Use:   formatBaseName(app.name),
+		Short: app.shortDesc,
+		Long:  app.description,
+		RunE:  app.runCommand,
 		PersistentPreRunE: func(*cobra.Command, []string) error {
 			return nil
 		},
-		Args: a.args,
+		Args: app.args,
 	}
 	// When error printing is enabled for the Cobra command, a flag parse
 	// error gets printed first, then optionally the often long usage
@@ -208,14 +208,14 @@ func (a *App) buildCommand() {
 	cmd.Flags().SortFlags = true
 
 	var fss cliflag.NamedFlagSets
-	if a.options != nil {
-		fss = a.options.Flags()
+	if app.options != nil {
+		fss = app.options.Flags()
 	}
 
 	version.AddFlags(fss.FlagSet("global"))
 
-	if !a.noConfig {
-		AddConfigFlag(fss.FlagSet("global"), a.name, a.watch)
+	if !app.noConfig {
+		AddConfigFlag(fss.FlagSet("global"), app.name, app.watch)
 	}
 
 	for _, f := range fss.FlagSets {
@@ -225,34 +225,34 @@ func (a *App) buildCommand() {
 	cols, _, _ := term.TerminalSize(cmd.OutOrStdout())
 	cliflag.SetUsageAndHelpFunc(cmd, fss, cols)
 
-	a.cmd = cmd
+	app.cmd = cmd
 }
 
 // Run is used to launch the application.
-func (a *App) Run() {
-	os.Exit(cli.Run(a.cmd))
+func (app *App) Run() {
+	os.Exit(cli.Run(app.cmd))
 }
 
-func (a *App) runCommand(cmd *cobra.Command, args []string) error {
+func (app *App) runCommand(cmd *cobra.Command, args []string) error {
 	// display application version information
-	version.PrintAndExitIfRequested(a.name)
+	version.PrintAndExitIfRequested(app.name)
 
 	if err := viper.BindPFlags(cmd.Flags()); err != nil {
 		return err
 	}
 
-	if a.options != nil {
-		if err := viper.Unmarshal(a.options); err != nil {
+	if app.options != nil {
+		if err := viper.Unmarshal(app.options); err != nil {
 			return err
 		}
 
 		// set default options
-		if err := a.options.Complete(); err != nil {
+		if err := app.options.Complete(); err != nil {
 			return err
 		}
 
 		// validate options
-		if err := a.options.Validate(); err != nil {
+		if err := app.options.Validate(); err != nil {
 			return err
 		}
 	}
@@ -261,29 +261,29 @@ func (a *App) runCommand(cmd *cobra.Command, args []string) error {
 	log.Init(logOptions())
 	defer log.Sync() // Sync 将缓存中的日志刷新到磁盘文件中
 
-	if !a.silence {
-		log.Infow("Starting application", "name", a.name, "version", version.Get().ToJSON())
+	if !app.silence {
+		log.Infow("Starting application", "name", app.name, "version", version.Get().ToJSON())
 		log.Infow("Golang settings", "GOGC", os.Getenv("GOGC"), "GOMAXPROCS", os.Getenv("GOMAXPROCS"), "GOTRACEBACK", os.Getenv("GOTRACEBACK"))
-		if !a.noConfig {
+		if !app.noConfig {
 			PrintConfig()
-		} else if a.options != nil {
+		} else if app.options != nil {
 			cliflag.PrintFlags(cmd.Flags())
 		}
 	}
 
-	if a.healthCheckFunc != nil {
-		if err := a.healthCheckFunc(); err != nil {
+	if app.healthCheckFunc != nil {
+		if err := app.healthCheckFunc(); err != nil {
 			return err
 		}
 	}
 
 	// run application
-	return a.run()
+	return app.run()
 }
 
 // Command returns cobra command instance inside the application.
-func (a *App) Command() *cobra.Command {
-	return a.cmd
+func (app *App) Command() *cobra.Command {
+	return app.cmd
 }
 
 // formatBaseName is formatted as an executable file name under different

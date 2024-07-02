@@ -27,7 +27,7 @@ require (
 	github.com/go-kratos/kratos/contrib/metrics/prometheus/v2 v2.0.0-20230830131453-6c026bce56a9
 	github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20230830131453-6c026bce56a9
 	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20230830131453-6c026bce56a9
-	github.com/go-kratos/kratos/v2 v2.7.2
+	github.com/go-kratos/kratos/v2 v2.7.3
 	github.com/go-kratos/swagger-api v1.0.1
 	github.com/go-logr/logr v1.4.1
 	github.com/go-redsync/redsync/v4 v4.11.0
@@ -36,7 +36,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/google/wire v0.5.0
 	github.com/gorilla/handlers v1.5.1
-	github.com/gorilla/mux v1.8.0
+	github.com/gorilla/mux v1.8.1
 	github.com/gorilla/websocket v1.5.0
 	github.com/gosuri/uitable v0.0.4
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
@@ -74,7 +74,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.19.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20231002182017-d307bd883b97
 	google.golang.org/grpc v1.58.3
-	google.golang.org/protobuf v1.33.0
+	google.golang.org/protobuf v1.34.2
 	gorm.io/driver/mysql v1.5.1-0.20230509030346-3715c134c25b
 	gorm.io/gen v0.3.23
 	gorm.io/gorm v1.25.1-0.20230505075827-e61b98d69677
@@ -126,7 +126,7 @@ require (
 	github.com/go-kratos/grpc-gateway/v2 v2.5.1-0.20210811062259-c92d36e434b1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
-	github.com/go-playground/form/v4 v4.2.0 // indirect
+	github.com/go-playground/form/v4 v4.2.1 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
@@ -242,7 +242,7 @@ require (
 	github.com/golang/protobuf v1.5.4
 	github.com/google/go-cmp v0.6.0
 	github.com/google/gofuzz v1.2.0
-	github.com/google/uuid v1.3.0
+	github.com/google/uuid v1.6.0
 	github.com/hashicorp/golang-lru v1.0.2
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
@@ -275,7 +275,7 @@ require (
 	golang.org/x/mod v0.15.0 // indirect
 	golang.org/x/net v0.23.0
 	golang.org/x/oauth2 v0.12.0 // indirect
-	golang.org/x/sync v0.6.0
+	golang.org/x/sync v0.7.0
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/term v0.18.0 // indirect
 	golang.org/x/text v0.14.0

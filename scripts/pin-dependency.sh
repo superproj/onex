@@ -25,18 +25,18 @@ set -o pipefail
 ONEX_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
 source "${ONEX_ROOT}/scripts/lib/init.sh"
 
-# Explicitly opt into go modules, even though we're inside a GOPATH directory
-export GO111MODULE=on
-# Explicitly set GOFLAGS to ignore vendor, since GOFLAGS=-mod=vendor breaks dependency resolution while rebuilding vendor
-export GOFLAGS=-mod=mod
 # Detect problematic GOPROXY settings that prevent lookup of dependencies
 if [[ "${GOPROXY:-}" == "off" ]]; then
   onex::log::error "Cannot run with \$GOPROXY=off"
   exit 1
 fi
 
-onex::golang::verify_go_version
+onex::golang::setup_env
 onex::util::require-jq
+
+# Explicitly set GOFLAGS to ignore vendor, since GOFLAGS=-mod=vendor breaks dependency resolution while rebuilding vendor
+export GOWORK=off
+export GOFLAGS=-mod=mod
 
 dep="${1:-}"
 sha="${2:-}"
@@ -64,19 +64,10 @@ if [[ -z "${dep}" || -z "${replacement}" || -z "${sha}" ]]; then
   echo "  scripts/pin-dependency.sh github.com/docker/docker=github.com/johndoe/docker my-experimental-branch"
   echo ""
   echo "Replacing with a different repository is useful for testing but"
-  echo "the result should never be merged into OneX!"
+  echo "the result should never be merged into Kubernetes!"
   echo ""
   exit 1
 fi
-
-_tmp="${ONEX_ROOT}/_tmp"
-cleanup() {
-  rm -rf "${_tmp}"
-}
-trap "cleanup" EXIT SIGINT
-cleanup
-mkdir -p "${_tmp}"
-
 
 # Find the resolved version before trying to use it.
 echo "Running: go mod download ${replacement}@${sha}"
