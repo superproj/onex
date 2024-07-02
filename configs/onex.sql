@@ -234,7 +234,6 @@ CREATE TABLE `uc_user` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键 ID',
   `user_id` varchar(253) NOT NULL DEFAULT '' COMMENT '用户 ID',
   `username` varchar(253) NOT NULL DEFAULT '' COMMENT '用户名称',
-  `status` tinyint(3) unsigned NOT NULL DEFAULT 1 COMMENT '用户状态，0-禁用；1-启用',
   `status` varchar(64) NOT NULL DEFAULT '' COMMENT '用户状态：registered,active,disabled,blacklisted,locked,deleted',
   `nickname` varchar(253) NOT NULL DEFAULT '' COMMENT '用户昵称',
   `password` varchar(64) NOT NULL DEFAULT '' COMMENT '用户加密后的密码',
