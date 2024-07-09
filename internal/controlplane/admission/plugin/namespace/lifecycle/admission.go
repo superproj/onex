@@ -62,8 +62,8 @@ type Lifecycle struct {
 }
 
 var (
-	_ = initializer.WantsExternalInformerFactory(&Lifecycle{})
-	_ = initializer.WantsExternalClientSet(&Lifecycle{})
+	_ = initializer.WantsInternalInformerFactory(&Lifecycle{})
+	_ = initializer.WantsInternalClientSet(&Lifecycle{})
 )
 
 // Admit makes an admission decision based on the request attributes.
@@ -188,15 +188,15 @@ func newLifecycleWithClock(immortalNamespaces sets.String, clock utilcache.Clock
 	}, nil
 }
 
-// SetInternalInformerFactory implements the WantsExternalInformerFactory interface.
+// SetInternalInformerFactory implements the WantsInternalInformerFactory interface.
 func (l *Lifecycle) SetInternalInformerFactory(f informers.SharedInformerFactory) {
 	namespaceInformer := f.Core().V1().Namespaces()
 	l.namespaceLister = namespaceInformer.Lister()
 	l.SetReadyFunc(namespaceInformer.Informer().HasSynced)
 }
 
-// SetExternalClientSet implements the WantsExternalClientSet interface.
-func (l *Lifecycle) SetExternalClientSet(client clientset.Interface) {
+// SetInternalClientSet implements the WantsInternalClientSet interface.
+func (l *Lifecycle) SetInternalClientSet(client clientset.Interface) {
 	l.client = client
 }
 

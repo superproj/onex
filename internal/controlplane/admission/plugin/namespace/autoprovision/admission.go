@@ -44,8 +44,8 @@ type Provision struct {
 
 var (
 	_ admission.MutationInterface = &Provision{}
-	_                             = initializer.WantsExternalInformerFactory(&Provision{})
-	_                             = initializer.WantsExternalClientSet(&Provision{})
+	_                             = initializer.WantsInternalInformerFactory(&Provision{})
+	_                             = initializer.WantsInternalClientSet(&Provision{})
 )
 
 // Admit makes an admission decision based on the request attributes.
@@ -98,12 +98,12 @@ func NewProvision() *Provision {
 	}
 }
 
-// SetExternalClientSet implements the WantsExternalClientSet interface.
-func (p *Provision) SetExternalClientSet(client clientset.Interface) {
+// SetInternalClientSet implements the WantsInternalClientSet interface.
+func (p *Provision) SetInternalClientSet(client clientset.Interface) {
 	p.client = client
 }
 
-// SetInternalInformerFactory implements the WantsExternalInformerFactory interface.
+// SetInternalInformerFactory implements the WantsInternalInformerFactory interface.
 func (p *Provision) SetInternalInformerFactory(f informers.SharedInformerFactory) {
 	namespaceInformer := f.Core().V1().Namespaces()
 	p.namespaceLister = namespaceInformer.Lister()

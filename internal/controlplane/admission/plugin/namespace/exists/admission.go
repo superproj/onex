@@ -43,8 +43,8 @@ type Exists struct {
 
 var (
 	_ admission.ValidationInterface = &Exists{}
-	_                               = initializer.WantsExternalInformerFactory(&Exists{})
-	_                               = initializer.WantsExternalClientSet(&Exists{})
+	_                               = initializer.WantsInternalInformerFactory(&Exists{})
+	_                               = initializer.WantsInternalClientSet(&Exists{})
 )
 
 // Validate makes an admission decision based on the request attributes.
@@ -87,12 +87,12 @@ func NewExists() *Exists {
 	}
 }
 
-// SetExternalClientSet implements the WantsExternalClientSet interface.
-func (e *Exists) SetExternalClientSet(client clientset.Interface) {
+// SetInternalClientSet implements the WantsInternalClientSet interface.
+func (e *Exists) SetInternalClientSet(client clientset.Interface) {
 	e.client = client
 }
 
-// SetInternalInformerFactory implements the WantsExternalInformerFactory interface.
+// SetInternalInformerFactory implements the WantsInternalInformerFactory interface.
 func (e *Exists) SetInternalInformerFactory(f informers.SharedInformerFactory) {
 	namespaceInformer := f.Core().V1().Namespaces()
 	e.namespaceLister = namespaceInformer.Lister()

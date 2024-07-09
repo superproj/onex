@@ -4,4 +4,6 @@
 // this file is https://github.com/superproj/onex.
 //
 
-package rest // import "github.com/superproj/onex/internal/registry/apps/rest"
+// Package storage provides Registry interface and its REST
+// implementation for storing miner api objects.
+package storage // import "github.com/superproj/onex/internal/apiserver/registry/apps/miner/storage"

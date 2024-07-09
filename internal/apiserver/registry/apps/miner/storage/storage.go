@@ -14,64 +14,59 @@ import (
 	"k8s.io/apiserver/pkg/registry/generic"
 	genericregistry "k8s.io/apiserver/pkg/registry/generic/registry"
 	"k8s.io/apiserver/pkg/registry/rest"
-	"k8s.io/apiserver/pkg/storage"
 	"k8s.io/kubernetes/pkg/printers"
 	printerstorage "k8s.io/kubernetes/pkg/printers/storage"
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 
 	printersinternal "github.com/superproj/onex/internal/pkg/printers/internalversion"
-	"github.com/superproj/onex/internal/registry/apps/chain"
+	"github.com/superproj/onex/internal/apiserver/registry/apps/miner"
 	"github.com/superproj/onex/pkg/apis/apps"
 )
 
-// ChainStorage includes storage for chains and all sub resources.
-type ChainStorage struct {
-	Chain  *REST
+// MinerStorage includes storage for chains and all sub resources.
+type MinerStorage struct {
+	Miner  *REST
 	Status *StatusREST
 }
 
-// NewStorage returns new instance of ChainStorage.
-func NewStorage(optsGetter generic.RESTOptionsGetter) (ChainStorage, error) {
-	chainRest, chainStatusRest, err := NewREST(optsGetter)
+// NewStorage returns new instance of MinerStorage.
+func NewStorage(optsGetter generic.RESTOptionsGetter) (MinerStorage, error) {
+	minerRest, minerStatusRest, err := NewREST(optsGetter)
 	if err != nil {
-		return ChainStorage{}, err
+		return MinerStorage{}, err
 	}
 
-	return ChainStorage{
-		Chain:  chainRest,
-		Status: chainStatusRest,
+	return MinerStorage{
+		Miner:  minerRest,
+		Status: minerStatusRest,
 	}, nil
 }
 
-// REST implements a RESTStorage for chains.
+// REST implements a RESTStorage for miners.
 type REST struct {
 	*genericregistry.Store
 }
 
-// NewREST returns a RESTStorage object that will work against chains.
+// NewREST returns a RESTStorage object that will work against miners.
 func NewREST(optsGetter generic.RESTOptionsGetter) (*REST, *StatusREST, error) {
 	store := &genericregistry.Store{
-		NewFunc:       func() runtime.Object { return &apps.Chain{} },
-		NewListFunc:   func() runtime.Object { return &apps.ChainList{} },
-		PredicateFunc: chain.Matcher,
+		NewFunc:       func() runtime.Object { return &apps.Miner{} },
+		NewListFunc:   func() runtime.Object { return &apps.MinerList{} },
+		PredicateFunc: miner.Matcher,
 		ObjectNameFunc: func(obj runtime.Object) (string, error) {
-			return obj.(*apps.Chain).Name, nil
+			return obj.(*apps.Miner).Name, nil
 		},
-		DefaultQualifiedResource:  apps.Resource("chains"),
-		SingularQualifiedResource: apps.Resource("chain"),
+		DefaultQualifiedResource:  apps.Resource("miners"),
+		SingularQualifiedResource: apps.Resource("miner"),
 
-		CreateStrategy:      chain.Strategy,
-		UpdateStrategy:      chain.Strategy,
-		DeleteStrategy:      chain.Strategy,
-		ResetFieldsStrategy: chain.Strategy,
+		CreateStrategy:      miner.Strategy,
+		UpdateStrategy:      miner.Strategy,
+		DeleteStrategy:      miner.Strategy,
+		ResetFieldsStrategy: miner.Strategy,
 
 		TableConvertor: printerstorage.TableConvertor{TableGenerator: printers.NewTableGenerator().With(printersinternal.AddHandlers)},
 	}
-	options := &generic.StoreOptions{
-		RESTOptions: optsGetter,
-		AttrFunc:    chain.GetAttrs,
-		TriggerFunc: map[string]storage.IndexerFunc{"metadata.name": chain.NameTriggerFunc},
-	}
+	options := &generic.StoreOptions{RESTOptions: optsGetter, AttrFunc: miner.GetAttrs}
 	if err := store.CompleteWithOptions(options); err != nil {
 		return nil, nil, err
 	}
@@ -80,9 +75,8 @@ func NewREST(optsGetter generic.RESTOptionsGetter) (*REST, *StatusREST, error) {
 	// allows empty subs. Updates to an existing subresource are handled by
 	// dedicated strategies.
 	statusStore := *store
-	statusStore.UpdateStrategy = chain.StatusStrategy
-	statusStore.ResetFieldsStrategy = chain.StatusStrategy
-
+	statusStore.UpdateStrategy = miner.StatusStrategy
+	statusStore.ResetFieldsStrategy = miner.StatusStrategy
 	return &REST{store}, &StatusREST{store: &statusStore}, nil
 }
 
@@ -91,7 +85,7 @@ var _ rest.ShortNamesProvider = &REST{}
 
 // ShortNames implements the ShortNamesProvider interface. Returns a list of short names for a resource.
 func (r *REST) ShortNames() []string {
-	return []string{"ch"}
+	return []string{"mi"}
 }
 
 var _ rest.CategoriesProvider = &REST{}
@@ -101,14 +95,14 @@ func (r *REST) Categories() []string {
 	return []string{"all"}
 }
 
-// StatusREST implements the REST endpoint for changing the status of a chain.
+// StatusREST implements the REST endpoint for changing the status of a miner.
 type StatusREST struct {
 	store *genericregistry.Store
 }
 
 // New returns empty Chain object.
 func (r *StatusREST) New() runtime.Object {
-	return &apps.Chain{}
+	return &apps.Miner{}
 }
 
 // Destroy cleans up resources on shutdown.

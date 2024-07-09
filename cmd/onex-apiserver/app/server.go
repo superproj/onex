@@ -21,11 +21,15 @@ import (
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	extensionsapiserver "k8s.io/apiextensions-apiserver/pkg/apiserver"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
 	utilnet "k8s.io/apimachinery/pkg/util/net"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+	"k8s.io/apiserver/pkg/admission"
 	genericapifilters "k8s.io/apiserver/pkg/endpoints/filters"
 	genericapiserver "k8s.io/apiserver/pkg/server"
+	genericoptions "k8s.io/apiserver/pkg/server/options"
+	"k8s.io/apiserver/pkg/storage/storagebackend"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	"k8s.io/apiserver/pkg/util/notfoundhandler"
 	"k8s.io/apiserver/pkg/util/webhook"
@@ -45,6 +49,7 @@ import (
 	"github.com/superproj/onex/cmd/onex-apiserver/app/options"
 	"github.com/superproj/onex/internal/controlplane"
 	controlplaneapiserver "github.com/superproj/onex/internal/controlplane/apiserver"
+	"github.com/superproj/onex/internal/controlplane/storage"
 	generatedopenapi "github.com/superproj/onex/pkg/generated/openapi"
 	"github.com/superproj/onex/pkg/version"
 )
@@ -55,9 +60,80 @@ func init() {
 	utilruntime.Must(logsapi.AddFeatureGates(utilfeature.DefaultMutableFeatureGate))
 }
 
+type Option func(*options.ServerRunOptions)
+type RegisterFunc func(plugins *admission.Plugins)
+
+// WithLegacyCode returns an Option that sets the external group versions in the ServerRunOptions.
+func WithEtcdOptions(prefix string, versions ...schema.GroupVersion) Option {
+	return func(s *options.ServerRunOptions) {
+		codec := legacyscheme.Codecs.LegacyCodec(versions...)
+		s.RecommendedOptions.Etcd = genericoptions.NewEtcdOptions(storagebackend.NewDefaultConfig(prefix, codec))
+		// Note: DefaultStorageMediaType needs to be reset here.
+		s.RecommendedOptions.Etcd.DefaultStorageMediaType = "application/vnd.kubernetes.protobuf"
+		/*
+			s.RecommendedOptions.Etcd.StorageConfig.EncodeVersioner = runtime.NewMultiGroupVersioner(
+				v1beta1.SchemeGroupVersion,
+				schema.GroupKind{Group: v1beta1.GroupName},
+			)
+		*/
+		for _, version := range versions {
+			controlplane.AddStableAPIGroupVersionsEnabledByDefault(version)
+		}
+	}
+}
+
+// WithAdmissionPlugin returns an Option function that adds an admission plugin to the recommended plugin order list
+// and registers the plugin using the provided RegisterFunc in the ServerRunOptions.
+func WithAdmissionPlugin(name string, registerFunc RegisterFunc) Option {
+	return func(s *options.ServerRunOptions) {
+		// Note: Need to add this to the RecommendedPluginOrder list.
+		s.RecommendedOptions.Admission.RecommendedPluginOrder = append(s.RecommendedOptions.Admission.RecommendedPluginOrder, name)
+		registerFunc(s.RecommendedOptions.Admission.Plugins)
+	}
+}
+
+// WithAdmissionInitializers returns an Option function that sets the external admission initializers in the ServerRunOptions.
+func WithAdmissionInitializers(initializer func(c *genericapiserver.RecommendedConfig) ([]admission.PluginInitializer, error)) Option {
+	return func(s *options.ServerRunOptions) {
+		s.RecommendedOptions.ExternalAdmissionInitializers = initializer
+	}
+}
+
+// WithPostStartHook returns an Option function that sets the external post-start hook with the given name in the ServerRunOptions.
+func WithPostStartHook(name string, hook genericapiserver.PostStartHookFunc) Option {
+	return func(s *options.ServerRunOptions) {
+		s.ExternalPostStartHooks[name] = hook
+	}
+}
+
+// WithSharedInformerFactory returns an Option function that sets the external SharedInformerFactory in the ServerRunOptions.
+func WithSharedInformerFactory(informers controlplane.ExternalSharedInformerFactory) Option {
+	return func(s *options.ServerRunOptions) {
+		s.ExternalVersionedInformers = informers
+	}
+}
+
+// WithRESTStorageProviders returns an Option function that sets the external REST storage providers in the ServerRunOptions.
+func WithRESTStorageProviders(providers ...storage.RESTStorageProvider) Option {
+	return func(s *options.ServerRunOptions) {
+		s.ExternalRESTStorageProviders = providers
+	}
+}
+
+// WithAlternateDNS returns an Option function that sets the alternate DNS configurations in the ServerRunOptions.
+func WithAlternateDNS(dns ...string) Option {
+	return func(s *options.ServerRunOptions) {
+		s.AlternateDNS = dns
+	}
+}
+
 // NewAPIServerCommand creates a *cobra.Command object with default parameters.
-func NewAPIServerCommand() *cobra.Command {
+func NewAPIServerCommand(serverRunOptions ...Option) *cobra.Command {
 	s := options.NewServerRunOptions()
+	for _, opt := range serverRunOptions {
+		opt(s)
+	}
+
 	cmd := &cobra.Command{
 		Use:   appName,
 		Short: "Launch a onex API server",
@@ -198,7 +274,7 @@ func CreateOneXAPIServerConfig(opts options.CompletedOptions) (
 ) {
 	proxyTransport := CreateProxyTransport()
 
-	genericConfig, _, kubeVersionedInformers, storageFactory, err := controlplaneapiserver.BuildGenericConfig(
+	genericConfig, _, kubeSharedInformers, storageFactory, err := controlplaneapiserver.BuildGenericConfig(
 		opts.CompletedOptions,
 		[]*runtime.Scheme{legacyscheme.Scheme, extensionsapiserver.Scheme, aggregatorscheme.Scheme},
 		generatedopenapi.GetOpenAPIDefinitions,
@@ -217,10 +293,15 @@ func CreateOneXAPIServerConfig(opts options.CompletedOptions) (
 			EventTTL:                opts.EventTTL,
 			EnableLogsSupport:       opts.EnableLogsHandler,
 			ProxyTransport:          proxyTransport,
-			MasterCount:             opts.MasterCount,
-			VersionedInformers:      opts.SharedInformerFactory,
+			//ExternalGroupResources: opts.ExternalGroupResources,
+			ExternalRESTStorageProviders: opts.ExternalRESTStorageProviders,
+			MasterCount:                  opts.MasterCount,
+			//VersionedInformers:           opts.SharedInformerFactory,
 			// Here we will use the config file of "onex" to create a client-go informers.
-			KubeVersionedInformers: kubeVersionedInformers,
+			KubeVersionedInformers:     kubeSharedInformers,
+			InternalVersionedInformers: opts.InternalVersionedInformers,
+			ExternalVersionedInformers: opts.ExternalVersionedInformers,
+			ExternalPostStartHooks:     opts.ExternalPostStartHooks,
 		},
 	}
 
@@ -232,7 +313,7 @@ func CreateOneXAPIServerConfig(opts options.CompletedOptions) (
 		// build peer proxy config only if peer ca file exists
 		if opts.PeerCAFile != "" {
 			config.ExtraConfig.PeerProxy, err = controlplaneapiserver.BuildPeerProxy(
-				kubeVersionedInformers,
+				kubeSharedInformers,
 				genericConfig.StorageVersionManager,
 				opts.ProxyClientCertFile,
 				opts.ProxyClientKeyFile,
@@ -268,7 +349,7 @@ func CreateOneXAPIServerConfig(opts options.CompletedOptions) (
 	}
 	*/
 
-	serviceResolver := buildServiceResolver(opts.EnableAggregatorRouting, genericConfig.LoopbackClientConfig.Host, kubeVersionedInformers)
+	serviceResolver := buildServiceResolver(opts.EnableAggregatorRouting, genericConfig.LoopbackClientConfig.Host, kubeSharedInformers)
 
 	return config, serviceResolver, nil
 }

@@ -18,7 +18,7 @@ import (
 
 	"github.com/superproj/onex/internal/controlplane/admission/plugin/admit"
 	"github.com/superproj/onex/internal/controlplane/admission/plugin/deny"
-	"github.com/superproj/onex/internal/controlplane/admission/plugin/minerset"
+	//"github.com/superproj/onex/internal/controlplane/admission/plugin/minerset"
 	"github.com/superproj/onex/internal/controlplane/admission/plugin/namespace/autoprovision"
 	"github.com/superproj/onex/internal/controlplane/admission/plugin/namespace/exists"
 	"github.com/superproj/onex/internal/controlplane/admission/plugin/namespace/lifecycle"
@@ -33,7 +33,7 @@ var AllOrderedPlugins = []string{
 
 	// new admission plugins should generally be inserted above here
 	// webhook, resourcequota, and deny plugins must go at the end
-	minerset.PluginName, // MinerSet
+	//minerset.PluginName, // MinerSet
 
 	// mutatingwebhook.PluginName,   // MutatingAdmissionWebhook
 	// validatingwebhook.PluginName, // ValidatingAdmissionWebhook
@@ -48,7 +48,7 @@ func RegisterAllAdmissionPlugins(plugins *admission.Plugins) {
 	autoprovision.Register(plugins)
 	lifecycle.Register(plugins)
 	exists.Register(plugins)
-	minerset.Register(plugins)
+	//minerset.Register(plugins)
 	deny.Register(plugins) // DEPRECATED as no real meaning
 }
 

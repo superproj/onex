@@ -20,6 +20,7 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	kversion "k8s.io/apimachinery/pkg/version"
 	"k8s.io/apiserver/pkg/admission"
+	//"k8s.io/apiserver/pkg/admission"
 	"k8s.io/apiserver/pkg/endpoints/discovery/aggregated"
 	openapinamer "k8s.io/apiserver/pkg/endpoints/openapi"
 	genericfeatures "k8s.io/apiserver/pkg/features"
@@ -56,7 +57,7 @@ func BuildGenericConfig(
 ) (
 	genericConfig *genericapiserver.RecommendedConfig,
 	versionedInformers informers.SharedInformerFactory,
-	kubeVersionedInformers kubeinformers.SharedInformerFactory,
+	kubeSharedInformers kubeinformers.SharedInformerFactory,
 	storageFactory *serverstorage.DefaultStorageFactory,
 	lastErr error,
 ) {
@@ -73,7 +74,7 @@ func BuildGenericConfig(
 			return nil, err
 		}
 		informerFactory := informers.NewSharedInformerFactory(client, c.LoopbackClientConfig.Timeout)
-		s.SharedInformerFactory = informerFactory
+		s.InternalVersionedInformers = informerFactory
 		return []admission.PluginInitializer{initializer.New(informerFactory, client)}, nil
 	}
 
@@ -92,25 +93,25 @@ func BuildGenericConfig(
 	// on a fast local network
 	genericConfig.LoopbackClientConfig.DisableCompression = true
 
-	onexClientConfig := genericConfig.LoopbackClientConfig
+	loopbackClientConfig := genericConfig.LoopbackClientConfig
 	// Build onex client
-	onexExternalClient, err := versioned.NewForConfig(onexClientConfig)
+	internalClient, err := versioned.NewForConfig(loopbackClientConfig)
 	if err != nil {
 		lastErr = fmt.Errorf("failed to create real external clientset: %w", err)
 		return
 	}
-	versionedInformers = informers.NewSharedInformerFactory(onexExternalClient, onexClientConfig.Timeout)
+	versionedInformers = informers.NewSharedInformerFactory(internalClient, loopbackClientConfig.Timeout)
 
 	// Build kubernetes client
 	// Use onex's config to mock a kubernetes client.
-	kubeExternalClient, err := kubeclientset.NewForConfig(onexClientConfig)
+	kubeClient, err := kubeclientset.NewForConfig(loopbackClientConfig)
 	if err != nil {
 		lastErr = fmt.Errorf("failed to create real external clientset: %v", err)
 		return
 	}
-	kubeVersionedInformers = kubeinformers.NewSharedInformerFactory(kubeExternalClient, onexClientConfig.Timeout)
+	kubeSharedInformers = kubeinformers.NewSharedInformerFactory(kubeClient, loopbackClientConfig.Timeout)
 
-	if lastErr = s.Features.ApplyTo(&genericConfig.Config, kubeExternalClient, kubeVersionedInformers); lastErr != nil {
+	if lastErr = s.Features.ApplyTo(&genericConfig.Config, kubeClient, kubeSharedInformers); lastErr != nil {
 		return
 	}
 	if lastErr = s.APIEnablement.ApplyTo(&genericConfig.Config, controlplane.DefaultAPIResourceConfigSource(), legacyscheme.Scheme); lastErr != nil {

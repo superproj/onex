@@ -4,6 +4,4 @@
 // this file is https://github.com/superproj/onex.
 //
 
-// Package minerset provides Registry interface and its RESTStorage
-// implementation for storing Miner objects.
-package minerset // import "github.com/superproj/onex/internal/registry/apps/minerset"
+package plugin // import "github.com/superproj/onex/internal/controlplane/admission/plugin"

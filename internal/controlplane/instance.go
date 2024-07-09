@@ -10,6 +10,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"reflect"
 	"time"
 
 	coordinationv1 "k8s.io/api/coordination/v1"
@@ -31,11 +32,9 @@ import (
 	"github.com/superproj/onex/internal/controlplane/controller/systemnamespaces"
 	"github.com/superproj/onex/internal/controlplane/storage"
 	"github.com/superproj/onex/internal/pkg/config/minerprofile"
-	appsrest "github.com/superproj/onex/internal/registry/apps/rest"
 	coordinationrest "github.com/superproj/onex/internal/registry/coordination/rest"
 	corerest "github.com/superproj/onex/internal/registry/core/rest"
 	flowcontrolrest "github.com/superproj/onex/internal/registry/flowcontrol/rest"
-	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	"github.com/superproj/onex/pkg/generated/clientset/versioned"
 	"github.com/superproj/onex/pkg/generated/informers"
 )
@@ -58,6 +57,15 @@ const (
 	repairLoopInterval = 3 * time.Minute
 )
 
+type ExternalSharedInformerFactory interface {
+	// Start initializes all requested informers. They are handled in goroutines
+	// which run until the stop channel gets closed.
+	Start(stopCh <-chan struct{})
+	// WaitForCacheSync blocks until all started informers' caches were synced
+	// or the stop channel gets closed.
+	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
+}
+
 // ExtraConfig defines extra configuration for the onex-apiserver.
 type ExtraConfig struct {
 	// Place you custom config here.
@@ -73,12 +81,18 @@ type ExtraConfig struct {
 	// PeerEndpointLeaseReconciler updates the peer endpoint leases
 	PeerEndpointLeaseReconciler peerreconcilers.PeerEndpointLeaseReconciler
 
+	// For external resources and rest storage providers.
+	ExternalRESTStorageProviders []storage.RESTStorageProvider
+	//ExternalGroupResources       []schema.GroupResource
+
 	// Number of masters running; all masters must be started with the
 	// same value for this field. (Numbers > 1 currently untested.)
 	MasterCount int
 
-	VersionedInformers     informers.SharedInformerFactory
-	KubeVersionedInformers kubeinformers.SharedInformerFactory
+	KubeVersionedInformers     kubeinformers.SharedInformerFactory
+	InternalVersionedInformers informers.SharedInformerFactory
+	ExternalVersionedInformers ExternalSharedInformerFactory
+	ExternalPostStartHooks     map[string]genericapiserver.PostStartHookFunc
 }
 
 // Config defines configuration for the onex-apiserver.
@@ -147,18 +161,16 @@ func (c completedConfig) New(delegationTarget genericapiserver.DelegationTarget)
 	// handlers that we have.
 	restStorageProviders := []storage.RESTStorageProvider{
 		// &admissionrest.StorageProvider{LoopbackClientConfig: c.GenericConfig.LoopbackClientConfig},
-		appsrest.RESTStorageProvider{},
 		coordinationrest.RESTStorageProvider{},
-		flowcontrolrest.RESTStorageProvider{
-			InformerFactory: c.ExtraConfig.VersionedInformers,
-		},
+		flowcontrolrest.RESTStorageProvider{InformerFactory: c.ExtraConfig.InternalVersionedInformers},
 	}
+	restStorageProviders = append(restStorageProviders, c.ExtraConfig.ExternalRESTStorageProviders...)
 	if err := m.InstallAPIs(c.ExtraConfig.APIResourceConfigSource, c.GenericConfig.RESTOptionsGetter, restStorageProviders...); err != nil {
 		return nil, err
 	}
 
 	m.GenericAPIServer.AddPostStartHookOrDie("start-system-namespaces-controller", func(hookContext genericapiserver.PostStartHookContext) error {
-		go systemnamespaces.NewController(clientset, c.ExtraConfig.VersionedInformers.Core().V1().Namespaces()).Run(hookContext.StopCh)
+		go systemnamespaces.NewController(clientset, c.ExtraConfig.InternalVersionedInformers.Core().V1().Namespaces()).Run(hookContext.StopCh)
 		return nil
 	})
 
@@ -167,11 +179,21 @@ func (c completedConfig) New(delegationTarget genericapiserver.DelegationTarget)
 
 	// TODO: copy from kube-apiserver
 	m.GenericAPIServer.AddPostStartHookOrDie(
-		"start-onex-server-informers",
+		"start-internal-informers",
 		func(context genericapiserver.PostStartHookContext) error {
 			// remove dependence with kube-apiserver
 			c.ExtraConfig.KubeVersionedInformers.Start(context.StopCh)
-			c.ExtraConfig.VersionedInformers.Start(context.StopCh)
+			c.ExtraConfig.InternalVersionedInformers.Start(context.StopCh)
+			return nil
+		},
+	)
+
+	m.GenericAPIServer.AddPostStartHookOrDie(
+		"start-external-informers",
+		func(context genericapiserver.PostStartHookContext) error {
+			if c.ExtraConfig.ExternalVersionedInformers != nil {
+				c.ExtraConfig.ExternalVersionedInformers.Start(context.StopCh)
+			}
 			return nil
 		},
 	)
@@ -313,9 +335,9 @@ var (
 	// stableAPIGroupVersionsEnabledByDefault is a list of our stable versions.
 	stableAPIGroupVersionsEnabledByDefault = []schema.GroupVersion{
 		apiv1.SchemeGroupVersion,
-		v1beta1.SchemeGroupVersion,
 		coordinationv1.SchemeGroupVersion,
 		flowcontrolv1.SchemeGroupVersion,
+		// v1beta1.SchemeGroupVersion, // Migrate to WithOptions
 	}
 
 	// legacyBetaEnabledByDefaultResources is the list of beta resources we enable.  You may only add to this list
@@ -342,4 +364,8 @@ func DefaultAPIResourceConfigSource() *serverstorage.ResourceConfig {
 	ret.EnableResources(legacyBetaEnabledByDefaultResources...)
 
 	return ret
+}
+
+func AddStableAPIGroupVersionsEnabledByDefault(versions ...schema.GroupVersion) {
+	stableAPIGroupVersionsEnabledByDefault = append(stableAPIGroupVersionsEnabledByDefault, versions...)
 }

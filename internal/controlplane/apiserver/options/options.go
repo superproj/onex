@@ -14,8 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/runtime/schema"
+	//"k8s.io/apimachinery/pkg/runtime"
+	//"k8s.io/apimachinery/pkg/runtime/schema"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apiserver/pkg/admission"
 	peerreconcilers "k8s.io/apiserver/pkg/reconcilers"
 	genericoptions "k8s.io/apiserver/pkg/server/options"
@@ -28,7 +29,6 @@ import (
 	netutils "k8s.io/utils/net"
 
 	"github.com/superproj/onex/internal/pkg/options"
-	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	"github.com/superproj/onex/pkg/generated/informers"
 )
 
@@ -63,9 +63,9 @@ type Options struct {
 	EnableAggregatorRouting             bool
 	AggregatorRejectForwardingRedirects bool
 
-	EnableLogsHandler     bool
-	EventTTL              time.Duration
-	SharedInformerFactory informers.SharedInformerFactory
+	EnableLogsHandler          bool
+	EventTTL                   time.Duration
+	InternalVersionedInformers informers.SharedInformerFactory
 }
 
 // completedServerRunOptions is a private wrapper that enforces a call of Complete() before Run can be invoked.
@@ -84,7 +84,7 @@ func NewOptions() *Options {
 		GenericServerRunOptions: genericoptions.NewServerRunOptions(),
 		RecommendedOptions: options.NewRecommendedOptions(
 			defaultEtcdPathPrefix,
-			legacyscheme.Codecs.LegacyCodec(v1beta1.SchemeGroupVersion),
+			legacyscheme.Codecs.LegacyCodec(corev1.SchemeGroupVersion), // NOTICE: [Custom API] Set default with corev1.SchemeGroupVersion
 		),
 		Features:      genericoptions.NewFeatureOptions(),
 		Metrics:       metrics.NewOptions(),
@@ -99,10 +99,13 @@ func NewOptions() *Options {
 		// CloudOptions: cloud.NewCloudOptions(),
 	}
 
-	o.RecommendedOptions.Etcd.StorageConfig.EncodeVersioner = runtime.NewMultiGroupVersioner(
-		v1beta1.SchemeGroupVersion,
-		schema.GroupKind{Group: v1beta1.GroupName},
-	)
+	// NOTICE: Commented out temporarily, no side effects observed.
+	/*
+		o.RecommendedOptions.Etcd.StorageConfig.EncodeVersioner = runtime.NewMultiGroupVersioner(
+			v1beta1.SchemeGroupVersion,
+			schema.GroupKind{Group: v1beta1.GroupName},
+		)
+	*/
 
 	// Redirect the certificates output directory to avoid creating the "apiserver.local.config" directory in the root directory
 	// and keep the root directory clean.

@@ -5,5 +5,5 @@
 //
 
 // Package storage provides Registry interface and its REST
-// implementation for storing miner api objects.
-package storage // import "github.com/superproj/onex/internal/registry/apps/miner/storage"
+// implementation for storing minerset api objects.
+package storage // import "github.com/superproj/onex/internal/apiserver/registry/apps/minerset/storage"

@@ -8,10 +8,14 @@
 package options
 
 import (
-	cliflag "k8s.io/component-base/cli/flag"
 	"net"
 
+	genericapiserver "k8s.io/apiserver/pkg/server"
+	cliflag "k8s.io/component-base/cli/flag"
+
+	"github.com/superproj/onex/internal/controlplane"
 	controlplaneoptions "github.com/superproj/onex/internal/controlplane/apiserver/options"
+	"github.com/superproj/onex/internal/controlplane/storage"
 )
 
 const defaultEtcdPathPrefix = "/registry/onex.io"
@@ -29,6 +33,11 @@ type Extra struct {
 	// OnexletConfig onexletclient.OnexletClientConfig
 	APIServerServiceIP     net.IP
 	EndpointReconcilerType string
+
+	// For external resources
+	ExternalRESTStorageProviders []storage.RESTStorageProvider
+	ExternalVersionedInformers   controlplane.ExternalSharedInformerFactory
+	ExternalPostStartHooks       map[string]genericapiserver.PostStartHookFunc
 }
 
 // NewServerRunOptions returns a new ServerRunOptions.
@@ -36,7 +45,8 @@ func NewServerRunOptions() *ServerRunOptions {
 	o := &ServerRunOptions{
 		Options: controlplaneoptions.NewOptions(),
 		Extra: Extra{
-			MasterCount: 1,
+			MasterCount:            1,
+			ExternalPostStartHooks: make(map[string]genericapiserver.PostStartHookFunc),
 		},
 	}
 

@@ -15,9 +15,9 @@ import (
 
 	"github.com/superproj/onex/internal/controlplane/storage"
 	serializerutil "github.com/superproj/onex/internal/pkg/util/serializer"
-	chainstore "github.com/superproj/onex/internal/registry/apps/chain/storage"
-	minerstore "github.com/superproj/onex/internal/registry/apps/miner/storage"
-	minersetstore "github.com/superproj/onex/internal/registry/apps/minerset/storage"
+	chainstore "github.com/superproj/onex/internal/apiserver/registry/apps/chain/storage"
+	minerstore "github.com/superproj/onex/internal/apiserver/registry/apps/miner/storage"
+	minersetstore "github.com/superproj/onex/internal/apiserver/registry/apps/minerset/storage"
 	"github.com/superproj/onex/pkg/apis/apps"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
 )

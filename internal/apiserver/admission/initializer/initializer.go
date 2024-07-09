@@ -37,11 +37,11 @@ func New(
 // Initialize checks the initialization interfaces implemented by a plugin
 // and provide the appropriate initialization data.
 func (i pluginInitializer) Initialize(plugin admission.Interface) {
-	if wants, ok := plugin.(WantsInternalInformerFactory); ok {
+	if wants, ok := plugin.(WantsExternalInformerFactory); ok {
 		wants.SetInternalInformerFactory(i.informers)
 	}
 
-	if wants, ok := plugin.(WantsInternalClientSet); ok {
-		wants.SetInternalClientSet(i.externalClient)
+	if wants, ok := plugin.(WantsExternalClientSet); ok {
+		wants.SetExternalClientSet(i.externalClient)
 	}
 }

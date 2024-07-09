@@ -16,11 +16,10 @@ import (
 	serverstorage "k8s.io/apiserver/pkg/server/storage"
 	"k8s.io/apiserver/pkg/storage/storagebackend"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
-	api "k8s.io/kubernetes/pkg/apis/core"
-	"k8s.io/kubernetes/pkg/apis/events"
-	"k8s.io/kubernetes/pkg/apis/extensions"
-
-	"github.com/superproj/onex/pkg/apis/apps"
+	//api "k8s.io/kubernetes/pkg/apis/core"
+	//"k8s.io/kubernetes/pkg/apis/events"
+	//"k8s.io/kubernetes/pkg/apis/extensions"
+	//"github.com/superproj/onex/pkg/apis/apps"
 )
 
 // SpecialDefaultResourcePrefixes are prefixes compiled into Zero.
@@ -89,10 +88,13 @@ func (c *completedStorageFactoryConfig) New() (*serverstorage.DefaultStorageFact
 		c.APIResourceConfig,
 		SpecialDefaultResourcePrefixes)
 
-	storageFactory.AddCohabitatingResources(apps.Resource("chains"), extensions.Resource("chains"))
-	storageFactory.AddCohabitatingResources(apps.Resource("minersets"), extensions.Resource("minersets"))
-	storageFactory.AddCohabitatingResources(apps.Resource("miners"), extensions.Resource("miners"))
-	storageFactory.AddCohabitatingResources(api.Resource("events"), events.Resource("events"))
+	// NOTICE: In most cases, we do not need this, so let's comment it out first and add a NOTICE as a reminder.
+	/*
+		storageFactory.AddCohabitatingResources(apps.Resource("chains"), extensions.Resource("chains"))
+		storageFactory.AddCohabitatingResources(apps.Resource("minersets"), extensions.Resource("minersets"))
+		storageFactory.AddCohabitatingResources(apps.Resource("miners"), extensions.Resource("miners"))
+		storageFactory.AddCohabitatingResources(api.Resource("events"), events.Resource("events"))
+	*/
 
 	for _, override := range c.EtcdServersOverrides {
 		tokens := strings.Split(override, "#")

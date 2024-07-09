@@ -28,7 +28,7 @@ import (
 	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 
 	printersinternal "github.com/superproj/onex/internal/pkg/printers/internalversion"
-	"github.com/superproj/onex/internal/registry/apps/minerset"
+	"github.com/superproj/onex/internal/apiserver/registry/apps/minerset"
 	"github.com/superproj/onex/pkg/apis/apps"
 )
 

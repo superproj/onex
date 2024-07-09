@@ -4,6 +4,4 @@
 // this file is https://github.com/superproj/onex.
 //
 
-// Package miner provides Registry interface and its RESTStorage
-// implementation for storing Miner objects.
-package miner // import "github.com/superproj/onex/internal/registry/apps/miner"
+package initializer // import "github.com/superproj/onex/internal/controlplane/admission/initializer"

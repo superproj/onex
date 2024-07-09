@@ -13,14 +13,14 @@ import (
 	"github.com/superproj/onex/pkg/generated/informers"
 )
 
-// WantsInternalInformerFactory defines a function which sets InformerFactory for admission plugins that need it.
-type WantsInternalInformerFactory interface {
+// WantsExternalInformerFactory defines a function which sets InformerFactory for admission plugins that need it.
+type WantsExternalInformerFactory interface {
 	admission.InitializationValidator
 	SetInternalInformerFactory(informers.SharedInformerFactory)
 }
 
-// WantsInternalClientSet defines a function which sets external ClientSet for admission plugins that need it.
-type WantsInternalClientSet interface {
+// WantsExternalClientSet defines a function which sets external ClientSet for admission plugins that need it.
+type WantsExternalClientSet interface {
 	admission.InitializationValidator
-	SetInternalClientSet(clientset.Interface)
+	SetExternalClientSet(clientset.Interface)
 }

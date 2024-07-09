@@ -30,14 +30,14 @@ type Watch struct {
 	runner *cron.Cron
 	// Logger for logging
 	logger Logger
+	// Distributed lock name for watch server
+	lockName string
 	// distributed lock
 	locker *redsync.Mutex
 	// Distributed lock for ensuring only one instance runs at a time
 	disableWatchers []string
 	// Function for initializing watchers
 	initializer WatcherInitializer
-	// Distributed lock name for watch server
-	lockName string
 }
 
 // WithInitialize returns an Option function that sets the provided WatcherInitializer function to initialize the Watch.
@@ -64,10 +64,18 @@ func WithLockName(lockName string) Option {
 // NewWatch creates a new Watch monitoring system with the provided options.
 func NewWatch(opts *Options, client *redis.Client, withOptions ...Option) (*Watch, error) {
 	logger := empty.NewLogger()
-	runner := cron.New(
+	// Create with default options
+	nw := &Watch{lockName: defaultLockName, logger: logger, disableWatchers: opts.DisableWatchers}
+
+	// Set with custom options
+	for _, opt := range withOptions {
+		opt(nw)
+	}
+
+	nw.runner = cron.New(
 		cron.WithSeconds(),
-		cron.WithLogger(logger),
-		cron.WithChain(cron.SkipIfStillRunning(logger), cron.Recover(logger)),
+		cron.WithLogger(nw.logger),
+		cron.WithChain(cron.SkipIfStillRunning(nw.logger), cron.Recover(nw.logger)),
 	)
 
 	// Create a pool with go-redis which is the pool redisync will
@@ -81,9 +89,8 @@ func NewWatch(opts *Options, client *redis.Client, withOptions ...Option) (*Watc
 	}
 	// Create an instance of redisync and obtain a new mutex by using the same name
 	// for all instances wanting the same lock.
-	locker := redsync.New(pool).NewMutex(defaultLockName, lockOpts...)
+	nw.locker = redsync.New(pool).NewMutex(nw.lockName, lockOpts...)
 
-	nw := &Watch{runner: runner, locker: locker, disableWatchers: opts.DisableWatchers}
 	if err := nw.addWatchers(); err != nil {
 		return nil, err
 	}

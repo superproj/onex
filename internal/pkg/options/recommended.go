@@ -29,10 +29,13 @@ var configScheme = runtime.NewScheme()
 // Each of them can be nil to leave the feature unconfigured on ApplyTo.
 type RecommendedOptions struct {
 	*genericoptions.RecommendedOptions
+
+	// Custom options for onex project.
+	ExternalAdmissionInitializers func(c *genericapiserver.RecommendedConfig) ([]admission.PluginInitializer, error)
 }
 
 func NewRecommendedOptions(prefix string, codec runtime.Codec) *RecommendedOptions {
-	return &RecommendedOptions{genericoptions.NewRecommendedOptions(prefix, codec)}
+	return &RecommendedOptions{RecommendedOptions: genericoptions.NewRecommendedOptions(prefix, codec)}
 }
 
 // ApplyTo adds RecommendedOptions to the server configuration.
@@ -92,6 +95,15 @@ func (o *RecommendedOptions) ApplyTo(config *genericapiserver.RecommendedConfig)
 	if err != nil {
 		return err
 	}
+
+	if o.ExternalAdmissionInitializers != nil {
+		externalInitializers, err := o.ExternalAdmissionInitializers(config)
+		if err != nil {
+			return err
+		}
+		initializers = append(initializers, externalInitializers...)
+	}
+	// NOTICE: Add custom initializers
 
 	if err := o.Admission.ApplyTo(&config.Config, config.SharedInformerFactory, kubeClient, dynamicClient, o.FeatureGate,
 		initializers...); err != nil {

@@ -14,6 +14,4 @@ import (
 	_ "k8s.io/kubernetes/pkg/apis/coordination/install"
 	_ "k8s.io/kubernetes/pkg/apis/core/install"
 	_ "k8s.io/kubernetes/pkg/apis/flowcontrol/install"
-
-	_ "github.com/superproj/onex/pkg/apis/apps/install"
 )

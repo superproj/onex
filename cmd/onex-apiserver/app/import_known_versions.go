@@ -4,6 +4,10 @@
 // this file is https://github.com/superproj/onex.
 //
 
-// Package storage provides Registry interface and its REST
-// implementation for storing minerset api objects.
-package storage // import "github.com/superproj/onex/internal/registry/apps/minerset/storage"
+package app
+
+// UPDATEME: When add new api group.
+import (
+	// These imports are the API groups the API server will support.
+	_ "github.com/superproj/onex/pkg/apis/apps/install"
+)
