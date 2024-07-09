@@ -4,26 +4,21 @@
 // this file is https://github.com/superproj/onex.
 //
 
-package nightwatch
-
-import (
-	"github.com/superproj/onex/pkg/log"
-)
+package empty
 
 // cronLogger implement the cron.Logger interface.
 type cronLogger struct{}
 
-// newCronLogger returns a cron logger.
-func newCronLogger() *cronLogger {
+// NewLogger returns a cron logger.
+func NewLogger() *cronLogger {
 	return &cronLogger{}
 }
 
+// Debug logs an debug condition.
+func (l *cronLogger) Debug(msg string, keysAndValues ...any) {}
+
 // Info logs routine messages about cron's operation.
-func (l *cronLogger) Info(msg string, keysAndValues ...any) {
-	log.Infow(msg, keysAndValues...)
-}
+func (l *cronLogger) Info(msg string, keysAndValues ...any) {}
 
 // Error logs an error condition.
-func (l *cronLogger) Error(err error, msg string, keysAndValues ...any) {
-	log.Errorw(err, msg, keysAndValues...)
-}
+func (l *cronLogger) Error(err error, msg string, keysAndValues ...any) {}

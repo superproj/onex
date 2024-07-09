@@ -20,9 +20,10 @@ import (
 	"github.com/superproj/onex/internal/usercenter/model"
 	"github.com/superproj/onex/pkg/log"
 	stringsutil "github.com/superproj/onex/pkg/util/strings"
+	"github.com/superproj/onex/pkg/watch"
 )
 
-var _ watcher.Watcher = (*userWatcher)(nil)
+var _ watch.Watcher = (*userWatcher)(nil)
 
 // watcher implement.
 type userWatcher struct {
@@ -84,13 +85,12 @@ func (w *userWatcher) Run() {
 	wp.StopWait()
 }
 
-// Initialize initializes the watcher for later execution.
-func (w *userWatcher) Initialize(ctx context.Context, config *watcher.Config) error {
+// SetAggregateConfig initializes the watcher for later execution.
+func (w *userWatcher) SetAggregateConfig(config *watcher.AggregateConfig) {
 	w.store = config.Store
 	w.maxWorkers = config.UserWatcherMaxWorkers
-	return nil
 }
 
 func init() {
-	watcher.Register("user", &userWatcher{})
+	watch.Register("user", &userWatcher{})
 }

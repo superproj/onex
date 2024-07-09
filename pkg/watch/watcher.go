@@ -4,10 +4,9 @@
 // this file is https://github.com/superproj/onex.
 //
 
-package watcher
+package watch
 
 import (
-	"context"
 	"errors"
 	"sync"
 
@@ -20,7 +19,6 @@ const (
 
 // Watcher is the interface for watchers. It use cron job as a scheduling engine.
 type Watcher interface {
-	Initialize(ctx context.Context, config *Config) error
 	cron.Job
 }
 

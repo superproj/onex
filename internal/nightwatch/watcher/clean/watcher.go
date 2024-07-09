@@ -13,9 +13,10 @@ import (
 	"github.com/superproj/onex/internal/nightwatch/watcher"
 	"github.com/superproj/onex/internal/pkg/client/store"
 	"github.com/superproj/onex/pkg/log"
+	"github.com/superproj/onex/pkg/watch"
 )
 
-var _ watcher.Watcher = (*cleanWatcher)(nil)
+var _ watch.Watcher = (*cleanWatcher)(nil)
 
 // watcher implement.
 type cleanWatcher struct {
@@ -35,12 +36,11 @@ func (w *cleanWatcher) Run() {
 	}
 }
 
-// Initialize initializes the watcher for later execution.
-func (w *cleanWatcher) Initialize(ctx context.Context, config *watcher.Config) error {
+// SetAggregateConfig initializes the watcher for later execution.
+func (w *cleanWatcher) SetAggregateConfig(config *watcher.AggregateConfig) {
 	w.store = config.Store
-	return nil
 }
 
 func init() {
-	watcher.Register("clean", &cleanWatcher{})
+	watch.Register("clean", &cleanWatcher{})
 }
