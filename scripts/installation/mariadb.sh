@@ -28,7 +28,7 @@ onex::mariadb::docker::install()
     -v ${ONEX_THIRDPARTY_INSTALL_DIR}/mariadb:/var/lib/mysql \
     -p ${ONEX_ACCESS_HOST}:${ONEX_MYSQL_PORT}:3306 \
     -e MYSQL_ROOT_PASSWORD=${ONEX_PASSWORD} \
-    mariadb:11.2.2
+    mariadb:11.2.4
 
   echo "Sleeping to wait for all onex-mariadb container to complete startup ..."
   sleep 10
@@ -57,7 +57,7 @@ onex::mariadb::sbs::install()
   # 软件包的签名，确保软件包在下载和安装过程中的完整性和安全性
   echo ${LINUX_PASSWORD} | sudo -S apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
   # 配置 MariaDB 11.2.2 apt 源（docker install 和 sbs install 版本都要保持一致）
-  echo ${LINUX_PASSWORD} | sudo -S echo "deb [arch=amd64,arm64] https://mirrors.aliyun.com/mariadb/repo/11.2.2/debian/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/mariadb-11.2.2.list
+  echo ${LINUX_PASSWORD} | sudo -S echo "deb [arch=amd64,arm64] https://mirrors.aliyun.com/mariadb/repo/11.2.4/debian/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/mariadb-11.2.4.list
 
   # 注意：一定要执行 `apt update`，否则可能安装的还是旧的软件包
   onex::util::sudo "apt update"
@@ -78,7 +78,7 @@ onex::mariadb::sbs::install()
   onex::util::sudo "systemctl restart mariadb"
 
   #  设置 root 初始密码
-  onex::util::sudo "mysqladmin -u${ONEX_MYSQL_ADMIN_USERNAME} password ${ONEX_MYSQL_ADMIN_PASSWORD}"
+  onex::util::sudo "mariadb-admin -u${ONEX_MYSQL_ADMIN_USERNAME} password ${ONEX_MYSQL_ADMIN_PASSWORD}"
 
   onex::mariadb::status || return 1
   onex::mariadb::info
@@ -97,7 +97,7 @@ onex::mariadb::sbs::uninstall()
   onex::util::sudo "rm -rvf /var/lib/mysql"
   onex::util::sudo "rm -rvf /etc/mysql"
   onex::util::sudo "rm -rvf /usr/share/keyrings/mariadb.gpg"
-  onex::util::sudo "rm -vf /etc/apt/sources.list.d/mariadb-11.2.2.list"
+  onex::util::sudo "rm -vf /etc/apt/sources.list.d/mariadb-11.2.4.list"
   onex::log::info "uninstall mariadb successfully"
 }
 
@@ -108,7 +108,7 @@ onex::mariadb::info()
   cat << EOF | sed 's/^/  /'
 MySQL access endpoint is: ${ONEX_MYSQL_HOST}:${ONEX_MYSQL_PORT}
         root password is: ${ONEX_PASSWORD}
-# `mysql` will be deprecated in the future, so here use `mariadb` instead.
+# mysql will be deprecated in the future, so here use mariadb instead.
 Access command: mariadb -h ${ONEX_MYSQL_HOST} -P ${ONEX_MYSQL_PORT} -u root -p'${ONEX_PASSWORD}'
 EOF
 }
