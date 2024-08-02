@@ -86,20 +86,30 @@ EOF
 # Etcd systemd unit template from
 # https://github.com/etcd-io/etcd/blob/main/contrib/systemd/etcd.service
 [Unit]
-Description=etcd key-value store # 指定了单元的描述，即 etcd 键值存储
-Documentation=https://github.com/etcd-io/etcd # 提供了指向 etcd 项目文档的链接
-After=network-online.target local-fs.target remote-fs.target time-sync.target # 指定了服务的启动顺序
-Wants=network-online.target local-fs.target remote-fs.target time-sync.target # 指定了服务的启动依赖
+# 指定了单元的描述，即 etcd 键值存储
+Description=etcd key-value store
+ # 提供了指向 etcd 项目文档的链接
+Documentation=https://github.com/etcd-io/etcd
+# 指定了服务的启动顺序
+After=network-online.target local-fs.target remote-fs.target time-sync.target
+# 指定了服务的启动依赖
+Wants=network-online.target local-fs.target remote-fs.target time-sync.target
 
 [Service]
-Type=notify # 指定了服务的类型。notify 类型表示服务会在准备就绪时发送通知
-ExecStart=/usr/bin/etcd --config-file=/etc/etcd/config.yaml # 指定了服务启动时要执行的命令，这里是使用指定的配置文件启动 etcd
-Restart=always # 指定了服务的重启行为。always 表示服务会在退出时总是被重启
-RestartSec=10s # 指定了重启的间隔时间
-LimitNOFILE=40000 # 指定了服务的文件描述符限制，这里设置为 40000
+# 指定了服务的类型。notify 类型表示服务会在准备就绪时发送通知
+Type=notify
+# 指定了服务启动时要执行的命令，这里是使用指定的配置文件启动 etcd
+ExecStart=/usr/bin/etcd --config-file=/etc/etcd/config.yaml
+# 指定了服务的重启行为。always 表示服务会在退出时总是被重启
+Restart=always
+# 指定了重启的间隔时间
+RestartSec=10s
+# 指定了服务的文件描述符限制，这里设置为 40000
+LimitNOFILE=40000
 
 [Install]
-WantedBy=multi-user.target # 指定了服务的安装目标，这里表示服务会被添加到 multi-user.target，以便在多用户模式下启动
+# 指定了服务的安装目标，这里表示服务会被添加到 multi-user.target，以便在多用户模式下启动
+WantedBy=multi-user.target
 EOF
 
   onex::util::sudo "systemctl daemon-reload"
