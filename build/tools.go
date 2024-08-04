@@ -7,7 +7,7 @@
 //go:build tools
 // +build tools
 
-// This package imports things required by build scripts and test packages of submodules, to force `go mod` to see them as dependencies
+// This package imports things required by build hack and test packages of submodules, to force `go mod` to see them as dependencies
 package tools
 
 import (

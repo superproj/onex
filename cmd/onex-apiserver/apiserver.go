@@ -23,8 +23,8 @@ import (
 	"k8s.io/klog/v2"
 
 	"github.com/superproj/onex/cmd/onex-apiserver/app"
+	"github.com/superproj/onex/internal/apiserver/admission/initializer"
 	"github.com/superproj/onex/internal/apiserver/admission/plugin/minerset"
-	"github.com/superproj/onex/internal/controlplane/admission/initializer"
 	"github.com/superproj/onex/internal/pkg/config/minerprofile"
 	//"github.com/superproj/onex/internal/pkg/options"
 	appsrest "github.com/superproj/onex/internal/apiserver/registry/apps/rest"

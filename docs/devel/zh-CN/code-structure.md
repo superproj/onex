@@ -315,7 +315,7 @@
 │   ├── version/
 ├── README-en.md # 项目英文版 README
 ├── README.md # 项目中文版 README
-├── scripts/ # 脚本文件、makefile脚本
+├── hack/ # 脚本文件、makefile脚本
 │   ├── ...
 │   ├── make-rules/ # Sub-Makefile
 ├── SECURITY_CONTACTS

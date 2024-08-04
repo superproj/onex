@@ -16,7 +16,7 @@ import (
 // WantsExternalInformerFactory defines a function which sets InformerFactory for admission plugins that need it.
 type WantsExternalInformerFactory interface {
 	admission.InitializationValidator
-	SetInternalInformerFactory(informers.SharedInformerFactory)
+	SetExternalInformerFactory(informers.SharedInformerFactory)
 }
 
 // WantsExternalClientSet defines a function which sets external ClientSet for admission plugins that need it.

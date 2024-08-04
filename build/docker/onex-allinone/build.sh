@@ -6,10 +6,10 @@
 
 # build-allinone-image.sh 在 build/docker/onex-allinone 目录中以 build.sh 软连接
 # 的形式存在，是为了防止误删 build/docker 目录
-# Copy of scripts/build-allinone-image.sh
+# Copy of hack/build-allinone-image.sh
 ONEX_ROOT=$(dirname "${BASH_SOURCE[0]}")/../../..
 
-source "${ONEX_ROOT}/scripts/installation/onex.sh"
+source "${ONEX_ROOT}/hack/installation/onex.sh"
 # ONEX_ENV_FILE 变量来自 onex.sh
 source ${ONEX_ENV_FILE}
 

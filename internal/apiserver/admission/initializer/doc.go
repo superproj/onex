@@ -4,4 +4,4 @@
 // this file is https://github.com/superproj/onex.
 //
 
-package initializer // import "github.com/superproj/onex/internal/controlplane/admission/initializer"
+package initializer // import "github.com/superproj/onex/internal/apiserver/admission/initializer"

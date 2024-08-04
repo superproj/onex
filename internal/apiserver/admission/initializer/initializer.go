@@ -38,7 +38,7 @@ func New(
 // and provide the appropriate initialization data.
 func (i pluginInitializer) Initialize(plugin admission.Interface) {
 	if wants, ok := plugin.(WantsExternalInformerFactory); ok {
-		wants.SetInternalInformerFactory(i.informers)
+		wants.SetExternalInformerFactory(i.informers)
 	}
 
 	if wants, ok := plugin.(WantsExternalClientSet); ok {
