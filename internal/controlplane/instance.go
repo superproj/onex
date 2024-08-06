@@ -7,7 +7,6 @@
 package controlplane
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"reflect"
@@ -16,7 +15,6 @@ import (
 	coordinationv1 "k8s.io/api/coordination/v1"
 	apiv1 "k8s.io/api/core/v1"
 	flowcontrolv1 "k8s.io/api/flowcontrol/v1"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	apiserverfeatures "k8s.io/apiserver/pkg/features"
 	peerreconcilers "k8s.io/apiserver/pkg/reconcilers"
@@ -30,11 +28,10 @@ import (
 	"k8s.io/kubernetes/pkg/routes"
 
 	"github.com/superproj/onex/internal/controlplane/controller/systemnamespaces"
-	"github.com/superproj/onex/internal/controlplane/storage"
-	"github.com/superproj/onex/internal/pkg/config/minerprofile"
 	coordinationrest "github.com/superproj/onex/internal/registry/coordination/rest"
 	corerest "github.com/superproj/onex/internal/registry/core/rest"
 	flowcontrolrest "github.com/superproj/onex/internal/registry/flowcontrol/rest"
+	"github.com/superproj/onex/pkg/apiserver/storage"
 	"github.com/superproj/onex/pkg/generated/clientset/versioned"
 	"github.com/superproj/onex/pkg/generated/informers"
 )
@@ -194,29 +191,6 @@ func (c completedConfig) New(delegationTarget genericapiserver.DelegationTarget)
 			if c.ExtraConfig.ExternalVersionedInformers != nil {
 				c.ExtraConfig.ExternalVersionedInformers.Start(context.StopCh)
 			}
-			return nil
-		},
-	)
-
-	m.GenericAPIServer.AddPostStartHookOrDie(
-		"initialize-instance-config-client",
-		func(ctx genericapiserver.PostStartHookContext) error {
-			client, err := versioned.NewForConfig(ctx.LoopbackClientConfig)
-			if err != nil {
-				return err
-			}
-
-			if err := minerprofile.Init(context.Background(), client); err != nil {
-				// When returning 'NotFound' error, we should not report an error, otherwise we can not
-				// create 'MinerTypesConfigMapName' configmap via onex-apiserver
-				if apierrors.IsNotFound(err) {
-					return nil
-				}
-
-				klog.ErrorS(err, "Failed to init miner type cache")
-				return err
-			}
-
 			return nil
 		},
 	)

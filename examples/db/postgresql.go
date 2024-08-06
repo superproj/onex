@@ -15,7 +15,7 @@ type User struct {
 
 func main() {
 	opts := &db.PostgreSQLOptions{
-		Addr:     "10.37.43.62:5432 ",
+		Addr:     "10.37.43.62:5432",
 		Username: "easyai",
 		Password: "easyai(#)666",
 		Database: "easyai",

@@ -9,15 +9,15 @@ package options
 import (
 	"github.com/spf13/pflag"
 
-	garbagecollectorconfig "github.com/superproj/onex/internal/controller/apis/config"
+	genericconfig "github.com/superproj/onex/pkg/config"
 )
 
 // GarbageCollectorControllerOptions holds the GarbageCollectorController options.
 type GarbageCollectorControllerOptions struct {
-	*garbagecollectorconfig.GarbageCollectorControllerConfiguration
+	*genericconfig.GarbageCollectorControllerConfiguration
 }
 
-func NewGarbageCollectorControllerOptions(cfg *garbagecollectorconfig.GarbageCollectorControllerConfiguration) *GarbageCollectorControllerOptions {
+func NewGarbageCollectorControllerOptions(cfg *genericconfig.GarbageCollectorControllerConfiguration) *GarbageCollectorControllerOptions {
 	return &GarbageCollectorControllerOptions{
 		GarbageCollectorControllerConfiguration: cfg,
 	}
@@ -36,15 +36,12 @@ func (o *GarbageCollectorControllerOptions) AddFlags(fs *pflag.FlagSet) {
 }
 
 // ApplyTo fills up GarbageCollectorController config with options.
-func (o *GarbageCollectorControllerOptions) ApplyTo(cfg *garbagecollectorconfig.GarbageCollectorControllerConfiguration) error {
-	if o == nil {
+func (o *GarbageCollectorControllerOptions) ApplyTo(cfg *genericconfig.GarbageCollectorControllerConfiguration) error {
+	if o == nil || cfg == nil {
 		return nil
 	}
 
-	cfg.EnableGarbageCollector = o.EnableGarbageCollector
-	cfg.ConcurrentGCSyncs = o.ConcurrentGCSyncs
-	cfg.GCIgnoredResources = o.GCIgnoredResources
-
+	*cfg = *o.GarbageCollectorControllerConfiguration
 	return nil
 }
 

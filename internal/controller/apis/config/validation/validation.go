@@ -12,28 +12,18 @@ import (
 
 	"github.com/superproj/onex/internal/controller/apis/config"
 	"github.com/superproj/onex/internal/pkg/util/validation"
-	cmvalidation "github.com/superproj/onex/pkg/config/validation"
+	genericvalidation "github.com/superproj/onex/pkg/config/validation"
 )
 
 // Validate ensures validation of the MinerControllerConfiguration struct.
 func Validate(cc *config.OneXControllerManagerConfiguration) field.ErrorList {
 	allErrs := field.ErrorList{}
+
 	newPath := field.NewPath("OneXControllerManagerConfiguration")
 
 	allErrs = append(allErrs, componentbasevalidation.ValidateLeaderElectionConfiguration(&cc.Generic.LeaderElection, field.NewPath("generic", "leaderElection"))...)
-	allErrs = append(allErrs, cmvalidation.ValidateMySQLConfiguration(&cc.Generic.MySQL, field.NewPath("generic", "mysql"))...)
-
-	if cc.Generic.HealthzBindAddress != "" {
-		allErrs = append(allErrs, validation.ValidateHostPort(cc.Generic.HealthzBindAddress, newPath.Child("generic", "healthzBindAddress"))...)
-	}
-
-	if cc.Generic.PprofBindAddress != "" {
-		allErrs = append(allErrs, validation.ValidateHostPort(cc.Generic.PprofBindAddress, newPath.Child("generic", "pprofBindAddress"))...)
-	}
-
-	if cc.Generic.MetricsBindAddress != "" {
-		allErrs = append(allErrs, validation.ValidateHostPort(cc.Generic.MetricsBindAddress, newPath.Child("generic", "metricsBindAddress"))...)
-	}
+	allErrs = append(allErrs, genericvalidation.ValidateMySQLConfiguration(&cc.MySQL, field.NewPath("mysql"))...)
+	allErrs = append(allErrs, genericvalidation.ValidateGenericControllerManagerConfiguration(&cc.Generic, field.NewPath("generic"))...)
 
 	return allErrs
 }

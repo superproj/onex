@@ -14,16 +14,15 @@ import (
 	utilflag "k8s.io/kubernetes/pkg/util/flag"
 	"strings"
 
-	cmconfig "github.com/superproj/onex/internal/controller/apis/config"
-	cmoptions "github.com/superproj/onex/pkg/config/options"
+	genericconfig "github.com/superproj/onex/pkg/config"
 )
 
 // GenericControllerManagerConfigurationOptions holds the options which are generic.
 type GenericControllerManagerConfigurationOptions struct {
-	*cmconfig.GenericControllerManagerConfiguration
+	*genericconfig.GenericControllerManagerConfiguration
 }
 
-func NewGenericControllerManagerConfigurationOptions(cfg *cmconfig.GenericControllerManagerConfiguration) *GenericControllerManagerConfigurationOptions {
+func NewGenericControllerManagerConfigurationOptions(cfg *genericconfig.GenericControllerManagerConfiguration) *GenericControllerManagerConfigurationOptions {
 	return &GenericControllerManagerConfigurationOptions{
 		GenericControllerManagerConfiguration: cfg,
 	}
@@ -40,7 +39,6 @@ func (o *GenericControllerManagerConfigurationOptions) AddFlags(
 		return
 	}
 
-	cmoptions.BindMySQLFlags(&o.MySQL, fss.FlagSet("mysql"))
 	options.BindLeaderElectionFlags(&o.LeaderElection, fss.FlagSet("leader election"))
 
 	genericfs := fss.FlagSet("generic")
@@ -72,7 +70,7 @@ func (o *GenericControllerManagerConfigurationOptions) AddFlags(
 }
 
 func (o *GenericControllerManagerConfigurationOptions) ApplyTo(
-	cfg *cmconfig.GenericControllerManagerConfiguration,
+	cfg *genericconfig.GenericControllerManagerConfiguration,
 	allControllers []string,
 	disabledControllers []string,
 	controllerAliases map[string]string,

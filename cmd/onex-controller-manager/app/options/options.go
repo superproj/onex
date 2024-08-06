@@ -8,6 +8,7 @@
 package options
 
 import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	"k8s.io/client-go/tools/clientcmd"
@@ -19,10 +20,11 @@ import (
 
 	controllermanagerconfig "github.com/superproj/onex/cmd/onex-controller-manager/app/config"
 	"github.com/superproj/onex/cmd/onex-controller-manager/names"
-	ctrlmgrconfig "github.com/superproj/onex/internal/controller/apis/config"
 	"github.com/superproj/onex/internal/controller/apis/config/latest"
 	clientcmdutil "github.com/superproj/onex/internal/pkg/util/clientcmd"
 	kubeutil "github.com/superproj/onex/internal/pkg/util/kube"
+	genericconfig "github.com/superproj/onex/pkg/config"
+	genericconfigoptions "github.com/superproj/onex/pkg/config/options"
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
 )
 
@@ -33,8 +35,9 @@ const (
 
 // Options is the main context object for the onex-controller manager.
 type Options struct {
-	Generic                    *GenericControllerManagerConfigurationOptions
-	GarbageCollectorController *GarbageCollectorControllerOptions
+	Generic                    *genericconfigoptions.GenericControllerManagerConfigurationOptions
+	GarbageCollectorController *genericconfigoptions.GarbageCollectorControllerOptions
+	MySQL                      *genericconfigoptions.MySQLOptions
 	ChainController            *ChainControllerOptions
 	//NamespaceController        *NamespaceControllerOptions
 
@@ -64,8 +67,9 @@ func NewOptions() (*Options, error) {
 	}
 
 	o := Options{
-		Generic:                    NewGenericControllerManagerConfigurationOptions(&componentConfig.Generic),
-		GarbageCollectorController: NewGarbageCollectorControllerOptions(&componentConfig.GarbageCollectorController),
+		Generic:                    genericconfigoptions.NewGenericControllerManagerConfigurationOptions(&componentConfig.Generic),
+		GarbageCollectorController: genericconfigoptions.NewGarbageCollectorControllerOptions(&componentConfig.GarbageCollectorController),
+		MySQL:                      genericconfigoptions.NewMySQLOptions(&componentConfig.MySQL),
 		ChainController:            NewChainControllerOptions(&componentConfig.ChainController),
 		Kubeconfig:                 clientcmdutil.DefaultKubeconfig(),
 		Metrics:                    metrics.NewOptions(),
@@ -73,13 +77,13 @@ func NewOptions() (*Options, error) {
 		//config:     componentConfig,
 	}
 
-	gcIgnoredResources := make([]ctrlmgrconfig.GroupResource, 0, len(garbagecollector.DefaultIgnoredResources()))
+	gcIgnoredResources := make([]genericconfig.GroupResource, 0, len(garbagecollector.DefaultIgnoredResources()))
 	for r := range garbagecollector.DefaultIgnoredResources() {
-		gcIgnoredResources = append(gcIgnoredResources, ctrlmgrconfig.GroupResource{Group: r.Group, Resource: r.Resource})
+		gcIgnoredResources = append(gcIgnoredResources, genericconfig.GroupResource{Group: r.Group, Resource: r.Resource})
 	}
 	o.GarbageCollectorController.GCIgnoredResources = gcIgnoredResources
 	o.Generic.LeaderElection.ResourceName = "onex-controller-manager"
-	o.Generic.LeaderElection.ResourceNamespace = "kube-system"
+	o.Generic.LeaderElection.ResourceNamespace = metav1.NamespaceSystem
 
 	return &o, nil
 }
@@ -88,8 +92,9 @@ func NewOptions() (*Options, error) {
 func (o *Options) Flags(allControllers []string, disabledControllers []string, controllerAliases map[string]string) cliflag.NamedFlagSets {
 	fss := cliflag.NamedFlagSets{}
 	o.Generic.AddFlags(&fss, allControllers, disabledControllers, controllerAliases)
-	o.ChainController.AddFlags(fss.FlagSet(names.ChainController))
 	o.GarbageCollectorController.AddFlags(fss.FlagSet(names.GarbageCollectorController))
+	o.MySQL.AddFlags(fss.FlagSet("mysql"))
+	o.ChainController.AddFlags(fss.FlagSet(names.ChainController))
 
 	o.Metrics.AddFlags(fss.FlagSet("metrics"))
 	logsapi.AddFlags(o.Logs, fss.FlagSet("logs"))

@@ -21,7 +21,7 @@ var _ IOptions = (*MySQLOptions)(nil)
 
 // MySQLOptions defines options for mysql database.
 type MySQLOptions struct {
-	Host                  string        `json:"host,omitempty" mapstructure:"host"`
+	Addr                  string        `json:"host,omitempty" mapstructure:"host"`
 	Username              string        `json:"username,omitempty" mapstructure:"username"`
 	Password              string        `json:"-" mapstructure:"password"`
 	Database              string        `json:"database" mapstructure:"database"`
@@ -34,7 +34,7 @@ type MySQLOptions struct {
 // NewMySQLOptions create a `zero` value instance.
 func NewMySQLOptions() *MySQLOptions {
 	return &MySQLOptions{
-		Host:                  "127.0.0.1:3306",
+		Addr:                  "127.0.0.1:3306",
 		Username:              "onex",
 		Password:              "onex(#)666",
 		Database:              "onex",
@@ -54,7 +54,7 @@ func (o *MySQLOptions) Validate() []error {
 
 // AddFlags adds flags related to mysql storage for a specific APIServer to the specified FlagSet.
 func (o *MySQLOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
-	fs.StringVar(&o.Host, join(prefixes...)+"mysql.host", o.Host, ""+
+	fs.StringVar(&o.Addr, join(prefixes...)+"mysql.host", o.Addr, ""+
 		"MySQL service host address. If left blank, the following related mysql options will be ignored.")
 	fs.StringVar(&o.Username, join(prefixes...)+"mysql.username", o.Username, "Username for access to mysql service.")
 	fs.StringVar(&o.Password, join(prefixes...)+"mysql.password", o.Password, ""+
@@ -74,7 +74,7 @@ func (o *MySQLOptions) AddFlags(fs *pflag.FlagSet, prefixes ...string) {
 // NewDB create mysql store with the given config.
 func (o *MySQLOptions) NewDB() (*gorm.DB, error) {
 	opts := &db.MySQLOptions{
-		Host:                  o.Host,
+		Addr:                  o.Addr,
 		Username:              o.Username,
 		Password:              o.Password,
 		Database:              o.Database,

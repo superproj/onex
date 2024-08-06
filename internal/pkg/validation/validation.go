@@ -17,72 +17,71 @@ import (
 	"github.com/superproj/onex/internal/pkg/middleware/validate"
 )
 
-// validator implement the validate.IValidator interface.
-type validator struct {
+// Validator implements the validate.IValidator interface.
+type Validator struct {
 	registry map[string]reflect.Value
 }
 
-// ProviderSet is validator providers.
-var ProviderSet = wire.NewSet(New, wire.Bind(new(validate.IValidator), new(*validator)))
+// ProviderSet is the validator providers.
+var ProviderSet = wire.NewSet(NewValidator, wire.Bind(new(validate.IValidator), new(*Validator)))
 
-// New create and initialize the custom validator.
-func New(cv any) *validator {
-	return &validator{registry: GetValidateFuncs(cv)}
+// NewValidator creates and initializes a custom validator.
+func NewValidator(customValidator any) *Validator {
+	return &Validator{registry: extractValidationMethods(customValidator)}
 }
 
-func (vd *validator) Validate(ctx context.Context, rq any) error {
-	m, ok := vd.registry[reflect.TypeOf(rq).Elem().Name()]
+// Validate validates the request using the appropriate validation method.
+func (v *Validator) Validate(ctx context.Context, request any) error {
+	validationFunc, ok := v.registry[reflect.TypeOf(request).Elem().Name()]
 	if !ok {
-		return nil
+		return nil // No validation function found for the request type
 	}
 
-	val := m.Call([]reflect.Value{reflect.ValueOf(ctx), reflect.ValueOf(rq)})
-	if !val[0].IsNil() {
-		return val[0].Interface().(error)
+	result := validationFunc.Call([]reflect.Value{reflect.ValueOf(ctx), reflect.ValueOf(request)})
+	if !result[0].IsNil() {
+		return result[0].Interface().(error)
 	}
 
 	return nil
 }
 
-func GetValidateFuncs(cv any) map[string]reflect.Value {
+// extractValidationMethods extracts and returns a map of validation functions
+// from the provided custom validator.
+func extractValidationMethods(customValidator any) map[string]reflect.Value {
 	funcs := make(map[string]reflect.Value)
-	typeOf := reflect.TypeOf(cv)
-	valueOf := reflect.ValueOf(cv)
-	for i := 0; i < typeOf.NumMethod(); i++ {
-		m := typeOf.Method(i)
-		val := valueOf.MethodByName(m.Name)
-		if !val.IsValid() {
+	validatorType := reflect.TypeOf(customValidator)
+	validatorValue := reflect.ValueOf(customValidator)
+
+	for i := 0; i < validatorType.NumMethod(); i++ {
+		method := validatorType.Method(i)
+		methodValue := validatorValue.MethodByName(method.Name)
+
+		if !methodValue.IsValid() || !strings.HasPrefix(method.Name, "Validate") {
 			continue
 		}
 
-		if !strings.HasPrefix(m.Name, "Validate") {
+		methodType := methodValue.Type()
+
+		// Ensure the method takes a context.Context and a pointer
+		if methodType.NumIn() != 2 || methodType.NumOut() != 1 ||
+			methodType.In(0) != reflect.TypeOf((*context.Context)(nil)).Elem() ||
+			methodType.In(1).Kind() != reflect.Pointer {
 			continue
 		}
 
-		typ := val.Type()
-		if typ.NumIn() != 2 || typ.NumOut() != 1 {
+		// Ensure the method name matches the expected naming convention
+		requestTypeName := methodType.In(1).Elem().Name()
+		if method.Name != ("Validate" + requestTypeName) {
 			continue
 		}
 
-		if typ.In(0) != reflect.TypeOf((*context.Context)(nil)).Elem() {
+		// Ensure the return type is error
+		if methodType.Out(0) != reflect.TypeOf((*error)(nil)).Elem() {
 			continue
 		}
 
-		if typ.In(1).Kind() != reflect.Pointer {
-			continue
-		}
-
-		vName := typ.In(1).Elem().Name()
-		if m.Name != ("Validate" + vName) {
-			continue
-		}
-
-		if typ.Out(0) != reflect.TypeOf((*error)(nil)).Elem() {
-			continue
-		}
-
-		klog.V(4).InfoS("Register validator", "validator", vName)
-		funcs[vName] = val
+		klog.V(4).InfoS("Registering validator", "validator", requestTypeName)
+		funcs[requestTypeName] = methodValue
 	}
 
 	return funcs

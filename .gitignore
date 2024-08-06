@@ -355,7 +355,6 @@ dist
 
 # Start by zero project
 apiserver.local.config
-/apiserver
 /controller
 node_modules
 _book

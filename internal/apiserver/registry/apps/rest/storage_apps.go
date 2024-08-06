@@ -13,13 +13,13 @@ import (
 	serverstorage "k8s.io/apiserver/pkg/server/storage"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 
-	"github.com/superproj/onex/internal/controlplane/storage"
-	serializerutil "github.com/superproj/onex/internal/pkg/util/serializer"
 	chainstore "github.com/superproj/onex/internal/apiserver/registry/apps/chain/storage"
 	minerstore "github.com/superproj/onex/internal/apiserver/registry/apps/miner/storage"
 	minersetstore "github.com/superproj/onex/internal/apiserver/registry/apps/minerset/storage"
+	serializerutil "github.com/superproj/onex/internal/pkg/util/serializer"
 	"github.com/superproj/onex/pkg/apis/apps"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	"github.com/superproj/onex/pkg/apiserver/storage"
 )
 
 // RESTStorageProvider is a struct for apps REST storage.

@@ -17,7 +17,7 @@ import (
 
 // MySQLOptions defines options for mysql database.
 type MySQLOptions struct {
-	Host                  string
+	Addr                  string
 	Username              string
 	Password              string
 	Database              string
@@ -33,7 +33,7 @@ func (o *MySQLOptions) DSN() string {
 	return fmt.Sprintf(`%s:%s@tcp(%s)/%s?charset=utf8&parseTime=%t&loc=%s`,
 		o.Username,
 		o.Password,
-		o.Host,
+		o.Addr,
 		o.Database,
 		true,
 		"Local")
@@ -73,8 +73,8 @@ func NewMySQL(opts *MySQLOptions) (*gorm.DB, error) {
 
 // setMySQLDefaults set available default values for some fields.
 func setMySQLDefaults(opts *MySQLOptions) {
-	if opts.Host == "" {
-		opts.Host = "127.0.0.1:3306"
+	if opts.Addr == "" {
+		opts.Addr = "127.0.0.1:3306"
 	}
 	if opts.MaxIdleConnections == 0 {
 		opts.MaxIdleConnections = 100

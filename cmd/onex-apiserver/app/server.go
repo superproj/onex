@@ -43,14 +43,14 @@ import (
 	"k8s.io/klog/v2"
 	aggregatorapiserver "k8s.io/kube-aggregator/pkg/apiserver"
 	aggregatorscheme "k8s.io/kube-aggregator/pkg/apiserver/scheme"
+	"k8s.io/kube-openapi/pkg/common"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	"k8s.io/kubernetes/pkg/features"
 
 	"github.com/superproj/onex/cmd/onex-apiserver/app/options"
 	"github.com/superproj/onex/internal/controlplane"
 	controlplaneapiserver "github.com/superproj/onex/internal/controlplane/apiserver"
-	"github.com/superproj/onex/internal/controlplane/storage"
-	generatedopenapi "github.com/superproj/onex/pkg/generated/openapi"
+	"github.com/superproj/onex/pkg/apiserver/storage"
 	"github.com/superproj/onex/pkg/version"
 )
 
@@ -89,6 +89,13 @@ func WithAdmissionPlugin(name string, registerFunc RegisterFunc) Option {
 		// Note: Need to add this to the RecommendedPluginOrder list.
 		s.RecommendedOptions.Admission.RecommendedPluginOrder = append(s.RecommendedOptions.Admission.RecommendedPluginOrder, name)
 		registerFunc(s.RecommendedOptions.Admission.Plugins)
+	}
+}
+
+// WithOpenAPIDefinitions sets the OpenAPI definitions for the server.
+func WithGetOpenAPIDefinitions(getOpenAPIDefinitions common.GetOpenAPIDefinitions) Option {
+	return func(s *options.ServerRunOptions) {
+		s.GetOpenAPIDefinitions = getOpenAPIDefinitions
 	}
 }
 
@@ -277,7 +284,7 @@ func CreateOneXAPIServerConfig(opts options.CompletedOptions) (
 	genericConfig, _, kubeSharedInformers, storageFactory, err := controlplaneapiserver.BuildGenericConfig(
 		opts.CompletedOptions,
 		[]*runtime.Scheme{legacyscheme.Scheme, extensionsapiserver.Scheme, aggregatorscheme.Scheme},
-		generatedopenapi.GetOpenAPIDefinitions,
+		opts.GetOpenAPIDefinitions,
 	)
 	if err != nil {
 		return nil, nil, err

@@ -199,7 +199,7 @@ func Run(ctx context.Context, c *config.CompletedConfig) error {
 
 	// Do some initialization here
 	var mysqlOptions db.MySQLOptions
-	_ = copier.Copy(&mysqlOptions, c.ComponentConfig.Generic.MySQL)
+	_ = copier.Copy(&mysqlOptions, c.ComponentConfig.MySQL)
 	storeClient, err := wireStoreClient(&mysqlOptions)
 	if err != nil {
 		return err
