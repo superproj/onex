@@ -31,6 +31,7 @@ import (
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
 	"github.com/superproj/onex/pkg/generated/clientset/versioned"
 	"github.com/superproj/onex/pkg/generated/informers"
+	generatedopenapi "github.com/superproj/onex/pkg/generated/openapi"
 )
 
 func main() {
@@ -45,6 +46,7 @@ func main() {
 		// Add custom admission plugins.
 		app.WithAdmissionPlugin(minerset.PluginName, minerset.Register),
 		// Add custom admission plugins initializer.
+		app.WithGetOpenAPIDefinitions(generatedopenapi.GetOpenAPIDefinitions),
 		app.WithAdmissionInitializers(func(c *genericapiserver.RecommendedConfig) ([]admission.PluginInitializer, error) {
 			client, err := versioned.NewForConfig(c.LoopbackClientConfig)
 			if err != nil {

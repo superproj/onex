@@ -21,6 +21,7 @@ import (
 	"github.com/superproj/onex/internal/toyblc/miner"
 	"github.com/superproj/onex/internal/toyblc/ws"
 	"github.com/superproj/onex/pkg/log"
+	genericmw "github.com/superproj/onex/pkg/middleware/gin"
 	genericoptions "github.com/superproj/onex/pkg/options"
 )
 
@@ -50,7 +51,7 @@ func (c completedConfig) New() (*ToyBLC, error) {
 	bs, ss := blc.NewBlockSet(c.Address), ws.NewSockets()
 
 	// gin.Recovery() 中间件，用来捕获任何 panic，并恢复
-	mws := []gin.HandlerFunc{gin.Recovery(), mw.NoCache, mw.Cors, mw.Secure, mw.TraceID()}
+	mws := []gin.HandlerFunc{gin.Recovery(), genericmw.NoCache, genericmw.Cors, genericmw.Secure, mw.TraceID()}
 
 	// 设置 Gin 模式
 	gin.SetMode(gin.ReleaseMode)

@@ -76,6 +76,7 @@ require (
 	google.golang.org/grpc v1.58.3
 	google.golang.org/protobuf v1.34.2
 	gorm.io/driver/mysql v1.5.1-0.20230509030346-3715c134c25b
+	gorm.io/driver/postgres v1.4.5
 	gorm.io/gen v0.3.23
 	gorm.io/gorm v1.25.1-0.20230505075827-e61b98d69677
 	k8s.io/api v0.30.2
@@ -199,7 +200,6 @@ require (
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gorm.io/datatypes v1.1.1-0.20230130040222-c43177d3cf8c // indirect
-	gorm.io/driver/postgres v1.4.5 // indirect
 	gorm.io/driver/sqlserver v1.4.1 // indirect
 	gorm.io/hints v1.1.0 // indirect
 	gorm.io/plugin/dbresolver v1.3.0 // indirect
@@ -313,12 +313,8 @@ replace (
 	go.opentelemetry.io/otel/sdk => go.opentelemetry.io/otel/sdk v1.19.0
 	go.opentelemetry.io/otel/trace => go.opentelemetry.io/otel/trace v1.19.0
 	go.opentelemetry.io/proto/otlp => go.opentelemetry.io/proto/otlp v1.0.0
-	k8s.io/api => /home/colin/workspace/golang/src/k8s.io/api
-	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.30.2
-	k8s.io/apimachinery => /home/colin/workspace/golang/src/k8s.io/apimachinery
 	k8s.io/apiserver => k8s.io/apiserver v0.30.2
 	k8s.io/cli-runtime => k8s.io/cli-runtime v0.30.2
-	k8s.io/client-go => /home/colin/workspace/golang/src/k8s.io/client-go
 	k8s.io/cloud-provider => k8s.io/cloud-provider v0.30.2
 	k8s.io/cluster-bootstrap => k8s.io/cluster-bootstrap v0.30.2
 	k8s.io/code-generator => k8s.io/code-generator v0.30.2

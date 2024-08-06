@@ -10,7 +10,7 @@ import (
 	apiserveroptions "k8s.io/apiserver/pkg/server/options"
 
 	controlplaneoptions "github.com/superproj/onex/internal/controlplane/apiserver/options"
-	"github.com/superproj/onex/internal/controlplane/storage"
+	"github.com/superproj/onex/pkg/apiserver/storage"
 )
 
 // completedOptions is a private wrapper that enforces a call of Complete() before Run can be invoked.

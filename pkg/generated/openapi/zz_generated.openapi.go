@@ -6180,7 +6180,7 @@ func schema_k8sio_api_core_v1_FlexPersistentVolumeSource(ref common.ReferenceCal
 					},
 					"secretRef": {
 						SchemaProps: spec.SchemaProps{
-							Description: "secretRef is Optional: SecretRef is reference to the secret object containing sensitive information to pass to the plugin hack. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin hack.",
+							Description: "secretRef is Optional: SecretRef is reference to the secret object containing sensitive information to pass to the plugin scripts. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin scripts.",
 							Ref:         ref("k8s.io/api/core/v1.SecretReference"),
 						},
 					},
@@ -6240,7 +6240,7 @@ func schema_k8sio_api_core_v1_FlexVolumeSource(ref common.ReferenceCallback) com
 					},
 					"secretRef": {
 						SchemaProps: spec.SchemaProps{
-							Description: "secretRef is Optional: secretRef is reference to the secret object containing sensitive information to pass to the plugin hack. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin hack.",
+							Description: "secretRef is Optional: secretRef is reference to the secret object containing sensitive information to pass to the plugin scripts. This may be empty if no secret object is specified. If the secret object contains more than one secret, all secrets are passed to the plugin scripts.",
 							Ref:         ref("k8s.io/api/core/v1.LocalObjectReference"),
 						},
 					},

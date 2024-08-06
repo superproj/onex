@@ -12,10 +12,11 @@ import (
 
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	cliflag "k8s.io/component-base/cli/flag"
+	"k8s.io/kube-openapi/pkg/common"
 
 	"github.com/superproj/onex/internal/controlplane"
 	controlplaneoptions "github.com/superproj/onex/internal/controlplane/apiserver/options"
-	"github.com/superproj/onex/internal/controlplane/storage"
+	"github.com/superproj/onex/pkg/apiserver/storage"
 )
 
 const defaultEtcdPathPrefix = "/registry/onex.io"
@@ -38,6 +39,7 @@ type Extra struct {
 	ExternalRESTStorageProviders []storage.RESTStorageProvider
 	ExternalVersionedInformers   controlplane.ExternalSharedInformerFactory
 	ExternalPostStartHooks       map[string]genericapiserver.PostStartHookFunc
+	GetOpenAPIDefinitions        common.GetOpenAPIDefinitions
 }
 
 // NewServerRunOptions returns a new ServerRunOptions.

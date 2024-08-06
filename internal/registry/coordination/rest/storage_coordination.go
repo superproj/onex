@@ -16,8 +16,8 @@ import (
 	"k8s.io/kubernetes/pkg/apis/coordination"
 	leasestore "k8s.io/kubernetes/pkg/registry/coordination/lease/storage"
 
-	"github.com/superproj/onex/internal/controlplane/storage"
 	serializerutil "github.com/superproj/onex/internal/pkg/util/serializer"
+	"github.com/superproj/onex/pkg/apiserver/storage"
 	// leasestore "github.com/superproj/onex/internal/registry/coordination/lease/storage".
 )
 

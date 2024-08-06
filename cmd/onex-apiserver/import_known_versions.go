@@ -4,7 +4,7 @@
 // this file is https://github.com/superproj/onex.
 //
 
-package app
+package main
 
 // UPDATEME: When add new api group.
 import (

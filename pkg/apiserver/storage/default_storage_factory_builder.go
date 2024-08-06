@@ -16,10 +16,6 @@ import (
 	serverstorage "k8s.io/apiserver/pkg/server/storage"
 	"k8s.io/apiserver/pkg/storage/storagebackend"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
-	//api "k8s.io/kubernetes/pkg/apis/core"
-	//"k8s.io/kubernetes/pkg/apis/events"
-	//"k8s.io/kubernetes/pkg/apis/extensions"
-	//"github.com/superproj/onex/pkg/apis/apps"
 )
 
 // SpecialDefaultResourcePrefixes are prefixes compiled into Zero.

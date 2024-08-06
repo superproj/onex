@@ -140,9 +140,9 @@ func addMinerSetSelector(ms *apps.MinerSet) {
 	ms.Spec.Template.ObjectMeta.Labels[apps.LabelMinerSet] = ms.Name
 }
 
-// SetInternalInformerFactory gets Lister from SharedInformerFactory.
+// SetExternalInformerFactory gets Lister from SharedInformerFactory.
 // The lister knows how to lists MinerSets.
-func (p *Plugin) SetInternalInformerFactory(f informers.SharedInformerFactory) {
+func (p *Plugin) SetExternalInformerFactory(f informers.SharedInformerFactory) {
 	p.lister = f.Apps().V1beta1().MinerSets().Lister()
 	p.SetReadyFunc(f.Apps().V1beta1().MinerSets().Informer().HasSynced)
 }

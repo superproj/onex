@@ -43,7 +43,7 @@ import (
 	"github.com/superproj/onex/internal/controlplane"
 	"github.com/superproj/onex/internal/controlplane/admission/initializer"
 	controlplaneoptions "github.com/superproj/onex/internal/controlplane/apiserver/options"
-	"github.com/superproj/onex/internal/controlplane/storage"
+	"github.com/superproj/onex/pkg/apiserver/storage"
 	"github.com/superproj/onex/pkg/generated/clientset/versioned"
 	"github.com/superproj/onex/pkg/generated/informers"
 	"github.com/superproj/onex/pkg/version"
