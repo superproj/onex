@@ -3,7 +3,7 @@
 ## 启动创世节点
 
 ```
-$ ./hack/get-genesis-account.sh $HOME/.tbb/genesis
+$ ./scripts/get-genesis-account.sh $HOME/.tbb/genesis
 $ tbb run --datadir=$HOME/.tbb/genesis --disable-ssl --ip=0.0.0.0 --port=8080 --bootstrap-ip=0.0.0.0 --bootstrap-port=8080 --miner=0x210d9eD12CEA87E33a98AA7Bcb4359eABA9e800e
 ```
 

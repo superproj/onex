@@ -7,8 +7,8 @@ all: format tidy gen add-copyright lint cover build
 # ==============================================================================
 # Includes
 
-include hack/make-rules/common.mk # make sure include common.mk at the first include line
-include hack/make-rules/all.mk
+include scripts/make-rules/common.mk # make sure include common.mk at the first include line
+include scripts/make-rules/all.mk
 
 # ==============================================================================
 # Usage
@@ -56,7 +56,7 @@ endif
 
 .PHONY: gen-k8s
 gen-k8s: ## Generate all necessary kubernetes related files, such as deepcopy files
-	@$(ONEX_ROOT)/hack/update-codegen.sh
+	@$(ONEX_ROOT)/scripts/update-codegen.sh
 	# The following command is old generate way with makefile script.
 	# Comment here as a code history.
 	# $(MAKE) -s generated.files

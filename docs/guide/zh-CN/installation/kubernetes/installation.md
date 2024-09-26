@@ -151,7 +151,7 @@ Kind （Kubernetes in Docker）是一个工具。可以在本地快速创建、�
 $ curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.18.0/kind-linux-amd64
 $ chmod +x ./kind
 $ sudo mv ./kind /usr/local/bin/kind
-$ ./hack/add-completion.sh kind bash
+$ ./scripts/add-completion.sh kind bash
 $ kind version # 验证 kind
 kind v0.18.0 go1.20.2 linux/amd64
 ```
@@ -162,7 +162,7 @@ kind v0.18.0 go1.20.2 linux/amd64
 $ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 $ chmod +x kubectl
 $ sudo mv kubectl /usr/bin/
-$ ./hack/add-completion.sh kubectl bash
+$ ./scripts/add-completion.sh kubectl bash
 $ kubectl version --client --output=yaml # 验证 kubectl 是否安装成功
 clientVersion:
   buildDate: "2023-03-15T13:40:17Z"

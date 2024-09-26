@@ -69,7 +69,7 @@ onex设计目的是能够在一个项目中，有机整合 Go 项目开发中用
     - 代码生成：gen-xxx
 - 自动版本生成、CHANGELOG生成
 - 开发中一些常用功能设计：Client SDK设计方案，Options设计方案
-- 大量采用了代码生成技术，提高代码开发效率（见hack/make-rules/generate.mk）：
+- 大量采用了代码生成技术，提高代码开发效率（见scripts/make-rules/generate.mk）：
   - 自定义代码生成gen-xxx
   - 自动生成go protobuf文件 
   - swagger.json
