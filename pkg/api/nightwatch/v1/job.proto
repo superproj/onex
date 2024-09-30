@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package nightwatch.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/superproj/onex/pkg/api/nightwatch/v1;v1";
+
+message Job {
+    // Job 名称
+    string name = 1;
+    // Job ID
+    string jobID = 2;
+    // 创建人
+    string userID = 3;
+    // CronJob ID
+    string cronjobID = 4;
+    // Job 作用域
+    string scope = 5;
+    // Job 描述
+    string description = 6;
+    string watcher  = 7;
+    // Job 参数
+    JobParams params = 8;
+    // Job 执行结果
+    JobResults results  = 9;
+    // Job 状态：Pending、Running、Succeeded、Failed
+    string status = 10;
+    // Job 状态：Pending、Running、Succeeded、Failed
+    repeated JobCondition conditions  = 11;
+    // Job 开始时间
+    int64 startedAt  = 12;
+    // Job 结束时间
+    int64 endedAt  = 13;
+    // 创建时间
+    google.protobuf.Timestamp createdAt = 14;
+    // 更新时间
+    google.protobuf.Timestamp updatedAt = 15;
+}
+
+message JobParams{
+    TrainParams train = 1;
+}
+
+message TrainParams {
+    // 损失函数类型
+    string lossFunction  = 1;
+    // 训练轮数
+    int64 epochs = 2;
+    // 批处理大小
+    int64 batchSize = 3;
+}
+
+message JobResults{
+    TrainResults train = 1;
+}
+
+message TrainResults {
+    // 模型准确率
+   double accuracy  = 1;
+    // 最终损失值
+   double loss = 2;
+}
+
+message JobCondition {
+    // Type of the condition (e.g., "Downloaed", "Embedded", "Evaluated")
+    string type = 1;
+    // Status of the condition (True, False, Unknown)
+    string status = 2;
+    // Message provides additional information when the condition is false
+    string message = 3;
+    // Last time the condition transitioned from one status to another.
+    string lastTransitionTime = 4;
+}
+
+message CreateJobRequest{
+    Job job = 1;
+}
+
+message CreateJobResponse{
+    string jobID = 1;
+}
+
+message UpdateJobRequest{
+    Job job = 1;
+}
+
+message UpdateJobResponse{
+}
+
+message GetJobRequest{
+    string id = 1;
+}
+
+message GetJobResponse{
+    Job job = 1;
+}
+
+message ListJobRequest{
+}
+
+message ListJobResponse{
+    int64 totalCount = 1;
+    repeated Job jobs = 2;
+}
+
+message DeleteJobRequest{
+    repeated string jobIDs = 1;
+}
+
+message DeleteJobResponse{
+}

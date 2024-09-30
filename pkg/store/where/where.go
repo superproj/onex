@@ -1,6 +1,8 @@
 package where
 
 import (
+	"encoding/json"
+
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
@@ -141,6 +143,12 @@ func (whr *WhereOptions) F(kvs ...any) *WhereOptions {
 	}
 
 	return whr
+}
+
+// String returns a JSON representation of the WhereOptions.
+func (whr *WhereOptions) String() string {
+	jsonBytes, _ := json.Marshal(whr)
+	return string(jsonBytes)
 }
 
 // Where applies the filters and clauses to the given gorm.DB instance.

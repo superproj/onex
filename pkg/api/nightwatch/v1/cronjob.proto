@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package nightwatch.v1;
+
+import "google/protobuf/timestamp.proto";
+import "job.proto";
+
+option go_package = "github.com/superproj/onex/pkg/api/nightwatch/v1;v1";
+
+// ConcurrencyPolicy 描述了作业的处理方式。只能指定以下并发策略中的一个。
+// 如果未指定以下任何策略，则默认策略为 ForbidConcurrent
+enum ConcurrencyPolicy {
+    // ForbidConcurrent 禁止并发运行，如果先前的作业尚未完成，则跳过下一个运行。
+    ForbidConcurrent = 0;
+
+    // AllowConcurrent 允许 CronJobs 并发运行。
+    AllowConcurrent = 1;
+
+    // ReplaceConcurrent 取消当前正在运行的作业，并用一个新的作业替代它。
+    ReplaceConcurren = 2;
+}
+
+// CronJob 表示单个 Cron 作业的配置。
+message CronJob {
+    // CronJob 名称
+    string name = 1;
+    // CronJob ID
+    string cronJobID = 2;
+    // 创建人
+    string userID = 3;
+    // CronJob 作用域
+    string scope = 4;
+    // CronJob 描述
+    string description = 5;
+    // Quartz 格式的调度时间描述。http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html
+    string schedule = 6;
+    // CronJob 任务状态，例如：{"active":[1,2],"lastScheduleTime":1234,"lastSuccessfulTime":1234, "lastJobID": 1234}
+    CronJobStatus status  = 7;
+    // 作业处理方式（1 串行，2 并行，3 替换，默认 1）
+    ConcurrencyPolicy concurrencyPolicy = 8;
+    // 是否挂起（1 挂起，0 不挂起, 默认 0）
+    int64 suspend = 9;
+    // Job 模版
+    job.Job jobTemplate = 10;
+    // 要保留的成功完成作业的数量。值必须是非负整数。默认值为 10。
+    int64 successHistoryLimit  = 11;
+    // 要保留的失败完成作业的数量。值必须是非负整数。  默认值为 5。
+    int64 failedHistoryLimit = 12;
+    // 创建时间
+    google.protobuf.Timestamp createdAt = 13;
+    // 更新时间
+    google.protobuf.Timestamp updatedAt = 14;
+}
+
+message CronJobStatus {
+    repeated int64 active = 1;
+    int64 lastScheduleTime = 2;
+    int64 lastSuccessfulTime = 3;
+    int64 lastJobID = 4;
+}
+
+message CreateCronJobRequest{
+   CronJob cronJob = 1;
+}
+
+message CreateCronJobResponse{
+    string cronJobID = 1;
+}
+
+message UpdateCronJobRequest{
+    string cronJobID = 1;
+    optional string name = 2;
+    optional string description = 4;
+    optional string schedule = 6;
+    optional ConcurrencyPolicy concurrencyPolicy = 8;
+    optional int64 suspend = 9;
+    optional int64 successHistoryLimit  = 11;
+    optional int64 failedHistoryLimit = 12;
+}
+
+message UpdateCronJobResponse{ }
+
+message GetCronJobRequest{
+    string cronJobID = 1;
+}
+
+message GetCronJobResponse{
+    CronJob cronJob = 1;
+}
+
+message ListCronJobRequest{
+  int64 offset = 1;
+  int64 limit = 2;
+}
+
+message ListCronJobResponse{
+    int64 totalCount = 1;
+    repeated CronJob cronJobs = 2;
+}
+
+message DeleteCronJobRequest{
+    repeated string cronJobIDs = 1;
+}
+
+message DeleteCronJobResponse{
+}

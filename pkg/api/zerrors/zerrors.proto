@@ -29,4 +29,6 @@ enum ErrorReason {
   IdempotentMissingToken = 5 [(errors.code) = 400];
   // 幂等性令牌已过期错误
   IdempotentTokenExpired = 6 [(errors.code) = 400];
+  // 请求路径没有找到
+  PageNotFound = 7 [(errors.code) = 404];
 }

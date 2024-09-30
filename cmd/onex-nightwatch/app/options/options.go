@@ -38,7 +38,10 @@ type Options struct {
 	MySQLOptions          *genericoptions.MySQLOptions   `json:"mysql" mapstructure:"mysql"`
 	RedisOptions          *genericoptions.RedisOptions   `json:"redis" mapstructure:"redis"`
 	WatchOptions          *watch.Options                 `json:"nightwatch" mapstructure:"nightwatch"`
+	HTTPOptions           *genericoptions.HTTPOptions    `json:"http" mapstructure:"http"`
+	TLSOptions            *genericoptions.TLSOptions     `json:"tls" mapstructure:"tls"`
 	UserWatcherMaxWorkers int64                          `json:"user-watcher-max-workers" mapstructure:"user-watcher-max-workers"`
+	DisableRESTServer     bool                           `json:"disable-rest-server" mapstructure:"disable-rest-server"`
 	Metrics               *genericoptions.MetricsOptions `json:"metrics" mapstructure:"metrics"`
 	// Path to kubeconfig file with authorization and master location information.
 	Kubeconfig   string          `json:"kubeconfig" mapstructure:"kubeconfig"`
@@ -52,6 +55,9 @@ func NewOptions() *Options {
 		HealthOptions:         genericoptions.NewHealthOptions(),
 		MySQLOptions:          genericoptions.NewMySQLOptions(),
 		RedisOptions:          genericoptions.NewRedisOptions(),
+		HTTPOptions:           genericoptions.NewHTTPOptions(),
+		TLSOptions:            genericoptions.NewTLSOptions(),
+		DisableRESTServer:     false,
 		UserWatcherMaxWorkers: math.MaxInt64,
 		WatchOptions:          watch.NewOptions(),
 		Metrics:               genericoptions.NewMetricsOptions(),
@@ -66,6 +72,8 @@ func (o *Options) Flags() (fss cliflag.NamedFlagSets) {
 	o.HealthOptions.AddFlags(fss.FlagSet("health"))
 	o.MySQLOptions.AddFlags(fss.FlagSet("mysql"))
 	o.RedisOptions.AddFlags(fss.FlagSet("redis"))
+	o.HTTPOptions.AddFlags(fss.FlagSet("http"))
+	o.TLSOptions.AddFlags(fss.FlagSet("tls"))
 	o.WatchOptions.AddFlags(fss.FlagSet("watch"))
 	o.Metrics.AddFlags(fss.FlagSet("metrics"))
 	o.Log.AddFlags(fss.FlagSet("log"))
@@ -74,6 +82,7 @@ func (o *Options) Flags() (fss cliflag.NamedFlagSets) {
 	// arrange these text blocks sensibly. Grrr.
 	fs := fss.FlagSet("misc")
 	fs.StringVar(&o.Kubeconfig, "kubeconfig", o.Kubeconfig, "Path to kubeconfig file with authorization and master location information.")
+	fs.BoolVar(&o.DisableRESTServer, "disable-rest-server", o.DisableRESTServer, "Disable the REST server functionality.")
 	fs.Int64Var(&o.UserWatcherMaxWorkers, "user-watcher-max-workers", o.UserWatcherMaxWorkers, "Specify the maximum concurrency event of user watcher.")
 	feature.DefaultMutableFeatureGate.AddFlag(fs)
 
@@ -101,6 +110,8 @@ func (o *Options) Validate() error {
 	errs = append(errs, o.HealthOptions.Validate()...)
 	errs = append(errs, o.MySQLOptions.Validate()...)
 	errs = append(errs, o.RedisOptions.Validate()...)
+	errs = append(errs, o.HTTPOptions.Validate()...)
+	errs = append(errs, o.TLSOptions.Validate()...)
 	errs = append(errs, o.WatchOptions.Validate()...)
 	errs = append(errs, o.Metrics.Validate()...)
 	errs = append(errs, o.Log.Validate()...)
@@ -112,7 +123,10 @@ func (o *Options) Validate() error {
 func (o *Options) ApplyTo(c *nightwatch.Config) error {
 	c.MySQLOptions = o.MySQLOptions
 	c.RedisOptions = o.RedisOptions
+	c.HTTPOptions = o.HTTPOptions
+	c.TLSOptions = o.TLSOptions
 	c.WatchOptions = o.WatchOptions
+	c.DisableRESTServer = o.DisableRESTServer
 	c.UserWatcherMaxWorkers = o.UserWatcherMaxWorkers
 	return nil
 }

@@ -10,8 +10,9 @@ import (
 	genericapiserver "k8s.io/apiserver/pkg/server"
 
 	"github.com/superproj/onex/cmd/onex-nightwatch/app/options"
-	"github.com/superproj/onex/internal/nightwatch"
 	"github.com/superproj/onex/pkg/app"
+	"github.com/superproj/onex/pkg/watch"
+	"github.com/superproj/onex/pkg/watch/logger/onex"
 )
 
 const commandDesc = `The nightwatch server is responsible for executing some async tasks 
@@ -56,4 +57,8 @@ func Run(c *nightwatch.Config, stopCh <-chan struct{}) error {
 	nw.Run(stopCh)
 
 	return nil
+}
+
+func InstallJobAPI(g *gin.Engine, db *gorm.DB) {
+	return nightwatch.InstallJobAPI(g, db)
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/superproj/onex/internal/fakeserver/model"
 	"github.com/superproj/onex/internal/fakeserver/store"
 	genericstore "github.com/superproj/onex/pkg/store"
+	"github.com/superproj/onex/pkg/store/logger/onex"
 )
 
 // orders is a concrete implementation of OrderStore that uses a generic store.
@@ -23,6 +24,6 @@ var _ store.OrderStore = (*orders)(nil)
 // newOrders creates a new instance of orders.
 func newOrders(ds *datastore) *orders {
 	return &orders{
-		Store: genericstore.NewStore[model.OrderM](ds),
+		Store: genericstore.NewStore[model.OrderM](ds, onex.NewLogger()),
 	}
 }
