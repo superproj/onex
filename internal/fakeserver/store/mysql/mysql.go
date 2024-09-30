@@ -7,38 +7,72 @@
 package mysql
 
 import (
+	"context"
 	"sync"
 
+	"github.com/google/wire"
 	"gorm.io/gorm"
 
 	"github.com/superproj/onex/internal/fakeserver/store"
 )
 
+// ProviderSet is a Wire provider set for creating a new datastore instance.
+var ProviderSet = wire.NewSet(NewStore, wire.Bind(new(store.IStore), new(*datastore)))
+
 var (
+	// Singleton instance variables for the datastore.
 	once sync.Once
-	// 全局变量，保存已被初始化的 *datastore 实例.
-	s *datastore
+	// Global variable to hold the singleton datastore instance.
+	S *datastore
 )
 
-// datastore 是 IStore 的一个具体实现.
+// transactionKey is used as a key for storing the transaction context in context.Context.
+type transactionKey struct{}
+
+// datastore represents the main database instance and any additional instances.
 type datastore struct {
-	db *gorm.DB
+	// core is the main database instance.
+	// The `core` name indicates this is the main database.
+	core *gorm.DB
+
+	// Additional database instances can be added as needed.
+	// In the example below, a fake database instance is added:
+	// fake *gorm.DB
 }
 
-// 确保 datastore 实现了 store.IStore 接口.
+// Ensure that datastore implements the IStore interface.
 var _ store.IStore = (*datastore)(nil)
 
-// NewStore 创建一个 store.IStore 类型的实例.
+// NewStore creates a new instance of datastore.
 func NewStore(db *gorm.DB) *datastore {
-	// 确保 s 只被初始化一次
 	once.Do(func() {
-		s = &datastore{db}
+		S = &datastore{db}
 	})
 
-	return s
+	return S
 }
 
-// Orders 返回一个实现了 OrderStore 接口的实例.
+// DB retrieves the current database instance from the context or returns the main instance.
+func (ds *datastore) DB(ctx context.Context) *gorm.DB {
+	tx, ok := ctx.Value(transactionKey{}).(*gorm.DB)
+	if ok {
+		return tx
+	}
+
+	return ds.core
+}
+
+// Orders returns a new instance of the OrderStore.
+func (ds *datastore) TX(ctx context.Context, fn func(ctx context.Context) error) error {
+	return ds.core.WithContext(ctx).Transaction(
+		func(tx *gorm.DB) error {
+			ctx = context.WithValue(ctx, transactionKey{}, tx)
+			return fn(ctx)
+		},
+	)
+}
+
+// Orders returns a new instance of the OrderStore.
 func (ds *datastore) Orders() store.OrderStore {
-	return newOrders(ds.db)
+	return newOrders(ds)
 }

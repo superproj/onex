@@ -42,7 +42,7 @@ func (o *MySQLOptions) DSN() string {
 // NewMySQL create a new gorm db instance with the given options.
 func NewMySQL(opts *MySQLOptions) (*gorm.DB, error) {
 	// Set default values to ensure all fields in opts are available.
-	setDefaults(opts)
+	setMySQLDefaults(opts)
 
 	db, err := gorm.Open(mysql.Open(opts.DSN()), &gorm.Config{
 		// PrepareStmt executes the given query in cached statement.

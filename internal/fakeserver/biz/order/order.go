@@ -22,12 +22,11 @@ import (
 
 	"github.com/superproj/onex/internal/fakeserver/model"
 	"github.com/superproj/onex/internal/fakeserver/store"
-	"github.com/superproj/onex/internal/pkg/meta"
+	"github.com/superproj/onex/internal/pkg/where"
 	v1 "github.com/superproj/onex/pkg/api/fakeserver/v1"
 	"github.com/superproj/onex/pkg/log"
 )
 
-// OrderBiz 定义了 order 模块在 biz 层所实现的方法.
 type OrderBiz interface {
 	Create(ctx context.Context, rq *v1.CreateOrderRequest) (*v1.CreateOrderResponse, error)
 	List(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListOrderResponse, error)
@@ -36,20 +35,16 @@ type OrderBiz interface {
 	Delete(ctx context.Context, rq *v1.DeleteOrderRequest) error
 }
 
-// OrderBiz 接口的实现.
 type orderBiz struct {
 	ds store.IStore
 }
 
-// 确保 orderBiz 实现了 OrderBiz 接口.
 var _ OrderBiz = (*orderBiz)(nil)
 
-// New 创建一个实现了 OrderBiz 接口的实例.
 func New(ds store.IStore) *orderBiz {
 	return &orderBiz{ds: ds}
 }
 
-// Create 是 OrderBiz 接口中 `Create` 方法的实现.
 func (b *orderBiz) Create(ctx context.Context, rq *v1.CreateOrderRequest) (*v1.CreateOrderResponse, error) {
 	var orderM model.OrderM
 	_ = copier.Copy(&orderM, rq)
@@ -61,9 +56,38 @@ func (b *orderBiz) Create(ctx context.Context, rq *v1.CreateOrderRequest) (*v1.C
 	return &v1.CreateOrderResponse{OrderID: orderM.OrderID}, nil
 }
 
-// Get 是 OrderBiz 接口中 `Get` 方法的实现.
+func (b *orderBiz) Update(ctx context.Context, rq *v1.UpdateOrderRequest) error {
+	orderM, err := b.ds.Orders().Get(ctx, where.Filter("order_id", rq.OrderID))
+	if err != nil {
+		return err
+	}
+
+	if rq.Customer != nil {
+		orderM.Customer = *rq.Customer
+	}
+
+	if rq.Product != nil {
+		orderM.Product = *rq.Product
+	}
+
+	if rq.Quantity != nil {
+		orderM.Quantity = *rq.Quantity
+	}
+
+	return b.ds.Orders().Update(ctx, orderM)
+}
+
+// Delete 是 OrderBiz 接口中 `Delete` 方法的实现.
+func (b *orderBiz) Delete(ctx context.Context, rq *v1.DeleteOrderRequest) error {
+	if err := b.ds.Orders().Delete(ctx, where.Filter("order_id", rq.OrderID)); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (b *orderBiz) Get(ctx context.Context, rq *v1.GetOrderRequest) (*v1.OrderReply, error) {
-	orderM, err := b.ds.Orders().Get(ctx, rq.OrderID)
+	orderM, err := b.ds.Orders().Get(ctx, where.Filter("order_id", rq.OrderID))
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, v1.ErrorOrderNotFound(err.Error())
@@ -80,9 +104,9 @@ func (b *orderBiz) Get(ctx context.Context, rq *v1.GetOrderRequest) (*v1.OrderRe
 	return &order, nil
 }
 
-// List 是 OrderBiz 接口中 `List` 方法的实现.
 func (b *orderBiz) List(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListOrderResponse, error) {
-	count, list, err := b.ds.Orders().List(ctx, meta.WithOffset(rq.Offset), meta.WithLimit(rq.Limit))
+	whr := where.NewWhere(where.WithOffset(rq.Offset), where.WithLimit(rq.Limit))
+	count, orderList, err := b.ds.Orders().List(ctx, whr)
 	if err != nil {
 		log.C(ctx).Errorw(err, "Failed to list orders from storage")
 		return nil, err
@@ -91,7 +115,7 @@ func (b *orderBiz) List(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListO
 	var m sync.Map
 	eg, ctx := errgroup.WithContext(ctx)
 	// 使用 goroutine 提高接口性能
-	for _, order := range list {
+	for _, order := range orderList {
 		eg.Go(func() error {
 			select {
 			case <-ctx.Done():
@@ -119,8 +143,8 @@ func (b *orderBiz) List(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListO
 	}
 
 	// The following code block is used to maintain the consistency of query order.
-	orders := make([]*v1.OrderReply, 0, len(list))
-	for _, item := range list {
+	orders := make([]*v1.OrderReply, 0, len(orderList))
+	for _, item := range orderList {
 		order, _ := m.Load(item.ID)
 		orders = append(orders, order.(*v1.OrderReply))
 	}
@@ -134,7 +158,8 @@ func (b *orderBiz) List(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListO
 // Concurrency limits can effectively protect downstream services and control the resource
 // consumption of components.
 func (b *orderBiz) ListWithWorkerPool(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListOrderResponse, error) {
-	count, list, err := b.ds.Orders().List(ctx, meta.WithOffset(rq.Offset), meta.WithLimit(rq.Limit))
+	whr := where.NewWhere(where.WithOffset(rq.Offset), where.WithLimit(rq.Limit))
+	count, orderList, err := b.ds.Orders().List(ctx, whr)
 	if err != nil {
 		log.C(ctx).Errorw(err, "Failed to list orders from storage")
 		return nil, err
@@ -144,7 +169,7 @@ func (b *orderBiz) ListWithWorkerPool(ctx context.Context, rq *v1.ListOrderReque
 	wp := workerpool.New(100)
 
 	// Use goroutine to improve interface performance
-	for _, order := range list {
+	for _, order := range orderList {
 		wp.Submit(func() {
 			var o v1.OrderReply
 			// Here simulates a time-consuming concurrent logic.
@@ -165,8 +190,8 @@ func (b *orderBiz) ListWithWorkerPool(ctx context.Context, rq *v1.ListOrderReque
 	wp.StopWait()
 
 	// The following code block is used to maintain the consistency of query order.
-	orders := make([]*v1.OrderReply, 0, len(list))
-	for _, item := range list {
+	orders := make([]*v1.OrderReply, 0, len(orderList))
+	for _, item := range orderList {
 		order, _ := m.Load(item.ID)
 		orders = append(orders, order.(*v1.OrderReply))
 	}
@@ -180,7 +205,8 @@ func (b *orderBiz) ListWithWorkerPool(ctx context.Context, rq *v1.ListOrderReque
 // Concurrency limits can effectively protect downstream services and control the
 // resource consumption of components.
 func (b *orderBiz) ListWithAnts(ctx context.Context, rq *v1.ListOrderRequest) (*v1.ListOrderResponse, error) {
-	count, list, err := b.ds.Orders().List(ctx, meta.WithOffset(rq.Offset), meta.WithLimit(rq.Limit))
+	whr := where.NewWhere(where.WithOffset(rq.Offset), where.WithLimit(rq.Limit))
+	count, orderList, err := b.ds.Orders().List(ctx, whr)
 	if err != nil {
 		log.C(ctx).Errorw(err, "Failed to list orders from storage")
 		return nil, err
@@ -192,7 +218,7 @@ func (b *orderBiz) ListWithAnts(ctx context.Context, rq *v1.ListOrderRequest) (*
 	defer pool.Release()
 
 	// Use goroutine to improve interface performance
-	for _, order := range list {
+	for _, order := range orderList {
 		wg.Add(1)
 		_ = pool.Submit(func() {
 			defer wg.Done()
@@ -216,8 +242,8 @@ func (b *orderBiz) ListWithAnts(ctx context.Context, rq *v1.ListOrderRequest) (*
 	wg.Wait()
 
 	// The following code block is used to maintain the consistency of query order.
-	orders := make([]*v1.OrderReply, 0, len(list))
-	for _, item := range list {
+	orders := make([]*v1.OrderReply, 0, len(orderList))
+	for _, item := range orderList {
 		order, _ := m.Load(item.ID)
 		orders = append(orders, order.(*v1.OrderReply))
 	}
@@ -225,35 +251,4 @@ func (b *orderBiz) ListWithAnts(ctx context.Context, rq *v1.ListOrderRequest) (*
 	log.C(ctx).Debugw("Get orders from backend storage", "count", len(orders))
 
 	return &v1.ListOrderResponse{TotalCount: count, Orders: orders}, nil
-}
-
-// Update 是 OrderBiz 接口中 `Update` 方法的实现.
-func (b *orderBiz) Update(ctx context.Context, rq *v1.UpdateOrderRequest) error {
-	orderM, err := b.ds.Orders().Get(ctx, rq.OrderID)
-	if err != nil {
-		return err
-	}
-
-	if rq.Customer != nil {
-		orderM.Customer = *rq.Customer
-	}
-
-	if rq.Product != nil {
-		orderM.Product = *rq.Product
-	}
-
-	if rq.Quantity != nil {
-		orderM.Quantity = *rq.Quantity
-	}
-
-	return b.ds.Orders().Update(ctx, orderM)
-}
-
-// Delete 是 OrderBiz 接口中 `Delete` 方法的实现.
-func (b *orderBiz) Delete(ctx context.Context, rq *v1.DeleteOrderRequest) error {
-	if err := b.ds.Orders().Delete(ctx, rq.OrderID); err != nil {
-		return err
-	}
-
-	return nil
 }

@@ -13,18 +13,26 @@ import (
 	"gorm.io/gorm"
 
 	known "github.com/superproj/onex/internal/pkg/known/usercenter"
-	"github.com/superproj/onex/internal/pkg/meta"
+	"github.com/superproj/onex/internal/pkg/where"
 	"github.com/superproj/onex/internal/usercenter/model"
 )
 
-// SecretStore defines the secret storage interface, containing methods
-// for managing secret records in a datastore.
+// SecretStore defines the interface for managing secrets in the database.
 type SecretStore interface {
+	// Create inserts a new secret into the database.
 	Create(ctx context.Context, secret *model.SecretM) error
-	Delete(ctx context.Context, userID string, name string) error
+
+	// Update modifies an existing secret in the database.
 	Update(ctx context.Context, secret *model.SecretM) error
-	Get(ctx context.Context, userID string, name string) (*model.SecretM, error)
-	List(ctx context.Context, userID string, opts ...meta.ListOption) (int64, []*model.SecretM, error)
+
+	// Get retrieves a secret by userID and secret name.
+	Get(ctx context.Context, opts ...where.GetOption) (*model.SecretM, error)
+
+	// List returns a list of secrets with the specified options.
+	List(ctx context.Context, opts ...where.ListOption) (int64, []*model.SecretM, error)
+
+	// Delete removes jobs by userID and a list of names.
+	Delete(ctx context.Context, userID string, names []string) error
 }
 
 // secretStore is an implementation of the SecretStore interface
@@ -39,17 +47,17 @@ func newSecretStore(ds *datastore) *secretStore {
 }
 
 // db is an alias for accessing the Core method of the datastore using the provided context.
-func (d *secretStore) db(ctx context.Context) *gorm.DB {
-	return d.ds.Core(ctx)
+func (d *secretStore) db(ctx context.Context, opts where.Where) *gorm.DB {
+	return opts.Where(d.ds.Core(ctx))
 }
 
 // Create adds a new secret record in the datastore.
-func (d *secretStore) Create(ctx context.Context, secret *model.SecretM) error {
-	return d.db(ctx).Create(&secret).Error
+func (d *secretStore) Create(ctx context.Context, secret *model.SecretM, opts where.CreateOptions) error {
+	return d.db(ctx, opts).Create(&secret).Error
 }
 
 // Delete removes a secret record from the datastore based on userID and name.
-func (d *secretStore) Delete(ctx context.Context, userID string, name string) error {
+func (d *secretStore) Delete(ctx context.Context, opts ...where.DeleteOption) error {
 	err := d.db(ctx).Where(model.SecretM{UserID: userID, Name: name}).Delete(&model.SecretM{}).Error
 	// If error is not a "record not found" error, return the error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {

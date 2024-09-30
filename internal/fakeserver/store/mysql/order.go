@@ -7,71 +7,22 @@
 package mysql
 
 import (
-	"context"
-	"errors"
-
-	"gorm.io/gorm"
-
 	"github.com/superproj/onex/internal/fakeserver/model"
 	"github.com/superproj/onex/internal/fakeserver/store"
-	"github.com/superproj/onex/internal/pkg/meta"
+	genericstore "github.com/superproj/onex/pkg/store"
 )
 
-// OrderStore 接口的实现.
+// orders is a concrete implementation of OrderStore that uses a generic store.
 type orders struct {
-	db *gorm.DB
+	*genericstore.Store[model.OrderM] // Embedding the generic store for OrderM
 }
 
-// 确保 orders 实现了 OrderStore 接口.
+// Ensure that orders implements the OrderStore interface.
 var _ store.OrderStore = (*orders)(nil)
 
-func newOrders(db *gorm.DB) *orders {
-	return &orders{db}
-}
-
-// Create 插入一条 order 记录.
-func (o *orders) Create(ctx context.Context, order *model.OrderM) error {
-	return o.db.Create(&order).Error
-}
-
-// Get 根据用户名查询指定 order 的数据库记录.
-func (o *orders) Get(ctx context.Context, orderID string) (*model.OrderM, error) {
-	var order model.OrderM
-	if err := o.db.Where("order_id = ?", orderID).First(&order).Error; err != nil {
-		return nil, err
+// newOrders creates a new instance of orders.
+func newOrders(ds *datastore) *orders {
+	return &orders{
+		Store: genericstore.NewStore[model.OrderM](ds),
 	}
-
-	return &order, nil
-}
-
-// Update 更新一条 order 数据库记录.
-func (o *orders) Update(ctx context.Context, order *model.OrderM) error {
-	return o.db.Save(order).Error
-}
-
-// List 根据 offset 和 limit 返回 order 列表.
-func (o *orders) List(ctx context.Context, opts ...meta.ListOption) (count int64, ret []*model.OrderM, err error) {
-	options := meta.NewListOptions(opts...)
-
-	ans := o.db.
-		Where(options.Filters).
-		Offset(options.Offset).
-		Limit(options.Limit).
-		Order("id desc").
-		Find(&ret).
-		Offset(-1).
-		Limit(-1).
-		Count(&count)
-
-	return count, ret, ans.Error
-}
-
-// Delete 根据 orderID 删除数据库 order 记录.
-func (o *orders) Delete(ctx context.Context, orderID string) error {
-	err := o.db.Where("order_id = ?", orderID).Delete(&model.OrderM{}).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return err
-	}
-
-	return nil
 }

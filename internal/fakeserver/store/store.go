@@ -13,28 +13,34 @@ import (
 	"sync"
 
 	"github.com/superproj/onex/internal/fakeserver/model"
-	"github.com/superproj/onex/internal/pkg/meta"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
-// IStore 定义了 Store 层需要实现的方法.
+// Singleton instance variables for the store.
+var (
+	once sync.Once
+	// Global variable to hold the store instance
+	S IStore
+)
+
+// IStore defines the interface for the store layer, specifying the methods that need to be implemented.
 type IStore interface {
 	Orders() OrderStore
 }
 
-// OrderStore 定义了 order 模块在 store 层所实现的方法.
+// OrderStore defines the interface for order-related operations.
 type OrderStore interface {
 	Create(ctx context.Context, order *model.OrderM) error
-	Get(ctx context.Context, orderID string) (*model.OrderM, error)
 	Update(ctx context.Context, order *model.OrderM) error
-	List(ctx context.Context, opts ...meta.ListOption) (int64, []*model.OrderM, error)
-	Delete(ctx context.Context, orderID string) error
+	Delete(ctx context.Context, opts *where.WhereOptions) error
+	Get(ctx context.Context, opts *where.WhereOptions) (*model.OrderM, error)
+	List(ctx context.Context, opts *where.WhereOptions) (int64, []*model.OrderM, error)
+
+	OrderExpansion
 }
 
-var (
-	once sync.Once
-	// 全局变量，方便其它包直接调用已初始化好的 S 实例.
-	S IStore
-)
+// OrderExpansion defines additional methods for order operations.
+type OrderExpansion interface{}
 
 // SetStore set the onex-fakeserver store instance in a global variable `S`.
 // Direct use the global `S` is not recommended as this may make dependencies and calls unclear.
