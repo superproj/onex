@@ -121,6 +121,7 @@ func (o *Options) Validate() error {
 
 // ApplyTo fills up onex-nightwatch config with options.
 func (o *Options) ApplyTo(c *nightwatch.Config) error {
+	c.HealthOptions = o.HealthOptions
 	c.MySQLOptions = o.MySQLOptions
 	c.RedisOptions = o.RedisOptions
 	c.HTTPOptions = o.HTTPOptions

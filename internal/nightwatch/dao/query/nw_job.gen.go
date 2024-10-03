@@ -33,9 +33,7 @@ func newJobM(db *gorm.DB, opts ...gen.DOOption) jobM {
 	_jobM.Scope = field.NewString(tableName, "scope")
 	_jobM.Name = field.NewString(tableName, "name")
 	_jobM.Description = field.NewString(tableName, "description")
-	_jobM.Tenant = field.NewString(tableName, "tenant")
-	_jobM.Creator = field.NewString(tableName, "creator")
-	_jobM.CronJobID = field.NewInt64(tableName, "cronjob_id")
+	_jobM.CronJobID = field.NewString(tableName, "cronjob_id")
 	_jobM.Watcher = field.NewString(tableName, "watcher")
 	_jobM.Suspend = field.NewInt32(tableName, "suspend")
 	_jobM.Params = field.NewField(tableName, "params")
@@ -62,9 +60,7 @@ type jobM struct {
 	Scope       field.String // Job 作用域
 	Name        field.String // Job 名称
 	Description field.String // Job 描述
-	Tenant      field.String // 租户
-	Creator     field.String // 创建人
-	CronJobID   field.Int64  // CronJob ID，可选
+	CronJobID   field.String // CronJob ID，可选
 	Watcher     field.String // eam-nightwatch watcher 名字
 	Suspend     field.Int32  // 是否挂起（1 挂起，0 不挂起）
 	Params      field.Field  // Job 参数
@@ -97,9 +93,7 @@ func (j *jobM) updateTableName(table string) *jobM {
 	j.Scope = field.NewString(table, "scope")
 	j.Name = field.NewString(table, "name")
 	j.Description = field.NewString(table, "description")
-	j.Tenant = field.NewString(table, "tenant")
-	j.Creator = field.NewString(table, "creator")
-	j.CronJobID = field.NewInt64(table, "cronjob_id")
+	j.CronJobID = field.NewString(table, "cronjob_id")
 	j.Watcher = field.NewString(table, "watcher")
 	j.Suspend = field.NewInt32(table, "suspend")
 	j.Params = field.NewField(table, "params")
@@ -126,15 +120,13 @@ func (j *jobM) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (j *jobM) fillFieldMap() {
-	j.fieldMap = make(map[string]field.Expr, 19)
+	j.fieldMap = make(map[string]field.Expr, 17)
 	j.fieldMap["id"] = j.ID
 	j.fieldMap["job_id"] = j.JobID
 	j.fieldMap["user_id"] = j.UserID
 	j.fieldMap["scope"] = j.Scope
 	j.fieldMap["name"] = j.Name
 	j.fieldMap["description"] = j.Description
-	j.fieldMap["tenant"] = j.Tenant
-	j.fieldMap["creator"] = j.Creator
 	j.fieldMap["cronjob_id"] = j.CronJobID
 	j.fieldMap["watcher"] = j.Watcher
 	j.fieldMap["suspend"] = j.Suspend

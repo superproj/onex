@@ -1,6 +1,7 @@
 package where
 
 import (
+	"context"
 	"encoding/json"
 
 	"gorm.io/gorm"
@@ -11,6 +12,12 @@ const (
 	// defaultLimit defines the default limit for pagination.
 	defaultLimit = -1
 )
+
+// Tenant represents a tenant with a key and a function to retrieve its value.
+type Tenant struct {
+	Key       string                           // The key associated with the tenant
+	ValueFunc func(ctx context.Context) string // Function to retrieve the tenant's value based on the context
+}
 
 type Where interface {
 	Where(db *gorm.DB) *gorm.DB
@@ -32,6 +39,9 @@ type WhereOptions struct {
 	// Clauses contains custom clauses to be appended to the query.
 	Clauses []clause.Expression
 }
+
+// tenant holds the registered tenant instance.
+var registeredTenant Tenant
 
 // WithOffset initializes the Offset field in WhereOptions with the given offset value.
 func WithOffset(offset int64) WhereOption {
@@ -57,6 +67,13 @@ func WithLimit(limit int64) WhereOption {
 // This function is commonly used in business logic to facilitate pagination.
 func WithPage(page int, pageSize int) WhereOption {
 	return func(whr *WhereOptions) {
+		if page == 0 {
+			page = 1
+		}
+		if pageSize == 0 {
+			pageSize = defaultLimit
+		}
+
 		whr.Offset = (page - 1) * pageSize
 		whr.Limit = pageSize
 	}
@@ -129,6 +146,12 @@ func (whr *WhereOptions) C(conds ...clause.Expression) *WhereOptions {
 	return whr
 }
 
+// T retrieves the value associated with the registered tenant using the provided context.
+func (whr *WhereOptions) T(ctx context.Context) *WhereOptions {
+	whr.F(registeredTenant.Key, registeredTenant.ValueFunc(ctx))
+	return whr
+}
+
 // F adds filters to the query.
 func (whr *WhereOptions) F(kvs ...any) *WhereOptions {
 	if len(kvs)%2 != 0 {
@@ -156,12 +179,40 @@ func (whr *WhereOptions) Where(db *gorm.DB) *gorm.DB {
 	return db.Where(whr.Filters).Clauses(whr.Clauses...).Offset(whr.Offset).Limit(whr.Limit)
 }
 
-// F is a convenience function to create a new WhereOptions with filters.
-func F(kvs ...any) *WhereOptions {
-	return NewWhere().F(kvs...)
+// O is a convenience function to create a new WhereOptions with offset.
+func O(offset int) *WhereOptions {
+	return NewWhere().O(offset)
+}
+
+// L is a convenience function to create a new WhereOptions with limit.
+func L(limit int) *WhereOptions {
+	return NewWhere().L(limit)
+}
+
+// P is a convenience function to create a new WhereOptions with page number and page size.
+func P(page int, pageSize int) *WhereOptions {
+	return NewWhere().P(page, pageSize)
 }
 
 // C is a convenience function to create a new WhereOptions with conditions.
 func C(conds ...clause.Expression) *WhereOptions {
 	return NewWhere().C(conds...)
+}
+
+// T is a convenience function to create a new WhereOptions with tenant.
+func T(ctx context.Context) *WhereOptions {
+	return NewWhere().F(registeredTenant.Key, registeredTenant.ValueFunc(ctx))
+}
+
+// F is a convenience function to create a new WhereOptions with filters.
+func F(kvs ...any) *WhereOptions {
+	return NewWhere().F(kvs...)
+}
+
+// RegisterTenant registers a new tenant with the specified key and value function.
+func RegisterTenant(key string, valueFunc func(context.Context) string) {
+	registeredTenant = Tenant{
+		Key:       key,
+		ValueFunc: valueFunc,
+	}
 }

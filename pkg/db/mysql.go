@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"time"
 
+	"database/sql"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -88,4 +89,12 @@ func setMySQLDefaults(opts *MySQLOptions) {
 	if opts.Logger == nil {
 		opts.Logger = logger.Default
 	}
+}
+
+func MustRawDB(db *gorm.DB) *sql.DB {
+	raw, err := db.DB()
+	if err != nil {
+		panic(err)
+	}
+	return raw
 }

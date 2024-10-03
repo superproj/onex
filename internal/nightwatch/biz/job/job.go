@@ -6,7 +6,9 @@ import (
 	"context"
 
 	"github.com/jinzhu/copier"
+	"k8s.io/utils/ptr"
 
+	"github.com/superproj/onex/internal/nightwatch/conversion"
 	"github.com/superproj/onex/internal/nightwatch/dao/model"
 	"github.com/superproj/onex/internal/nightwatch/store"
 	nwv1 "github.com/superproj/onex/pkg/api/nightwatch/v1"
@@ -20,7 +22,12 @@ type JobBiz interface {
 	Delete(ctx context.Context, rq *nwv1.DeleteJobRequest) (*nwv1.DeleteJobResponse, error)
 	Get(ctx context.Context, rq *nwv1.GetJobRequest) (*nwv1.GetJobResponse, error)
 	List(ctx context.Context, rq *nwv1.ListJobRequest) (*nwv1.ListJobResponse, error)
+
+	JobExpansion
 }
+
+// JobExpansion defines additional methods for job operations.
+type JobExpansion interface{}
 
 // jobBiz is the concrete implementation of the JobBiz interface.
 type jobBiz struct {
@@ -49,7 +56,7 @@ func (b *jobBiz) Create(ctx context.Context, rq *nwv1.CreateJobRequest) (*nwv1.C
 
 // Update modifies an existing job in the data store.
 func (b *jobBiz) Update(ctx context.Context, rq *nwv1.UpdateJobRequest) (*nwv1.UpdateJobResponse, error) {
-	jobM, err := b.ds.Jobs().Get(ctx, where.F("job_id", rq.JobID))
+	jobM, err := b.ds.Jobs().Get(ctx, where.T(ctx).F("job_id", rq.JobID))
 	if err != nil {
 		return nil, err
 	}
@@ -60,20 +67,14 @@ func (b *jobBiz) Update(ctx context.Context, rq *nwv1.UpdateJobRequest) (*nwv1.U
 	if rq.Description != nil {
 		jobM.Description = *rq.Description
 	}
-	if rq.Schedule != nil {
-		jobM.Schedule = *rq.Schedule
+	if rq.Params != nil {
+		jobM.Params = ptr.To(model.JobParams(*rq.Params))
 	}
-	if rq.ConcurrencyPolicy != nil {
-		jobM.ConcurrencyPolicy = *rq.ConcurrencyPolicy
+	if rq.Results != nil {
+		jobM.Results = ptr.To(model.JobResults(*rq.Results))
 	}
-	if rq.Suspend != nil {
-		jobM.Suspend = *rq.Suspend
-	}
-	if rq.SuccessHistoryLimit != nil {
-		jobM.SuccessHistoryLimit = *rq.SuccessHistoryLimit
-	}
-	if rq.FailedHistoryLimit != nil {
-		jobM.FailedHistoryLimit = *rq.FailedHistoryLimit
+	if rq.Status != nil {
+		jobM.Status = *rq.Status
 	}
 
 	if err := b.ds.Jobs().Update(ctx, jobM); err != nil {
@@ -85,7 +86,7 @@ func (b *jobBiz) Update(ctx context.Context, rq *nwv1.UpdateJobRequest) (*nwv1.U
 
 // Delete removes one or more jobs by their IDs from the data store.
 func (b *jobBiz) Delete(ctx context.Context, rq *nwv1.DeleteJobRequest) (*nwv1.DeleteJobResponse, error) {
-	if err := b.ds.Jobs().Delete(ctx, where.F("job_id", rq.JobIDs)); err != nil {
+	if err := b.ds.Jobs().Delete(ctx, where.T(ctx).F("job_id", rq.JobIDs)); err != nil {
 		return nil, err
 	}
 
@@ -94,28 +95,26 @@ func (b *jobBiz) Delete(ctx context.Context, rq *nwv1.DeleteJobRequest) (*nwv1.D
 
 // Get retrieves a job by its ID from the data store.
 func (b *jobBiz) Get(ctx context.Context, rq *nwv1.GetJobRequest) (*nwv1.GetJobResponse, error) {
-	job, err := b.ds.Jobs().Get(ctx, where.F("job_id", rq.JobID))
+	job, err := b.ds.Jobs().Get(ctx, where.T(ctx).F("job_id", rq.JobID))
 	if err != nil {
 		return nil, err
 	}
 
-	var resp nwv1.GetJobResponse
-	_ = copier.Copy(&resp.Job, job) // Copy model data to the response.
-
-	return &resp, nil
+	bizJob := conversion.ConvertToJob(job)
+	return &nwv1.GetJobResponse{Job: bizJob}, nil
 }
 
 // List retrieves all jobs from the data store.
 func (b *jobBiz) List(ctx context.Context, rq *nwv1.ListJobRequest) (*nwv1.ListJobResponse, error) {
-	count, jobList, err := b.ds.Jobs().List(ctx, where.NewWhere(where.WithPage(rq.Offset, rq.Limit)))
+	count, jobList, err := b.ds.Jobs().List(ctx, where.T(ctx).P(int(rq.Offset), int(rq.Limit)))
 	if err != nil {
 		return nil, err
 	}
 
 	jobs := make([]*nwv1.Job, len(jobList))
-	for i, item := range jobList {
-		_ = copier.Copy(&jobs[i], item)
+	for i, job := range jobList {
+		jobs[i] = conversion.ConvertToJob(job)
 	}
 
-	return &nwv1.ListJobResponse{TotalCount: &count, Jobs: jobs}, nil
+	return &nwv1.ListJobResponse{TotalCount: count, Jobs: jobs}, nil
 }

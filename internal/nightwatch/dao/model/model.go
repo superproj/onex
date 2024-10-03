@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/superproj/onex/pkg/api/nightwatch/v1"
+	nwv1 "github.com/superproj/onex/pkg/api/nightwatch/v1"
 )
 
 var (
 	ErrCronJobStatusInvalidType = errors.New("invalid type for CronJobStatus")
+	ErrJobMInvalidType          = errors.New("invalid type for JobM")
 	ErrJobParamsInvalidType     = errors.New("invalid type for JobParams")
 	ErrJobResultsInvalidType    = errors.New("invalid type for JobResults")
 	ErrJobConditionsInvalidType = errors.New("invalid type for JobConditions")
@@ -107,4 +108,24 @@ func (conds *JobConditions) Scan(value interface{}) error {
 // Value implements the sql Valuer interface
 func (conds *JobConditions) Value() (driver.Value, error) {
 	return json.Marshal(conds)
+}
+
+// Scan implements the sql Scanner interface
+func (job *JobM) Scan(value interface{}) error {
+	if value == nil {
+		*job = JobM{}
+		return nil
+	}
+
+	bytes, ok := value.([]byte)
+	if !ok {
+		return ErrJobMInvalidType
+	}
+
+	return json.Unmarshal(bytes, job)
+}
+
+// Value implements the sql Valuer interface
+func (job *JobM) Value() (driver.Value, error) {
+	return json.Marshal(job)
 }

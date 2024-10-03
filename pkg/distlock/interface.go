@@ -1,6 +1,9 @@
 package distlock
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
 type Locker interface {
 	Obtain(ctx context.Context) error

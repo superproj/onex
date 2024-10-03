@@ -7,6 +7,7 @@ import (
 
 	"github.com/jinzhu/copier"
 
+	"github.com/superproj/onex/internal/nightwatch/conversion"
 	"github.com/superproj/onex/internal/nightwatch/dao/model"
 	"github.com/superproj/onex/internal/nightwatch/store"
 	nwv1 "github.com/superproj/onex/pkg/api/nightwatch/v1"
@@ -20,7 +21,12 @@ type CronJobBiz interface {
 	Delete(ctx context.Context, rq *nwv1.DeleteCronJobRequest) (*nwv1.DeleteCronJobResponse, error)
 	Get(ctx context.Context, rq *nwv1.GetCronJobRequest) (*nwv1.GetCronJobResponse, error)
 	List(ctx context.Context, rq *nwv1.ListCronJobRequest) (*nwv1.ListCronJobResponse, error)
+
+	CronJobExpansion
 }
+
+// CronJobExpansion defines additional methods for cronjob operations.
+type CronJobExpansion interface{}
 
 // cronJobBiz is the concrete implementation of the CronJobBiz interface.
 type cronJobBiz struct {
@@ -49,7 +55,7 @@ func (b *cronJobBiz) Create(ctx context.Context, rq *nwv1.CreateCronJobRequest) 
 
 // Update modifies an existing cron job in the data store.
 func (b *cronJobBiz) Update(ctx context.Context, rq *nwv1.UpdateCronJobRequest) (*nwv1.UpdateCronJobResponse, error) {
-	cronJobM, err := b.ds.CronJobs().Get(ctx, where.F("cronjob_id", rq.CronJobID))
+	cronJobM, err := b.ds.CronJobs().Get(ctx, where.T(ctx).F("cronjob_id", rq.CronJobID))
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +70,7 @@ func (b *cronJobBiz) Update(ctx context.Context, rq *nwv1.UpdateCronJobRequest) 
 		cronJobM.Schedule = *rq.Schedule
 	}
 	if rq.ConcurrencyPolicy != nil {
-		cronJobM.ConcurrencyPolicy = *rq.ConcurrencyPolicy
+		cronJobM.ConcurrencyPolicy = int32(*rq.ConcurrencyPolicy)
 	}
 	if rq.Suspend != nil {
 		cronJobM.Suspend = *rq.Suspend
@@ -85,7 +91,7 @@ func (b *cronJobBiz) Update(ctx context.Context, rq *nwv1.UpdateCronJobRequest) 
 
 // Delete removes one or more cron jobs by their IDs from the data store.
 func (b *cronJobBiz) Delete(ctx context.Context, rq *nwv1.DeleteCronJobRequest) (*nwv1.DeleteCronJobResponse, error) {
-	if err := b.ds.CronJobs().Delete(ctx, where.F("cronjob_id", rq.CronJobIDs)); err != nil {
+	if err := b.ds.CronJobs().Delete(ctx, where.T(ctx).F("cronjob_id", rq.CronJobIDs)); err != nil {
 		return nil, err
 	}
 
@@ -94,28 +100,26 @@ func (b *cronJobBiz) Delete(ctx context.Context, rq *nwv1.DeleteCronJobRequest) 
 
 // Get retrieves a cron job by its ID from the data store.
 func (b *cronJobBiz) Get(ctx context.Context, rq *nwv1.GetCronJobRequest) (*nwv1.GetCronJobResponse, error) {
-	cronJob, err := b.ds.CronJobs().Get(ctx, where.F("cronjob_id", rq.CronJobID))
+	cronJob, err := b.ds.CronJobs().Get(ctx, where.T(ctx).F("cronjob_id", rq.CronJobID))
 	if err != nil {
 		return nil, err
 	}
 
-	var resp nwv1.GetCronJobResponse
-	_ = copier.Copy(&resp.CronJob, cronJob) // Copy model data to the response.
-
-	return &resp, nil
+	bizCronJob := conversion.ConvertToCronJob(cronJob)
+	return &nwv1.GetCronJobResponse{CronJob: bizCronJob}, nil
 }
 
 // List retrieves all cron jobs from the data store.
 func (b *cronJobBiz) List(ctx context.Context, rq *nwv1.ListCronJobRequest) (*nwv1.ListCronJobResponse, error) {
-	count, cronJobList, err := b.ds.CronJobs().List(ctx, where.NewWhere(where.WithPage(rq.Offset, rq.Limit)))
+	count, cronJobList, err := b.ds.CronJobs().List(ctx, where.T(ctx).P(int(rq.Offset), int(rq.Limit)))
 	if err != nil {
 		return nil, err
 	}
 
 	cronJobs := make([]*nwv1.CronJob, len(cronJobList))
-	for i, item := range cronJobList {
-		_ = copier.Copy(&cronJobs[i], item)
+	for i, cronJob := range cronJobList {
+		cronJobs[i] = conversion.ConvertToCronJob(cronJob)
 	}
 
-	return &nwv1.ListCronJobResponse{TotalCount: &count, CronJobs: cronJobs}, nil
+	return &nwv1.ListCronJobResponse{TotalCount: count, CronJobs: cronJobs}, nil
 }

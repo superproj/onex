@@ -31,4 +31,6 @@ enum ErrorReason {
   IdempotentTokenExpired = 6 [(errors.code) = 400];
   // 请求路径没有找到
   PageNotFound = 7 [(errors.code) = 404];
+  // Gin 请求参数绑定失败
+  BindFailed = 8 [(errors.code) = 500];
 }

@@ -18,9 +18,7 @@ type JobM struct {
 	Scope       string         `gorm:"column:scope;type:varchar(256);not null;index:idx_scope,priority:1;default:default;comment:Job 作用域" json:"scope"` // Job 作用域
 	Name        string         `gorm:"column:name;type:varchar(255);not null;comment:Job 名称" json:"name"`                                               // Job 名称
 	Description string         `gorm:"column:description;type:varchar(256);not null;comment:Job 描述" json:"description"`                                 // Job 描述
-	Tenant      string         `gorm:"column:tenant;type:varchar(256);not null;comment:租户" json:"tenant"`                                               // 租户
-	Creator     string         `gorm:"column:creator;type:varchar(100);not null;comment:创建人" json:"creator"`                                            // 创建人
-	CronJobID   *int64         `gorm:"column:cronjob_id;type:bigint(20) unsigned;index:idx_task_id,priority:1;comment:CronJob ID，可选" json:"cronjob_id"` // CronJob ID，可选
+	CronJobID   *string        `gorm:"column:cronjob_id;type:varchar(100);index:idx_task_id,priority:1;comment:CronJob ID，可选" json:"cronjob_id"`        // CronJob ID，可选
 	Watcher     string         `gorm:"column:watcher;type:varchar(255);not null;comment:eam-nightwatch watcher 名字" json:"watcher"`                      // eam-nightwatch watcher 名字
 	Suspend     int32          `gorm:"column:suspend;type:tinyint(4);not null;comment:是否挂起（1 挂起，0 不挂起）" json:"suspend"`                                 // 是否挂起（1 挂起，0 不挂起）
 	Params      *JobParams     `gorm:"column:params;type:longtext;comment:Job 参数" json:"params"`                                                        // Job 参数

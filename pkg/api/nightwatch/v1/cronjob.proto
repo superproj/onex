@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package nightwatch.v1;
+package cronjob;
 
 import "google/protobuf/timestamp.proto";
-import "job.proto";
+import "nightwatch/v1/job.proto";
 
 option go_package = "github.com/superproj/onex/pkg/api/nightwatch/v1;v1";
 
@@ -39,13 +39,13 @@ message CronJob {
     // 作业处理方式（1 串行，2 并行，3 替换，默认 1）
     ConcurrencyPolicy concurrencyPolicy = 8;
     // 是否挂起（1 挂起，0 不挂起, 默认 0）
-    int64 suspend = 9;
+    int32 suspend = 9;
     // Job 模版
     job.Job jobTemplate = 10;
     // 要保留的成功完成作业的数量。值必须是非负整数。默认值为 10。
-    int64 successHistoryLimit  = 11;
+    int32 successHistoryLimit  = 11;
     // 要保留的失败完成作业的数量。值必须是非负整数。  默认值为 5。
-    int64 failedHistoryLimit = 12;
+    int32 failedHistoryLimit = 12;
     // 创建时间
     google.protobuf.Timestamp createdAt = 13;
     // 更新时间
@@ -56,7 +56,7 @@ message CronJobStatus {
     repeated int64 active = 1;
     int64 lastScheduleTime = 2;
     int64 lastSuccessfulTime = 3;
-    int64 lastJobID = 4;
+    string lastJobID = 4;
 }
 
 message CreateCronJobRequest{
@@ -73,9 +73,9 @@ message UpdateCronJobRequest{
     optional string description = 4;
     optional string schedule = 6;
     optional ConcurrencyPolicy concurrencyPolicy = 8;
-    optional int64 suspend = 9;
-    optional int64 successHistoryLimit  = 11;
-    optional int64 failedHistoryLimit = 12;
+    optional int32 suspend = 9;
+    optional int32 successHistoryLimit  = 11;
+    optional int32 failedHistoryLimit = 12;
 }
 
 message UpdateCronJobResponse{ }
@@ -89,8 +89,8 @@ message GetCronJobResponse{
 }
 
 message ListCronJobRequest{
-  int64 offset = 1;
-  int64 limit = 2;
+  int32 offset = 1;
+  int32 limit = 2;
 }
 
 message ListCronJobResponse{

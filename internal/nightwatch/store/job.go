@@ -43,6 +43,6 @@ var _ JobStore = (*jobs)(nil)
 // newJobs creates a new instance of jobs with the provided database connection.
 func newJobs(ds *datastore) *jobs {
 	return &jobs{
-		Store: genericstore.NewStore[model.JobM](ds, genericstore.WithLogger[model.JobM](onex.NewLogger())),
+		Store: genericstore.NewStore[model.JobM](ds, onex.NewLogger()),
 	}
 }

@@ -28,7 +28,7 @@ var (
 )
 
 // Option configures a Watch instance with customizable settings.
-type Option func(opts *Options)
+type Option func(w *Watch)
 
 // Watch represents a monitoring system that schedules and runs tasks at specified intervals.
 type Watch struct {
@@ -57,15 +57,15 @@ type Watch struct {
 // WithInitialize returns an Option function that sets the provided WatcherInitializer
 // function to initialize the Watch during its creation.
 func WithInitialize(initialize initializer.WatcherInitializer) Option {
-	return func(nw *Watch) {
-		nw.externalInitializer = initialize
+	return func(w *Watch) {
+		w.externalInitializer = initialize
 	}
 }
 
 // WithLogger returns an Option function that sets the provided Logger to the Watch for logging purposes.
 func WithLogger(logger Logger) Option {
-	return func(nw *Watch) {
-		nw.logger = logger
+	return func(w *Watch) {
+		w.logger = logger
 	}
 }
 
@@ -74,9 +74,9 @@ func NewWatch(opts *Options, db *sql.DB, withOptions ...Option) (*Watch, error) 
 	logger := empty.NewLogger()
 
 	// Create a new Watch with default settings.
-	nw := &Watch{
+	w := &Watch{
 		lockName:        opts.LockName,
-		healthzPort: opts.HealthzPort
+		healthzPort:     opts.HealthzPort,
 		logger:          logger,
 		disableWatchers: opts.DisableWatchers,
 		db:              db,
@@ -85,37 +85,37 @@ func NewWatch(opts *Options, db *sql.DB, withOptions ...Option) (*Watch, error) 
 
 	// Apply user-defined options to the Watch.
 	for _, opt := range withOptions {
-		opt(nw)
+		opt(w)
 	}
 
 	runner := cron.New(
 		cron.WithSeconds(),
-		cron.WithLogger(nw.logger),
-		cron.WithChain(cron.DelayIfStillRunning(nw.logger), cron.Recover(nw.logger)),
+		cron.WithLogger(w.logger),
+		cron.WithChain(cron.DelayIfStillRunning(w.logger), cron.Recover(w.logger)),
 	)
 
 	// Initialize the job manager and the watcher initializer.
-	nw.jm = manager.NewJobManager(manager.WithCron(runner))
-	nw.initializer = initializer.NewInitializer(nw.jm, nw.maxWorkers)
+	w.jm = manager.NewJobManager(manager.WithCron(runner))
+	w.initializer = initializer.NewInitializer(w.jm, w.maxWorkers)
 
-	if err := nw.addWatchers(); err != nil {
+	if err := w.addWatchers(); err != nil {
 		return nil, err
 	}
 
-	return nw, nil
+	return w, nil
 }
 
 // addWatchers initializes all registered watchers and adds them as Cron jobs.
 // It skips the watchers that are specified in the disableWatchers slice.
-func (nw *Watch) addWatchers() error {
+func (w *Watch) addWatchers() error {
 	for jobName, watcher := range registry.ListWatchers() {
-		if stringsutil.StringIn(jobName, nw.disableWatchers) {
+		if stringsutil.StringIn(jobName, w.disableWatchers) {
 			continue
 		}
 
-		nw.initializer.Initialize(watcher)
-		if nw.externalInitializer != nil {
-			nw.externalInitializer.Initialize(watcher)
+		w.initializer.Initialize(watcher)
+		if w.externalInitializer != nil {
+			w.externalInitializer.Initialize(watcher)
 		}
 
 		spec := registry.Every3Seconds
@@ -123,8 +123,8 @@ func (nw *Watch) addWatchers() error {
 			spec = obj.Spec()
 		}
 
-		if _, err := nw.jm.AddJob(jobName, spec, watcher); err != nil {
-			nw.logger.Error(err, "Failed to add job to the cron", "watcher", jobName)
+		if _, err := w.jm.AddJob(jobName, spec, watcher); err != nil {
+			w.logger.Error(err, "Failed to add job to the cron", "watcher", jobName)
 			return err
 		}
 	}
@@ -134,59 +134,59 @@ func (nw *Watch) addWatchers() error {
 
 // Start attempts to acquire a distributed lock and starts the Cron job scheduler.
 // It retries acquiring the lock until successful.
-func (nw *Watch) Start(stopCh <-chan struct{}) {
-	if nw.healthzPort != 0 {
-		go nw.serveHealthz()
+func (w *Watch) Start(stopCh <-chan struct{}) {
+	if w.healthzPort != 0 {
+		go w.serveHealthz()
 	}
 
-	locker := distlock.NewMySQLLocker(nw.db, distlock.WithRefreshInterval(extendExpiration))
+	locker := distlock.NewMySQLLocker(w.db, distlock.WithRefreshInterval(extendExpiration))
 	ticker := time.NewTicker(defaultExpiration + (5 * time.Second))
 	var err error
 	for {
 		// Obtain a lock for our given mutex. After this is successful, no one else
 		// can obtain the same lock (the same mutex name) until we unlock it.
-		nw.locker, err = locker.ObtainTimeout(nw.lockName, 5)
+		w.locker, err = locker.ObtainTimeout(w.lockName, 5)
 		if err == nil {
-			nw.logger.Debug("Successfully acquired lock", "lockName", nw.lockName)
+			w.logger.Debug("Successfully acquired lock", "lockName", w.lockName)
 			break
 		}
-		nw.logger.Debug("Failed to acquire lock.", "lockName", nw.lockName, "err", err)
+		w.logger.Debug("Failed to acquire lock.", "lockName", w.lockName, "err", err)
 		<-ticker.C
 	}
 
-	nw.jm.Start()
+	w.jm.Start()
 
-	nw.logger.Info("Successfully started watch server")
+	w.logger.Info("Successfully started watch server")
 }
 
 // Stop blocks until all jobs are completed and releases the distributed lock.
-func (nw *Watch) Stop() {
-	ctx := nw.jm.Stop()
+func (w *Watch) Stop() {
+	ctx := w.jm.Stop()
 	select {
 	case <-ctx.Done():
 	case <-time.After(jobStopTimeout):
-		nw.logger.Error(errors.New("context was not done immediately"), "timeout", jobStopTimeout.String())
+		w.logger.Error(errors.New("context was not done immediately"), "timeout", jobStopTimeout.String())
 	}
 
-	if err := nw.locker.Release(); err != nil {
-		nw.logger.Debug("Failed to release lock", "err", err)
+	if err := w.locker.Release(); err != nil {
+		w.logger.Debug("Failed to release lock", "err", err)
 	}
 
-	nw.logger.Info("Successfully stopped watch server")
+	w.logger.Info("Successfully stopped watch server")
 }
 
 // serveHealthz starts the health check server for the Watch instance.
-func (nw *Watch) serveHealthz() {
+func (w *Watch) serveHealthz() {
 	r := mux.NewRouter()
 	r.HandleFunc("/healthz", healthzHandler).Methods(http.MethodGet)
 
-	address := fmt.Sprintf("0.0.0.0:%d", nw.healthzPort)
+	address := fmt.Sprintf("0.0.0.0:%d", w.healthzPort)
 
 	if err := http.ListenAndServe(address, r); err != nil {
-		nw.logger.Error(err, "Error serving health check endpoint")
+		w.logger.Error(err, "Error serving health check endpoint")
 	}
 
-	nw.logger.Info("Successfully started health check server", "address", address)
+	w.logger.Info("Successfully started health check server", "address", address)
 }
 
 // healthzHandler handles the health check requests for the service.

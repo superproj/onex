@@ -1,4 +1,4 @@
-package bytelog
+package onex
 
 import (
 	"github.com/superproj/onex/pkg/log"

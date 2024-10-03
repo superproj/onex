@@ -20,10 +20,10 @@ import (
 	"github.com/superproj/onex/internal/usercenter/model"
 	"github.com/superproj/onex/pkg/log"
 	stringsutil "github.com/superproj/onex/pkg/util/strings"
-	"github.com/superproj/onex/pkg/watch"
+	"github.com/superproj/onex/pkg/watch/registry"
 )
 
-var _ watch.Watcher = (*userWatcher)(nil)
+var _ registry.Watcher = (*userWatcher)(nil)
 
 // watcher implement.
 type userWatcher struct {
@@ -87,10 +87,10 @@ func (w *userWatcher) Run() {
 
 // SetAggregateConfig initializes the watcher for later execution.
 func (w *userWatcher) SetAggregateConfig(config *watcher.AggregateConfig) {
-	w.store = config.Store
+	w.store = config.AggregateStore
 	w.maxWorkers = config.UserWatcherMaxWorkers
 }
 
 func init() {
-	watch.Register("user", &userWatcher{})
+	registry.Register("user", &userWatcher{})
 }

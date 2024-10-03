@@ -19,6 +19,10 @@ const (
 	User ZID = "user"
 	// ID for the order resource in onex-fakeserver.
 	Order ZID = "order"
+	// ID for the cronjob resource in onex-nightwatch.
+	CronJob ZID = "cronjob"
+	// ID for the job resource in onex-nightwatch.
+	Job ZID = "job"
 )
 
 func (zid ZID) String() string {

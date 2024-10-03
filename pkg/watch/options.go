@@ -12,7 +12,7 @@ type Options struct {
 	LockName string `json:"lock-name" mapstructure:"lock-name"`
 
 	// healthzPort is the port number for the health check endpoint.
-    HealthzPort int `json:"healthz-port" mapstructure:"healthz-port"`
+	HealthzPort int `json:"healthz-port" mapstructure:"healthz-port"`
 
 	// DisableWatchers is a slice of watchers that will be disabled when the server is run.
 	DisableWatchers []string `json:"disable-watchers" mapstructure:"disable-watchers"`
@@ -24,8 +24,8 @@ type Options struct {
 // NewOptions initializes and returns a new Options instance with default values.
 func NewOptions() *Options {
 	o := &Options{
-		LockName: "default-distributed-lock"
-		HealthzPort: 8881,
+		LockName:        "default-distributed-lock",
+		HealthzPort:     8881,
 		DisableWatchers: []string{},
 		MaxWorkers:      10,
 	}

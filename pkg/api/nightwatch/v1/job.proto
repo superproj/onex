@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package nightwatch.v1;
+package job;
 
 import "google/protobuf/timestamp.proto";
 
@@ -14,7 +14,7 @@ message Job {
     // 创建人
     string userID = 3;
     // CronJob ID
-    string cronjobID = 4;
+    string cronJobID = 4;
     // Job 作用域
     string scope = 5;
     // Job 描述
@@ -39,73 +39,77 @@ message Job {
 }
 
 message JobParams{
-    TrainParams train = 1;
+  TrainParams train = 1;
 }
 
 message TrainParams {
-    // 损失函数类型
-    string lossFunction  = 1;
-    // 训练轮数
-    int64 epochs = 2;
-    // 批处理大小
-    int64 batchSize = 3;
+  int64 idempotentExecution = 1;
+  int64 jobTimeout  = 2;
+  int64 batchSize = 3;
 }
 
 message JobResults{
-    TrainResults train = 1;
+  TrainResults train = 1;
 }
 
 message TrainResults {
-    // 模型准确率
-   double accuracy  = 1;
-    // 最终损失值
-   double loss = 2;
+  optional string embeddedDataPath = 1;
+  optional string taskID= 2;
+  optional string dataPath = 4;
+  optional string resultPath = 3;
 }
 
 message JobCondition {
-    // Type of the condition (e.g., "Downloaed", "Embedded", "Evaluated")
-    string type = 1;
-    // Status of the condition (True, False, Unknown)
-    string status = 2;
-    // Message provides additional information when the condition is false
-    string message = 3;
-    // Last time the condition transitioned from one status to another.
-    string lastTransitionTime = 4;
+  // Type of the condition (e.g., "Downloaed", "Embedded", "Evaluated")
+  string type = 1;
+  // Status of the condition (True, False, Unknown)
+  string status = 2;
+  // Message provides additional information when the condition is false
+  string message = 3;
+  // Last time the condition transitioned from one status to another.
+  string lastTransitionTime = 4;
 }
 
 message CreateJobRequest{
-    Job job = 1;
+  Job job = 1;
 }
 
 message CreateJobResponse{
-    string jobID = 1;
+  string jobID = 1;
 }
 
 message UpdateJobRequest{
-    Job job = 1;
+  string jobID = 1;
+  optional string name = 2;
+  optional string description = 3;
+  optional JobParams params = 4;
+  optional JobResults results  = 5;
+  optional string status = 6;
 }
 
 message UpdateJobResponse{
 }
 
 message GetJobRequest{
-    string id = 1;
+  string jobID = 1;
 }
 
 message GetJobResponse{
-    Job job = 1;
+  Job job = 1;
 }
 
 message ListJobRequest{
+  int32 offset = 1;
+  int32 limit = 2;
 }
 
 message ListJobResponse{
-    int64 totalCount = 1;
-    repeated Job jobs = 2;
+  int64 totalCount = 1;
+  repeated Job jobs = 2;
 }
 
 message DeleteJobRequest{
-    repeated string jobIDs = 1;
+  repeated string jobIDs = 1;
 }
 
 message DeleteJobResponse{

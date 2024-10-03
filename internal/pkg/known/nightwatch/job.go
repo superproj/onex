@@ -20,13 +20,13 @@ const (
 
 // Job Scope defines the scope of the job for organizational purposes.
 const (
-	MLPJobScope = "MLP"
+	LLMJobScope = "llm"
 )
 
 // Job Watcher identifiers for monitoring specific job types.
 const (
 	// TrainWatcher identifier for llm train job watcher.
-	TrainWatcher = "llmtrain"
+	LLMTrainWatcher = "llmtrain"
 )
 
 const (
@@ -34,6 +34,13 @@ const (
 	JobNonSuspended = 0
 	// JobStatusSuspended indicates that the job is currently suspended and not active.
 	JobSuspended = 1
+)
+
+// MaxJobsPerCronJob defines the maximum number of jobs that can be scheduled
+// to run concurrently for a single cron job. This limit helps to prevent
+// resource exhaustion and ensures that the system remains stable under load.
+const (
+	MaxJobsPerCronJob = 50
 )
 
 // Job Execution Idempotency indicates whether the job can be executed

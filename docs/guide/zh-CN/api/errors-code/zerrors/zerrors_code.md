@@ -29,6 +29,8 @@
 | Forbidden | 403 |  禁止访问错误 |
 | IdempotentMissingToken | 400 |  缺少幂等性令牌错误 |
 | IdempotentTokenExpired | 400 |  幂等性令牌已过期错误 |
+| PageNotFound | 404 |  请求路径没有找到 |
+| BindFailed | 500 |  Gin 请求参数绑定失败 |
 
 ## 参考
 

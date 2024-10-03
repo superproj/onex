@@ -14,10 +14,10 @@ import (
 	"github.com/superproj/onex/internal/nightwatch/watcher"
 	"github.com/superproj/onex/internal/pkg/client/store"
 	"github.com/superproj/onex/pkg/log"
-	"github.com/superproj/onex/pkg/watch"
+	"github.com/superproj/onex/pkg/watch/registry"
 )
 
-var _ watch.Watcher = (*secretsCleanWatcher)(nil)
+var _ registry.Watcher = (*secretsCleanWatcher)(nil)
 
 // watcher implement.
 type secretsCleanWatcher struct {
@@ -26,7 +26,8 @@ type secretsCleanWatcher struct {
 
 // Run runs the watcher.
 func (w *secretsCleanWatcher) Run() {
-	_, secrets, err := w.store.UserCenter().Secrets().List(context.Background(), "")
+	ctx := context.Background()
+	_, secrets, err := w.store.UserCenter().Secrets().List(ctx, "")
 	if err != nil {
 		log.Errorw(err, "Failed to list secrets")
 		return
@@ -34,7 +35,7 @@ func (w *secretsCleanWatcher) Run() {
 
 	for _, secret := range secrets {
 		if secret.Expires != 0 && secret.Expires < time.Now().AddDate(0, 0, -7).Unix() {
-			err := w.store.UserCenter().Secrets().Delete(context.TODO(), secret.UserID, secret.Name)
+			err := w.store.UserCenter().Secrets().Delete(ctx, secret.UserID, secret.Name)
 			if err != nil {
 				log.Warnw("Failed to delete secret from database", "userID", secret.UserID, "name", secret.Name)
 				continue
@@ -46,9 +47,9 @@ func (w *secretsCleanWatcher) Run() {
 
 // SetAggregateConfig initializes the watcher for later execution.
 func (w *secretsCleanWatcher) SetAggregateConfig(config *watcher.AggregateConfig) {
-	w.store = config.Store
+	w.store = config.AggregateStore
 }
 
 func init() {
-	watch.Register("secretsclean", &secretsCleanWatcher{})
+	registry.Register("secretsclean", &secretsCleanWatcher{})
 }

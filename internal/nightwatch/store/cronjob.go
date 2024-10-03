@@ -43,6 +43,6 @@ var _ CronJobStore = (*cronJobs)(nil)
 // newCronJobs creates a new instance of cronJobs with the provided database connection.
 func newCronJobs(ds *datastore) *cronJobs {
 	return &cronJobs{
-		Store: genericstore.NewStore[model.CronJobM](ds, genericstore.WithLogger[model.CronJobM](onex.NewLogger())),
+		Store: genericstore.NewStore[model.CronJobM](ds, onex.NewLogger()),
 	}
 }

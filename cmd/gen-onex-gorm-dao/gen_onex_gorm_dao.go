@@ -142,7 +142,7 @@ func ForNightWatch(g *gen.Generator) {
 		"CronJobM",
 		gen.FieldRename("cronjob_id", "CronJobID"),
 		gen.FieldType("job_template", "*JobM"),
-		gen.FieldType("status", "CronJobStatus"),
+		gen.FieldType("status", "*CronJobStatus"),
 	)
 	job := g.GenerateModelAs(
 		"nw_job",

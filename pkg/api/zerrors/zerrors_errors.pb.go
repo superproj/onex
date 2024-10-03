@@ -108,3 +108,31 @@ func IsIdempotentTokenExpired(err error) bool {
 func ErrorIdempotentTokenExpired(format string, args ...interface{}) *errors.Error {
 	return errors.New(400, ErrorReason_IdempotentTokenExpired.String(), fmt.Sprintf(format, args...))
 }
+
+// 请求路径没有找到
+func IsPageNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_PageNotFound.String() && e.Code == 404
+}
+
+// 请求路径没有找到
+func ErrorPageNotFound(format string, args ...interface{}) *errors.Error {
+	return errors.New(404, ErrorReason_PageNotFound.String(), fmt.Sprintf(format, args...))
+}
+
+// Gin 请求参数绑定失败
+func IsBindFailed(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_BindFailed.String() && e.Code == 500
+}
+
+// Gin 请求参数绑定失败
+func ErrorBindFailed(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, ErrorReason_BindFailed.String(), fmt.Sprintf(format, args...))
+}

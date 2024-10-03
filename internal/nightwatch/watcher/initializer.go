@@ -24,6 +24,10 @@ func (w *WatcherInitializer) Initialize(wc registry.Watcher) {
 	// We can set a specific configuration as needed, as shown in the example below.
 	// However, for convenience, I directly assign all configurations to each watcher,
 	// allowing the watcher to choose which ones to use.
+	if wants, ok := wc.(WantsAggregateStore); ok {
+		wants.SetAggregateStore(w.AggregateStore)
+	}
+
 	if wants, ok := wc.(WantsStore); ok {
 		wants.SetStore(w.Store)
 	}

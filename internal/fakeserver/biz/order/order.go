@@ -22,9 +22,9 @@ import (
 
 	"github.com/superproj/onex/internal/fakeserver/model"
 	"github.com/superproj/onex/internal/fakeserver/store"
-	"github.com/superproj/onex/internal/pkg/where"
 	v1 "github.com/superproj/onex/pkg/api/fakeserver/v1"
 	"github.com/superproj/onex/pkg/log"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
 type OrderBiz interface {
