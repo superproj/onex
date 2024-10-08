@@ -8,83 +8,47 @@ package store
 
 import (
 	"context"
-	"errors"
-
-	"gorm.io/gorm"
 
 	"github.com/superproj/onex/internal/gateway/model"
-	"github.com/superproj/onex/internal/pkg/meta"
+	genericstore "github.com/superproj/onex/pkg/store"
+	"github.com/superproj/onex/pkg/store/logger/onex"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
-// MinerSetStore defines the minerset storage interface.
+// MinerSetStore defines the interface for managing minerSets in the database.
 type MinerSetStore interface {
-	Create(ctx context.Context, ms *model.MinerSetM) error
-	Delete(ctx context.Context, filters map[string]any) error
-	Update(ctx context.Context, ms *model.MinerSetM) error
-	Get(ctx context.Context, filters map[string]any) (*model.MinerSetM, error)
-	List(ctx context.Context, namespace string, opts ...meta.ListOption) (int64, []*model.MinerSetM, error)
+	// Create inserts a new minerSet into the database.
+	Create(ctx context.Context, minerSet *model.MinerSetM) error
+
+	// Update modifies an existing minerSet in the database.
+	Update(ctx context.Context, minerSet *model.MinerSetM) error
+
+	// Delete removes minerSets with the specified options.
+	Delete(ctx context.Context, opts *where.WhereOptions) error
+
+	// Get retrieves a minerSet with the specified options.
+	Get(ctx context.Context, opts *where.WhereOptions) (*model.MinerSetM, error)
+
+	// List returns a list of minerSets with the specified options.
+	List(ctx context.Context, opts *where.WhereOptions) (int64, []*model.MinerSetM, error)
+
+	MinerSetExpansion
 }
 
-// minerSetStore is a structure which implements the MinerSetStore interface.
+// MinerSetExpansion defines additional methods for minerSet operations.
+type MinerSetExpansion interface{}
+
+// minerSetStore implements the MinerSetStore interface.
 type minerSetStore struct {
-	ds *datastore
+	*genericstore.Store[model.MinerSetM]
 }
+
+// Ensure minerSetStore implements the MinerSetStore interface.
+var _ MinerSetStore = (*minerSetStore)(nil)
 
 // newMinerSetStore creates a new minerSetStore instance with provided datastore.
 func newMinerSetStore(ds *datastore) *minerSetStore {
-	return &minerSetStore{ds}
-}
-
-// db is an alias for d.ds.Core(ctx context.Context), a convenience method to get the core database instance.
-func (d *minerSetStore) db(ctx context.Context) *gorm.DB {
-	return d.ds.Core(ctx)
-}
-
-// Create creates a new minerset record in the database.
-func (d *minerSetStore) Create(ctx context.Context, ms *model.MinerSetM) error {
-	return d.db(ctx).Create(&ms).Error
-}
-
-// Delete deletes a minerset record from the database based on provided filters.
-func (d *minerSetStore) Delete(ctx context.Context, filters map[string]any) error {
-	err := d.db(ctx).Where(filters).Delete(&model.MinerSetM{}).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return err
+	return &minerSetStore{
+		Store: genericstore.NewStore[model.MinerSetM](ds, onex.NewLogger()),
 	}
-
-	return nil
-}
-
-// Update updates a minerset record in the database.
-func (d *minerSetStore) Update(ctx context.Context, ms *model.MinerSetM) error {
-	return d.db(ctx).Save(ms).Error
-}
-
-// Get retrieves a single minerset record from the database based on provided filters.
-func (d *minerSetStore) Get(ctx context.Context, filters map[string]any) (*model.MinerSetM, error) {
-	ms := &model.MinerSetM{}
-	if err := d.db(ctx).Where(filters).First(&ms).Error; err != nil {
-		return nil, err
-	}
-
-	return ms, nil
-}
-
-// List returns a list of minerset records according to the provided query conditions.
-func (d *minerSetStore) List(ctx context.Context, namespace string, opts ...meta.ListOption) (count int64, ret []*model.MinerSetM, err error) {
-	los := meta.NewListOptions(opts...)
-	if namespace != "" {
-		los.Filters["namespace"] = namespace
-	}
-	ans := d.db(ctx).
-		Where(los.Filters).
-		Offset(los.Offset).
-		Limit(los.Limit).
-		Order("id desc").
-		Find(&ret).
-		Offset(-1).
-		Limit(-1).
-		Count(&count)
-
-	return count, ret, ans.Error
 }

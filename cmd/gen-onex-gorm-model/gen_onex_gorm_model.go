@@ -53,7 +53,7 @@ func main() {
 	}
 
 	dbOptions := &db.MySQLOptions{
-		Host:     *addr,
+		Addr:     *addr,
 		Username: *username,
 		Password: *password,
 		Database: *dbname,

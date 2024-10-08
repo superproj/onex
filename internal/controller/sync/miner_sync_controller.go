@@ -24,6 +24,7 @@ import (
 	"github.com/superproj/onex/internal/gateway/store"
 	"github.com/superproj/onex/internal/pkg/known"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
 const minerControllerName = "controller-manager.minerSync"
@@ -54,12 +55,12 @@ func (r *MinerSyncReconciler) Reconcile(ctx context.Context, rq ctrl.Request) (c
 	m := &v1beta1.Miner{}
 	if err := r.client.Get(ctx, rq.NamespacedName, m); err != nil {
 		if apierrors.IsNotFound(err) {
-			return ctrl.Result{}, r.Store.Miners().Delete(ctx, map[string]any{"namespace": rq.Namespace, "name": rq.Name})
+			return ctrl.Result{}, r.Store.Miners().Delete(ctx, where.F("namespace", rq.Namespace, "name", rq.Name))
 		}
 		return ctrl.Result{}, err
 	}
 
-	mr, err := r.Store.Miners().Get(ctx, map[string]any{"namespace": rq.Namespace, "name": rq.Name})
+	mr, err := r.Store.Miners().Get(ctx, where.F("namespace", rq.Namespace, "name", rq.Name))
 	if err != nil {
 		// miner record not exist, create it.
 		if errors.Is(err, gorm.ErrRecordNotFound) {

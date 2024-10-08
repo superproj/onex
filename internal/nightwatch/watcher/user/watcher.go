@@ -39,7 +39,7 @@ type UserStateMachine struct {
 
 // Run runs the watcher.
 func (w *userWatcher) Run() {
-	_, users, err := w.store.UserCenter().Users().List(context.Background())
+	_, users, err := w.store.UserCenter().Users().List(context.Background(), nil)
 	if err != nil {
 		log.Errorw(err, "Failed to list users")
 		return

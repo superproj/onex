@@ -100,7 +100,7 @@ func (b *jobBiz) Get(ctx context.Context, rq *nwv1.GetJobRequest) (*nwv1.GetJobR
 		return nil, err
 	}
 
-	bizJob := conversion.ConvertToJob(job)
+	bizJob := conversion.ConvertToV1Job(job)
 	return &nwv1.GetJobResponse{Job: bizJob}, nil
 }
 
@@ -113,7 +113,7 @@ func (b *jobBiz) List(ctx context.Context, rq *nwv1.ListJobRequest) (*nwv1.ListJ
 
 	jobs := make([]*nwv1.Job, len(jobList))
 	for i, job := range jobList {
-		jobs[i] = conversion.ConvertToJob(job)
+		jobs[i] = conversion.ConvertToV1Job(job)
 	}
 
 	return &nwv1.ListJobResponse{TotalCount: count, Jobs: jobs}, nil

@@ -105,7 +105,7 @@ func (b *cronJobBiz) Get(ctx context.Context, rq *nwv1.GetCronJobRequest) (*nwv1
 		return nil, err
 	}
 
-	bizCronJob := conversion.ConvertToCronJob(cronJob)
+	bizCronJob := conversion.ConvertToV1CronJob(cronJob)
 	return &nwv1.GetCronJobResponse{CronJob: bizCronJob}, nil
 }
 
@@ -118,7 +118,7 @@ func (b *cronJobBiz) List(ctx context.Context, rq *nwv1.ListCronJobRequest) (*nw
 
 	cronJobs := make([]*nwv1.CronJob, len(cronJobList))
 	for i, cronJob := range cronJobList {
-		cronJobs[i] = conversion.ConvertToCronJob(cronJob)
+		cronJobs[i] = conversion.ConvertToV1CronJob(cronJob)
 	}
 
 	return &nwv1.ListCronJobResponse{TotalCount: count, CronJobs: cronJobs}, nil

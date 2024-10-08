@@ -7,6 +7,7 @@
 package gateway
 
 import (
+	"context"
 	"os"
 
 	"github.com/go-kratos/kratos/v2"
@@ -16,11 +17,13 @@ import (
 	"github.com/superproj/onex/internal/gateway/server"
 	"github.com/superproj/onex/internal/pkg/bootstrap"
 	"github.com/superproj/onex/internal/pkg/client/usercenter"
+	"github.com/superproj/onex/internal/pkg/onexx"
 	"github.com/superproj/onex/pkg/db"
 	clientset "github.com/superproj/onex/pkg/generated/clientset/versioned"
 	"github.com/superproj/onex/pkg/generated/informers"
 	"github.com/superproj/onex/pkg/log"
 	genericoptions "github.com/superproj/onex/pkg/options"
+	"github.com/superproj/onex/pkg/store/where"
 	"github.com/superproj/onex/pkg/version"
 )
 
@@ -58,6 +61,10 @@ type completedConfig struct {
 
 // New returns a new instance of Server from the given config.
 func (c completedConfig) New(stopCh <-chan struct{}) (*Server, error) {
+	where.RegisterTenant("user_id", func(ctx context.Context) string {
+		return onexx.FromUserID(ctx)
+	})
+
 	if err := c.JaegerOptions.SetTracerProvider(); err != nil {
 		return nil, err
 	}

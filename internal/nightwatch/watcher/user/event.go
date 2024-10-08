@@ -11,6 +11,7 @@ import (
 	"github.com/superproj/onex/internal/pkg/onexx"
 	"github.com/superproj/onex/internal/usercenter/model"
 	"github.com/superproj/onex/pkg/log"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
 const (
@@ -128,7 +129,7 @@ func disableSecret(ctx context.Context, store store.Interface, secret *model.Sec
 // deleteSecret used to delete user secret.
 func deleteSecret(ctx context.Context, store store.Interface, secret *model.SecretM) error {
 	log.Infow("Now delete user secret", "userID", secret.UserID, "secretID", secret.SecretID)
-	return store.UserCenter().Secrets().Delete(ctx, secret.UserID, secret.Name)
+	return store.UserCenter().Secrets().Delete(ctx, where.F("user_id", secret.UserID, "name", secret.Name))
 }
 
 // iterateSecrets iterates through the secrets of a user specified by userID
@@ -140,7 +141,7 @@ func iterateSecrets(
 	action func(ctx context.Context, store store.Interface, secret *model.SecretM) error,
 ) error {
 	// Retrieve the list of secrets for the specified user.
-	_, secrets, err := store.UserCenter().Secrets().List(ctx, userID)
+	_, secrets, err := store.UserCenter().Secrets().List(ctx, where.F("user_id", userID))
 	if err != nil {
 		return err
 	}

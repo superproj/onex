@@ -16,6 +16,7 @@ import (
 
 	"github.com/superproj/onex/internal/gateway/store"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
 type MinerSet struct {
@@ -38,7 +39,7 @@ func (c *MinerSet) Delete(ctx context.Context) error {
 	defer c.mu.Unlock()
 
 	klog.V(4).InfoS("Cleanup minersets from minerset table")
-	_, minersets, err := c.ds.MinerSets().List(ctx, "")
+	_, minersets, err := c.ds.MinerSets().List(ctx, nil)
 	if err != nil {
 		klog.ErrorS(err, "Failed to list minersets")
 		return err
@@ -50,8 +51,7 @@ func (c *MinerSet) Delete(ctx context.Context) error {
 		key := client.ObjectKey{Namespace: minerset.Namespace, Name: minerset.Name}
 		if err := c.client.Get(ctx, key, &ms); err != nil {
 			if apierrors.IsNotFound(err) {
-				filter := map[string]any{"namespace": minerset.Namespace, "name": minerset.Name}
-				if derr := c.ds.MinerSets().Delete(ctx, filter); derr != nil {
+				if derr := c.ds.MinerSets().Delete(ctx, where.F("namespace", minerset.Namespace, "name", minerset.Name)); derr != nil {
 					klog.V(1).InfoS("Failed to delete minerset", "minerset", klog.KRef(minerset.Namespace, minerset.Name), "err", derr)
 					continue
 				}

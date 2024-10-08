@@ -19,6 +19,7 @@ import (
 	"github.com/superproj/onex/pkg/authn"
 	"github.com/superproj/onex/pkg/i18n"
 	"github.com/superproj/onex/pkg/log"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
 // AuthBiz defines functions used for authentication and authorization.
@@ -56,7 +57,7 @@ func New(ds store.IStore, authn authn.Authenticator, auth auth.AuthProvider) *au
 // Login authenticates a user and returns a token.
 func (b *authBiz) Login(ctx context.Context, rq *v1.LoginRequest) (*v1.LoginReply, error) {
 	// Retrieve user information from the data storage by username.
-	userM, err := b.ds.Users().GetByUsername(ctx, rq.Username)
+	userM, err := b.ds.Users().Get(ctx, where.F("username", rq.Username))
 	if err != nil {
 		log.C(ctx).Errorw(err, "Failed to retrieve user by username")
 		return nil, i18n.FromContext(ctx).E(locales.RecordNotFound)

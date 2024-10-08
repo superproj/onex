@@ -16,6 +16,7 @@ import (
 
 	"github.com/superproj/onex/internal/gateway/store"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
 type Chain struct {
@@ -38,7 +39,7 @@ func (c *Chain) Delete(ctx context.Context) error {
 	defer c.mu.Unlock()
 
 	klog.V(4).InfoS("Cleanup chains from chain table")
-	_, chains, err := c.ds.Chains().List(ctx, "")
+	_, chains, err := c.ds.Chains().List(ctx, nil)
 	if err != nil {
 		klog.ErrorS(err, "Failed to list chains")
 		return err
@@ -50,8 +51,7 @@ func (c *Chain) Delete(ctx context.Context) error {
 		key := client.ObjectKey{Namespace: chain.Namespace, Name: chain.Name}
 		if err := c.client.Get(ctx, key, &ch); err != nil {
 			if apierrors.IsNotFound(err) {
-				filter := map[string]any{"namespace": chain.Namespace, "name": chain.Name}
-				if derr := c.ds.Chains().Delete(ctx, filter); derr != nil {
+				if derr := c.ds.Chains().Delete(ctx, where.F("namespace", chain.Namespace, "name", chain.Name)); derr != nil {
 					klog.V(1).InfoS("Failed to delete chain", "chain", klog.KRef(chain.Namespace, chain.Name), "err", derr)
 					continue
 				}

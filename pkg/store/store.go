@@ -52,7 +52,9 @@ func NewStore[T any](storage DBProvider, logger Logger) *Store[T] {
 func (s *Store[T]) db(ctx context.Context, wheres ...where.Where) *gorm.DB {
 	dbInstance := s.storage.DB(ctx)
 	for _, whr := range wheres {
-		dbInstance = whr.Where(dbInstance)
+		if whr != nil {
+			dbInstance = whr.Where(dbInstance)
+		}
 	}
 	return dbInstance
 }

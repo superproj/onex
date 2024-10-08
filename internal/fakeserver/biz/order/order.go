@@ -57,7 +57,7 @@ func (b *orderBiz) Create(ctx context.Context, rq *v1.CreateOrderRequest) (*v1.C
 }
 
 func (b *orderBiz) Update(ctx context.Context, rq *v1.UpdateOrderRequest) error {
-	orderM, err := b.ds.Orders().Get(ctx, where.Filter("order_id", rq.OrderID))
+	orderM, err := b.ds.Orders().Get(ctx, where.F("order_id", rq.OrderID))
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func (b *orderBiz) Update(ctx context.Context, rq *v1.UpdateOrderRequest) error 
 
 // Delete 是 OrderBiz 接口中 `Delete` 方法的实现.
 func (b *orderBiz) Delete(ctx context.Context, rq *v1.DeleteOrderRequest) error {
-	if err := b.ds.Orders().Delete(ctx, where.Filter("order_id", rq.OrderID)); err != nil {
+	if err := b.ds.Orders().Delete(ctx, where.F("order_id", rq.OrderID)); err != nil {
 		return err
 	}
 
@@ -87,7 +87,7 @@ func (b *orderBiz) Delete(ctx context.Context, rq *v1.DeleteOrderRequest) error 
 }
 
 func (b *orderBiz) Get(ctx context.Context, rq *v1.GetOrderRequest) (*v1.OrderReply, error) {
-	orderM, err := b.ds.Orders().Get(ctx, where.Filter("order_id", rq.OrderID))
+	orderM, err := b.ds.Orders().Get(ctx, where.F("order_id", rq.OrderID))
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, v1.ErrorOrderNotFound(err.Error())

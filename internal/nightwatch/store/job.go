@@ -17,10 +17,10 @@ type JobStore interface {
 	// Update modifies an existing job in the database.
 	Update(ctx context.Context, job *model.JobM) error
 
-	// Delete removes jobs by tenant and a list of IDs.
+	// Delete removes jobs with the specified options.
 	Delete(ctx context.Context, opts *where.WhereOptions) error
 
-	// Get retrieves a job by tenant and ID.
+	// Get retrieves a job with the specified options..
 	Get(ctx context.Context, opts *where.WhereOptions) (*model.JobM, error)
 
 	// List returns a list of jobs with the specified options.
@@ -32,17 +32,17 @@ type JobStore interface {
 // JobExpansion defines additional methods for job operations.
 type JobExpansion interface{}
 
-// jobs implements the JobStore interface.
-type jobs struct {
+// jobStore implements the JobStore interface.
+type jobStore struct {
 	*genericstore.Store[model.JobM]
 }
 
-// Ensure jobs implements the JobStore interface.
-var _ JobStore = (*jobs)(nil)
+// Ensure jobStore implements the JobStore interface.
+var _ JobStore = (*jobStore)(nil)
 
-// newJobs creates a new instance of jobs with the provided database connection.
-func newJobs(ds *datastore) *jobs {
-	return &jobs{
+// newJobStore creates a new instance of jobStore with the provided database connection.
+func newJobStore(ds *datastore) *jobStore {
+	return &jobStore{
 		Store: genericstore.NewStore[model.JobM](ds, onex.NewLogger()),
 	}
 }

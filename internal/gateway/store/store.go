@@ -28,6 +28,7 @@ type transactionKey struct{}
 
 // IStore is an interface defining the required methods for a Store.
 type IStore interface {
+	DB(ctx context.Context) *gorm.DB
 	TX(context.Context, func(ctx context.Context) error) error
 	Chains() ChainStore
 	Miners() MinerStore
@@ -55,9 +56,8 @@ func NewStore(db *gorm.DB) *datastore {
 	return S
 }
 
-// Core returns the core gorm.DB from the datastore. If there is an ongoing transaction,
-// the transaction's gorm.DB is returned instead.
-func (ds *datastore) Core(ctx context.Context) *gorm.DB {
+// DB retrieves the current database instance from the context or returns the main instance.
+func (ds *datastore) DB(ctx context.Context) *gorm.DB {
 	tx, ok := ctx.Value(transactionKey{}).(*gorm.DB)
 	if ok {
 		return tx

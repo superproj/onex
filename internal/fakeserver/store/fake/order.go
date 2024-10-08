@@ -13,8 +13,8 @@ import (
 
 	"github.com/superproj/onex/internal/fakeserver/model"
 	"github.com/superproj/onex/internal/fakeserver/store"
-	"github.com/superproj/onex/internal/pkg/meta"
 	"github.com/superproj/onex/internal/pkg/zid"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
 // OrderStore 接口的实现.
@@ -42,10 +42,11 @@ func (o *orders) Create(ctx context.Context, order *model.OrderM) error {
 }
 
 // Get 根据用户名查询指定 order 的数据库记录.
-func (o *orders) Get(ctx context.Context, orderID string) (*model.OrderM, error) {
+func (o *orders) Get(ctx context.Context, opts *where.WhereOptions) (*model.OrderM, error) {
 	o.ds.Lock()
 	defer o.ds.Unlock()
 
+	orderID := opts.Filters["order_id"].(string)
 	order, ok := o.ds.orders[orderID]
 	if !ok {
 		return nil, gorm.ErrRecordNotFound
@@ -69,14 +70,13 @@ func (o *orders) Update(ctx context.Context, order *model.OrderM) error {
 }
 
 // List 根据 offset 和 limit 返回 order 列表.
-func (o *orders) List(ctx context.Context, opts ...meta.ListOption) (count int64, ret []*model.OrderM, err error) {
+func (o *orders) List(ctx context.Context, opts *where.WhereOptions) (count int64, ret []*model.OrderM, err error) {
 	o.ds.Lock()
 	defer o.ds.Unlock()
 
-	options := meta.NewListOptions(opts...)
 	all := o.ds.List()
 
-	offset, limit := options.Offset, options.Limit
+	offset, limit := opts.Offset, opts.Limit
 	if offset >= len(all) {
 		return 0, []*model.OrderM{}, nil
 	}
@@ -89,10 +89,11 @@ func (o *orders) List(ctx context.Context, opts ...meta.ListOption) (count int64
 }
 
 // Delete 根据 orderID 删除数据库 order 记录.
-func (o *orders) Delete(ctx context.Context, orderID string) error {
+func (o *orders) Delete(ctx context.Context, opts *where.WhereOptions) error {
 	o.ds.Lock()
 	defer o.ds.Unlock()
 
+	orderID := opts.Filters["order_id"].(string)
 	delete(s.orders, orderID)
 
 	return nil

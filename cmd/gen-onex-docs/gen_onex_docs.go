@@ -62,7 +62,7 @@ func main() {
 		_ = doc.GenMarkdownTree(gwserver, outDir)
 	case "onex-nightwatch":
 		// generate docs for onex-nightwatch
-		nw := watchapp.NewApp().Command()
+		nw := watchapp.NewApp("onex-nightwatch").Command()
 		_ = doc.GenMarkdownTree(nw, outDir)
 	case "onex-pump":
 		// generate docs for onex-pump

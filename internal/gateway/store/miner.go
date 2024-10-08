@@ -8,82 +8,47 @@ package store
 
 import (
 	"context"
-	"errors"
-
-	"gorm.io/gorm"
 
 	"github.com/superproj/onex/internal/gateway/model"
-	"github.com/superproj/onex/internal/pkg/meta"
+	genericstore "github.com/superproj/onex/pkg/store"
+	"github.com/superproj/onex/pkg/store/logger/onex"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
-// MinerStore defines the miner storage interface.
+// MinerStore defines the interface for managing miners in the database.
 type MinerStore interface {
+	// Create inserts a new miner into the database.
 	Create(ctx context.Context, miner *model.MinerM) error
-	Delete(ctx context.Context, filters map[string]any) error
+
+	// Update modifies an existing miner in the database.
 	Update(ctx context.Context, miner *model.MinerM) error
-	Get(ctx context.Context, filters map[string]any) (*model.MinerM, error)
-	List(ctx context.Context, namespace string, opts ...meta.ListOption) (int64, []*model.MinerM, error)
+
+	// Delete removes miners with the specified options.
+	Delete(ctx context.Context, opts *where.WhereOptions) error
+
+	// Get retrieves a miner with the specified options.
+	Get(ctx context.Context, opts *where.WhereOptions) (*model.MinerM, error)
+
+	// List returns a list of miners with the specified options.
+	List(ctx context.Context, opts *where.WhereOptions) (int64, []*model.MinerM, error)
+
+	MinerExpansion
 }
 
+// MinerExpansion defines additional methods for miner operations.
+type MinerExpansion interface{}
+
+// minerStore implements the MinerStore interface.
 type minerStore struct {
-	ds *datastore
+	*genericstore.Store[model.MinerM]
 }
 
+// Ensure minerStore implements the MinerStore interface.
+var _ MinerStore = (*minerStore)(nil)
+
+// newMinerStore creates a new minerStore instance with provided datastore.
 func newMinerStore(ds *datastore) *minerStore {
-	return &minerStore{ds}
-}
-
-// db is alias for d.ds.Core(ctx context.Context).
-func (d *minerStore) db(ctx context.Context) *gorm.DB {
-	return d.ds.Core(ctx)
-}
-
-// Create creates a new miner record.
-func (d *minerStore) Create(ctx context.Context, miner *model.MinerM) error {
-	return d.db(ctx).Create(&miner).Error
-}
-
-// Delete delete an miner record.
-func (d *minerStore) Delete(ctx context.Context, filters map[string]any) error {
-	err := d.db(ctx).Where(filters).Delete(&model.MinerM{}).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return err
+	return &minerStore{
+		Store: genericstore.NewStore[model.MinerM](ds, onex.NewLogger()),
 	}
-
-	return nil
-}
-
-// Update updates an miner record.
-func (d *minerStore) Update(ctx context.Context, miner *model.MinerM) error {
-	return d.db(ctx).Save(miner).Error
-}
-
-// Get get an miner record.
-func (d *minerStore) Get(ctx context.Context, filters map[string]any) (*model.MinerM, error) {
-	miner := &model.MinerM{}
-	if err := d.db(ctx).Where(filters).First(&miner).Error; err != nil {
-		return nil, err
-	}
-
-	return miner, nil
-}
-
-// List return miners by specified query conditions.
-func (d *minerStore) List(ctx context.Context, namespace string, opts ...meta.ListOption) (count int64, ret []*model.MinerM, err error) {
-	los := meta.NewListOptions(opts...)
-	if namespace != "" {
-		los.Filters["namespace"] = namespace
-	}
-
-	ans := d.db(ctx).
-		Where(los.Filters).
-		Offset(los.Offset).
-		Limit(los.Limit).
-		Order("id desc").
-		Find(&ret).
-		Offset(-1).
-		Limit(-1).
-		Count(&count)
-
-	return count, ret, ans.Error
 }

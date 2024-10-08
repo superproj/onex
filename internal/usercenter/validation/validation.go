@@ -19,6 +19,7 @@ import (
 	"github.com/superproj/onex/internal/usercenter/store"
 	v1 "github.com/superproj/onex/pkg/api/usercenter/v1"
 	"github.com/superproj/onex/pkg/i18n"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
 // ProviderSet is validator providers.
@@ -41,7 +42,7 @@ func New(ds store.IStore) (*validator, error) {
 // ValidateCreateUserRequest validates the rquest to create a user.
 // If the validation fails, it returns an error; otherwise, it returns nil.
 func (vd *validator) ValidateCreateUserRequest(ctx context.Context, rq *v1.CreateUserRequest) error {
-	if _, err := vd.ds.Users().GetByUsername(ctx, rq.Username); err == nil {
+	if _, err := vd.ds.Users().Get(ctx, where.F("username", rq.Username)); err == nil {
 		return i18n.FromContext(ctx).E(locales.UserAlreadyExists)
 	}
 
@@ -61,7 +62,7 @@ func (vd *validator) ValidateListUserRequest(ctx context.Context, rq *v1.ListUse
 // ValidateCreateSecretRequest validates the rquest to create a secret.
 // Returns an error if the maximum number of secrets is reached.
 func (vd *validator) ValidateCreateSecretRequest(ctx context.Context, rq *v1.CreateSecretRequest) error {
-	_, secrets, err := vd.ds.Secrets().List(ctx, onexx.FromUserID(ctx))
+	_, secrets, err := vd.ds.Secrets().List(ctx, where.T(ctx))
 	if err != nil {
 		return err
 	}

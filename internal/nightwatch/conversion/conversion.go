@@ -8,7 +8,8 @@ import (
 	nwv1 "github.com/superproj/onex/pkg/api/nightwatch/v1"
 )
 
-func ConvertToCronJob(cronJob *model.CronJobM) *nwv1.CronJob {
+// ConvertToV1CronJob converts a CronJob model to its v1 representation.
+func ConvertToV1CronJob(cronJob *model.CronJobM) *nwv1.CronJob {
 	var bizCronJob nwv1.CronJob
 	_ = copier.Copy(&bizCronJob, cronJob) // Copy model data to the response.
 
@@ -20,7 +21,8 @@ func ConvertToCronJob(cronJob *model.CronJobM) *nwv1.CronJob {
 	return &bizCronJob
 }
 
-func ConvertToJob(job *model.JobM) *nwv1.Job {
+// ConvertToV1Job converts a Job model to its v1 representation.
+func ConvertToV1Job(job *model.JobM) *nwv1.Job {
 	var bizJob nwv1.Job
 	_ = copier.Copy(&bizJob, job) // Copy model data to the response.
 

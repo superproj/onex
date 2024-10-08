@@ -22,6 +22,7 @@ import (
 	gwmodel "github.com/superproj/onex/internal/gateway/model"
 	"github.com/superproj/onex/internal/gateway/store"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
 const minerSetControllerName = "controller-manager.minerSetSync"
@@ -52,12 +53,12 @@ func (r *MinerSetSyncReconciler) Reconcile(ctx context.Context, rq ctrl.Request)
 	ms := &v1beta1.MinerSet{}
 	if err := r.client.Get(ctx, rq.NamespacedName, ms); err != nil {
 		if apierrors.IsNotFound(err) {
-			return ctrl.Result{}, r.Store.MinerSets().Delete(ctx, map[string]any{"namespace": rq.Namespace, "name": rq.Name})
+			return ctrl.Result{}, r.Store.MinerSets().Delete(ctx, where.F("namespace", rq.Namespace, "name", rq.Name))
 		}
 		return ctrl.Result{}, err
 	}
 
-	msr, err := r.Store.MinerSets().Get(ctx, map[string]any{"namespace": rq.Namespace, "name": rq.Name})
+	msr, err := r.Store.MinerSets().Get(ctx, where.F("namespace", rq.Namespace, "name", rq.Name))
 	if err != nil {
 		// minerset record not exist, create it.
 		if errors.Is(err, gorm.ErrRecordNotFound) {

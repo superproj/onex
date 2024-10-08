@@ -17,10 +17,10 @@ type CronJobStore interface {
 	// Update modifies an existing cron job in the database.
 	Update(ctx context.Context, cronJob *model.CronJobM) error
 
-	// Delete removes cron jobs by tenant and a list of IDs.
+	// Delete removes cron jobs with the specified options.
 	Delete(ctx context.Context, opts *where.WhereOptions) error
 
-	// Get retrieves a cron job by tenant and ID.
+	// Get retrieves a cron job with the specified options.
 	Get(ctx context.Context, opts *where.WhereOptions) (*model.CronJobM, error)
 
 	// List returns a list of cron jobs with the specified options.
@@ -32,17 +32,17 @@ type CronJobStore interface {
 // CronJobExpansion defines additional methods for cronjob operations.
 type CronJobExpansion interface{}
 
-// cronJobs implements the CronJobStore interface.
-type cronJobs struct {
+// cronJobStore implements the CronJobStore interface.
+type cronJobStore struct {
 	*genericstore.Store[model.CronJobM]
 }
 
-// Ensure cronJobs implements the CronJobStore interface.
-var _ CronJobStore = (*cronJobs)(nil)
+// Ensure cronJobStore implements the CronJobStore interface.
+var _ CronJobStore = (*cronJobStore)(nil)
 
-// newCronJobs creates a new instance of cronJobs with the provided database connection.
-func newCronJobs(ds *datastore) *cronJobs {
-	return &cronJobs{
+// newCronJobStore creates a new instance of cronJobStore with the provided database connection.
+func newCronJobStore(ds *datastore) *cronJobStore {
+	return &cronJobStore{
 		Store: genericstore.NewStore[model.CronJobM](ds, onex.NewLogger()),
 	}
 }

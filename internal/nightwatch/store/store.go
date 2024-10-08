@@ -59,8 +59,7 @@ func (ds *datastore) DB(ctx context.Context) *gorm.DB {
 	return ds.db
 }
 
-// TX starts a transaction using the main DB context
-// and passes the transactional context to the provided function.
+// TX is a method to execute a function inside a transaction, it takes a context and a function as parameters.
 func (ds *datastore) TX(ctx context.Context, fn func(ctx context.Context) error) error {
 	return ds.db.WithContext(ctx).Transaction(
 		func(tx *gorm.DB) error {
@@ -72,10 +71,10 @@ func (ds *datastore) TX(ctx context.Context, fn func(ctx context.Context) error)
 
 // CronJobs returns an instance that implements the CronJobStore interface.
 func (ds *datastore) CronJobs() CronJobStore {
-	return newCronJobs(ds)
+	return newCronJobStore(ds)
 }
 
 // Jobs returns an instance that implements the JobStore interface.
 func (ds *datastore) Jobs() JobStore {
-	return newJobs(ds)
+	return newJobStore(ds)
 }

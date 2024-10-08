@@ -7,8 +7,11 @@
 package fake
 
 import (
+	"context"
 	"sort"
 	"sync"
+
+	"gorm.io/gorm"
 
 	"github.com/superproj/onex/internal/fakeserver/model"
 	"github.com/superproj/onex/internal/fakeserver/store"
@@ -41,6 +44,15 @@ func NewStore(count int) *datastore {
 	})
 
 	return s
+}
+
+func (ds *datastore) DB(ctx context.Context) *gorm.DB {
+	return nil
+}
+
+// TX is a method to execute a function inside a transaction, it takes a context and a function as parameters.
+func (ds *datastore) TX(ctx context.Context, fn func(ctx context.Context) error) error {
+	return nil
 }
 
 // Orders 返回一个实现了 OrderStore 接口的实例.

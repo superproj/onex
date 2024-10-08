@@ -22,6 +22,7 @@ import (
 	gwmodel "github.com/superproj/onex/internal/gateway/model"
 	"github.com/superproj/onex/internal/gateway/store"
 	"github.com/superproj/onex/pkg/apis/apps/v1beta1"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
 const chainControllerName = "controller-manager.chainSync"
@@ -51,12 +52,12 @@ func (r *ChainSyncReconciler) Reconcile(ctx context.Context, rq ctrl.Request) (c
 	ch := &v1beta1.Chain{}
 	if err := r.client.Get(ctx, rq.NamespacedName, ch); err != nil {
 		if apierrors.IsNotFound(err) {
-			return ctrl.Result{}, r.Store.Chains().Delete(ctx, map[string]any{"namespace": rq.Namespace, "name": rq.Name})
+			return ctrl.Result{}, r.Store.Chains().Delete(ctx, where.F("namespace", rq.Namespace, "name", rq.Name))
 		}
 		return ctrl.Result{}, err
 	}
 
-	chr, err := r.Store.Chains().Get(ctx, map[string]any{"namespace": rq.Namespace, "name": rq.Name})
+	chr, err := r.Store.Chains().Get(ctx, where.F("namespace", rq.Namespace, "name", rq.Name))
 	if err != nil {
 		// chain record not exist, create it.
 		if errors.Is(err, gorm.ErrRecordNotFound) {

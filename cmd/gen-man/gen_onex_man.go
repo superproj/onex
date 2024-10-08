@@ -85,7 +85,7 @@ func main() {
 		}
 	case "onex-nightwatch":
 		// generate manpage for onex-nightwatch
-		nw := nwapp.NewApp().Command()
+		nw := nwapp.NewApp("onex-nightwatch").Command()
 		genMarkdown(nw, "", outDir)
 		for _, c := range nw.Commands() {
 			genMarkdown(c, "onex-nightwatch", outDir)

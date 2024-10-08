@@ -14,6 +14,7 @@ import (
 	"github.com/superproj/onex/internal/nightwatch/watcher"
 	"github.com/superproj/onex/internal/pkg/client/store"
 	"github.com/superproj/onex/pkg/log"
+	"github.com/superproj/onex/pkg/store/where"
 	"github.com/superproj/onex/pkg/watch/registry"
 )
 
@@ -27,7 +28,7 @@ type secretsCleanWatcher struct {
 // Run runs the watcher.
 func (w *secretsCleanWatcher) Run() {
 	ctx := context.Background()
-	_, secrets, err := w.store.UserCenter().Secrets().List(ctx, "")
+	_, secrets, err := w.store.UserCenter().Secrets().List(ctx, nil)
 	if err != nil {
 		log.Errorw(err, "Failed to list secrets")
 		return
@@ -35,7 +36,7 @@ func (w *secretsCleanWatcher) Run() {
 
 	for _, secret := range secrets {
 		if secret.Expires != 0 && secret.Expires < time.Now().AddDate(0, 0, -7).Unix() {
-			err := w.store.UserCenter().Secrets().Delete(ctx, secret.UserID, secret.Name)
+			err := w.store.UserCenter().Secrets().Delete(ctx, where.F("user_id", secret.UserID, "name", secret.Name))
 			if err != nil {
 				log.Warnw("Failed to delete secret from database", "userID", secret.UserID, "name", secret.Name)
 				continue

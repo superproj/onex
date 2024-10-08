@@ -8,84 +8,47 @@ package store
 
 import (
 	"context"
-	"errors"
-
-	"gorm.io/gorm"
 
 	"github.com/superproj/onex/internal/gateway/model"
-	"github.com/superproj/onex/internal/pkg/meta"
+	genericstore "github.com/superproj/onex/pkg/store"
+	"github.com/superproj/onex/pkg/store/logger/onex"
+	"github.com/superproj/onex/pkg/store/where"
 )
 
-// ChainStore defines the chain storage interface.
+// ChainStore defines the interface for managing chains in the database.
 type ChainStore interface {
-	Create(ctx context.Context, ch *model.ChainM) error
-	Delete(ctx context.Context, filters map[string]any) error
-	Update(ctx context.Context, ch *model.ChainM) error
-	Get(ctx context.Context, filters map[string]any) (*model.ChainM, error)
-	List(ctx context.Context, namespace string, opts ...meta.ListOption) (int64, []*model.ChainM, error)
+	// Create inserts a new chain into the database.
+	Create(ctx context.Context, chain *model.ChainM) error
+
+	// Update modifies an existing chain in the database.
+	Update(ctx context.Context, chain *model.ChainM) error
+
+	// Delete removes chains with the specified options.
+	Delete(ctx context.Context, opts *where.WhereOptions) error
+
+	// Get retrieves a chain with the specified options.
+	Get(ctx context.Context, opts *where.WhereOptions) (*model.ChainM, error)
+
+	// List returns a list of chains with the specified options.
+	List(ctx context.Context, opts *where.WhereOptions) (int64, []*model.ChainM, error)
+
+	ChainExpansion
 }
 
-// chainStore is a structure which implements the ChainStore interface.
+// ChainExpansion defines additional methods for chain operations.
+type ChainExpansion interface{}
+
+// chainStore implements the ChainStore interface.
 type chainStore struct {
-	ds *datastore
+	*genericstore.Store[model.ChainM]
 }
+
+// Ensure chainStore implements the ChainStore interface.
+var _ ChainStore = (*chainStore)(nil)
 
 // newChainStore creates a new chainStore instance with provided datastore.
 func newChainStore(ds *datastore) *chainStore {
-	return &chainStore{ds}
-}
-
-// db is an alias for m.ds.Core(ctx context.Context), a convenience method to get the core database instance.
-func (d *chainStore) db(ctx context.Context) *gorm.DB {
-	return d.ds.Core(ctx)
-}
-
-// Create creates a new chain record in the database.
-func (d *chainStore) Create(ctx context.Context, ch *model.ChainM) error {
-	return d.db(ctx).Create(&ch).Error
-}
-
-// Delete deletes a chain record from the database based on provided filters.
-func (d *chainStore) Delete(ctx context.Context, filters map[string]any) error {
-	err := d.db(ctx).Where(filters).Delete(&model.ChainM{}).Error
-	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-		return err
+	return &chainStore{
+		Store: genericstore.NewStore[model.ChainM](ds, onex.NewLogger()),
 	}
-
-	return nil
-}
-
-// Update updates a chain record in the database.
-func (d *chainStore) Update(ctx context.Context, ch *model.ChainM) error {
-	return d.db(ctx).Save(ch).Error
-}
-
-// Get retrieves a single chain record from the database based on provided filters.
-func (d *chainStore) Get(ctx context.Context, filters map[string]any) (*model.ChainM, error) {
-	chain := &model.ChainM{}
-	if err := d.db(ctx).Where(filters).First(&chain).Error; err != nil {
-		return nil, err
-	}
-
-	return chain, nil
-}
-
-// List returns a list of chain records according to the provided query conditions.
-func (d *chainStore) List(ctx context.Context, namespace string, opts ...meta.ListOption) (count int64, ret []*model.ChainM, err error) {
-	los := meta.NewListOptions(opts...)
-	if namespace != "" {
-		los.Filters["namespace"] = namespace
-	}
-
-	ans := d.db(ctx).
-		Where(los.Filters).
-		Offset(los.Offset).
-		Limit(los.Limit).
-		Order("id desc").
-		Find(&ret).
-		Offset(-1).
-		Limit(-1).
-		Count(&count)
-
-	return count, ret, ans.Error
 }
