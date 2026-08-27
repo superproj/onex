@@ -20,7 +20,7 @@ metadata:
 # Deployment 对象规约，描述 Deployment 的期望状态
 spec:
   # 指定 Deployment 副本数为 3
-  replicas: 3
+  replicas: 1
   # 指定 Pod 的选择器
   selector:
     # 匹配标签

@@ -236,7 +236,7 @@ _install.gotestsum:
 
 .PHONY: _install.gofumpt
 _install.gofumpt:
-	@$(GO) install mvdan.cc/gofumpt@$(GO_FUMPT_VERSION)
+	@$(GO) install mvdan.cc/gofumpt@latest
 
 .PHONY: _install.grpcurl
 _install.grpcurl:
@@ -261,3 +261,7 @@ _install.go-mod-upgrade:
 .PHONY: _install.gopls
 _install.gopls:
 	@$(GO) install golang.org/x/tools/gopls@latest
+
+.PHONY: _install.semantic-release
+_install.semantic-release:
+	@$(GO) install github.com/go-semantic-release/semantic-release@latest

@@ -23,10 +23,10 @@ import (
 	"github.com/onexstack/onex/internal/usercenter/model"
 )
 
-var _ registry.Watcher = (*userWatcher)(nil)
+var _ registry.Watcher = (*Watcher)(nil)
 
 // watcher implement.
-type userWatcher struct {
+type Watcher struct {
 	store      store.Interface
 	maxWorkers int64
 }
@@ -38,7 +38,7 @@ type UserStateMachine struct {
 }
 
 // Run runs the watcher.
-func (w *userWatcher) Run() {
+func (w *Watcher) Run() {
 	_, users, err := w.store.UserCenter().User().List(context.Background(), nil)
 	if err != nil {
 		log.Errorw(err, "Failed to list users")
@@ -86,11 +86,11 @@ func (w *userWatcher) Run() {
 }
 
 // SetAggregateConfig initializes the watcher for later execution.
-func (w *userWatcher) SetAggregateConfig(config *watcher.AggregateConfig) {
+func (w *Watcher) SetAggregateConfig(config *watcher.AggregateConfig) {
 	w.store = config.AggregateStore
 	w.maxWorkers = config.UserWatcherMaxWorkers
 }
 
 func init() {
-	registry.Register("user", &userWatcher{})
+	registry.Register("user", &Watcher{})
 }

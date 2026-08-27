@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nettool
+  labels:
+    app: nettool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nettool
+  template:
+    metadata:
+      labels:
+        app: nettool
+    spec:
+      containers:
+        - name: nettool
+          image: praqma/network-multitool:latest   # ✅ 内置 curl、wget、telnet、ping、dig、nslookup、vi 等工具
+          imagePullPolicy: IfNotPresent
+          command: ["/bin/sh", "-c", "sleep infinity"]  # 保持容器长时间运行，方便临时进入
+          securityContext:
+            runAsUser: 0  # 使用 root 方便执行系统命令或编辑文件
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+      restartPolicy: Always

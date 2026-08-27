@@ -189,13 +189,14 @@ func GenerateNightWatchModels(g *gen.Generator) {
 	g.GenerateModelAs(
 		"nightwatch_cronjob",
 		"CronJobM",
+		gen.FieldRename("cronjob_id", "CronJobID"),
 		gen.FieldType("job_template", "*JobM"),
 		gen.FieldType("status", "CronJobStatus"),
 	)
 	g.GenerateModelAs(
 		"nightwatch_job",
 		"JobM",
-		//gen.FieldRename("cronJobID", "CronJobID"),
+		gen.FieldRename("cronjob_id", "CronJobID"),
 		gen.FieldType("params", "*JobParams"),
 		gen.FieldType("results", "*JobResults"),
 		gen.FieldType("conditions", "*JobConditions"),

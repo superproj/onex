@@ -1,8 +1,9 @@
 package validation
 
 import (
-	"github.com/google/wire"
 	"regexp"
+
+	"github.com/google/wire"
 
 	"github.com/onexstack/onex/internal/usercenter/store"
 	"github.com/onexstack/onex/pkg/api/errno"

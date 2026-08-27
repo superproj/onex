@@ -15,7 +15,6 @@ package gateway
 
 import (
 	"github.com/google/wire"
-	clientset "github.com/onexstack/onex/pkg/generated/clientset/versioned"
 	"github.com/onexstack/onexstack/pkg/db"
 	"github.com/onexstack/onexstack/pkg/server"
 	genericvalidation "github.com/onexstack/onexstack/pkg/validation"
@@ -27,6 +26,7 @@ import (
 	"github.com/onexstack/onex/internal/pkg/client/usercenter"
 	"github.com/onexstack/onex/internal/pkg/idempotent"
 	"github.com/onexstack/onex/internal/pkg/middleware/validate"
+	clientset "github.com/onexstack/onex/pkg/generated/clientset/versioned"
 )
 
 func InitializeWebServer(

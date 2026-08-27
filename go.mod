@@ -245,6 +245,7 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	golang.org/x/arch v0.12.0 // indirect
 	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c // indirect
+	golang.org/x/tools/go/packages/packagestest v0.1.1-deprecated // indirect
 	google.golang.org/genproto v0.0.0-20240401170217-c3f982113cda // indirect
 	gopkg.in/go-jose/go-jose.v2 v2.6.3 // indirect
 	gorm.io/datatypes v1.1.1-0.20230130040222-c43177d3cf8c // indirect

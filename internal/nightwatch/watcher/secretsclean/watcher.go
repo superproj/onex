@@ -19,15 +19,15 @@ import (
 	"github.com/onexstack/onex/internal/pkg/client/store"
 )
 
-var _ registry.Watcher = (*secretsCleanWatcher)(nil)
+var _ registry.Watcher = (*Watcher)(nil)
 
 // watcher implement.
-type secretsCleanWatcher struct {
+type Watcher struct {
 	store store.Interface
 }
 
 // Run runs the watcher.
-func (w *secretsCleanWatcher) Run() {
+func (w *Watcher) Run() {
 	ctx := context.Background()
 	_, secrets, err := w.store.UserCenter().Secret().List(ctx, nil)
 	if err != nil {
@@ -48,10 +48,10 @@ func (w *secretsCleanWatcher) Run() {
 }
 
 // SetAggregateConfig initializes the watcher for later execution.
-func (w *secretsCleanWatcher) SetAggregateConfig(config *watcher.AggregateConfig) {
+func (w *Watcher) SetAggregateConfig(config *watcher.AggregateConfig) {
 	w.store = config.AggregateStore
 }
 
 func init() {
-	registry.Register("secretsclean", &secretsCleanWatcher{})
+	registry.Register("secretsclean", &Watcher{})
 }

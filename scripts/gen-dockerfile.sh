@@ -76,13 +76,13 @@ ARG prod_image=BASE_IMAGE
 FROM golang:1.20 as builder
 WORKDIR /workspace
 
-# Run this with docker build --build-arg goproxy=$(go env GOPROXY) to override the goproxy
-ARG goproxy=https://proxy.golang.org
+# Run this with docker build --build-arg GOPROXY=$(go env GOPROXY) to override the GOPROXY
+ARG GOPROXY=https://proxy.golang.org
 ARG OS
 ARG ARCH
 
 # Run this with docker build.
-ENV GOPROXY=$goproxy
+ENV GOPROXY=$GOPROXY
 
 # Copy the Go Modules manifests
 COPY go.mod go.mod
