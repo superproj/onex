@@ -16,7 +16,7 @@ import (
 	"k8s.io/apiserver/pkg/registry/rest"
 	"k8s.io/kubernetes/pkg/printers"
 	printerstorage "k8s.io/kubernetes/pkg/printers/storage"
-	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
+	"sigs.k8s.io/structured-merge-diff/v6/fieldpath"
 
 	printersinternal "github.com/onexstack/onex/internal/pkg/printers/internalversion"
 	"github.com/onexstack/onex/internal/apiserver/registry/apps/miner"

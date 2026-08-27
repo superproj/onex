@@ -25,6 +25,7 @@ import (
 
 	"github.com/robfig/cron/v3"
 
+	apimachineryapivalidation "k8s.io/apimachinery/pkg/api/validation"
 	apimachineryvalidation "k8s.io/apimachinery/pkg/util/validation"
 	"k8s.io/apimachinery/pkg/util/validation/field"
 	api "k8s.io/kubernetes/pkg/apis/core"
@@ -37,7 +38,7 @@ import (
 // ValidateJob validates a Job and returns an ErrorList with any errors.
 func ValidateJob(job *batch.Job) field.ErrorList {
 	// Jobs and rcs have the same name validation
-	allErrs := apivalidation.ValidateObjectMeta(&job.ObjectMeta, true, apivalidation.ValidateReplicationControllerName, field.NewPath("metadata"))
+	allErrs := apivalidation.ValidateObjectMeta(&job.ObjectMeta, true, apimachineryapivalidation.NameIsDNSSubdomain, field.NewPath("metadata"))
 	allErrs = append(allErrs, ValidateJobSpec(&job.Spec, field.NewPath("spec"))...)
 	return allErrs
 }
@@ -95,7 +96,7 @@ func ValidateJobStatusUpdate(job, oldJob *batch.Job) field.ErrorList {
 // ValidateCronJobCreate validates a CronJob on creation and returns an ErrorList with any errors.
 func ValidateCronJobCreate(cronJob *batch.CronJob) field.ErrorList {
 	// CronJobs and rcs have the same name validation
-	allErrs := apivalidation.ValidateObjectMeta(&cronJob.ObjectMeta, true, apivalidation.ValidateReplicationControllerName, field.NewPath("metadata"))
+	allErrs := apivalidation.ValidateObjectMeta(&cronJob.ObjectMeta, true, apimachineryapivalidation.NameIsDNSSubdomain, field.NewPath("metadata"))
 	allErrs = append(allErrs, validateCronJobSpec(&cronJob.Spec, nil, field.NewPath("spec"))...)
 	if len(cronJob.ObjectMeta.Name) > apimachineryvalidation.DNS1035LabelMaxLength-11 {
 		// The cronjob controller appends a 11-character suffix to the cronjob (`-$TIMESTAMP`) when

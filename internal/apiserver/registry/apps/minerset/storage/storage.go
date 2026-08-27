@@ -25,7 +25,7 @@ import (
 	autoscalingvalidation "k8s.io/kubernetes/pkg/apis/autoscaling/validation"
 	"k8s.io/kubernetes/pkg/printers"
 	printerstorage "k8s.io/kubernetes/pkg/printers/storage"
-	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
+	"sigs.k8s.io/structured-merge-diff/v6/fieldpath"
 
 	printersinternal "github.com/onexstack/onex/internal/pkg/printers/internalversion"
 	"github.com/onexstack/onex/internal/apiserver/registry/apps/minerset"

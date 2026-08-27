@@ -13,6 +13,7 @@ import (
 	"k8s.io/apiserver/pkg/registry/generic"
 	"k8s.io/apiserver/pkg/registry/rest"
 	genericapiserver "k8s.io/apiserver/pkg/server"
+	"k8s.io/apiserver/pkg/util/proxy"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	api "k8s.io/kubernetes/pkg/apis/core"
 	configmapstore "k8s.io/kubernetes/pkg/registry/core/configmap/storage"
@@ -31,7 +32,8 @@ import (
 // LegacyRESTStorageProvider provides information needed to build RESTStorage for kubernetes core, but
 // does NOT implement the "normal" RESTStorageProvider (yet!)
 type LegacyRESTStorageProvider struct {
-	EventTTL time.Duration
+	EventTTL            time.Duration
+	EndpointSliceGetter proxy.EndpointSliceGetter
 }
 
 // NewLegacyRESTStorage is a factory constructor to creates and returns the APIGroupInfo.
@@ -64,7 +66,7 @@ func (p LegacyRESTStorageProvider) NewLegacyRESTStorage(restOptionsGetter generi
 		return genericapiserver.APIGroupInfo{}, err
 	}
 
-	serviceRESTStorage, serviceStatusStorage, serviceRESTProxy, err := servicestore.NewREST(restOptionsGetter, "", nil, nil, endpointsStorage, nil, nil)
+	serviceRESTStorage, serviceStatusStorage, serviceRESTProxy, err := servicestore.NewREST(restOptionsGetter, "", nil, nil, p.EndpointSliceGetter, nil, nil)
 	if err != nil {
 		return genericapiserver.APIGroupInfo{}, err
 	}

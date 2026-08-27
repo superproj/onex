@@ -8,14 +8,11 @@ package webhooks
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/distribution/reference"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/validation/field"
 	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/webhook"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 
 	known "github.com/onexstack/onex/internal/pkg/known/controllermanager"
@@ -26,25 +23,19 @@ import (
 type Chain struct{}
 
 var (
-	_ webhook.CustomDefaulter = &Chain{}
-	_ webhook.CustomValidator = &Chain{}
+	_ admission.Defaulter[*v1beta1.Chain] = &Chain{}
+	_ admission.Validator[*v1beta1.Chain] = &Chain{}
 )
 
 func (w *Chain) SetupWebhookWithManager(mgr ctrl.Manager) error {
-	return ctrl.NewWebhookManagedBy(mgr).
-		For(&v1beta1.Chain{}).
+	return ctrl.NewWebhookManagedBy(mgr, &v1beta1.Chain{}).
 		WithDefaulter(w).
 		WithValidator(w).
 		Complete()
 }
 
 // Default sets default Chain field values.
-func (w *Chain) Default(_ context.Context, obj runtime.Object) error {
-	ch, ok := obj.(*v1beta1.Chain)
-	if !ok {
-		return apierrors.NewBadRequest(fmt.Sprintf("expected a Chain but got a %T", obj))
-	}
-
+func (w *Chain) Default(_ context.Context, ch *v1beta1.Chain) error {
 	if ch.Labels == nil {
 		ch.Labels = make(map[string]string)
 	}
@@ -56,32 +47,18 @@ func (w *Chain) Default(_ context.Context, obj runtime.Object) error {
 	return nil
 }
 
-// ValidateCreate implements webhook.Validator so a webhook will be registered for the type.
-func (w *Chain) ValidateCreate(_ context.Context, obj runtime.Object) (admission.Warnings, error) {
-	ch, ok := obj.(*v1beta1.Chain)
-	if !ok {
-		return nil, apierrors.NewBadRequest(fmt.Sprintf("expected a Chain but got a %T", obj))
-	}
-
+// ValidateCreate implements admission.Validator so a webhook will be registered for the type.
+func (w *Chain) ValidateCreate(_ context.Context, ch *v1beta1.Chain) (admission.Warnings, error) {
 	return nil, w.validate(nil, ch)
 }
 
-// ValidateUpdate implements webhook.Validator so a webhook will be registered for the type.
-func (w *Chain) ValidateUpdate(_ context.Context, oldObj, newObj runtime.Object) (admission.Warnings, error) {
-	oldC, ok := oldObj.(*v1beta1.Chain)
-	if !ok {
-		return nil, apierrors.NewBadRequest(fmt.Sprintf("expected a Chain but got a %T", oldObj))
-	}
-	newC, ok := newObj.(*v1beta1.Chain)
-	if !ok {
-		return nil, apierrors.NewBadRequest(fmt.Sprintf("expected a Chain but got a %T", newObj))
-	}
-
+// ValidateUpdate implements admission.Validator so a webhook will be registered for the type.
+func (w *Chain) ValidateUpdate(_ context.Context, oldC, newC *v1beta1.Chain) (admission.Warnings, error) {
 	return nil, w.validate(oldC, newC)
 }
 
-// ValidateDelete implements webhook.Validator so a webhook will be registered for the type.
-func (w *Chain) ValidateDelete(_ context.Context, _ runtime.Object) (admission.Warnings, error) {
+// ValidateDelete implements admission.Validator so a webhook will be registered for the type.
+func (w *Chain) ValidateDelete(_ context.Context, _ *v1beta1.Chain) (admission.Warnings, error) {
 	return nil, nil
 }
 

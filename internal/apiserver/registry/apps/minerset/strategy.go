@@ -23,7 +23,7 @@ import (
 	"k8s.io/apiserver/pkg/storage"
 	"k8s.io/apiserver/pkg/storage/names"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
-	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
+	"sigs.k8s.io/structured-merge-diff/v6/fieldpath"
 
 	"github.com/onexstack/onex/pkg/apis/apps"
 	"github.com/onexstack/onex/pkg/apis/apps/validation"
@@ -103,7 +103,7 @@ func (minerSetStrategy) Canonicalize(obj runtime.Object) {
 }
 
 // AllowCreateOnUpdate is false for minersets.
-func (minerSetStrategy) AllowCreateOnUpdate() bool {
+func (minerSetStrategy) AllowCreateOnUpdate(ctx context.Context) bool {
 	return false
 }
 
@@ -139,7 +139,7 @@ func (minerSetStrategy) WarningsOnUpdate(ctx context.Context, obj, old runtime.O
 // populates it with the latest version. Else, it checks that the
 // version specified by the user matches the version of latest etcd
 // object.
-func (minerSetStrategy) AllowUnconditionalUpdate() bool {
+func (minerSetStrategy) AllowUnconditionalUpdate(ctx context.Context) bool {
 	return true
 }
 

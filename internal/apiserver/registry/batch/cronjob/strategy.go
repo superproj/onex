@@ -22,7 +22,7 @@ import (
 	"k8s.io/apiserver/pkg/storage"
 	"k8s.io/apiserver/pkg/storage/names"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
-	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
+	"sigs.k8s.io/structured-merge-diff/v6/fieldpath"
 
 	"github.com/onexstack/onex/pkg/apis/batch"
 	"github.com/onexstack/onex/pkg/apis/batch/validation"
@@ -102,7 +102,7 @@ func (cronJobStrategy) Canonicalize(obj runtime.Object) {
 }
 
 // AllowCreateOnUpdate is false for cronjobs.
-func (cronJobStrategy) AllowCreateOnUpdate() bool {
+func (cronJobStrategy) AllowCreateOnUpdate(ctx context.Context) bool {
 	return false
 }
 
@@ -138,7 +138,7 @@ func (cronJobStrategy) WarningsOnUpdate(ctx context.Context, obj, old runtime.Ob
 // populates it with the latest version. Else, it checks that the
 // version specified by the user matches the version of latest etcd
 // object.
-func (cronJobStrategy) AllowUnconditionalUpdate() bool {
+func (cronJobStrategy) AllowUnconditionalUpdate(ctx context.Context) bool {
 	return true
 }
 

@@ -28,6 +28,7 @@ import (
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/apiserver/pkg/admission"
 	genericapifilters "k8s.io/apiserver/pkg/endpoints/filters"
+	"k8s.io/apiserver/pkg/features"
 	"k8s.io/apiserver/pkg/reconcilers"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	genericoptions "k8s.io/apiserver/pkg/server/options"
@@ -35,6 +36,7 @@ import (
 	"k8s.io/apiserver/pkg/storage/storagebackend"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	"k8s.io/apiserver/pkg/util/notfoundhandler"
+	"k8s.io/apiserver/pkg/util/proxy"
 	"k8s.io/apiserver/pkg/util/webhook"
 	kubeinformers "k8s.io/client-go/informers"
 	"k8s.io/client-go/rest"
@@ -49,7 +51,6 @@ import (
 	"k8s.io/kube-openapi/pkg/common"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	api "k8s.io/kubernetes/pkg/apis/core"
-	"k8s.io/kubernetes/pkg/features"
 
 	"github.com/onexstack/onex/cmd/onex-apiserver/app/options"
 	"github.com/onexstack/onex/internal/controlplane"
@@ -352,23 +353,31 @@ func CreateOneXAPIServerConfig(opts options.CompletedOptions) (
 	}
 	*/
 
-	serviceResolver := buildServiceResolver(opts.EnableAggregatorRouting, genericConfig.LoopbackClientConfig.Host, kubeSharedInformers)
+	endpointSliceGetter, err := proxy.NewEndpointSliceIndexerGetter(kubeSharedInformers.Discovery().V1().EndpointSlices())
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to create endpoint slice getter: %w", err)
+	}
+
+	serviceResolver, err := buildServiceResolver(opts.EnableAggregatorRouting, genericConfig.LoopbackClientConfig.Host, kubeSharedInformers, endpointSliceGetter)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	return config, serviceResolver, nil
 }
 
 var testServiceResolver webhook.ServiceResolver
 
-func buildServiceResolver(enabledAggregatorRouting bool, hostname string, informer kubeinformers.SharedInformerFactory) webhook.ServiceResolver {
+func buildServiceResolver(enabledAggregatorRouting bool, hostname string, informer kubeinformers.SharedInformerFactory, endpointSliceGetter proxy.EndpointSliceGetter) (webhook.ServiceResolver, error) {
 	if testServiceResolver != nil {
-		return testServiceResolver
+		return testServiceResolver, nil
 	}
 
 	var serviceResolver webhook.ServiceResolver
 	if enabledAggregatorRouting {
 		serviceResolver = aggregatorapiserver.NewEndpointServiceResolver(
 			informer.Core().V1().Services().Lister(),
-			informer.Core().V1().Endpoints().Lister(),
+			endpointSliceGetter,
 		)
 	} else {
 		serviceResolver = aggregatorapiserver.NewClusterIPServiceResolver(
@@ -380,7 +389,7 @@ func buildServiceResolver(enabledAggregatorRouting bool, hostname string, inform
 	if localHost, err := url.Parse(hostname); err == nil {
 		serviceResolver = aggregatorapiserver.NewLoopbackServiceResolver(serviceResolver, localHost)
 	}
-	return serviceResolver
+	return serviceResolver, nil
 }
 
 // CreatePeerEndpointLeaseReconciler creates a apiserver endpoint lease reconciliation loop

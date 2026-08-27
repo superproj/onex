@@ -22,6 +22,7 @@ import (
 	serverstorage "k8s.io/apiserver/pkg/server/storage"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	utilpeerproxy "k8s.io/apiserver/pkg/util/peerproxy"
+	"k8s.io/apiserver/pkg/util/proxy"
 	kubeinformers "k8s.io/client-go/informers"
 	clientset "k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
@@ -206,6 +207,14 @@ func (m *Instance) InstallLegacyAPI(c *completedConfig, restOptionsGetter generi
 		// LoopbackClientConfig: c.GenericConfig.LoopbackClientConfig,
 		// Informers:            c.VersionedInformers,
 	}
+
+	// The service proxy needs an EndpointSliceGetter to resolve backend endpoints.
+	endpointSliceGetter, err := proxy.NewEndpointSliceListerGetter(
+		c.InternalVersionedInformers.Discovery().V1().EndpointSlices().Lister())
+	if err != nil {
+		return fmt.Errorf("error building endpoint slice getter: %w", err)
+	}
+	legacyRESTStorageProvider.EndpointSliceGetter = endpointSliceGetter
 
 	apiGroupInfo, err := legacyRESTStorageProvider.NewLegacyRESTStorage(restOptionsGetter)
 	if err != nil {

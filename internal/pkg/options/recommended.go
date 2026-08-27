@@ -107,7 +107,7 @@ func (o *RecommendedOptions) ApplyTo(config *genericapiserver.RecommendedConfig)
 	// NOTICE: Add custom initializers
 
 	if err := o.Admission.ApplyTo(&config.Config, config.SharedInformerFactory, kubeClient, dynamicClient, o.FeatureGate,
-		initializers...); err != nil {
+		config.Config.EffectiveVersion, initializers...); err != nil {
 		return err
 	}
 
