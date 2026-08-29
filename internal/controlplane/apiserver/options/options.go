@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -114,7 +115,11 @@ func NewOptions() *Options {
 	// the following three lines remove dependence with kube-apiserver
 	o.RecommendedOptions.Authorization = nil
 
-	o.RecommendedOptions.CoreAPI.CoreAPIKubeconfigPath = "$HOME/.onex/config"
+	// Use the default kubeconfig at $HOME/.onex/config, expanding the home directory
+	// so it can be used as a real filesystem path by the kubeconfig loader.
+	if home, err := os.UserHomeDir(); err == nil {
+		o.RecommendedOptions.CoreAPI.CoreAPIKubeconfigPath = filepath.Join(home, ".onex", "config")
+	}
 	if cfg := os.Getenv("ONEXCONFIG"); cfg != "" {
 		 o.RecommendedOptions.CoreAPI.CoreAPIKubeconfigPath = cfg
 	}
