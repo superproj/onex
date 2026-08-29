@@ -360,3 +360,4 @@ node_modules
 _book
 /test/data
 /test-scripts
+/cmd/onex-apiserver/onex-apiserver
