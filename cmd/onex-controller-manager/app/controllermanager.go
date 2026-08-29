@@ -54,6 +54,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	ctrlmetrics "sigs.k8s.io/controller-runtime/pkg/metrics"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
 	"github.com/onexstack/onex/cmd/onex-controller-manager/app/config"
@@ -214,7 +215,9 @@ func Run(ctx context.Context, c *config.CompletedConfig) error {
 	// Create a new Cmd to provide shared dependencies and start components
 	mgr, err := ctrl.NewManager(c.Kubeconfig, ctrl.Options{
 		Scheme: scheme,
-		// Metrics:                    c.ComponentConfig.Generic.MetricsBindAddress,
+		Metrics: metricsserver.Options{
+			BindAddress: c.ComponentConfig.Generic.MetricsBindAddress,
+		},
 		LeaderElection:             c.ComponentConfig.Generic.LeaderElection.LeaderElect,
 		LeaderElectionID:           c.ComponentConfig.Generic.LeaderElection.ResourceName,
 		LeaseDuration:              &c.ComponentConfig.Generic.LeaderElection.LeaseDuration.Duration,

@@ -42,7 +42,12 @@ func NewRecommendedOptions(prefix string, codec runtime.Codec) *RecommendedOptio
 // ApplyTo adds RecommendedOptions to the server configuration.
 // pluginInitializers can be empty, it is only need for additional initializers.
 func (o *RecommendedOptions) ApplyTo(config *genericapiserver.RecommendedConfig) error {
-	if err := o.Etcd.ApplyTo(&config.Config); err != nil {
+	// NOTICE: The etcd health endpoints are wired separately in
+	// controlplane/apiserver.BuildGenericConfig via Etcd.ApplyWithStorageFactoryTo,
+	// so skip them here to avoid double-registering /healthz/etcd and /livez/etcd.
+	etcdOptions := *o.Etcd
+	etcdOptions.SkipHealthEndpoints = true
+	if err := etcdOptions.ApplyTo(&config.Config); err != nil {
 		return err
 	}
 	if err := o.EgressSelector.ApplyTo(&config.Config); err != nil {

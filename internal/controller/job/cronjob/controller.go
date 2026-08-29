@@ -143,7 +143,6 @@ func (r *Reconciler) reconcile(ctx context.Context, cronJob *v1beta1.CronJob) (c
 
 	// 清理历史Job，可结合你之前的cleanupFinishedJobs逻辑
 	r.cleanupFinishedJobs(ctx, cronJob, childJobs)
-	fmt.Println("1111111111111111111111111111111111-1")
 
 	// 其它核心同步逻辑
 	res, err := r.syncCronJob(ctx, cronJob, childJobs)
@@ -189,7 +188,6 @@ func (r *Reconciler) cleanupFinishedJobs(ctx context.Context, cronJob *v1beta1.C
 
 func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, jobs []*v1beta1.Job) (ctrl.Result, error) {
 	now := r.now()
-	fmt.Println("1111111111111111111111111111111111-2")
 
 	childrenJobs := make(map[types.UID]bool)
 	for _, job := range jobs {
@@ -256,7 +254,6 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 	if !cronJob.DeletionTimestamp.IsZero() {
 		return ctrl.Result{}, nil
 	}
-	fmt.Println("1111111111111111111111111111111111-4")
 
 	log := ctrl.LoggerFrom(ctx)
 	if cronJob.Spec.TimeZone != nil {
@@ -267,7 +264,6 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 			return ctrl.Result{}, nil
 		}
 	}
-	fmt.Println("1111111111111111111111111111111111-5")
 
 	if cronJob.Spec.Suspend != nil && *cronJob.Spec.Suspend {
 		log.V(4).Info("Not starting job because the cron is suspended", "cronjob", klog.KObj(cronJob))
@@ -276,7 +272,6 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 
 	sched, err := cron.ParseStandard(formatSchedule(cronJob, r.recorder))
 	if err != nil {
-		fmt.Println("1111111111111111111111111111111111-5-2")
 		// this is likely a user error in defining the spec value
 		// we should log the error and not reconcile this cronjob until an update to spec
 		log.V(2).Info("Unparseable schedule", "cronjob", klog.KObj(cronJob), "schedule", cronJob.Spec.Schedule, "err", err)
@@ -301,13 +296,11 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 		t := nextScheduleTimeDuration(cronJob, now, sched)
 		return ctrl.Result{RequeueAfter: *t}, nil
 	}
-	fmt.Println("1111111111111111111111111111111111-6", scheduledTime)
 
 	tooLate := false
 	if cronJob.Spec.StartingDeadlineSeconds != nil {
 		tooLate = scheduledTime.Add(time.Second * time.Duration(*cronJob.Spec.StartingDeadlineSeconds)).Before(now)
 	}
-	fmt.Println("1111111111111111111111111111111111-7", scheduledTime)
 	if tooLate {
 		log.V(4).Info("Missed starting window", "cronjob", klog.KObj(cronJob))
 		r.recorder.Eventf(cronJob, corev1.EventTypeWarning, "MissSchedule", "Missed scheduled time to start a job: %s", scheduledTime.UTC().Format(time.RFC1123Z))
@@ -322,7 +315,6 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 		t := nextScheduleTimeDuration(cronJob, now, sched)
 		return ctrl.Result{RequeueAfter: *t}, nil
 	}
-	fmt.Println("1111111111111111111111111111111111-8", scheduledTime)
 	if inActiveListByName(cronJob, &v1beta1.Job{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      getJobName(cronJob, *scheduledTime),
@@ -333,7 +325,6 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 		t := nextScheduleTimeDuration(cronJob, now, sched)
 		return ctrl.Result{RequeueAfter: *t}, nil
 	}
-	fmt.Println("1111111111111111111111111111111111-9", scheduledTime)
 	if cronJob.Spec.ConcurrencyPolicy == v1beta1.ForbidConcurrent && len(cronJob.Status.Active) > 0 {
 		// Regardless which source of information we use for the set of active jobs,
 		// there is some risk that we won't see an active job when there is one.
@@ -349,7 +340,6 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 		t := nextScheduleTimeDuration(cronJob, now, sched)
 		return ctrl.Result{RequeueAfter: *t}, nil
 	}
-	fmt.Println("1111111111111111111111111111111111-10", scheduledTime)
 	if cronJob.Spec.ConcurrencyPolicy == v1beta1.ReplaceConcurrent {
 		for _, jr := range cronJob.Status.Active {
 			log.V(4).Info("Deleting job that was still running at next scheduled start time", "job", klog.KRef(jr.Namespace, jr.Name))
@@ -362,7 +352,6 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 			return ctrl.Result{}, fmt.Errorf("could not replace job %s/%s", job.Namespace, job.Name)
 		}
 	}
-	fmt.Println("1111111111111111111111111111111111-11", scheduledTime)
 
 	jobAlreadyExists := false
 	jobReq, err := getJobFromTemplate2(cronJob, *scheduledTime)
@@ -370,13 +359,10 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 		log.Error(err, "Unable to make Job from template", "cronjob", klog.KObj(cronJob))
 		return ctrl.Result{}, err
 	}
-	fmt.Println("1111111111111111111111111111111111-12", scheduledTime)
 
 	jobResp, err := r.jobControl.CreateJob(ctx, jobReq)
-	fmt.Println("1111111111111111111111111111111111-12-1", err)
 	switch {
 	case errors.HasStatusCause(err, corev1.NamespaceTerminatingCause):
-		fmt.Println("1111111111111111111111111111111111-13", err)
 		// if the namespace is being terminated, we don't have to do
 		// anything because any creation will fail
 		return ctrl.Result{}, err
@@ -388,11 +374,9 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 		jobAlreadyExists = true
 		job, err := r.jobControl.GetJob(ctx, jobReq.GetNamespace(), jobReq.GetName())
 		if err != nil {
-			fmt.Println("1111111111111111111111111111111111-14", scheduledTime, err)
 			return ctrl.Result{}, err
 		}
 		jobResp = job
-		fmt.Println("1111111111111111111111111111111111-15", scheduledTime)
 
 		// check that this job is owned by cronjob controller, otherwise do nothing and assume external controller
 		// is updating the status.
@@ -407,11 +391,9 @@ func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, 
 	case err != nil:
 		// default error handling
 		r.recorder.Eventf(cronJob, corev1.EventTypeWarning, "FailedCreate", "Error creating job: %v", err)
-		fmt.Println("1111111111111111111111111111111111-16", err)
 		return ctrl.Result{}, err
 	}
 
-	fmt.Println("1111111111111111111111111111111111-17", scheduledTime)
 	if jobAlreadyExists {
 		log.Info("Job already exists", "cronjob", klog.KObj(cronJob), "job", klog.KObj(jobReq))
 	} else {

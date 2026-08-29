@@ -91,7 +91,6 @@ func (o *GenericControllerManagerConfigurationOptions) ApplyTo(
 		}
 		cfg.Controllers[i] = controllerName
 	}
-	fmt.Println("111111111111111111111111-999", cfg.Controllers)
 
 	return nil
 }

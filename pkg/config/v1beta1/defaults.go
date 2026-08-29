@@ -54,6 +54,11 @@ func RecommendedDefaultGenericControllerManagerConfiguration(obj *GenericControl
 		obj.SyncPeriod = metav1.Duration{Duration: 10 * time.Hour}
 	}
 
+	// Enable all on-by-default controllers by default.
+	if len(obj.Controllers) == 0 {
+		obj.Controllers = []string{"*"}
+	}
+
 	// Use lease-based leader election to reduce cost.
 	obj.LeaderElection.ResourceLock = "leases"
 	if len(obj.LeaderElection.ResourceNamespace) == 0 {
