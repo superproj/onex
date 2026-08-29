@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{--c:#0ea5e9;--c2:#e0f2fe;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1440px;height:900px;background:#eef1f6;font-family:-apple-system,"PingFang SC","Segoe UI",system-ui,sans-serif;position:relative;overflow:hidden}
+  .hdr{position:absolute;top:0;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:14px;padding:0 28px}
+  .num{width:38px;height:38px;border-radius:10px;background:var(--c);color:#fff;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center}
+  .hdr .en{font-size:21px;font-weight:800;color:#0f172a}
+  .hdr .cn{font-size:15px;color:#64748b;margin-left:2px}
+  .hdr .sub{margin-left:auto;font-size:12.5px;color:#94a3b8}
+  .el{position:absolute;background:#fff;border:1.6px solid #cbd5e1;border-radius:10px}
+  .lbl{position:absolute;top:-15px;left:10px;background:var(--c);color:#fff;padding:3px 9px;border-radius:7px;font-size:12.5px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:3}
+  .lbl .cn{font-weight:500;opacity:.92;margin-left:4px;font-size:11px}
+  .lbl.dk{background:#334155}
+  .crumb span{font-size:14px;color:#64748b}
+  .crumb b{color:#0f172a;font-weight:700}
+</style>
+</head>
+<body>
+  <div class="hdr">
+    <div class="num">2</div>
+    <div><span class="en">Navigation &amp; Path</span><span class="cn">导航与路径</span></div>
+    <div class="sub">Navbar · Menu · Submenu · Breadcrumb · Tabs · Pagination · Steps · BackTop · Anchor</div>
+  </div>
+
+  <!-- Navbar -->
+  <div class="el" style="left:16px;top:80px;width:1408px;height:54px">
+    <div class="lbl">Navbar <span class="cn">导航栏</span></div>
+    <div style="position:absolute;left:20px;top:14px;width:80px;height:26px;background:var(--c);border-radius:6px"></div>
+    <div style="position:absolute;left:120px;top:21px;width:60px;height:12px;background:#e2e8f0;border-radius:4px"></div>
+    <div style="position:absolute;left:196px;top:21px;width:60px;height:12px;background:#e2e8f0;border-radius:4px"></div>
+    <div style="position:absolute;left:272px;top:21px;width:60px;height:12px;background:#e2e8f0;border-radius:4px"></div>
+    <div style="position:absolute;left:348px;top:21px;width:60px;height:12px;background:#e2e8f0;border-radius:4px"></div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="el" style="left:16px;top:148px;width:780px;height:46px">
+    <div class="lbl">Breadcrumb <span class="cn">面包屑导航</span></div>
+    <div class="crumb" style="padding:15px 18px">
+      <span>首页</span><span style="margin:0 8px;color:#cbd5e1">/</span><span>设置</span><span style="margin:0 8px;color:#cbd5e1">/</span><b>个人资料</b>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="el" style="left:16px;top:206px;width:780px;height:54px">
+    <div class="lbl">Tabs <span class="cn">标签页</span></div>
+    <div style="position:absolute;left:16px;top:16px;width:120px;height:30px;border-bottom:3px solid var(--c);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--c)">标签一</div>
+    <div style="position:absolute;left:150px;top:20px;width:80px;height:12px;background:#e2e8f0;border-radius:4px"></div>
+    <div style="position:absolute;left:244px;top:20px;width:80px;height:12px;background:#e2e8f0;border-radius:4px"></div>
+  </div>
+
+  <!-- Steps -->
+  <div class="el" style="left:16px;top:272px;width:780px;height:92px">
+    <div class="lbl">Steps / Stepper <span class="cn">步骤条</span></div>
+    <div style="position:absolute;top:36px;left:90px;right:60px;height:2px;background:#e2e8f0"></div>
+    <div style="position:absolute;top:36px;left:90px;width:46%;height:2px;background:var(--c)"></div>
+    <div style="position:absolute;top:28px;left:80px;width:22px;height:22px;border-radius:50%;background:var(--c);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:700">1</div>
+    <div style="position:absolute;top:28px;left:320px;width:22px;height:22px;border-radius:50%;background:var(--c);color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:700">2</div>
+    <div style="position:absolute;top:28px;left:560px;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #cbd5e1;font-size:12px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-weight:700">3</div>
+    <div style="position:absolute;top:28px;left:700px;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #cbd5e1;font-size:12px;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-weight:700">4</div>
+    <div style="position:absolute;top:58px;left:66px;width:60px;height:10px;background:#e2e8f0;border-radius:4px"></div>
+    <div style="position:absolute;top:58px;left:306px;width:60px;height:10px;background:#e2e8f0;border-radius:4px"></div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="el" style="left:16px;top:376px;width:780px;height:62px">
+    <div class="lbl">Pagination <span class="cn">分页器</span></div>
+    <div style="position:absolute;left:18px;top:20px;width:70px;height:28px;border:1px solid #cbd5e1;border-radius:6px;color:#94a3b8;font-size:13px;display:flex;align-items:center;justify-content:center">上一页</div>
+    <div style="position:absolute;left:98px;top:20px;width:28px;height:28px;border:1px solid #cbd5e1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#475569">1</div>
+    <div style="position:absolute;left:134px;top:20px;width:28px;height:28px;border-radius:6px;background:var(--c);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700">2</div>
+    <div style="position:absolute;left:170px;top:20px;width:28px;height:28px;border:1px solid #cbd5e1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#475569">3</div>
+    <div style="position:absolute;left:206px;top:24px;color:#94a3b8">…</div>
+    <div style="position:absolute;left:232px;top:20px;width:28px;height:28px;border:1px solid #cbd5e1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#475569">9</div>
+    <div style="position:absolute;left:270px;top:20px;width:70px;height:28px;border:1px solid #cbd5e1;border-radius:6px;color:#475569;font-size:13px;display:flex;align-items:center;justify-content:center">下一页</div>
+  </div>
+
+  <!-- Menu with Submenu -->
+  <div class="el" style="left:824px;top:148px;width:400px;height:420px;background:#fbfcfe">
+    <div class="lbl">Menu / NavMenu <span class="cn">菜单 · 导航菜单</span></div>
+    <div style="margin:34px 14px 0;height:34px;background:#fff;border:1px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#475569">📄 首页</div>
+    <div style="margin:8px 14px 0;height:34px;background:#fff;border:1px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#475569">📊 数据报表</div>
+    <div style="margin:8px 14px 0;height:34px;background:var(--c2);border:1px solid #7dd3fc;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:13px;font-weight:700;color:#0369a1">⚙️ 系统设置 ▾</div>
+    <!-- submenu -->
+    <div class="el" style="left:150px;top:168px;width:236px;height:150px;background:#fff">
+      <div class="lbl">Submenu <span class="cn">子菜单</span></div>
+      <div style="margin:30px 12px 0;height:28px;background:#f8fafc;border-radius:5px;display:flex;align-items:center;padding:0 12px;font-size:12.5px;color:#475569">用户管理</div>
+      <div style="margin:6px 12px 0;height:28px;background:#f8fafc;border-radius:5px;display:flex;align-items:center;padding:0 12px;font-size:12.5px;color:#475569">角色权限</div>
+      <div style="margin:6px 12px 0;height:28px;background:var(--c2);border-radius:5px;display:flex;align-items:center;padding:0 12px;font-size:12.5px;font-weight:700;color:#0369a1">个人资料</div>
+    </div>
+  </div>
+
+  <!-- Anchor -->
+  <div class="el" style="left:1240px;top:148px;width:184px;height:280px">
+    <div class="lbl">Anchor <span class="cn">锚点</span></div>
+    <div style="margin:32px 14px 0;height:22px;font-size:12.5px;color:var(--c);font-weight:700;border-left:2px solid var(--c);padding-left:8px">基本设置</div>
+    <div style="margin:10px 14px 0;height:22px;font-size:12.5px;color:#64748b;padding-left:10px">安全设置</div>
+    <div style="margin:10px 14px 0;height:22px;font-size:12.5px;color:#64748b;padding-left:10px">通知设置</div>
+    <div style="margin:10px 14px 0;height:22px;font-size:12.5px;color:#64748b;padding-left:10px">账号绑定</div>
+  </div>
+
+  <!-- BackTop -->
+  <div style="position:absolute;left:1296px;top:600px;width:54px;height:54px;border-radius:50%;background:#fff;border:1.6px solid #cbd5e1;display:flex;align-items:center;justify-content:center;font-size:20px;color:#475569;box-shadow:0 2px 8px rgba(0,0,0,.12)">
+    ↑
+    <div class="lbl" style="top:16px;left:-140px">BackTop / Scroll to Top <span class="cn">回到顶部</span></div>
+  </div>
+</body>
+</html>

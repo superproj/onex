@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{--c:#f43f5e;--c2:#ffe4e6;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1440px;height:900px;background:#eef1f6;font-family:-apple-system,"PingFang SC","Segoe UI",system-ui,sans-serif;position:relative;overflow:hidden}
+  .hdr{position:absolute;top:0;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:14px;padding:0 28px;z-index:20}
+  .num{width:38px;height:38px;border-radius:10px;background:var(--c);color:#fff;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center}
+  .hdr .en{font-size:21px;font-weight:800;color:#0f172a}
+  .hdr .cn{font-size:15px;color:#64748b;margin-left:2px}
+  .hdr .sub{margin-left:auto;font-size:12.5px;color:#94a3b8}
+  .el{position:absolute;background:#fff;border:1.6px solid #cbd5e1;border-radius:10px}
+  .lbl{position:absolute;top:-15px;left:10px;background:var(--c);color:#fff;padding:3px 9px;border-radius:7px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:8}
+  .lbl .cn{font-weight:500;opacity:.95;margin-left:4px;font-size:10.5px}
+  .lbl.dk{background:#334155}
+  .ln{background:#e2e8f0;border-radius:3px;position:absolute}
+</style>
+</head>
+<body>
+  <div class="hdr">
+    <div class="num">5</div>
+    <div><span class="en">Feedback &amp; Overlays</span><span class="cn">反馈与弹出层</span></div>
+    <div class="sub">Modal · Drawer · Popover · Tooltip · Toast · Alert · Notification · Progress · Spinner · Skeleton · Backdrop</div>
+  </div>
+
+  <!-- Alert (static banner) -->
+  <div class="el" style="left:16px;top:80px;width:1408px;height:52px;background:#fff7ed;border-color:#fdba74;display:flex;align-items:center;padding:0 16px;gap:10px">
+    <div class="lbl" style="top:-15px;left:10px;background:#f97316">Alert <span class="cn">警告提示框（常驻静态）</span></div>
+    <span style="color:#ea580c">⚠️</span><span style="font-size:13px;color:#9a3412">这是一个静态警告提示条，常驻在页面顶部。</span>
+  </div>
+
+  <!-- Toast -->
+  <div style="position:absolute;left:560px;top:150px;width:320px;height:44px;background:#0f172a;border-radius:8px;display:flex;align-items:center;gap:10px;padding:0 16px;color:#fff;box-shadow:0 8px 20px rgba(15,23,42,.25)">
+    <span>✅</span><span style="font-size:13px">保存成功</span>
+    <div class="lbl" style="top:-15px;left:10px;background:#0f172a">Toast / Message / Snack Bar <span class="cn">轻提示 · 消息条</span></div>
+  </div>
+
+  <!-- Notification -->
+  <div class="el" style="left:1180px;top:150px;width:244px;height:100px;box-shadow:0 8px 20px rgba(0,0,0,.12)">
+    <div class="lbl">Notification / Notice <span class="cn">通知提醒（右上滑出）</span></div>
+    <div style="position:absolute;left:14px;top:28px;width:30px;height:30px;border-radius:8px;background:var(--c2);display:flex;align-items:center;justify-content:center">🔔</div>
+    <div style="position:absolute;left:54px;top:28px;font-size:13px;font-weight:700;color:#0f172a">新消息提醒</div>
+    <div class="ln" style="left:54px;top:50px;width:160px;height:8px"></div>
+    <div style="position:absolute;right:12px;top:26px;color:#94a3b8;font-size:14px">✕</div>
+  </div>
+
+  <!-- Backdrop -->
+  <div style="position:absolute;left:430px;top:120px;width:720px;height:560px;background:rgba(15,23,42,.10);border:2px dashed #f43f5e;border-radius:14px">
+    <div class="lbl dk" style="top:-15px;left:10px">Backdrop / Mask / Overlay <span class="cn">遮罩层 · 蒙层</span></div>
+  </div>
+
+  <!-- Modal -->
+  <div class="el" style="left:470px;top:200px;width:640px;height:360px;box-shadow:0 16px 48px rgba(15,23,42,.3);z-index:5">
+    <div class="lbl">Modal / Dialog <span class="cn">模态框 · 对话框</span></div>
+    <div style="position:absolute;left:0;right:0;top:0;height:48px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;padding:0 18px;font-size:15px;font-weight:800;color:#0f172a">确认删除？<span style="margin-left:auto;color:#94a3b8;font-weight:400;font-size:15px">✕</span></div>
+    <div class="ln" style="left:18px;top:72px;width:560px;height:10px"></div>
+    <div class="ln" style="left:18px;top:92px;width:480px;height:10px"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;height:64px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:0 18px">
+      <div style="width:90px;height:34px;border:1.6px solid #cbd5e1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#475569">取消</div>
+      <div style="width:90px;height:34px;background:var(--c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;font-weight:700">删除</div>
+    </div>
+  </div>
+
+  <!-- Drawer -->
+  <div class="el" style="left:1240px;top:280px;width:184px;height:480px;border-radius:12px 0 0 12px;box-shadow:-8px 0 24px rgba(15,23,42,.15);z-index:5">
+    <div class="lbl">Drawer / Off-canvas <span class="cn">抽屉（边缘滑出）</span></div>
+    <div style="position:absolute;left:0;right:0;top:0;height:44px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;padding:0 14px;font-size:14px;font-weight:800;color:#0f172a">抽屉面板</div>
+    <div class="ln" style="left:14px;top:62px;width:140px;height:10px"></div>
+    <div class="ln" style="left:14px;top:82px;width:120px;height:10px"></div>
+    <div class="ln" style="left:14px;top:102px;width:150px;height:10px"></div>
+  </div>
+
+  <!-- Tooltip -->
+  <div style="position:absolute;left:50px;top:140px;width:170px;height:44px;background:#0f172a;border-radius:7px;color:#fff;font-size:12.5px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(15,23,42,.25)">
+    这是文字提示
+    <div style="position:absolute;left:50%;bottom:-6px;width:12px;height:12px;background:#0f172a;transform:rotate(45deg)"></div>
+    <div class="lbl" style="top:-15px;left:10px;background:#0f172a">Tooltip <span class="cn">文字提示</span></div>
+  </div>
+  <div style="position:absolute;left:70px;top:200px;width:130px;height:38px;background:#fff;border:1.6px solid #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#475569">悬停触发按钮</div>
+
+  <!-- Popover -->
+  <div style="position:absolute;left:70px;top:296px;width:130px;height:38px;background:#fff;border:1.6px solid #cbd5e1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#475569">点击触发按钮</div>
+  <div class="el" style="left:150px;top:300px;width:270px;height:160px;box-shadow:0 12px 32px rgba(15,23,42,.18);z-index:6">
+    <div class="lbl">Popover <span class="cn">气泡卡片</span></div>
+    <div style="position:absolute;left:16px;top:32px;font-size:13px;font-weight:700;color:#0f172a">富内容气泡卡片</div>
+    <div class="ln" style="left:16px;top:56px;width:230px;height:9px"></div>
+    <div class="ln" style="left:16px;top:74px;width:200px;height:9px"></div>
+    <div style="position:absolute;left:16px;top:100px;width:80px;height:28px;background:var(--c);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700">确定</div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div style="position:absolute;left:60px;top:512px">
+    <div class="lbl" style="top:-15px;left:0">Progress Bar <span class="cn">进度条</span></div>
+    <div style="width:340px;height:12px;background:#e2e8f0;border-radius:6px;margin-top:8px"><div style="width:70%;height:12px;background:var(--c);border-radius:6px"></div></div>
+    <div style="font-size:12px;color:#64748b;margin-top:6px">70%</div>
+  </div>
+
+  <!-- Progress Circle -->
+  <div style="position:absolute;left:60px;top:600px">
+    <div class="lbl" style="top:-15px;left:0">Progress Circle <span class="cn">环形进度条</span></div>
+    <svg width="64" height="64" style="margin-top:6px"><circle cx="32" cy="32" r="26" fill="none" stroke="#e2e8f0" stroke-width="9"/><circle cx="32" cy="32" r="26" fill="none" stroke="#f43f5e" stroke-width="9" stroke-dasharray="114 50" stroke-linecap="round" transform="rotate(-90 32 32)"/></svg>
+  </div>
+
+  <!-- Spinner -->
+  <div style="position:absolute;left:170px;top:600px">
+    <div class="lbl" style="top:-15px;left:0">Spinner / Loader <span class="cn">加载动画</span></div>
+    <svg width="56" height="56" style="margin-top:6px"><circle cx="28" cy="28" r="20" fill="none" stroke="#fecdd3" stroke-width="6"/><path d="M28 8 a20 20 0 0 1 20 20" fill="none" stroke="#f43f5e" stroke-width="6" stroke-linecap="round"/></svg>
+  </div>
+
+  <!-- Skeleton Screen -->
+  <div class="el" style="left:60px;top:700px;width:380px;height:110px;background:#fafbfc">
+    <div class="lbl dk">Skeleton Screen <span class="cn">骨架屏</span></div>
+    <div style="position:absolute;left:16px;top:34px;width:44px;height:44px;border-radius:50%;background:#e2e8f0"></div>
+    <div style="position:absolute;left:72px;top:34px;width:220px;height:14px;background:#e2e8f0;border-radius:4px"></div>
+    <div style="position:absolute;left:72px;top:56px;width:160px;height:12px;background:#e2e8f0;border-radius:4px"></div>
+    <div style="position:absolute;left:16px;top:88px;width:340px;height:12px;background:#e2e8f0;border-radius:4px"></div>
+  </div>
+</body>
+</html>

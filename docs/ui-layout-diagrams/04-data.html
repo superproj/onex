@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{--c:#f59e0b;--c2:#fef3c7;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1440px;height:900px;background:#eef1f6;font-family:-apple-system,"PingFang SC","Segoe UI",system-ui,sans-serif;position:relative;overflow:hidden}
+  .hdr{position:absolute;top:0;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:14px;padding:0 28px}
+  .num{width:38px;height:38px;border-radius:10px;background:var(--c);color:#fff;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center}
+  .hdr .en{font-size:21px;font-weight:800;color:#0f172a}
+  .hdr .cn{font-size:15px;color:#64748b;margin-left:2px}
+  .hdr .sub{margin-left:auto;font-size:12.5px;color:#94a3b8}
+  .el{position:absolute;background:#fff;border:1.6px solid #cbd5e1;border-radius:10px}
+  .lbl{position:absolute;top:-15px;left:10px;background:var(--c);color:#fff;padding:3px 9px;border-radius:7px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:3}
+  .lbl .cn{font-weight:500;opacity:.95;margin-left:4px;font-size:10.5px}
+  .lbl.dk{background:#334155}
+  .ln{background:#e2e8f0;border-radius:3px;position:absolute}
+</style>
+</head>
+<body>
+  <div class="hdr">
+    <div class="num">4</div>
+    <div><span class="en">Data &amp; Content Display</span><span class="cn">数据与内容展示</span></div>
+    <div class="sub">Card · Table · List · Avatar · Badge · Tag · Accordion · Carousel · Timeline · Tree · Empty State</div>
+  </div>
+
+  <!-- Card -->
+  <div class="el" style="left:16px;top:80px;width:400px;height:196px;overflow:hidden">
+    <div class="lbl">Card <span class="cn">卡片</span></div>
+    <div style="height:78px;background:linear-gradient(135deg,#fde68a,#fbbf24)"></div>
+    <div class="ln" style="left:14px;top:92px;width:200px;height:12px;background:#475569"></div>
+    <div class="ln" style="left:14px;top:112px;width:340px;height:9px"></div>
+    <div class="ln" style="left:14px;top:128px;width:300px;height:9px"></div>
+    <div style="position:absolute;left:14px;top:148px;padding:2px 8px;background:#fff7ed;border:1px solid #fdba74;border-radius:4px;font-size:10.5px;color:#c2410c">Tag · 标签</div>
+  </div>
+
+  <!-- List -->
+  <div class="el" style="left:432px;top:80px;width:420px;height:196px">
+    <div class="lbl">List / List Item <span class="cn">列表 · 列表项</span></div>
+    <div style="position:absolute;left:14px;top:32px;width:392px;height:44px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:10px">
+      <div style="width:32px;height:32px;border-radius:50%;background:#fcd34d"></div>
+      <div><div class="ln" style="width:140px;height:9px"></div><div class="ln" style="width:90px;height:8px;top:18px"></div></div>
+      <div style="margin-left:auto;min-width:20px;height:20px;background:#ef4444;border-radius:10px;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;padding:0 6px">3</div>
+    </div>
+    <div style="position:absolute;left:14px;top:82px;width:392px;height:44px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;gap:10px">
+      <div style="width:32px;height:32px;border-radius:50%;background:#a5b4fc"></div>
+      <div><div class="ln" style="width:120px;height:9px"></div><div class="ln" style="width:80px;height:8px;top:18px"></div></div>
+    </div>
+    <div style="position:absolute;left:14px;top:132px;width:392px;height:44px;display:flex;align-items:center;gap:10px">
+      <div style="width:32px;height:32px;border-radius:50%;background:#86efac"></div>
+      <div><div class="ln" style="width:150px;height:9px"></div><div class="ln" style="width:100px;height:8px;top:18px"></div></div>
+    </div>
+  </div>
+
+  <!-- Carousel -->
+  <div class="el" style="left:868px;top:80px;width:556px;height:196px;overflow:hidden">
+    <div class="lbl">Carousel / Slider / Swiper <span class="cn">轮播图 · 走马灯</span></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,#e0e7ff,#ddd6fe)"></div>
+    <div style="position:absolute;left:20px;top:40px;width:240px;height:16px;background:#6366f1;border-radius:4px;opacity:.8"></div>
+    <div style="position:absolute;left:20px;top:64px;width:180px;height:10px;background:#818cf8;border-radius:4px;opacity:.6"></div>
+    <div style="position:absolute;left:16px;top:86px;width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;color:#475569">‹</div>
+    <div style="position:absolute;right:16px;top:86px;width:28px;height:28px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;color:#475569">›</div>
+    <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:12px;display:flex;gap:6px">
+      <div style="width:8px;height:8px;border-radius:50%;background:#6366f1"></div>
+      <div style="width:8px;height:8px;border-radius:50%;background:#c7d2fe"></div>
+      <div style="width:8px;height:8px;border-radius:50%;background:#c7d2fe"></div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="el" style="left:16px;top:292px;width:660px;height:240px">
+    <div class="lbl">Table <span class="cn">表格</span></div>
+    <div style="position:absolute;left:14px;top:32px;width:632px;height:34px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px 6px 0 0;display:flex;align-items:center">
+      <div style="flex:1.4;padding-left:12px;font-size:12px;font-weight:700;color:#475569">姓名</div>
+      <div style="flex:1;font-size:12px;font-weight:700;color:#475569">部门</div>
+      <div style="flex:1;font-size:12px;font-weight:700;color:#475569">状态</div>
+    </div>
+    <div style="position:absolute;left:14px;top:66px;width:632px;height:40px;border:1px solid #e2e8f0;border-top:none;display:flex;align-items:center">
+      <div style="flex:1.4;padding-left:12px;font-size:12px;color:#475569">张三</div>
+      <div style="flex:1;font-size:12px;color:#64748b">研发部</div>
+      <div style="flex:1"><span style="font-size:11px;color:#059669;background:#d1fae5;padding:2px 8px;border-radius:10px">在职</span></div>
+    </div>
+    <div style="position:absolute;left:14px;top:106px;width:632px;height:40px;border:1px solid #e2e8f0;border-top:none;display:flex;align-items:center">
+      <div style="flex:1.4;padding-left:12px;font-size:12px;color:#475569">李四</div>
+      <div style="flex:1;font-size:12px;color:#64748b">产品部</div>
+      <div style="flex:1"><span style="font-size:11px;color:#059669;background:#d1fae5;padding:2px 8px;border-radius:10px">在职</span></div>
+    </div>
+    <div style="position:absolute;left:14px;top:146px;width:632px;height:40px;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 6px 6px;display:flex;align-items:center">
+      <div style="flex:1.4;padding-left:12px;font-size:12px;color:#475569">王五</div>
+      <div style="flex:1;font-size:12px;color:#64748b">市场部</div>
+      <div style="flex:1"><span style="font-size:11px;color:#b45309;background:#fef3c7;padding:2px 8px;border-radius:10px">离职</span></div>
+    </div>
+    <div style="position:absolute;left:14px;top:196px;width:632px;height:28px;display:flex;align-items:center;justify-content:flex-end;font-size:11px;color:#94a3b8">共 3 条 · 每页 10 条</div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="el" style="left:692px;top:292px;width:360px;height:240px">
+    <div class="lbl">Timeline <span class="cn">时间线</span></div>
+    <div style="position:absolute;left:44px;top:40px;bottom:26px;width:2px;background:#e2e8f0"></div>
+    <div style="position:absolute;left:38px;top:38px;width:14px;height:14px;border-radius:50%;background:var(--c)"></div>
+    <div style="position:absolute;left:38px;top:96px;width:14px;height:14px;border-radius:50%;background:var(--c)"></div>
+    <div style="position:absolute;left:38px;top:154px;width:14px;height:14px;border-radius:50%;background:#cbd5e1"></div>
+    <div style="position:absolute;left:66px;top:34px"><div style="font-size:11px;color:#94a3b8">08-01</div><div class="ln" style="width:170px;height:10px;top:20px;background:#475569"></div></div>
+    <div style="position:absolute;left:66px;top:92px"><div style="font-size:11px;color:#94a3b8">08-15</div><div class="ln" style="width:150px;height:10px;top:20px"></div></div>
+    <div style="position:absolute;left:66px;top:150px"><div style="font-size:11px;color:#94a3b8">08-28</div><div class="ln" style="width:130px;height:10px;top:20px"></div></div>
+  </div>
+
+  <!-- Tree -->
+  <div class="el" style="left:1068px;top:292px;width:356px;height:240px">
+    <div class="lbl">Tree <span class="cn">树形控件</span></div>
+    <div style="position:absolute;left:16px;top:40px;font-size:13px;color:#475569">▼ 📁 项目目录</div>
+    <div style="position:absolute;left:36px;top:72px;font-size:13px;color:#475569">▼ 📁 src</div>
+    <div style="position:absolute;left:58px;top:104px;font-size:13px;color:#475569">📄 main.go</div>
+    <div style="position:absolute;left:58px;top:132px;font-size:13px;color:#475569">📄 server.go</div>
+    <div style="position:absolute;left:36px;top:162px;font-size:13px;color:#475569">▶ 📁 pkg</div>
+    <div style="position:absolute;left:36px;top:192px;font-size:13px;color:#475569">📄 go.mod</div>
+  </div>
+
+  <!-- Accordion -->
+  <div class="el" style="left:16px;top:548px;width:400px;height:220px">
+    <div class="lbl">Accordion / Collapse <span class="cn">手风琴 · 折叠面板</span></div>
+    <div style="position:absolute;left:14px;top:32px;width:372px;height:40px;border:1px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:13px;font-weight:700;color:#475569">展开项 ▾</div>
+    <div style="position:absolute;left:14px;top:76px;width:372px;height:64px;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:10px 12px">
+      <div class="ln" style="width:300px;height:9px"></div>
+      <div class="ln" style="width:260px;height:9px;top:26px"></div>
+    </div>
+    <div style="position:absolute;left:14px;top:148px;width:372px;height:40px;border:1px solid #e2e8f0;border-radius:6px;display:flex;align-items:center;padding:0 12px;font-size:13px;color:#64748b">折叠项 ▸</div>
+  </div>
+
+  <!-- Avatar / Badge / Tag -->
+  <div class="el" style="left:432px;top:548px;width:420px;height:220px">
+    <div class="lbl">Avatar · Badge · Tag <span class="cn">头像 · 徽标 · 标签</span></div>
+    <div class="lbl" style="top:40px;left:20px;font-size:10.5px;background:#f97316">Avatar <span class="cn">头像</span></div>
+    <div style="position:absolute;left:20px;top:68px;width:44px;height:44px;border-radius:50%;background:#fcd34d;display:flex;align-items:center;justify-content:center;color:#92400e;font-weight:700">张</div>
+    <div style="position:absolute;left:76px;top:68px;width:44px;height:44px;border-radius:50%;background:#a5b4fc;display:flex;align-items:center;justify-content:center;color:#3730a3;font-weight:700">李</div>
+    <div style="position:absolute;left:132px;top:68px;width:44px;height:44px;border-radius:50%;background:#86efac;display:flex;align-items:center;justify-content:center;color:#166534;font-weight:700">王</div>
+
+    <div class="lbl" style="top:40px;left:210px;font-size:10.5px;background:#f43f5e">Badge <span class="cn">徽标 · 红点</span></div>
+    <div style="position:absolute;left:230px;top:66px;font-size:22px">🔔
+      <span style="position:absolute;top:-2px;right:-6px;width:10px;height:10px;background:#ef4444;border-radius:50%;border:2px solid #fff"></span>
+    </div>
+    <div style="position:absolute;left:290px;top:72px;min-width:24px;height:24px;background:#ef4444;border-radius:12px;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 8px">99+</div>
+
+    <div class="lbl" style="top:126px;left:20px;font-size:10.5px;background:#14b8a6">Tag / Chip <span class="cn">标签 · 纸片</span></div>
+    <div style="position:absolute;left:20px;top:156px;display:flex;gap:8px;align-items:center">
+      <span style="font-size:12px;padding:3px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:12px;color:#475569">默认</span>
+      <span style="font-size:12px;padding:3px 10px;background:#d1fae5;border:1px solid #a7f3d0;border-radius:12px;color:#065f46">成功</span>
+      <span style="font-size:12px;padding:3px 10px;background:#fee2e2;border:1px solid #fecaca;border-radius:12px;color:#b91c1c">失败 ✕</span>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="el" style="left:868px;top:548px;width:556px;height:220px;border-style:dashed;border-color:#cbd5e1;background:#fafbfc">
+    <div class="lbl dk">Empty State <span class="cn">空状态 · 无数据占位</span></div>
+    <div style="position:absolute;left:50%;transform:translateX(-50%);top:56px;width:64px;height:64px;border-radius:50%;background:#f1f5f9;display:flex;align-items:center;justify-content:center;color:#cbd5e1;font-size:30px">📭</div>
+    <div style="position:absolute;left:0;right:0;top:130px;text-align:center;font-size:14px;color:#64748b">暂无数据</div>
+    <div style="position:absolute;left:50%;transform:translateX(-50%);top:156px;width:96px;height:30px;border:1.6px solid var(--c);border-radius:6px;color:#b45309;font-size:13px;display:flex;align-items:center;justify-content:center">立即创建</div>
+  </div>
+</body>
+</html>

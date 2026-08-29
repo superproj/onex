@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{--c:#10b981;--c2:#d1fae5;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1440px;height:900px;background:#eef1f6;font-family:-apple-system,"PingFang SC","Segoe UI",system-ui,sans-serif;position:relative;overflow:hidden}
+  .hdr{position:absolute;top:0;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:14px;padding:0 28px}
+  .num{width:38px;height:38px;border-radius:10px;background:var(--c);color:#fff;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center}
+  .hdr .en{font-size:21px;font-weight:800;color:#0f172a}
+  .hdr .cn{font-size:15px;color:#64748b;margin-left:2px}
+  .hdr .sub{margin-left:auto;font-size:12.5px;color:#94a3b8}
+  .el{position:absolute;background:#fff;border:1.6px solid #cbd5e1;border-radius:10px}
+  .lbl{position:absolute;top:-15px;left:0;background:var(--c);color:#fff;padding:3px 9px;border-radius:7px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:3}
+  .lbl .cn{font-weight:500;opacity:.92;margin-left:4px;font-size:10.5px}
+  .lbl.dk{background:#334155}
+  .fld{position:absolute;border:1.6px solid #cbd5e1;border-radius:7px;background:#fff;font-size:13px;color:#94a3b8;display:flex;align-items:center;padding:0 12px}
+  .ft{position:absolute;font-size:13px;color:#475569;font-weight:600}
+  .ctl{position:relative}
+</style>
+</head>
+<body>
+  <div class="hdr">
+    <div class="num">3</div>
+    <div><span class="en">Form &amp; Data Input</span><span class="cn">表单与数据输入</span></div>
+    <div class="sub">Input · Textarea · Button · Checkbox · Radio · Select · Cascader · Switch · Slider · DatePicker · Upload · Form Item</div>
+  </div>
+
+  <!-- Form card -->
+  <div class="el" style="left:16px;top:80px;width:700px;height:792px">
+    <div style="padding:18px 20px;font-size:15px;font-weight:800;color:#0f172a;border-bottom:1px solid #f1f5f9">新建用户 · 表单示例</div>
+
+    <!-- Form Item (highlighted concept) 姓名 Input -->
+    <div class="el" style="left:20px;top:66px;width:660px;height:66px;border-style:dashed;border-color:#10b981;background:#f0fdf4">
+      <div class="lbl" style="top:-14px">Form Item / Form Control <span class="cn">表单项（Label+Input+错误提示）</span></div>
+    </div>
+    <div class="ft" style="left:32px;top:90px">姓名</div>
+    <div class="fld" style="left:100px;top:84px;width:260px;height:32px;position:absolute"><span style="font-size:11px;color:#64748b">请输入姓名</span>
+      <div class="lbl" style="top:-16px;left:0">Input / Text Field <span class="cn">单行输入框</span></div>
+    </div>
+    <div style="position:absolute;left:100px;top:118px;font-size:10.5px;color:#ef4444">⚠ 请输入有效姓名</div>
+
+    <!-- 简介 Textarea -->
+    <div class="ft" style="left:32px;top:156px">简介</div>
+    <div class="fld" style="left:100px;top:146px;width:260px;height:72px;align-items:flex-start;padding-top:8px"><span style="font-size:11px;color:#64748b">多行文本…</span>
+      <div class="lbl" style="top:-16px;left:0">Textarea <span class="cn">多行文本域</span></div>
+    </div>
+
+    <!-- 城市 Select -->
+    <div class="ft" style="left:32px;top:238px">城市</div>
+    <div class="fld" style="left:100px;top:232px;width:260px;height:32px;position:absolute">上海 <span style="margin-left:auto;color:#94a3b8">▾</span>
+      <div class="lbl" style="top:-16px;left:0">Select / Dropdown <span class="cn">下拉选择框</span></div>
+    </div>
+    <!-- dropdown popup -->
+    <div class="el" style="left:100px;top:272px;width:260px;height:110px;box-shadow:0 6px 16px rgba(0,0,0,.1)">
+      <div style="margin:8px 10px;height:24px;background:#f1f5f9;border-radius:5px;font-size:12px;display:flex;align-items:center;padding:0 10px;color:#475569">北京</div>
+      <div style="margin:4px 10px;height:24px;background:var(--c2);border-radius:5px;font-size:12px;display:flex;align-items:center;padding:0 10px;color:#065f46;font-weight:700">上海</div>
+      <div style="margin:4px 10px;height:24px;background:#f1f5f9;border-radius:5px;font-size:12px;display:flex;align-items:center;padding:0 10px;color:#475569">深圳</div>
+    </div>
+
+    <!-- 省市区 Cascader -->
+    <div class="ft" style="left:32px;top:402px">省市区</div>
+    <div class="fld" style="left:100px;top:396px;width:260px;height:32px;position:absolute">浙江省 / 杭州市 <span style="margin-left:auto;color:#94a3b8">▾</span>
+      <div class="lbl" style="top:-16px;left:0">Cascader <span class="cn">级联选择器</span></div>
+    </div>
+    <div class="el" style="left:100px;top:436px;width:390px;height:120px;box-shadow:0 6px 16px rgba(0,0,0,.1);display:flex">
+      <div style="width:130px;border-right:1px solid #f1f5f9;padding:10px">
+        <div style="height:26px;background:var(--c2);border-radius:5px;font-size:12px;display:flex;align-items:center;padding:0 10px;color:#065f46;font-weight:700">浙江省</div>
+        <div style="height:26px;margin-top:6px;border-radius:5px;font-size:12px;display:flex;align-items:center;padding:0 10px;color:#475569">江苏省</div>
+      </div>
+      <div style="width:130px;border-right:1px solid #f1f5f9;padding:10px">
+        <div style="height:26px;background:var(--c2);border-radius:5px;font-size:12px;display:flex;align-items:center;padding:0 10px;color:#065f46;font-weight:700">杭州市</div>
+        <div style="height:26px;margin-top:6px;border-radius:5px;font-size:12px;display:flex;align-items:center;padding:0 10px;color:#475569">宁波市</div>
+      </div>
+      <div style="width:130px;padding:10px">
+        <div style="height:26px;border-radius:5px;font-size:12px;display:flex;align-items:center;padding:0 10px;color:#475569">西湖区</div>
+        <div style="height:26px;margin-top:6px;border-radius:5px;font-size:12px;display:flex;align-items:center;padding:0 10px;color:#475569">余杭区</div>
+      </div>
+    </div>
+
+    <!-- 生日 DatePicker -->
+    <div class="ft" style="left:32px;top:574px">生日</div>
+    <div class="fld" style="left:100px;top:568px;width:260px;height:32px;position:absolute">2026-08-28 <span style="margin-left:auto">📅</span>
+      <div class="lbl" style="top:-16px;left:0">DatePicker <span class="cn">日期选择器</span></div>
+    </div>
+
+    <!-- 头像 Upload -->
+    <div class="ft" style="left:32px;top:626px">头像</div>
+    <div style="position:absolute;left:100px;top:620px;width:180px;height:120px;border:1.6px dashed #a7f3d0;border-radius:10px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;color:#10b981;font-size:26px">＋
+      <div class="lbl" style="top:-15px;left:0">Upload <span class="cn">文件上传控件</span></div>
+    </div>
+  </div>
+
+  <!-- Right: buttons -->
+  <div class="el" style="left:744px;top:80px;width:676px;height:176px">
+    <div class="lbl" style="left:10px">Button <span class="cn">按钮</span></div>
+    <div style="position:absolute;left:24px;top:44px;width:150px;height:40px;background:var(--c);border-radius:8px;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center">主要按钮</div>
+    <div style="position:absolute;left:190px;top:44px;width:150px;height:40px;background:#fff;border:1.6px solid #cbd5e1;border-radius:8px;color:#475569;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center">次要按钮</div>
+    <div class="lbl" style="top:94px;left:24px;font-size:11px">Primary / Secondary Button <span class="cn">主 / 次按钮</span></div>
+    <div style="position:absolute;left:380px;top:44px;width:40px;height:40px;border-radius:50%;background:#fff;border:1.6px solid #cbd5e1;display:flex;align-items:center;justify-content:center;color:#475569">🔍</div>
+    <div class="lbl" style="top:94px;left:356px;font-size:11px">Icon Button <span class="cn">图标按钮</span></div>
+  </div>
+
+  <!-- FAB -->
+  <div style="position:absolute;left:1370px;top:300px;width:54px;height:54px;border-radius:16px;background:var(--c);color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(16,185,129,.4)">＋
+    <div class="lbl" style="top:16px;left:-230px">FAB <span class="cn">浮动操作按钮</span></div>
+  </div>
+
+  <!-- Checkbox -->
+  <div class="el" style="left:744px;top:272px;width:320px;height:120px">
+    <div class="lbl" style="left:10px">Checkbox <span class="cn">复选 / 多选框</span></div>
+    <div style="position:absolute;left:20px;top:40px;font-size:13px;color:#475569"><span style="display:inline-block;width:16px;height:16px;border:1.6px solid #cbd5e1;border-radius:4px;background:#fff;vertical-align:-2px"></span> 选项 A</div>
+    <div style="position:absolute;left:20px;top:70px;font-size:13px;color:#475569"><span style="display:inline-block;width:16px;height:16px;border-radius:4px;background:var(--c);vertical-align:-2px"></span> 选项 B（已选）</div>
+  </div>
+
+  <!-- Radio -->
+  <div class="el" style="left:1080px;top:272px;width:340px;height:120px">
+    <div class="lbl" style="left:10px">Radio / Radio Group <span class="cn">单选 / 单选框组</span></div>
+    <div style="position:absolute;left:20px;top:40px;font-size:13px;color:#475569"><span style="display:inline-block;width:16px;height:16px;border:1.6px solid #cbd5e1;border-radius:50%;background:#fff;vertical-align:-2px"></span> 男</div>
+    <div style="position:absolute;left:110px;top:40px;font-size:13px;color:#475569"><span style="display:inline-block;width:16px;height:16px;border:1.6px solid var(--c);border-radius:50%;vertical-align:-2px;box-shadow:inset 0 0 0 4px #fff,inset 0 0 0 8px var(--c)"></span> 女</div>
+  </div>
+
+  <!-- Switch -->
+  <div class="el" style="left:744px;top:408px;width:320px;height:110px">
+    <div class="lbl" style="left:10px">Switch / Toggle <span class="cn">开关组件</span></div>
+    <div style="position:absolute;left:20px;top:42px;width:46px;height:24px;background:var(--c);border-radius:12px"><div style="position:absolute;right:2px;top:2px;width:20px;height:20px;background:#fff;border-radius:50%"></div></div>
+    <div style="position:absolute;left:82px;top:46px;font-size:13px;color:#475569">开启状态</div>
+  </div>
+
+  <!-- Slider -->
+  <div class="el" style="left:1080px;top:408px;width:340px;height:110px">
+    <div class="lbl" style="left:10px">Slider <span class="cn">滑块输入条</span></div>
+    <div style="position:absolute;left:20px;top:46px;width:220px;height:4px;background:#e2e8f0;border-radius:2px"><div style="width:60%;height:4px;background:var(--c);border-radius:2px"></div></div>
+    <div style="position:absolute;left:148px;top:38px;width:16px;height:16px;background:#fff;border:2px solid var(--c);border-radius:50%"></div>
+    <div style="position:absolute;right:20px;top:42px;font-size:13px;color:#475569;font-weight:700">60%</div>
+  </div>
+
+  <!-- TimePicker -->
+  <div class="el" style="left:744px;top:534px;width:320px;height:96px">
+    <div class="lbl" style="left:10px">TimePicker <span class="cn">时间选择器</span></div>
+    <div class="fld" style="left:20px;top:42px;width:180px;height:32px">14:30:00 <span style="margin-left:auto">🕐</span></div>
+  </div>
+</body>
+</html>

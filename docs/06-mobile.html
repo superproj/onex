@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{--c:#8b5cf6;--c2:#ede9fe;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1440px;height:900px;background:#eef1f6;font-family:-apple-system,"PingFang SC","Segoe UI",system-ui,sans-serif;position:relative;overflow:hidden}
+  .hdr{position:absolute;top:0;left:0;right:0;height:64px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:14px;padding:0 28px;z-index:20}
+  .num{width:38px;height:38px;border-radius:10px;background:var(--c);color:#fff;font-weight:800;font-size:19px;display:flex;align-items:center;justify-content:center}
+  .hdr .en{font-size:21px;font-weight:800;color:#0f172a}
+  .hdr .cn{font-size:15px;color:#64748b;margin-left:2px}
+  .hdr .sub{margin-left:auto;font-size:12.5px;color:#94a3b8}
+  .el{position:absolute;background:#fff;border:1.6px solid #cbd5e1;border-radius:10px}
+  .lbl{position:absolute;top:-15px;left:10px;background:var(--c);color:#fff;padding:3px 9px;border-radius:7px;font-size:12px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:8}
+  .lbl .cn{font-weight:500;opacity:.95;margin-left:4px;font-size:10.5px}
+  .lbl.dk{background:#334155}
+  .ln{background:#e2e8f0;border-radius:3px;position:absolute}
+  .phone{position:absolute;background:#0f172a;border-radius:44px;box-shadow:0 20px 50px rgba(15,23,42,.3)}
+  .screen{position:absolute;background:#fff;border-radius:36px;overflow:hidden}
+</style>
+</head>
+<body>
+  <div class="hdr">
+    <div class="num">6</div>
+    <div><span class="en">Mobile &amp; Responsive</span><span class="cn">移动端 / 响应式特有术语</span></div>
+    <div class="sub">Bottom Navigation · Hamburger Menu · Action Sheet · Pull-to-Refresh · Infinite Scroll</div>
+  </div>
+
+  <!-- ===================== Phone 1 ===================== -->
+  <div class="phone" style="left:112px;top:104px;width:376px;height:752px"></div>
+  <div class="screen" style="left:120px;top:120px;width:360px;height:720px">
+
+    <!-- status bar -->
+    <div style="height:24px;background:#f8fafc;display:flex;align-items:center;padding:0 18px;font-size:11px;color:#475569;font-weight:700">9:41 <span style="margin-left:auto">📶 🔋</span></div>
+
+    <!-- header with hamburger -->
+    <div style="height:46px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #f1f5f9">
+      <div style="position:relative">
+        <div style="width:20px;height:2px;background:#0f172a;border-radius:2px"></div>
+        <div style="width:20px;height:2px;background:#0f172a;border-radius:2px;margin-top:5px"></div>
+        <div style="width:20px;height:2px;background:#0f172a;border-radius:2px;margin-top:5px"></div>
+        <div class="lbl" style="top:-22px;left:-8px">Hamburger Menu <span class="cn">汉堡菜单 ☰</span></div>
+      </div>
+      <div style="margin-left:auto;font-size:15px;font-weight:800;color:#0f172a">信息流</div>
+      <div style="margin-left:auto;width:20px"></div>
+    </div>
+
+    <!-- pull-to-refresh -->
+    <div style="height:44px;display:flex;align-items:center;justify-content:center;gap:8px;color:#8b5cf6;font-size:12px">
+      <span style="font-size:16px">↻</span> 下拉刷新…
+      <div class="lbl" style="top:-14px;left:110px">Pull-to-Refresh <span class="cn">下拉刷新</span></div>
+    </div>
+
+    <!-- list cards -->
+    <div style="position:absolute;left:14px;top:130px;width:332px;height:112px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+      <div style="width:100%;height:44px;background:linear-gradient(135deg,#ddd6fe,#c4b5fd);border-radius:8px"></div>
+      <div class="ln" style="left:0;top:56px;width:220px;height:10px;background:#475569"></div>
+      <div class="ln" style="left:0;top:72px;width:160px;height:9px"></div>
+    </div>
+    <div style="position:absolute;left:14px;top:254px;width:332px;height:112px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+      <div style="width:100%;height:44px;background:linear-gradient(135deg,#fbcfe8,#f9a8d4);border-radius:8px"></div>
+      <div class="ln" style="left:0;top:56px;width:200px;height:10px;background:#475569"></div>
+      <div class="ln" style="left:0;top:72px;width:140px;height:9px"></div>
+    </div>
+    <div style="position:absolute;left:14px;top:378px;width:332px;height:112px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,.04)">
+      <div style="width:100%;height:44px;background:linear-gradient(135deg,#bfdbfe,#93c5fd);border-radius:8px"></div>
+      <div class="ln" style="left:0;top:56px;width:180px;height:10px;background:#475569"></div>
+      <div class="ln" style="left:0;top:72px;width:130px;height:9px"></div>
+    </div>
+
+    <!-- infinite scroll -->
+    <div style="position:absolute;left:0;top:500px;width:360px;height:44px;display:flex;align-items:center;justify-content:center;gap:8px;color:#94a3b8;font-size:12px">
+      <span style="display:inline-block;width:14px;height:14px;border:2px solid #c4b5fd;border-top-color:#8b5cf6;border-radius:50%"></span> 加载更多…
+      <div class="lbl" style="top:-14px;left:120px">Infinite Scroll <span class="cn">无限滚动 · 触底加载</span></div>
+    </div>
+
+    <!-- bottom navigation -->
+    <div style="position:absolute;left:0;bottom:0;width:360px;height:56px;border-top:1px solid #e2e8f0;display:flex;background:#fff">
+      <div class="lbl" style="top:-15px;left:10px;background:#7c3aed">Bottom Navigation / Tab Bar <span class="cn">底部导航栏</span></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#8b5cf6;font-size:11px"><span style="font-size:18px">🏠</span>首页</div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#94a3b8;font-size:11px"><span style="font-size:18px">💬</span>消息</div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#94a3b8;font-size:11px"><span style="font-size:18px">➕</span>发布</div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#94a3b8;font-size:11px"><span style="font-size:18px">👤</span>我的</div>
+    </div>
+  </div>
+
+  <!-- ===================== Phone 2 ===================== -->
+  <div class="phone" style="left:760px;top:104px;width:376px;height:752px"></div>
+  <div class="screen" style="left:768px;top:120px;width:360px;height:720px">
+    <div style="height:24px;background:#f8fafc;display:flex;align-items:center;padding:0 18px;font-size:11px;color:#475569;font-weight:700">9:41 <span style="margin-left:auto">📶 🔋</span></div>
+    <div style="height:46px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid #f1f5f9;font-size:15px;font-weight:800;color:#0f172a">操作表示例</div>
+
+    <div class="ln" style="left:18px;top:100px;width:300px;height:11px"></div>
+    <div class="ln" style="left:18px;top:120px;width:240px;height:11px"></div>
+    <div style="position:absolute;left:18px;top:160px;width:160px;height:40px;background:#8b5cf6;border-radius:10px;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">点击弹出操作表</div>
+
+    <!-- mask -->
+    <div style="position:absolute;left:0;top:420px;width:360px;height:300px;background:rgba(15,23,42,.35)"></div>
+
+    <!-- action sheet -->
+    <div style="position:absolute;left:0;top:520px;width:360px;height:200px;background:#fff;border-radius:20px 20px 0 0;padding:16px 16px 0;box-shadow:0 -8px 24px rgba(15,23,42,.2)">
+      <div class="lbl">Action Sheet <span class="cn">操作表 · 底部动作列表</span></div>
+      <div style="height:44px;border-radius:10px;background:#f8fafc;display:flex;align-items:center;justify-content:center;font-size:14px;color:#0f172a;font-weight:700">📷 拍照</div>
+      <div style="height:44px;border-radius:10px;background:#f8fafc;display:flex;align-items:center;justify-content:center;font-size:14px;color:#0f172a;font-weight:700;margin-top:8px">🖼️ 从相册选择</div>
+      <div style="height:44px;border-radius:10px;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#64748b;margin-top:12px">取消</div>
+    </div>
+  </div>
+
+  <!-- right side note -->
+  <div class="el" style="left:1190px;top:150px;width:210px;height:520px;background:#fbfcfe;padding:18px">
+    <div style="font-size:14px;font-weight:800;color:#0f172a;margin-bottom:10px">📱 响应式说明</div>
+    <div style="font-size:12.5px;color:#475569;line-height:1.9">
+      移动端页面通常在 <b>窄视口</b> 下将桌面端导航折叠为 <b>汉堡菜单</b>，并用 <b>底部标签栏</b> 承载主要入口。<br><br>
+      列表类页面常用 <b>下拉刷新</b> 更新数据、<b>触底无限滚动</b> 加载更多。<br><br>
+      <b>操作表</b> 用于在底部弹出多选项（分享 / 拍照 / 更多操作）。
+    </div>
+  </div>
+</body>
+</html>
