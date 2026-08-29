@@ -13,6 +13,7 @@ import (
 
 	coordinationv1 "k8s.io/api/coordination/v1"
 	apiv1 "k8s.io/api/core/v1"
+	discoveryv1 "k8s.io/api/discovery/v1"
 	flowcontrolv1 "k8s.io/api/flowcontrol/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	apiserverfeatures "k8s.io/apiserver/pkg/features"
@@ -31,6 +32,7 @@ import (
 	"github.com/onexstack/onex/internal/controlplane/controller/systemnamespaces"
 	coordinationrest "github.com/onexstack/onex/internal/registry/coordination/rest"
 	corerest "github.com/onexstack/onex/internal/registry/core/rest"
+	discoveryrest "github.com/onexstack/onex/internal/registry/discovery/rest"
 	flowcontrolrest "github.com/onexstack/onex/internal/registry/flowcontrol/rest"
 	"github.com/onexstack/onex/pkg/apiserver/storage"
 )
@@ -151,6 +153,7 @@ func (c completedConfig) New(delegationTarget genericapiserver.DelegationTarget)
 	restStorageProviders := []storage.RESTStorageProvider{
 		// &admissionrest.StorageProvider{LoopbackClientConfig: c.GenericConfig.LoopbackClientConfig},
 		coordinationrest.RESTStorageProvider{},
+		discoveryrest.RESTStorageProvider{},
 		flowcontrolrest.RESTStorageProvider{InformerFactory: c.InternalVersionedInformers},
 	}
 	restStorageProviders = append(restStorageProviders, c.ExternalRESTStorageProviders...)
@@ -307,6 +310,7 @@ var (
 	stableAPIGroupVersionsEnabledByDefault = []schema.GroupVersion{
 		apiv1.SchemeGroupVersion,
 		coordinationv1.SchemeGroupVersion,
+		discoveryv1.SchemeGroupVersion,
 		flowcontrolv1.SchemeGroupVersion,
 		// v1beta1.SchemeGroupVersion, // Migrate to WithOptions
 	}
