@@ -8,7 +8,7 @@
 # 的形式存在，是为了防止误删 build/docker 目录
 # Copy of scripts/build-allinone-image.sh
 PROJ_ROOT_DIR=$(dirname "${BASH_SOURCE[0]}")/../../..
-ONEX_ENV_FILE=${ONEX_ENV_FILE:-${PROJ_ROOT_DIR}/manifests/env.local}
+ONEX_ENV_FILE=${ONEX_ENV_FILE:-${PROJ_ROOT_DIR}/manifests/env/env.local}
 
 source "${PROJ_ROOT_DIR}/scripts/lib/init.sh"
 source ${ONEX_ENV_FILE}

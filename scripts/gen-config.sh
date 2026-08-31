@@ -17,7 +17,7 @@ PROJ_ROOT_DIR=$(dirname "${BASH_SOURCE[0]}")/..
 source "${PROJ_ROOT_DIR}/scripts/lib/init.sh"
 
 if [ $# -ne 2 ];then
-    onex::log::error "Usage: gen-config.sh manifests/env.local configs/onex.service.tmpl"
+    onex::log::error "Usage: gen-config.sh manifests/env/env.local configs/onex.service.tmpl"
     exit 1
 fi
 
@@ -35,7 +35,7 @@ do
 done
 
 if [ "${missing}" ];then
-    onex::log::error 'You may run `source manifests/env.local` to set these environment'
+    onex::log::error 'You may run `source manifests/env/env.local` to set these environment'
     exit 1
 fi
 

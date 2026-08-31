@@ -34,13 +34,14 @@ _output/platforms/linux/amd64/onex-usercenter --db.host=127.0.0.1 --db.username=
 
 _output/platforms/linux/amd64/onex-gateway --db.host=127.0.0.1 --db.username=onex --db.password='onex(#)666' --db.database=onex --etcd.endpoints=127.0.0.1:2379 --insecure.addr=0.0.0.0:38443 --secure.bind-address=0.0.0.0 --secure.bind-port=39090 --grpc.addr=0.0.0.0:51020 --kubeconfig=$HOME/.onex/config --usercenter.server=127.0.0.1:38443
 
-_output/platforms/linux/amd64/onex-apiserver --etcd-servers=127.0.0.1:2379 --secure-port=31443 --bind-address=0.0.0.0 --client-ca-file=/home/colin/.onex/cert/ca.pem --tls-cert-file=/home/colin/.onex/cert/onex-apiserver.pem --tls-private-key-file=/home/colin/.onex/cert/onex-apiserver-key.pem
 
- _output/platforms/linux/amd64/onex-controller-manager --kubeconfig /home/colin/.onex/config --mysql-database=onex --mysql-host=127.0.0.1:3306 --mysql-username=onex --mysql-password='onex(#)666'
+./bin/onex-apiserver --etcd-servers 127.0.0.1:2379 --secure-port 52443 --client-ca-file=$ONEX_CONFIG/cert/ca.pem --tls-cert-file=$ONEX_CONFIG/cert/onex-apiserver.pem --tls-private-key-file=$ONEX_CONFIG/cert/onex-apiserver-key.pem
 
-_output/platforms/linux/amd64/onex-controller-manager --kubeconfig ~/.onex/config --config configs/onex-controller-manager.yaml
+./bin/onex-controller-manager --kubeconfig $ONEX_CONFIG/config --mysql-database=onex --mysql-host=127.0.0.1:3306 --mysql-username=onex --mysql-password='onex(#)666'
 
-_output/platforms/linux/amd64/onex-nightwatch --kubeconfig /home/colin/.onex/config --db.host=127.0.0.1 --db.username=onex --db.password='onex(#)666' --db.database=onex --redis.addr=127.0.0.1:6379 --redis.password='onex(#)666' --redis.database=1
+./bin/onex-job-controller --kubeconfig ~/.onex/config --config $ONEX_CONFIG/onex-controller-manager.yaml
+
+.bin/onex-nightwatch --kubeconfig /home/colin/.onex/config --db.host=127.0.0.1 --db.username=onex --db.password='onex(#)666' --db.database=onex --redis.addr=127.0.0.1:6379 --redis.password='onex(#)666' --redis.database=1
 _output/platforms/linux/amd64/onex-nightwatch --config ~/.onex/onex-nightwatch.yaml
 
 ```

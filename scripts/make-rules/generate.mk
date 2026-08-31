@@ -99,7 +99,7 @@ gen.systemd: $(addprefix gen.systemd., $(SERVICES)) ## Generate all systemd unit
 
 .PHONY: gen.systemd.%
 gen.systemd.%: ## Generate specified systemd unit file.
-	$(eval ONEX_ENV_FILE ?= $(MANIFESTS_DIR)/env.local)
+	$(eval ONEX_ENV_FILE ?= $(MANIFESTS_DIR)/env/env.local)
 	$(eval GENERATED_SERVICE_DIR := $(OUTPUT_DIR)/systemd)
 	$(eval SERVICE := $(lastword $(subst ., ,$*)))
 	@echo "===========> Generating $(SERVICE) systemd unit file"
@@ -114,7 +114,7 @@ gen.appconfig: $(addprefix gen.appconfig., $(SERVICES)) ## Generate all applicat
 
 .PHONY: gen.appconfig.%
 gen.appconfig.%: ## Generate specified application configuration file.
-	$(eval ONEX_ENV_FILE ?= $(MANIFESTS_DIR)/env.local)
+	$(eval ONEX_ENV_FILE ?= $(MANIFESTS_DIR)/env/env.local)
 	$(eval GENERATED_SERVICE_DIR := $(OUTPUT_DIR)/appconfig)
 	$(eval SERVICE := $(lastword $(subst ., ,$*)))
 	@echo "===========> Generating $(SERVICE) configuration file"

@@ -13,7 +13,7 @@ IMAGE_NAME=$2
 
 # OneX 通用配置
 ONEX_ALL_IN_ONE_IMAGE_NAME=onex-allinone
-ONEX_ENV_FILE=${ONEX_ENV_FILE:-${PROJ_ROOT_DIR}/manifests/env.local}
+ONEX_ENV_FILE=${ONEX_ENV_FILE:-${PROJ_ROOT_DIR}/manifests/env/env.local}
 source ${ONEX_ENV_FILE}
 
 declare -A envs
