@@ -656,7 +656,7 @@ function codegen::openapi() {
         --output-pkg "${output_pkg}" \
         --report-filename "${report_file}" \
         "${tag_pkgs[@]}" \
-        k8s.io/apimachinery/pkg/apis/meta/v1 k8s.io/apimachinery/pkg/runtime k8s.io/apimachinery/pkg/version k8s.io/apimachinery/pkg/util/intstr k8s.io/kubernetes/pkg/apis/core k8s.io/api/core/v1 k8s.io/api/autoscaling/v1 k8s.io/api/coordination/v1 k8s.io/api/discovery/v1 k8s.io/kubernetes/pkg/apis/flowcontrol k8s.io/api/flowcontrol/v1 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1 k8s.io/kube-aggregator/pkg/apis/apiregistration k8s.io/kube-aggregator/pkg/apis/apiregistration/v1 k8s.io/apimachinery/pkg/api/resource \
+        k8s.io/apimachinery/pkg/apis/meta/v1 k8s.io/apimachinery/pkg/runtime k8s.io/apimachinery/pkg/version k8s.io/apimachinery/pkg/util/intstr k8s.io/kubernetes/pkg/apis/core k8s.io/api/core/v1 k8s.io/api/authorization/v1 k8s.io/api/rbac/v1 k8s.io/api/autoscaling/v1 k8s.io/api/coordination/v1 k8s.io/api/discovery/v1 k8s.io/kubernetes/pkg/apis/flowcontrol k8s.io/api/flowcontrol/v1 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1 k8s.io/kube-aggregator/pkg/apis/apiregistration k8s.io/kube-aggregator/pkg/apis/apiregistration/v1 k8s.io/apimachinery/pkg/api/resource \
         "$@"
 
     if [[ "${DBG_CODEGEN}" == 1 ]]; then

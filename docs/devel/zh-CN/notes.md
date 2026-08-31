@@ -43,7 +43,6 @@ _output/platforms/linux/amd64/onex-gateway --db.host=127.0.0.1 --db.username=one
 
 .bin/onex-nightwatch --kubeconfig /home/colin/.onex/config --db.host=127.0.0.1 --db.username=onex --db.password='onex(#)666' --db.database=onex --redis.addr=127.0.0.1:6379 --redis.password='onex(#)666' --redis.database=1
 _output/platforms/linux/amd64/onex-nightwatch --config ~/.onex/onex-nightwatch.yaml
-
 ```
 
 2. Kubernetes 部署

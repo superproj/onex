@@ -7,21 +7,21 @@
 package v1beta1
 
 // OpenAPIModelName returns the OpenAPI model name for this type.
-func (j *Job) OpenAPIModelName() string {
+func (j Job) OpenAPIModelName() string {
 	return "github.com/onexstack/onex/pkg/apis/batch/v1beta1.Job"
 }
 
 // OpenAPIModelName returns the OpenAPI model name for this type.
-func (j *JobList) OpenAPIModelName() string {
+func (j JobList) OpenAPIModelName() string {
 	return "github.com/onexstack/onex/pkg/apis/batch/v1beta1.JobList"
 }
 
 // OpenAPIModelName returns the OpenAPI model name for this type.
-func (c *CronJob) OpenAPIModelName() string {
+func (c CronJob) OpenAPIModelName() string {
 	return "github.com/onexstack/onex/pkg/apis/batch/v1beta1.CronJob"
 }
 
 // OpenAPIModelName returns the OpenAPI model name for this type.
-func (c *CronJobList) OpenAPIModelName() string {
+func (c CronJobList) OpenAPIModelName() string {
 	return "github.com/onexstack/onex/pkg/apis/batch/v1beta1.CronJobList"
 }

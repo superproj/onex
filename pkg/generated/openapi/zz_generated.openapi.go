@@ -11,11 +11,15 @@
 package openapi
 
 import (
-	v1 "k8s.io/api/autoscaling/v1"
+	v1beta1 "github.com/onexstack/onex/pkg/apis/apps/v1beta1"
+	batchv1beta1 "github.com/onexstack/onex/pkg/apis/batch/v1beta1"
+	v1 "k8s.io/api/authorization/v1"
+	autoscalingv1 "k8s.io/api/autoscaling/v1"
 	coordinationv1 "k8s.io/api/coordination/v1"
 	corev1 "k8s.io/api/core/v1"
 	discoveryv1 "k8s.io/api/discovery/v1"
 	flowcontrolv1 "k8s.io/api/flowcontrol/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	resource "k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -29,8 +33,8 @@ import (
 
 func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenAPIDefinition {
 	return map[string]common.OpenAPIDefinition{
-		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.Chain":                schema_pkg_apis_apps_v1beta1_Chain(ref),
-		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.ChainList":            schema_pkg_apis_apps_v1beta1_ChainList(ref),
+		v1beta1.Chain{}.OpenAPIModelName():                                     schema_pkg_apis_apps_v1beta1_Chain(ref),
+		v1beta1.ChainList{}.OpenAPIModelName():                                 schema_pkg_apis_apps_v1beta1_ChainList(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.ChainSpec":            schema_pkg_apis_apps_v1beta1_ChainSpec(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.ChainStatus":          schema_pkg_apis_apps_v1beta1_ChainStatus(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.ChargeRequest":        schema_pkg_apis_apps_v1beta1_ChargeRequest(ref),
@@ -39,11 +43,11 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.ChargeRequestStatus":  schema_pkg_apis_apps_v1beta1_ChargeRequestStatus(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.Condition":            schema_pkg_apis_apps_v1beta1_Condition(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.LocalObjectReference": schema_pkg_apis_apps_v1beta1_LocalObjectReference(ref),
-		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.Miner":                schema_pkg_apis_apps_v1beta1_Miner(ref),
+		v1beta1.Miner{}.OpenAPIModelName():                                     schema_pkg_apis_apps_v1beta1_Miner(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.MinerAddress":         schema_pkg_apis_apps_v1beta1_MinerAddress(ref),
-		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.MinerList":            schema_pkg_apis_apps_v1beta1_MinerList(ref),
-		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.MinerSet":             schema_pkg_apis_apps_v1beta1_MinerSet(ref),
-		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.MinerSetList":         schema_pkg_apis_apps_v1beta1_MinerSetList(ref),
+		v1beta1.MinerList{}.OpenAPIModelName():                                 schema_pkg_apis_apps_v1beta1_MinerList(ref),
+		v1beta1.MinerSet{}.OpenAPIModelName():                                  schema_pkg_apis_apps_v1beta1_MinerSet(ref),
+		v1beta1.MinerSetList{}.OpenAPIModelName():                              schema_pkg_apis_apps_v1beta1_MinerSetList(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.MinerSetSpec":         schema_pkg_apis_apps_v1beta1_MinerSetSpec(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.MinerSetStatus":       schema_pkg_apis_apps_v1beta1_MinerSetStatus(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.MinerSpec":            schema_pkg_apis_apps_v1beta1_MinerSpec(ref),
@@ -51,38 +55,53 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.MinerTemplateSpec":    schema_pkg_apis_apps_v1beta1_MinerTemplateSpec(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.ObjectMeta":           schema_pkg_apis_apps_v1beta1_ObjectMeta(ref),
 		"github.com/onexstack/onex/pkg/apis/apps/v1beta1.PodInfo":              schema_pkg_apis_apps_v1beta1_PodInfo(ref),
-		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.CronJob":             schema_pkg_apis_batch_v1beta1_CronJob(ref),
-		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.CronJobList":         schema_pkg_apis_batch_v1beta1_CronJobList(ref),
+		batchv1beta1.CronJob{}.OpenAPIModelName():                              schema_pkg_apis_batch_v1beta1_CronJob(ref),
+		batchv1beta1.CronJobList{}.OpenAPIModelName():                          schema_pkg_apis_batch_v1beta1_CronJobList(ref),
 		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.CronJobSpec":         schema_pkg_apis_batch_v1beta1_CronJobSpec(ref),
 		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.CronJobStatus":       schema_pkg_apis_batch_v1beta1_CronJobStatus(ref),
-		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.Job":                 schema_pkg_apis_batch_v1beta1_Job(ref),
+		batchv1beta1.Job{}.OpenAPIModelName():                                  schema_pkg_apis_batch_v1beta1_Job(ref),
 		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.JobCondition":        schema_pkg_apis_batch_v1beta1_JobCondition(ref),
-		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.JobList":             schema_pkg_apis_batch_v1beta1_JobList(ref),
+		batchv1beta1.JobList{}.OpenAPIModelName():                              schema_pkg_apis_batch_v1beta1_JobList(ref),
 		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.JobSpec":             schema_pkg_apis_batch_v1beta1_JobSpec(ref),
 		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.JobStatus":           schema_pkg_apis_batch_v1beta1_JobStatus(ref),
 		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.JobTemplateSpec":     schema_pkg_apis_batch_v1beta1_JobTemplateSpec(ref),
 		"github.com/onexstack/onex/pkg/apis/batch/v1beta1.ProviderSpec":        schema_pkg_apis_batch_v1beta1_ProviderSpec(ref),
-		v1.ContainerResourceMetricSource{}.OpenAPIModelName():                  schema_k8sio_api_autoscaling_v1_ContainerResourceMetricSource(ref),
-		v1.ContainerResourceMetricStatus{}.OpenAPIModelName():                  schema_k8sio_api_autoscaling_v1_ContainerResourceMetricStatus(ref),
-		v1.CrossVersionObjectReference{}.OpenAPIModelName():                    schema_k8sio_api_autoscaling_v1_CrossVersionObjectReference(ref),
-		v1.ExternalMetricSource{}.OpenAPIModelName():                           schema_k8sio_api_autoscaling_v1_ExternalMetricSource(ref),
-		v1.ExternalMetricStatus{}.OpenAPIModelName():                           schema_k8sio_api_autoscaling_v1_ExternalMetricStatus(ref),
-		v1.HorizontalPodAutoscaler{}.OpenAPIModelName():                        schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscaler(ref),
-		v1.HorizontalPodAutoscalerCondition{}.OpenAPIModelName():               schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerCondition(ref),
-		v1.HorizontalPodAutoscalerList{}.OpenAPIModelName():                    schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerList(ref),
-		v1.HorizontalPodAutoscalerSpec{}.OpenAPIModelName():                    schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerSpec(ref),
-		v1.HorizontalPodAutoscalerStatus{}.OpenAPIModelName():                  schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerStatus(ref),
-		v1.MetricSpec{}.OpenAPIModelName():                                     schema_k8sio_api_autoscaling_v1_MetricSpec(ref),
-		v1.MetricStatus{}.OpenAPIModelName():                                   schema_k8sio_api_autoscaling_v1_MetricStatus(ref),
-		v1.ObjectMetricSource{}.OpenAPIModelName():                             schema_k8sio_api_autoscaling_v1_ObjectMetricSource(ref),
-		v1.ObjectMetricStatus{}.OpenAPIModelName():                             schema_k8sio_api_autoscaling_v1_ObjectMetricStatus(ref),
-		v1.PodsMetricSource{}.OpenAPIModelName():                               schema_k8sio_api_autoscaling_v1_PodsMetricSource(ref),
-		v1.PodsMetricStatus{}.OpenAPIModelName():                               schema_k8sio_api_autoscaling_v1_PodsMetricStatus(ref),
-		v1.ResourceMetricSource{}.OpenAPIModelName():                           schema_k8sio_api_autoscaling_v1_ResourceMetricSource(ref),
-		v1.ResourceMetricStatus{}.OpenAPIModelName():                           schema_k8sio_api_autoscaling_v1_ResourceMetricStatus(ref),
-		v1.Scale{}.OpenAPIModelName():                                          schema_k8sio_api_autoscaling_v1_Scale(ref),
-		v1.ScaleSpec{}.OpenAPIModelName():                                      schema_k8sio_api_autoscaling_v1_ScaleSpec(ref),
-		v1.ScaleStatus{}.OpenAPIModelName():                                    schema_k8sio_api_autoscaling_v1_ScaleStatus(ref),
+		v1.FieldSelectorAttributes{}.OpenAPIModelName():                        schema_k8sio_api_authorization_v1_FieldSelectorAttributes(ref),
+		v1.LabelSelectorAttributes{}.OpenAPIModelName():                        schema_k8sio_api_authorization_v1_LabelSelectorAttributes(ref),
+		v1.LocalSubjectAccessReview{}.OpenAPIModelName():                       schema_k8sio_api_authorization_v1_LocalSubjectAccessReview(ref),
+		v1.NonResourceAttributes{}.OpenAPIModelName():                          schema_k8sio_api_authorization_v1_NonResourceAttributes(ref),
+		v1.NonResourceRule{}.OpenAPIModelName():                                schema_k8sio_api_authorization_v1_NonResourceRule(ref),
+		v1.ResourceAttributes{}.OpenAPIModelName():                             schema_k8sio_api_authorization_v1_ResourceAttributes(ref),
+		v1.ResourceRule{}.OpenAPIModelName():                                   schema_k8sio_api_authorization_v1_ResourceRule(ref),
+		v1.SelfSubjectAccessReview{}.OpenAPIModelName():                        schema_k8sio_api_authorization_v1_SelfSubjectAccessReview(ref),
+		v1.SelfSubjectAccessReviewSpec{}.OpenAPIModelName():                    schema_k8sio_api_authorization_v1_SelfSubjectAccessReviewSpec(ref),
+		v1.SelfSubjectRulesReview{}.OpenAPIModelName():                         schema_k8sio_api_authorization_v1_SelfSubjectRulesReview(ref),
+		v1.SelfSubjectRulesReviewSpec{}.OpenAPIModelName():                     schema_k8sio_api_authorization_v1_SelfSubjectRulesReviewSpec(ref),
+		v1.SubjectAccessReview{}.OpenAPIModelName():                            schema_k8sio_api_authorization_v1_SubjectAccessReview(ref),
+		v1.SubjectAccessReviewSpec{}.OpenAPIModelName():                        schema_k8sio_api_authorization_v1_SubjectAccessReviewSpec(ref),
+		v1.SubjectAccessReviewStatus{}.OpenAPIModelName():                      schema_k8sio_api_authorization_v1_SubjectAccessReviewStatus(ref),
+		v1.SubjectRulesReviewStatus{}.OpenAPIModelName():                       schema_k8sio_api_authorization_v1_SubjectRulesReviewStatus(ref),
+		autoscalingv1.ContainerResourceMetricSource{}.OpenAPIModelName():       schema_k8sio_api_autoscaling_v1_ContainerResourceMetricSource(ref),
+		autoscalingv1.ContainerResourceMetricStatus{}.OpenAPIModelName():       schema_k8sio_api_autoscaling_v1_ContainerResourceMetricStatus(ref),
+		autoscalingv1.CrossVersionObjectReference{}.OpenAPIModelName():         schema_k8sio_api_autoscaling_v1_CrossVersionObjectReference(ref),
+		autoscalingv1.ExternalMetricSource{}.OpenAPIModelName():                schema_k8sio_api_autoscaling_v1_ExternalMetricSource(ref),
+		autoscalingv1.ExternalMetricStatus{}.OpenAPIModelName():                schema_k8sio_api_autoscaling_v1_ExternalMetricStatus(ref),
+		autoscalingv1.HorizontalPodAutoscaler{}.OpenAPIModelName():             schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscaler(ref),
+		autoscalingv1.HorizontalPodAutoscalerCondition{}.OpenAPIModelName():    schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerCondition(ref),
+		autoscalingv1.HorizontalPodAutoscalerList{}.OpenAPIModelName():         schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerList(ref),
+		autoscalingv1.HorizontalPodAutoscalerSpec{}.OpenAPIModelName():         schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerSpec(ref),
+		autoscalingv1.HorizontalPodAutoscalerStatus{}.OpenAPIModelName():       schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerStatus(ref),
+		autoscalingv1.MetricSpec{}.OpenAPIModelName():                          schema_k8sio_api_autoscaling_v1_MetricSpec(ref),
+		autoscalingv1.MetricStatus{}.OpenAPIModelName():                        schema_k8sio_api_autoscaling_v1_MetricStatus(ref),
+		autoscalingv1.ObjectMetricSource{}.OpenAPIModelName():                  schema_k8sio_api_autoscaling_v1_ObjectMetricSource(ref),
+		autoscalingv1.ObjectMetricStatus{}.OpenAPIModelName():                  schema_k8sio_api_autoscaling_v1_ObjectMetricStatus(ref),
+		autoscalingv1.PodsMetricSource{}.OpenAPIModelName():                    schema_k8sio_api_autoscaling_v1_PodsMetricSource(ref),
+		autoscalingv1.PodsMetricStatus{}.OpenAPIModelName():                    schema_k8sio_api_autoscaling_v1_PodsMetricStatus(ref),
+		autoscalingv1.ResourceMetricSource{}.OpenAPIModelName():                schema_k8sio_api_autoscaling_v1_ResourceMetricSource(ref),
+		autoscalingv1.ResourceMetricStatus{}.OpenAPIModelName():                schema_k8sio_api_autoscaling_v1_ResourceMetricStatus(ref),
+		autoscalingv1.Scale{}.OpenAPIModelName():                               schema_k8sio_api_autoscaling_v1_Scale(ref),
+		autoscalingv1.ScaleSpec{}.OpenAPIModelName():                           schema_k8sio_api_autoscaling_v1_ScaleSpec(ref),
+		autoscalingv1.ScaleStatus{}.OpenAPIModelName():                         schema_k8sio_api_autoscaling_v1_ScaleStatus(ref),
 		coordinationv1.Lease{}.OpenAPIModelName():                              schema_k8sio_api_coordination_v1_Lease(ref),
 		coordinationv1.LeaseList{}.OpenAPIModelName():                          schema_k8sio_api_coordination_v1_LeaseList(ref),
 		coordinationv1.LeaseSpec{}.OpenAPIModelName():                          schema_k8sio_api_coordination_v1_LeaseSpec(ref),
@@ -363,6 +382,18 @@ func GetOpenAPIDefinitions(ref common.ReferenceCallback) map[string]common.OpenA
 		flowcontrolv1.ServiceAccountSubject{}.OpenAPIModelName():               schema_k8sio_api_flowcontrol_v1_ServiceAccountSubject(ref),
 		flowcontrolv1.Subject{}.OpenAPIModelName():                             schema_k8sio_api_flowcontrol_v1_Subject(ref),
 		flowcontrolv1.UserSubject{}.OpenAPIModelName():                         schema_k8sio_api_flowcontrol_v1_UserSubject(ref),
+		rbacv1.AggregationRule{}.OpenAPIModelName():                            schema_k8sio_api_rbac_v1_AggregationRule(ref),
+		rbacv1.ClusterRole{}.OpenAPIModelName():                                schema_k8sio_api_rbac_v1_ClusterRole(ref),
+		rbacv1.ClusterRoleBinding{}.OpenAPIModelName():                         schema_k8sio_api_rbac_v1_ClusterRoleBinding(ref),
+		rbacv1.ClusterRoleBindingList{}.OpenAPIModelName():                     schema_k8sio_api_rbac_v1_ClusterRoleBindingList(ref),
+		rbacv1.ClusterRoleList{}.OpenAPIModelName():                            schema_k8sio_api_rbac_v1_ClusterRoleList(ref),
+		rbacv1.PolicyRule{}.OpenAPIModelName():                                 schema_k8sio_api_rbac_v1_PolicyRule(ref),
+		rbacv1.Role{}.OpenAPIModelName():                                       schema_k8sio_api_rbac_v1_Role(ref),
+		rbacv1.RoleBinding{}.OpenAPIModelName():                                schema_k8sio_api_rbac_v1_RoleBinding(ref),
+		rbacv1.RoleBindingList{}.OpenAPIModelName():                            schema_k8sio_api_rbac_v1_RoleBindingList(ref),
+		rbacv1.RoleList{}.OpenAPIModelName():                                   schema_k8sio_api_rbac_v1_RoleList(ref),
+		rbacv1.RoleRef{}.OpenAPIModelName():                                    schema_k8sio_api_rbac_v1_RoleRef(ref),
+		rbacv1.Subject{}.OpenAPIModelName():                                    schema_k8sio_api_rbac_v1_Subject(ref),
 		apiextensionsv1.ConversionRequest{}.OpenAPIModelName():                 schema_pkg_apis_apiextensions_v1_ConversionRequest(ref),
 		apiextensionsv1.ConversionResponse{}.OpenAPIModelName():                schema_pkg_apis_apiextensions_v1_ConversionResponse(ref),
 		apiextensionsv1.ConversionReview{}.OpenAPIModelName():                  schema_pkg_apis_apiextensions_v1_ConversionReview(ref),
@@ -540,7 +571,7 @@ func schema_pkg_apis_apps_v1beta1_ChainList(ref common.ReferenceCallback) common
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
 									SchemaProps: spec.SchemaProps{
-										Ref: ref("github.com/onexstack/onex/pkg/apis/apps/v1beta1.Chain"),
+										Ref: ref(v1beta1.Chain{}.OpenAPIModelName()),
 									},
 								},
 							},
@@ -551,7 +582,7 @@ func schema_pkg_apis_apps_v1beta1_ChainList(ref common.ReferenceCallback) common
 			},
 		},
 		Dependencies: []string{
-			"github.com/onexstack/onex/pkg/apis/apps/v1beta1.Chain", metav1.ListMeta{}.OpenAPIModelName()},
+			v1beta1.Chain{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
 	}
 }
 
@@ -995,7 +1026,7 @@ func schema_pkg_apis_apps_v1beta1_MinerList(ref common.ReferenceCallback) common
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
 									SchemaProps: spec.SchemaProps{
-										Ref: ref("github.com/onexstack/onex/pkg/apis/apps/v1beta1.Miner"),
+										Ref: ref(v1beta1.Miner{}.OpenAPIModelName()),
 									},
 								},
 							},
@@ -1006,7 +1037,7 @@ func schema_pkg_apis_apps_v1beta1_MinerList(ref common.ReferenceCallback) common
 			},
 		},
 		Dependencies: []string{
-			"github.com/onexstack/onex/pkg/apis/apps/v1beta1.Miner", metav1.ListMeta{}.OpenAPIModelName()},
+			v1beta1.Miner{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
 	}
 }
 
@@ -1095,7 +1126,7 @@ func schema_pkg_apis_apps_v1beta1_MinerSetList(ref common.ReferenceCallback) com
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
 									SchemaProps: spec.SchemaProps{
-										Ref: ref("github.com/onexstack/onex/pkg/apis/apps/v1beta1.MinerSet"),
+										Ref: ref(v1beta1.MinerSet{}.OpenAPIModelName()),
 									},
 								},
 							},
@@ -1106,7 +1137,7 @@ func schema_pkg_apis_apps_v1beta1_MinerSetList(ref common.ReferenceCallback) com
 			},
 		},
 		Dependencies: []string{
-			"github.com/onexstack/onex/pkg/apis/apps/v1beta1.MinerSet", metav1.ListMeta{}.OpenAPIModelName()},
+			v1beta1.MinerSet{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
 	}
 }
 
@@ -1590,7 +1621,7 @@ func schema_pkg_apis_batch_v1beta1_CronJobList(ref common.ReferenceCallback) com
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
 									SchemaProps: spec.SchemaProps{
-										Ref: ref("github.com/onexstack/onex/pkg/apis/batch/v1beta1.CronJob"),
+										Ref: ref(batchv1beta1.CronJob{}.OpenAPIModelName()),
 									},
 								},
 							},
@@ -1601,7 +1632,7 @@ func schema_pkg_apis_batch_v1beta1_CronJobList(ref common.ReferenceCallback) com
 			},
 		},
 		Dependencies: []string{
-			"github.com/onexstack/onex/pkg/apis/batch/v1beta1.CronJob", metav1.ListMeta{}.OpenAPIModelName()},
+			batchv1beta1.CronJob{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
 	}
 }
 
@@ -1867,7 +1898,7 @@ func schema_pkg_apis_batch_v1beta1_JobList(ref common.ReferenceCallback) common.
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
 									SchemaProps: spec.SchemaProps{
-										Ref: ref("github.com/onexstack/onex/pkg/apis/batch/v1beta1.Job"),
+										Ref: ref(batchv1beta1.Job{}.OpenAPIModelName()),
 									},
 								},
 							},
@@ -1878,7 +1909,7 @@ func schema_pkg_apis_batch_v1beta1_JobList(ref common.ReferenceCallback) common.
 			},
 		},
 		Dependencies: []string{
-			"github.com/onexstack/onex/pkg/apis/batch/v1beta1.Job", metav1.ListMeta{}.OpenAPIModelName()},
+			batchv1beta1.Job{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
 	}
 }
 
@@ -2041,6 +2072,774 @@ func schema_pkg_apis_batch_v1beta1_ProviderSpec(ref common.ReferenceCallback) co
 		},
 		Dependencies: []string{
 			runtime.RawExtension{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_FieldSelectorAttributes(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "FieldSelectorAttributes indicates a field limited access. Webhook authors are encouraged to * ensure rawSelector and requirements are not both set * consider the requirements field if set * not try to parse or consider the rawSelector field if set. This is to avoid another CVE-2022-2880 (i.e. getting different systems to agree on how exactly to parse a query is not something we want), see https://www.oxeye.io/resources/golang-parameter-smuggling-attack for more details. For the *SubjectAccessReview endpoints of the kube-apiserver: * If rawSelector is empty and requirements are empty, the request is not limited. * If rawSelector is present and requirements are empty, the rawSelector will be parsed and limited if the parsing succeeds. * If rawSelector is empty and requirements are present, the requirements should be honored * If rawSelector is present and requirements are present, the request is invalid.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"rawSelector": {
+						SchemaProps: spec.SchemaProps{
+							Description: "rawSelector is the serialization of a field selector that would be included in a query parameter. Webhook implementations are encouraged to ignore rawSelector. The kube-apiserver's *SubjectAccessReview will parse the rawSelector as long as the requirements are not present.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"requirements": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "requirements is the parsed interpretation of a field selector. All requirements must be met for a resource instance to match the selector. Webhook implementations should handle requirements, but how to handle them is up to the webhook. Since requirements can only limit the request, it is safe to authorize as unlimited request if the requirements are not understood.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(metav1.FieldSelectorRequirement{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			metav1.FieldSelectorRequirement{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_LabelSelectorAttributes(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "LabelSelectorAttributes indicates a label limited access. Webhook authors are encouraged to * ensure rawSelector and requirements are not both set * consider the requirements field if set * not try to parse or consider the rawSelector field if set. This is to avoid another CVE-2022-2880 (i.e. getting different systems to agree on how exactly to parse a query is not something we want), see https://www.oxeye.io/resources/golang-parameter-smuggling-attack for more details. For the *SubjectAccessReview endpoints of the kube-apiserver: * If rawSelector is empty and requirements are empty, the request is not limited. * If rawSelector is present and requirements are empty, the rawSelector will be parsed and limited if the parsing succeeds. * If rawSelector is empty and requirements are present, the requirements should be honored * If rawSelector is present and requirements are present, the request is invalid.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"rawSelector": {
+						SchemaProps: spec.SchemaProps{
+							Description: "rawSelector is the serialization of a field selector that would be included in a query parameter. Webhook implementations are encouraged to ignore rawSelector. The kube-apiserver's *SubjectAccessReview will parse the rawSelector as long as the requirements are not present.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"requirements": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "requirements is the parsed interpretation of a label selector. All requirements must be met for a resource instance to match the selector. Webhook implementations should handle requirements, but how to handle them is up to the webhook. Since requirements can only limit the request, it is safe to authorize as unlimited request if the requirements are not understood.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(metav1.LabelSelectorRequirement{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			metav1.LabelSelectorRequirement{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_LocalSubjectAccessReview(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "LocalSubjectAccessReview checks whether or not a user or group can perform an action in a given namespace. Having a namespace scoped resource makes it much easier to grant namespace scoped policy that includes permissions checking.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ObjectMeta{}.OpenAPIModelName()),
+						},
+					},
+					"spec": {
+						SchemaProps: spec.SchemaProps{
+							Description: "spec holds information about the request being evaluated.  spec.namespace must be equal to the namespace you made the request against.  If empty, it is defaulted.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(v1.SubjectAccessReviewSpec{}.OpenAPIModelName()),
+						},
+					},
+					"status": {
+						SchemaProps: spec.SchemaProps{
+							Description: "status is filled in by the server and indicates whether the request is allowed or not",
+							Default:     map[string]interface{}{},
+							Ref:         ref(v1.SubjectAccessReviewStatus{}.OpenAPIModelName()),
+						},
+					},
+				},
+				Required: []string{"spec"},
+			},
+		},
+		Dependencies: []string{
+			v1.SubjectAccessReviewSpec{}.OpenAPIModelName(), v1.SubjectAccessReviewStatus{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_NonResourceAttributes(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "NonResourceAttributes includes the authorization attributes available for non-resource requests to the Authorizer interface",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"path": {
+						SchemaProps: spec.SchemaProps{
+							Description: "path is the URL path of the request",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"verb": {
+						SchemaProps: spec.SchemaProps{
+							Description: "verb is the standard HTTP verb",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_NonResourceRule(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "NonResourceRule holds information that describes a rule for the non-resource",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"verbs": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "verbs is a list of kubernetes non-resource API verbs, like: get, post, put, delete, patch, head, options.  \"*\" means all.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"nonResourceURLs": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "nonResourceURLs is a set of partial urls that a user should have access to.  *s are allowed, but only as the full, final step in the path.  \"*\" means all.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"verbs"},
+			},
+		},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_ResourceAttributes(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "ResourceAttributes includes the authorization attributes available for resource requests to the Authorizer interface",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"namespace": {
+						SchemaProps: spec.SchemaProps{
+							Description: "namespace is the namespace of the action being requested.  Currently, there is no distinction between no namespace and all namespaces \"\" (empty) is defaulted for LocalSubjectAccessReviews \"\" (empty) is empty for cluster-scoped resources \"\" (empty) means \"all\" for namespace scoped resources from a SubjectAccessReview or SelfSubjectAccessReview",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"verb": {
+						SchemaProps: spec.SchemaProps{
+							Description: "verb is a kubernetes resource API verb, like: get, list, watch, create, update, delete, proxy.  \"*\" means all.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"group": {
+						SchemaProps: spec.SchemaProps{
+							Description: "group is the API Group of the Resource.  \"*\" means all.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"version": {
+						SchemaProps: spec.SchemaProps{
+							Description: "version is the API Version of the Resource.  \"*\" means all.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"resource": {
+						SchemaProps: spec.SchemaProps{
+							Description: "resource is one of the existing resource types.  \"*\" means all.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"subresource": {
+						SchemaProps: spec.SchemaProps{
+							Description: "subresource is one of the existing resource types.  \"\" means none.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"name": {
+						SchemaProps: spec.SchemaProps{
+							Description: "name is the name of the resource being requested for a \"get\" or deleted for a \"delete\". \"\" (empty) means all.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"fieldSelector": {
+						SchemaProps: spec.SchemaProps{
+							Description: "fieldSelector describes the limitation on access based on field.  It can only limit access, not broaden it.",
+							Ref:         ref(v1.FieldSelectorAttributes{}.OpenAPIModelName()),
+						},
+					},
+					"labelSelector": {
+						SchemaProps: spec.SchemaProps{
+							Description: "labelSelector describes the limitation on access based on labels.  It can only limit access, not broaden it.",
+							Ref:         ref(v1.LabelSelectorAttributes{}.OpenAPIModelName()),
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			v1.FieldSelectorAttributes{}.OpenAPIModelName(), v1.LabelSelectorAttributes{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_ResourceRule(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "ResourceRule is the list of actions the subject is allowed to perform on resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"verbs": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "verbs is a list of kubernetes resource API verbs, like: get, list, watch, create, update, delete, proxy.  \"*\" means all.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"apiGroups": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "apiGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed.  \"*\" means all.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"resources": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "resources is a list of resources this rule applies to.  \"*\" means all in the specified apiGroups.\n \"*/foo\" represents the subresource 'foo' for all resources in the specified apiGroups.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"resourceNames": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "resourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.  \"*\" means all.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"verbs"},
+			},
+		},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_SelfSubjectAccessReview(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "SelfSubjectAccessReview checks whether or the current user can perform an action.  Not filling in a spec.namespace means \"in all namespaces\".  Self is a special case, because users should always be able to check whether they can perform an action",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ObjectMeta{}.OpenAPIModelName()),
+						},
+					},
+					"spec": {
+						SchemaProps: spec.SchemaProps{
+							Description: "spec holds information about the request being evaluated.  user and groups must be empty",
+							Default:     map[string]interface{}{},
+							Ref:         ref(v1.SelfSubjectAccessReviewSpec{}.OpenAPIModelName()),
+						},
+					},
+					"status": {
+						SchemaProps: spec.SchemaProps{
+							Description: "status is filled in by the server and indicates whether the request is allowed or not",
+							Default:     map[string]interface{}{},
+							Ref:         ref(v1.SubjectAccessReviewStatus{}.OpenAPIModelName()),
+						},
+					},
+				},
+				Required: []string{"spec"},
+			},
+		},
+		Dependencies: []string{
+			v1.SelfSubjectAccessReviewSpec{}.OpenAPIModelName(), v1.SubjectAccessReviewStatus{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_SelfSubjectAccessReviewSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "SelfSubjectAccessReviewSpec is a description of the access request.  Exactly one of resourceAttributes and nonResourceAttributes must be set",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"resourceAttributes": {
+						SchemaProps: spec.SchemaProps{
+							Description: "resourceAttributes describes information for a resource access request",
+							Ref:         ref(v1.ResourceAttributes{}.OpenAPIModelName()),
+						},
+					},
+					"nonResourceAttributes": {
+						SchemaProps: spec.SchemaProps{
+							Description: "nonResourceAttributes describes information for a non-resource access request",
+							Ref:         ref(v1.NonResourceAttributes{}.OpenAPIModelName()),
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			v1.NonResourceAttributes{}.OpenAPIModelName(), v1.ResourceAttributes{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_SelfSubjectRulesReview(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "SelfSubjectRulesReview enumerates the set of actions the current user can perform within a namespace. The returned list of actions may be incomplete depending on the server's authorization mode, and any errors experienced during the evaluation. SelfSubjectRulesReview should be used by UIs to show/hide actions, or to quickly let an end user reason about their permissions. It should NOT Be used by external systems to drive authorization decisions as this raises confused deputy, cache lifetime/revocation, and correctness concerns. SubjectAccessReview, and LocalAccessReview are the correct way to defer authorization decisions to the API server.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ObjectMeta{}.OpenAPIModelName()),
+						},
+					},
+					"spec": {
+						SchemaProps: spec.SchemaProps{
+							Description: "spec holds information about the request being evaluated.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(v1.SelfSubjectRulesReviewSpec{}.OpenAPIModelName()),
+						},
+					},
+					"status": {
+						SchemaProps: spec.SchemaProps{
+							Description: "status is filled in by the server and indicates the set of actions a user can perform.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(v1.SubjectRulesReviewStatus{}.OpenAPIModelName()),
+						},
+					},
+				},
+				Required: []string{"spec"},
+			},
+		},
+		Dependencies: []string{
+			v1.SelfSubjectRulesReviewSpec{}.OpenAPIModelName(), v1.SubjectRulesReviewStatus{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_SelfSubjectRulesReviewSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "SelfSubjectRulesReviewSpec defines the specification for SelfSubjectRulesReview.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"namespace": {
+						SchemaProps: spec.SchemaProps{
+							Description: "namespace to evaluate rules for. Required.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_SubjectAccessReview(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "SubjectAccessReview checks whether or not a user or group can perform an action.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ObjectMeta{}.OpenAPIModelName()),
+						},
+					},
+					"spec": {
+						SchemaProps: spec.SchemaProps{
+							Description: "spec holds information about the request being evaluated",
+							Default:     map[string]interface{}{},
+							Ref:         ref(v1.SubjectAccessReviewSpec{}.OpenAPIModelName()),
+						},
+					},
+					"status": {
+						SchemaProps: spec.SchemaProps{
+							Description: "status is filled in by the server and indicates whether the request is allowed or not",
+							Default:     map[string]interface{}{},
+							Ref:         ref(v1.SubjectAccessReviewStatus{}.OpenAPIModelName()),
+						},
+					},
+				},
+				Required: []string{"spec"},
+			},
+		},
+		Dependencies: []string{
+			v1.SubjectAccessReviewSpec{}.OpenAPIModelName(), v1.SubjectAccessReviewStatus{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_SubjectAccessReviewSpec(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "SubjectAccessReviewSpec is a description of the access request.  Exactly one of resourceAttributes and nonResourceAttributes must be set",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"resourceAttributes": {
+						SchemaProps: spec.SchemaProps{
+							Description: "resourceAttributes describes information for a resource access request",
+							Ref:         ref(v1.ResourceAttributes{}.OpenAPIModelName()),
+						},
+					},
+					"nonResourceAttributes": {
+						SchemaProps: spec.SchemaProps{
+							Description: "nonResourceAttributes describes information for a non-resource access request",
+							Ref:         ref(v1.NonResourceAttributes{}.OpenAPIModelName()),
+						},
+					},
+					"user": {
+						SchemaProps: spec.SchemaProps{
+							Description: "user is the user you're testing for. If you specify \"User\" but not \"Groups\", then is it interpreted as \"What if User were not a member of any groups",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"groups": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "groups is the groups you're testing for.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"extra": {
+						SchemaProps: spec.SchemaProps{
+							Description: "extra corresponds to the user.Info.GetExtra() method from the authenticator.  Since that is input to the authorizer it needs a reflection here.",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type: []string{"array"},
+										Items: &spec.SchemaOrArray{
+											Schema: &spec.Schema{
+												SchemaProps: spec.SchemaProps{
+													Type:   []string{"string"},
+													Format: "",
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					"uid": {
+						SchemaProps: spec.SchemaProps{
+							Description: "uid information about the requesting user.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			v1.NonResourceAttributes{}.OpenAPIModelName(), v1.ResourceAttributes{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_SubjectAccessReviewStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "SubjectAccessReviewStatus",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"allowed": {
+						SchemaProps: spec.SchemaProps{
+							Description: "allowed is required. True if the action would be allowed, false otherwise.",
+							Default:     false,
+							Type:        []string{"boolean"},
+							Format:      "",
+						},
+					},
+					"denied": {
+						SchemaProps: spec.SchemaProps{
+							Description: "denied is optional. True if the action would be denied, otherwise false. If both allowed is false and denied is false, then the authorizer has no opinion on whether to authorize the action. Denied may not be true if Allowed is true.",
+							Type:        []string{"boolean"},
+							Format:      "",
+						},
+					},
+					"reason": {
+						SchemaProps: spec.SchemaProps{
+							Description: "reason is optional.  It indicates why a request was allowed or denied.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"evaluationError": {
+						SchemaProps: spec.SchemaProps{
+							Description: "evaluationError is an indication that some error occurred during the authorization check. It is entirely possible to get an error and be able to continue determine authorization status in spite of it. For instance, RBAC can be missing a role, but enough roles are still present and bound to reason about the request.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+				Required: []string{"allowed"},
+			},
+		},
+	}
+}
+
+func schema_k8sio_api_authorization_v1_SubjectRulesReviewStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "SubjectRulesReviewStatus contains the result of a rules check. This check can be incomplete depending on the set of authorizers the server is configured with and any errors experienced during evaluation. Because authorization rules are additive, if a rule appears in a list it's safe to assume the subject has that permission, even if that list is incomplete.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"resourceRules": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "resourceRules is the list of actions the subject is allowed to perform on resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(v1.ResourceRule{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+					"nonResourceRules": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "nonResourceRules is the list of actions the subject is allowed to perform on non-resources. The list ordering isn't significant, may contain duplicates, and possibly be incomplete.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(v1.NonResourceRule{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+					"incomplete": {
+						SchemaProps: spec.SchemaProps{
+							Description: "incomplete is true when the rules returned by this call are incomplete. This is most commonly encountered when an authorizer, such as an external authorizer, doesn't support rules evaluation.",
+							Default:     false,
+							Type:        []string{"boolean"},
+							Format:      "",
+						},
+					},
+					"evaluationError": {
+						SchemaProps: spec.SchemaProps{
+							Description: "evaluationError can appear in combination with Rules. It indicates an error occurred during rule evaluation, such as an authorizer that doesn't support rule evaluation, and that ResourceRules and/or NonResourceRules may be incomplete.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+				Required: []string{"resourceRules", "nonResourceRules", "incomplete"},
+			},
+		},
+		Dependencies: []string{
+			v1.NonResourceRule{}.OpenAPIModelName(), v1.ResourceRule{}.OpenAPIModelName()},
 	}
 }
 
@@ -2292,14 +3091,14 @@ func schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscaler(ref common.Referenc
 						SchemaProps: spec.SchemaProps{
 							Description: "spec defines the behaviour of autoscaler. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status.",
 							Default:     map[string]interface{}{},
-							Ref:         ref(v1.HorizontalPodAutoscalerSpec{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.HorizontalPodAutoscalerSpec{}.OpenAPIModelName()),
 						},
 					},
 					"status": {
 						SchemaProps: spec.SchemaProps{
 							Description: "status is the current information about the autoscaler.",
 							Default:     map[string]interface{}{},
-							Ref:         ref(v1.HorizontalPodAutoscalerStatus{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.HorizontalPodAutoscalerStatus{}.OpenAPIModelName()),
 						},
 					},
 				},
@@ -2307,7 +3106,7 @@ func schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscaler(ref common.Referenc
 			},
 		},
 		Dependencies: []string{
-			v1.HorizontalPodAutoscalerSpec{}.OpenAPIModelName(), v1.HorizontalPodAutoscalerStatus{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
+			autoscalingv1.HorizontalPodAutoscalerSpec{}.OpenAPIModelName(), autoscalingv1.HorizontalPodAutoscalerStatus{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
 	}
 }
 
@@ -2405,7 +3204,7 @@ func schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerList(ref common.Refe
 							Items: &spec.SchemaOrArray{
 								Schema: &spec.Schema{
 									SchemaProps: spec.SchemaProps{
-										Ref: ref(v1.HorizontalPodAutoscaler{}.OpenAPIModelName()),
+										Ref: ref(autoscalingv1.HorizontalPodAutoscaler{}.OpenAPIModelName()),
 									},
 								},
 							},
@@ -2416,7 +3215,7 @@ func schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerList(ref common.Refe
 			},
 		},
 		Dependencies: []string{
-			v1.HorizontalPodAutoscaler{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
+			autoscalingv1.HorizontalPodAutoscaler{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
 	}
 }
 
@@ -2431,7 +3230,7 @@ func schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerSpec(ref common.Refe
 						SchemaProps: spec.SchemaProps{
 							Description: "scaleTargetRef is the reference to scaled resource; horizontal pod autoscaler will learn the current resource consumption and will set the desired number of pods by using its Scale subresource.",
 							Default:     map[string]interface{}{},
-							Ref:         ref(v1.CrossVersionObjectReference{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.CrossVersionObjectReference{}.OpenAPIModelName()),
 						},
 					},
 					"minReplicas": {
@@ -2461,7 +3260,7 @@ func schema_k8sio_api_autoscaling_v1_HorizontalPodAutoscalerSpec(ref common.Refe
 			},
 		},
 		Dependencies: []string{
-			v1.CrossVersionObjectReference{}.OpenAPIModelName()},
+			autoscalingv1.CrossVersionObjectReference{}.OpenAPIModelName()},
 	}
 }
 
@@ -2536,31 +3335,31 @@ func schema_k8sio_api_autoscaling_v1_MetricSpec(ref common.ReferenceCallback) co
 					"object": {
 						SchemaProps: spec.SchemaProps{
 							Description: "object refers to a metric describing a single kubernetes object (for example, hits-per-second on an Ingress object).",
-							Ref:         ref(v1.ObjectMetricSource{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.ObjectMetricSource{}.OpenAPIModelName()),
 						},
 					},
 					"pods": {
 						SchemaProps: spec.SchemaProps{
 							Description: "pods refers to a metric describing each pod in the current scale target (for example, transactions-processed-per-second).  The values will be averaged together before being compared to the target value.",
-							Ref:         ref(v1.PodsMetricSource{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.PodsMetricSource{}.OpenAPIModelName()),
 						},
 					},
 					"resource": {
 						SchemaProps: spec.SchemaProps{
 							Description: "resource refers to a resource metric (such as those specified in requests and limits) known to Kubernetes describing each pod in the current scale target (e.g. CPU or memory). Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the \"pods\" source.",
-							Ref:         ref(v1.ResourceMetricSource{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.ResourceMetricSource{}.OpenAPIModelName()),
 						},
 					},
 					"containerResource": {
 						SchemaProps: spec.SchemaProps{
 							Description: "containerResource refers to a resource metric (such as those specified in requests and limits) known to Kubernetes describing a single container in each pod of the current scale target (e.g. CPU or memory). Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the \"pods\" source.",
-							Ref:         ref(v1.ContainerResourceMetricSource{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.ContainerResourceMetricSource{}.OpenAPIModelName()),
 						},
 					},
 					"external": {
 						SchemaProps: spec.SchemaProps{
 							Description: "external refers to a global metric that is not associated with any Kubernetes object. It allows autoscaling based on information coming from components running outside of cluster (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster).",
-							Ref:         ref(v1.ExternalMetricSource{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.ExternalMetricSource{}.OpenAPIModelName()),
 						},
 					},
 				},
@@ -2568,7 +3367,7 @@ func schema_k8sio_api_autoscaling_v1_MetricSpec(ref common.ReferenceCallback) co
 			},
 		},
 		Dependencies: []string{
-			v1.ContainerResourceMetricSource{}.OpenAPIModelName(), v1.ExternalMetricSource{}.OpenAPIModelName(), v1.ObjectMetricSource{}.OpenAPIModelName(), v1.PodsMetricSource{}.OpenAPIModelName(), v1.ResourceMetricSource{}.OpenAPIModelName()},
+			autoscalingv1.ContainerResourceMetricSource{}.OpenAPIModelName(), autoscalingv1.ExternalMetricSource{}.OpenAPIModelName(), autoscalingv1.ObjectMetricSource{}.OpenAPIModelName(), autoscalingv1.PodsMetricSource{}.OpenAPIModelName(), autoscalingv1.ResourceMetricSource{}.OpenAPIModelName()},
 	}
 }
 
@@ -2591,31 +3390,31 @@ func schema_k8sio_api_autoscaling_v1_MetricStatus(ref common.ReferenceCallback) 
 					"object": {
 						SchemaProps: spec.SchemaProps{
 							Description: "object refers to a metric describing a single kubernetes object (for example, hits-per-second on an Ingress object).",
-							Ref:         ref(v1.ObjectMetricStatus{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.ObjectMetricStatus{}.OpenAPIModelName()),
 						},
 					},
 					"pods": {
 						SchemaProps: spec.SchemaProps{
 							Description: "pods refers to a metric describing each pod in the current scale target (for example, transactions-processed-per-second).  The values will be averaged together before being compared to the target value.",
-							Ref:         ref(v1.PodsMetricStatus{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.PodsMetricStatus{}.OpenAPIModelName()),
 						},
 					},
 					"resource": {
 						SchemaProps: spec.SchemaProps{
 							Description: "resource refers to a resource metric (such as those specified in requests and limits) known to Kubernetes describing each pod in the current scale target (e.g. CPU or memory). Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the \"pods\" source.",
-							Ref:         ref(v1.ResourceMetricStatus{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.ResourceMetricStatus{}.OpenAPIModelName()),
 						},
 					},
 					"containerResource": {
 						SchemaProps: spec.SchemaProps{
 							Description: "containerResource refers to a resource metric (such as those specified in requests and limits) known to Kubernetes describing a single container in each pod in the current scale target (e.g. CPU or memory). Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the \"pods\" source.",
-							Ref:         ref(v1.ContainerResourceMetricStatus{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.ContainerResourceMetricStatus{}.OpenAPIModelName()),
 						},
 					},
 					"external": {
 						SchemaProps: spec.SchemaProps{
 							Description: "external refers to a global metric that is not associated with any Kubernetes object. It allows autoscaling based on information coming from components running outside of cluster (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster).",
-							Ref:         ref(v1.ExternalMetricStatus{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.ExternalMetricStatus{}.OpenAPIModelName()),
 						},
 					},
 				},
@@ -2623,7 +3422,7 @@ func schema_k8sio_api_autoscaling_v1_MetricStatus(ref common.ReferenceCallback) 
 			},
 		},
 		Dependencies: []string{
-			v1.ContainerResourceMetricStatus{}.OpenAPIModelName(), v1.ExternalMetricStatus{}.OpenAPIModelName(), v1.ObjectMetricStatus{}.OpenAPIModelName(), v1.PodsMetricStatus{}.OpenAPIModelName(), v1.ResourceMetricStatus{}.OpenAPIModelName()},
+			autoscalingv1.ContainerResourceMetricStatus{}.OpenAPIModelName(), autoscalingv1.ExternalMetricStatus{}.OpenAPIModelName(), autoscalingv1.ObjectMetricStatus{}.OpenAPIModelName(), autoscalingv1.PodsMetricStatus{}.OpenAPIModelName(), autoscalingv1.ResourceMetricStatus{}.OpenAPIModelName()},
 	}
 }
 
@@ -2638,7 +3437,7 @@ func schema_k8sio_api_autoscaling_v1_ObjectMetricSource(ref common.ReferenceCall
 						SchemaProps: spec.SchemaProps{
 							Description: "target is the described Kubernetes object.",
 							Default:     map[string]interface{}{},
-							Ref:         ref(v1.CrossVersionObjectReference{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.CrossVersionObjectReference{}.OpenAPIModelName()),
 						},
 					},
 					"metricName": {
@@ -2672,7 +3471,7 @@ func schema_k8sio_api_autoscaling_v1_ObjectMetricSource(ref common.ReferenceCall
 			},
 		},
 		Dependencies: []string{
-			v1.CrossVersionObjectReference{}.OpenAPIModelName(), resource.Quantity{}.OpenAPIModelName(), metav1.LabelSelector{}.OpenAPIModelName()},
+			autoscalingv1.CrossVersionObjectReference{}.OpenAPIModelName(), resource.Quantity{}.OpenAPIModelName(), metav1.LabelSelector{}.OpenAPIModelName()},
 	}
 }
 
@@ -2687,7 +3486,7 @@ func schema_k8sio_api_autoscaling_v1_ObjectMetricStatus(ref common.ReferenceCall
 						SchemaProps: spec.SchemaProps{
 							Description: "target is the described Kubernetes object.",
 							Default:     map[string]interface{}{},
-							Ref:         ref(v1.CrossVersionObjectReference{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.CrossVersionObjectReference{}.OpenAPIModelName()),
 						},
 					},
 					"metricName": {
@@ -2721,7 +3520,7 @@ func schema_k8sio_api_autoscaling_v1_ObjectMetricStatus(ref common.ReferenceCall
 			},
 		},
 		Dependencies: []string{
-			v1.CrossVersionObjectReference{}.OpenAPIModelName(), resource.Quantity{}.OpenAPIModelName(), metav1.LabelSelector{}.OpenAPIModelName()},
+			autoscalingv1.CrossVersionObjectReference{}.OpenAPIModelName(), resource.Quantity{}.OpenAPIModelName(), metav1.LabelSelector{}.OpenAPIModelName()},
 	}
 }
 
@@ -2903,21 +3702,21 @@ func schema_k8sio_api_autoscaling_v1_Scale(ref common.ReferenceCallback) common.
 						SchemaProps: spec.SchemaProps{
 							Description: "spec defines the behavior of the scale. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status.",
 							Default:     map[string]interface{}{},
-							Ref:         ref(v1.ScaleSpec{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.ScaleSpec{}.OpenAPIModelName()),
 						},
 					},
 					"status": {
 						SchemaProps: spec.SchemaProps{
 							Description: "status is the current status of the scale. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status. Read-only.",
 							Default:     map[string]interface{}{},
-							Ref:         ref(v1.ScaleStatus{}.OpenAPIModelName()),
+							Ref:         ref(autoscalingv1.ScaleStatus{}.OpenAPIModelName()),
 						},
 					},
 				},
 			},
 		},
 		Dependencies: []string{
-			v1.ScaleSpec{}.OpenAPIModelName(), v1.ScaleStatus{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
+			autoscalingv1.ScaleSpec{}.OpenAPIModelName(), autoscalingv1.ScaleStatus{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
 	}
 }
 
@@ -18867,6 +19666,678 @@ func schema_k8sio_api_flowcontrol_v1_UserSubject(ref common.ReferenceCallback) c
 					},
 				},
 				Required: []string{"name"},
+			},
+		},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_AggregationRule(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "AggregationRule describes how to locate ClusterRoles to aggregate into the ClusterRole",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"clusterRoleSelectors": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "clusterRoleSelectors holds a list of selectors which will be used to find ClusterRoles and create the rules. If any of the selectors match, then the ClusterRole's permissions will be added",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(metav1.LabelSelector{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			metav1.LabelSelector{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_ClusterRole(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "ClusterRole is a cluster level, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding or ClusterRoleBinding.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "metadata is the standard object's metadata.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ObjectMeta{}.OpenAPIModelName()),
+						},
+					},
+					"rules": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "rules holds all the PolicyRules for this ClusterRole",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(rbacv1.PolicyRule{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+					"aggregationRule": {
+						SchemaProps: spec.SchemaProps{
+							Description: "aggregationRule is an optional field that describes how to build the Rules for this ClusterRole. If AggregationRule is set, then the Rules are controller managed and direct changes to Rules will be stomped by the controller.",
+							Ref:         ref(rbacv1.AggregationRule{}.OpenAPIModelName()),
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			rbacv1.AggregationRule{}.OpenAPIModelName(), rbacv1.PolicyRule{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_ClusterRoleBinding(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "ClusterRoleBinding references a ClusterRole, but not contain it.  It can reference a ClusterRole in the global namespace, and adds who information via Subject.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "metadata is the standard object's metadata.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ObjectMeta{}.OpenAPIModelName()),
+						},
+					},
+					"subjects": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "subjects holds references to the objects the role applies to.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(rbacv1.Subject{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+					"roleRef": {
+						SchemaProps: spec.SchemaProps{
+							Description: "roleRef can only reference a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error. This field is immutable.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(rbacv1.RoleRef{}.OpenAPIModelName()),
+						},
+					},
+				},
+				Required: []string{"roleRef"},
+			},
+		},
+		Dependencies: []string{
+			rbacv1.RoleRef{}.OpenAPIModelName(), rbacv1.Subject{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_ClusterRoleBindingList(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "ClusterRoleBindingList is a collection of ClusterRoleBindings",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard object's metadata.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ListMeta{}.OpenAPIModelName()),
+						},
+					},
+					"items": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Items is a list of ClusterRoleBindings",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(rbacv1.ClusterRoleBinding{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"items"},
+			},
+		},
+		Dependencies: []string{
+			rbacv1.ClusterRoleBinding{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_ClusterRoleList(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "ClusterRoleList is a collection of ClusterRoles",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard object's metadata.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ListMeta{}.OpenAPIModelName()),
+						},
+					},
+					"items": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Items is a list of ClusterRoles",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(rbacv1.ClusterRole{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"items"},
+			},
+		},
+		Dependencies: []string{
+			rbacv1.ClusterRole{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_PolicyRule(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "PolicyRule holds information that describes a policy rule, but does not contain information about who the rule applies to or which namespace the rule applies to.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"verbs": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "verbs is a list of Verbs that apply to ALL the ResourceKinds contained in this rule. '*' represents all verbs.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"apiGroups": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "apiGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed. \"\" represents the core API group and \"*\" represents all API groups.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"resources": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "resources is a list of resources this rule applies to. '*' represents all resources.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"resourceNames": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "resourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+					"nonResourceURLs": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "nonResourceURLs is a set of partial urls that a user should have access to.  *s are allowed, but only as the full, final step in the path Since non-resource URLs are not namespaced, this field is only applicable for ClusterRoles referenced from a ClusterRoleBinding. Rules can either apply to API resources (such as \"pods\" or \"secrets\") or non-resource URL paths (such as \"/api\"),  but not both.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Type:   []string{"string"},
+										Format: "",
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"verbs"},
+			},
+		},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_Role(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "Role is a namespaced, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "metadata is the standard object's metadata.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ObjectMeta{}.OpenAPIModelName()),
+						},
+					},
+					"rules": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "rules holds all the PolicyRules for this Role",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(rbacv1.PolicyRule{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			rbacv1.PolicyRule{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_RoleBinding(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "RoleBinding references a role, but does not contain it.  It can reference a Role in the same namespace or a ClusterRole in the global namespace. It adds who information via Subjects and namespace information by which namespace it exists in.  RoleBindings in a given namespace only have effect in that namespace.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "metadata is the standard object's metadata.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ObjectMeta{}.OpenAPIModelName()),
+						},
+					},
+					"subjects": {
+						VendorExtensible: spec.VendorExtensible{
+							Extensions: spec.Extensions{
+								"x-kubernetes-list-type": "atomic",
+							},
+						},
+						SchemaProps: spec.SchemaProps{
+							Description: "subjects holds references to the objects the role applies to.",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(rbacv1.Subject{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+					"roleRef": {
+						SchemaProps: spec.SchemaProps{
+							Description: "roleRef can reference a Role in the current namespace or a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error. This field is immutable.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(rbacv1.RoleRef{}.OpenAPIModelName()),
+						},
+					},
+				},
+				Required: []string{"roleRef"},
+			},
+		},
+		Dependencies: []string{
+			rbacv1.RoleRef{}.OpenAPIModelName(), rbacv1.Subject{}.OpenAPIModelName(), metav1.ObjectMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_RoleBindingList(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "RoleBindingList is a collection of RoleBindings",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard object's metadata.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ListMeta{}.OpenAPIModelName()),
+						},
+					},
+					"items": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Items is a list of RoleBindings",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(rbacv1.RoleBinding{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"items"},
+			},
+		},
+		Dependencies: []string{
+			rbacv1.RoleBinding{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_RoleList(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "RoleList is a collection of Roles",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiVersion": {
+						SchemaProps: spec.SchemaProps{
+							Description: "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"metadata": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Standard object's metadata.",
+							Default:     map[string]interface{}{},
+							Ref:         ref(metav1.ListMeta{}.OpenAPIModelName()),
+						},
+					},
+					"items": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Items is a list of Roles",
+							Type:        []string{"array"},
+							Items: &spec.SchemaOrArray{
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Ref: ref(rbacv1.Role{}.OpenAPIModelName()),
+									},
+								},
+							},
+						},
+					},
+				},
+				Required: []string{"items"},
+			},
+		},
+		Dependencies: []string{
+			rbacv1.Role{}.OpenAPIModelName(), metav1.ListMeta{}.OpenAPIModelName()},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_RoleRef(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "RoleRef contains information that points to the role being used",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"apiGroup": {
+						SchemaProps: spec.SchemaProps{
+							Description: "apiGroup is the group for the resource being referenced",
+							Default:     "",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "kind is the type of resource being referenced",
+							Default:     "",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"name": {
+						SchemaProps: spec.SchemaProps{
+							Description: "name is the name of resource being referenced",
+							Default:     "",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+				Required: []string{"kind", "name"},
+			},
+			VendorExtensible: spec.VendorExtensible{
+				Extensions: spec.Extensions{
+					"x-kubernetes-map-type": "atomic",
+				},
+			},
+		},
+	}
+}
+
+func schema_k8sio_api_rbac_v1_Subject(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "Subject contains a reference to the object or user identities a role binding applies to.  This can either hold a direct API object reference, or a value for non-objects such as user and group names.",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
+					"kind": {
+						SchemaProps: spec.SchemaProps{
+							Description: "kind of object being referenced. Values defined by this API group are \"User\", \"Group\", and \"ServiceAccount\". If the Authorizer does not recognized the kind value, the Authorizer should report an error.",
+							Default:     "",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"apiGroup": {
+						SchemaProps: spec.SchemaProps{
+							Description: "apiGroup holds the API group of the referenced subject. Defaults to \"\" for ServiceAccount subjects. Defaults to \"rbac.authorization.k8s.io\" for User and Group subjects.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"name": {
+						SchemaProps: spec.SchemaProps{
+							Description: "name of the object being referenced.",
+							Default:     "",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+					"namespace": {
+						SchemaProps: spec.SchemaProps{
+							Description: "namespace of the referenced object.  If the object kind is non-namespace, such as \"User\" or \"Group\", and this value is not empty the Authorizer should report an error.",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+				Required: []string{"kind", "name"},
+			},
+			VendorExtensible: spec.VendorExtensible{
+				Extensions: spec.Extensions{
+					"x-kubernetes-map-type": "atomic",
+				},
 			},
 		},
 	}
