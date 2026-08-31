@@ -93,7 +93,7 @@ func (o *UpdateOptions) Complete(f cmdutil.Factory, cmd *cobra.Command, args []s
 		return cmdutil.UsageErrorf(cmd, updateUsageErrStr)
 	}
 
-	o.UpdateUserRequest.Username = args[0]
+	o.UpdateUserRequest.Username = &args[0]
 
 	if o.Nickname != "" {
 		o.UpdateUserRequest.Nickname = &o.Nickname
@@ -122,7 +122,7 @@ func (o *UpdateOptions) Run(f cmdutil.Factory, args []string) error {
 		return err
 	}
 
-	fmt.Fprintf(o.Out, "user/%s updated\n", o.UpdateUserRequest.Username)
+	fmt.Fprintf(o.Out, "user/%s updated\n", *o.UpdateUserRequest.Username)
 
 	return nil
 }

@@ -15,8 +15,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/cluster"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 
-	"github.com/onexstack/onex/internal/controller/apis/config"
-	"github.com/onexstack/onex/internal/controller/blockchain/apis/config"
+	blockchainconfig "github.com/onexstack/onex/internal/controller/blockchain/apis/config"
 	chaincontroller "github.com/onexstack/onex/internal/controller/blockchain/chain"
 	minercontroller "github.com/onexstack/onex/internal/controller/blockchain/miner"
 	minersetcontroller "github.com/onexstack/onex/internal/controller/blockchain/minerset"
@@ -29,7 +28,7 @@ import (
 
 // ChainReconciler reconciles a Chain object.
 type ChainReconciler struct {
-	ComponentConfig *config.ChainControllerConfiguration
+	ComponentConfig *blockchainconfig.ChainControllerConfiguration
 
 	// WatchFilterValue is the label value used to filter events prior to reconciliation.
 	WatchFilterValue string
@@ -48,7 +47,7 @@ type MinerReconciler struct {
 	ProviderClient  kubernetes.Interface
 	ProviderCluster cluster.Cluster
 	RedisClient     *redis.Client
-	ComponentConfig *config.BlockchainControllerConfiguration
+	ComponentConfig *blockchainconfig.BlockchainControllerConfiguration
 
 	// WatchFilterValue is the label value used to filter events prior to reconciliation.
 	WatchFilterValue string
@@ -58,10 +57,11 @@ func (r *MinerReconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager
 	return (&minercontroller.Reconciler{
 		DryRun:           r.DryRun,
 		ProviderClient:   r.ProviderClient,
+		ProviderCluster:  r.ProviderCluster,
 		RedisClient:      r.RedisClient,
 		ComponentConfig:  r.ComponentConfig,
 		WatchFilterValue: r.WatchFilterValue,
-	}).SetupWithManager(ctx, mgr, options, r.ProviderCluster)
+	}).SetupWithManager(ctx, mgr, options)
 }
 
 // MinerSetReconciler reconciles a MinerSet object.

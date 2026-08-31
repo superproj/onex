@@ -44,4 +44,5 @@ package names
 const (
 	GarbageCollectorController           = "garbage-collector-controller"
 	NamespacedResourcesDeleterController = "namespaced-resource-deleter-controller"
+	ClusterRoleAggregationController     = "clusterrole-aggregation-controller"
 )

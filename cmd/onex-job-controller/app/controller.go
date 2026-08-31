@@ -35,7 +35,9 @@ import (
 	"github.com/onexstack/onex/cmd/onex-job-controller/app/config"
 	"github.com/onexstack/onex/cmd/onex-job-controller/app/options"
 	cronjobcontroller "github.com/onexstack/onex/internal/controller/job/cronjob"
+	jobcontroller "github.com/onexstack/onex/internal/controller/job/job"
 	"github.com/onexstack/onex/internal/pkg/util/ratelimiter"
+	"github.com/onexstack/onex/internal/pkg/util/tracing"
 	"github.com/onexstack/onex/pkg/apis/batch/v1beta1"
 	"github.com/onexstack/onexstack/pkg/version"
 )
@@ -164,6 +166,21 @@ func Run(ctx context.Context, c *config.Config) error {
 		},
 	}
 
+	// Optionally wire OpenTelemetry tracing for the apiserver client. Disabled when
+	// ONEX_OTEL_ENDPOINT is unset.
+	tracingServiceName := os.Getenv("ONEX_OTEL_SERVICE_NAME")
+	if tracingServiceName == "" {
+		tracingServiceName = "onex-job-controller"
+	}
+	wrapTracingTransport, err := tracing.Setup(ctx, tracingServiceName, os.Getenv("ONEX_OTEL_ENDPOINT"))
+	if err != nil {
+		klog.ErrorS(err, "Unable to set up tracing")
+		return err
+	}
+	if wrapTracingTransport != nil {
+		c.Kubeconfig.WrapTransport = wrapTracingTransport
+	}
+
 	// Create a new Cmd to provide shared dependencies and start components
 	mgr, err := ctrl.NewManager(c.Kubeconfig, ctrlOptions)
 	if err != nil {
@@ -185,7 +202,19 @@ func Run(ctx context.Context, c *config.Config) error {
 		RecoverPanic:            ptr.To(true),
 		RateLimiter:             ratelimiter.DefaultControllerRateLimiter(),
 	}); err != nil {
-		klog.ErrorS(err, "Unable to create controller", "controller", "minerset")
+		klog.ErrorS(err, "Unable to create controller", "controller", "cronjob")
+		return err
+	}
+
+	// Setup Job controller
+	if err := (&jobcontroller.Reconciler{
+		WatchFilterValue: c.ComponentConfig.Generic.WatchFilterValue,
+	}).SetupWithManager(ctx, mgr, controller.Options{
+		MaxConcurrentReconciles: int(c.ComponentConfig.Generic.Parallelism),
+		RecoverPanic:            ptr.To(true),
+		RateLimiter:             ratelimiter.DefaultControllerRateLimiter(),
+	}); err != nil {
+		klog.ErrorS(err, "Unable to create controller", "controller", "job")
 		return err
 	}
 
@@ -193,11 +222,11 @@ func Run(ctx context.Context, c *config.Config) error {
 }
 
 func setupChecks(mgr ctrl.Manager) {
-	if err := mgr.AddReadyzCheck("healthz", healthz.Ping); err != nil {
+	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
 		klog.Exitf("Unable to set up health check: %v", err)
 	}
 
-	if err := mgr.AddHealthzCheck("readyz", healthz.Ping); err != nil {
+	if err := mgr.AddReadyzCheck("readyz", healthz.Ping); err != nil {
 		klog.Exitf("Unable to set up ready check: %v", err)
 	}
 }

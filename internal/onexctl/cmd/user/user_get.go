@@ -78,9 +78,9 @@ func NewCmdGet(f cmdutil.Factory, ioStreams genericiooptions.IOStreams) *cobra.C
 
 // Complete completes all the required options.
 func (o *GetOptions) Complete(f cmdutil.Factory, cmd *cobra.Command, args []string) error {
-	o.GetUserRequest.Username = f.GetOptions().UserOptions.Username
+	o.GetUserRequest.UserID = f.GetOptions().UserOptions.Username
 	if len(args) != 0 {
-		o.GetUserRequest.Username = args[0]
+		o.GetUserRequest.UserID = args[0]
 	}
 
 	o.client = f.UserCenterClient()
@@ -112,13 +112,13 @@ func (o *GetOptions) Run(f cmdutil.Factory, args []string) error {
 
 	data := [][]string{
 		{
-			user.Username,
-			user.UserID,
-			user.Nickname,
-			user.Email,
-			user.Phone,
-			user.CreatedAt.AsTime().Format(time.DateTime),
-			user.UpdatedAt.AsTime().Format(time.DateTime),
+			user.User.Username,
+			user.User.UserID,
+			user.User.Nickname,
+			user.User.Email,
+			user.User.Phone,
+			user.User.CreatedAt.AsTime().Format(time.DateTime),
+			user.User.UpdatedAt.AsTime().Format(time.DateTime),
 		},
 	}
 

@@ -11,10 +11,12 @@ import (
 	"net/http"
 	"time"
 
+	authorizationv1 "k8s.io/api/authorization/v1"
 	coordinationv1 "k8s.io/api/coordination/v1"
 	apiv1 "k8s.io/api/core/v1"
 	discoveryv1 "k8s.io/api/discovery/v1"
 	flowcontrolv1 "k8s.io/api/flowcontrol/v1"
+	rbacv1 "k8s.io/api/rbac/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	apiserverfeatures "k8s.io/apiserver/pkg/features"
 	peerreconcilers "k8s.io/apiserver/pkg/reconcilers"
@@ -27,6 +29,8 @@ import (
 	kubeinformers "k8s.io/client-go/informers"
 	clientset "k8s.io/client-go/kubernetes"
 	"k8s.io/klog/v2"
+	authorizationrest "k8s.io/kubernetes/pkg/registry/authorization/rest"
+	rbacrest "k8s.io/kubernetes/pkg/registry/rbac/rest"
 	"k8s.io/kubernetes/pkg/routes"
 
 	"github.com/onexstack/onex/internal/controlplane/controller/systemnamespaces"
@@ -155,6 +159,13 @@ func (c completedConfig) New(delegationTarget genericapiserver.DelegationTarget)
 		coordinationrest.RESTStorageProvider{},
 		discoveryrest.RESTStorageProvider{},
 		flowcontrolrest.RESTStorageProvider{InformerFactory: c.InternalVersionedInformers},
+		authorizationrest.RESTStorageProvider{
+			Authorizer:   c.Generic.Authorization.Authorizer,
+			RuleResolver: c.Generic.RuleResolver,
+		},
+		rbacrest.RESTStorageProvider{
+			Authorizer: c.Generic.Authorization.Authorizer,
+		},
 	}
 	restStorageProviders = append(restStorageProviders, c.ExternalRESTStorageProviders...)
 	if err := m.InstallAPIs(c.APIResourceConfigSource, c.Generic.RESTOptionsGetter, restStorageProviders...); err != nil {
@@ -310,8 +321,10 @@ var (
 	stableAPIGroupVersionsEnabledByDefault = []schema.GroupVersion{
 		apiv1.SchemeGroupVersion,
 		coordinationv1.SchemeGroupVersion,
+		authorizationv1.SchemeGroupVersion,
 		discoveryv1.SchemeGroupVersion,
 		flowcontrolv1.SchemeGroupVersion,
+		rbacv1.SchemeGroupVersion,
 		// v1beta1.SchemeGroupVersion, // Migrate to WithOptions
 	}
 

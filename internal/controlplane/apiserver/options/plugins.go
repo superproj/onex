@@ -15,6 +15,8 @@ import (
 
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/apiserver/pkg/admission"
+	mutatingwebhook "k8s.io/apiserver/pkg/admission/plugin/webhook/mutating"
+	validatingwebhook "k8s.io/apiserver/pkg/admission/plugin/webhook/validating"
 
 	"github.com/onexstack/onex/internal/controlplane/admission/plugin/admit"
 	"github.com/onexstack/onex/internal/controlplane/admission/plugin/deny"
@@ -35,8 +37,8 @@ var AllOrderedPlugins = []string{
 	// webhook, resourcequota, and deny plugins must go at the end
 	//minerset.PluginName, // MinerSet
 
-	// mutatingwebhook.PluginName,   // MutatingAdmissionWebhook
-	// validatingwebhook.PluginName, // ValidatingAdmissionWebhook
+	mutatingwebhook.PluginName,   // MutatingAdmissionWebhook
+	validatingwebhook.PluginName, // ValidatingAdmissionWebhook
 	// resourcequota.PluginName, // ResourceQuota
 	deny.PluginName, // AlwaysDeny
 }
@@ -49,6 +51,8 @@ func RegisterAllAdmissionPlugins(plugins *admission.Plugins) {
 	lifecycle.Register(plugins)
 	exists.Register(plugins)
 	//minerset.Register(plugins)
+	mutatingwebhook.Register(plugins)
+	validatingwebhook.Register(plugins)
 	deny.Register(plugins) // DEPRECATED as no real meaning
 }
 

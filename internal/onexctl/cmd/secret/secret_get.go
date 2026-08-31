@@ -100,12 +100,12 @@ func (o *GetOptions) Run(f cmdutil.Factory, args []string) error {
 	table := tablewriter.NewWriter(o.Out)
 	data := [][]string{
 		{
-			secret.Name,
-			strconv.FormatUint(uint64(secret.Status), 10),
-			secret.SecretID,
-			secret.SecretKey,
-			time.Unix(secret.Expires, 0).Format(time.DateTime),
-			secret.CreatedAt.AsTime().Format(time.DateTime),
+			secret.Secret.Name,
+			strconv.FormatUint(uint64(secret.Secret.Status), 10),
+			secret.Secret.SecretID,
+			secret.Secret.SecretKey,
+			time.Unix(secret.Secret.Expires, 0).Format(time.DateTime),
+			secret.Secret.CreatedAt.AsTime().Format(time.DateTime),
 		},
 	}
 

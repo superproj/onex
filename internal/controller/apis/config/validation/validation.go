@@ -11,15 +11,12 @@ import (
 	componentbasevalidation "k8s.io/component-base/config/validation"
 
 	"github.com/onexstack/onex/internal/controller/apis/config"
-	"github.com/onexstack/onex/internal/pkg/util/validation"
 	genericvalidation "github.com/onexstack/onex/pkg/config/validation"
 )
 
 // Validate ensures validation of the MinerControllerConfiguration struct.
 func Validate(cc *config.OneXControllerManagerConfiguration) field.ErrorList {
 	allErrs := field.ErrorList{}
-
-	newPath := field.NewPath("OneXControllerManagerConfiguration")
 
 	allErrs = append(allErrs, componentbasevalidation.ValidateLeaderElectionConfiguration(&cc.Generic.LeaderElection, field.NewPath("generic", "leaderElection"))...)
 	allErrs = append(allErrs, genericvalidation.ValidateMySQLConfiguration(&cc.MySQL, field.NewPath("mysql"))...)

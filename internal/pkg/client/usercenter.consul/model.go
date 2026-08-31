@@ -15,4 +15,4 @@ type GetSecretRequest struct {
 	Name     string
 }
 
-type GetSecretResponse = usercenterv1.SecretReply
+type GetSecretResponse = usercenterv1.GetSecretResponse

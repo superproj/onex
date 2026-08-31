@@ -81,7 +81,7 @@ func (o *DeleteOptions) Complete(f cmdutil.Factory, cmd *cobra.Command, args []s
 	}
 
 	o.DeleteUserRequest = &v1.DeleteUserRequest{
-		Username: args[0],
+		UserID: args[0],
 	}
 
 	o.client = f.UserCenterClient()
@@ -100,7 +100,7 @@ func (o *DeleteOptions) Run(f cmdutil.Factory) error {
 		return err
 	}
 
-	fmt.Fprintf(o.Out, "user/%s deleted\n", o.DeleteUserRequest.Username)
+	fmt.Fprintf(o.Out, "user/%s deleted\n", o.DeleteUserRequest.UserID)
 
 	return nil
 }

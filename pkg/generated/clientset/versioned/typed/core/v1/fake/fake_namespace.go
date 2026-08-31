@@ -8,9 +8,12 @@
 package fake
 
 import (
+	"context"
+
 	corev1 "github.com/onexstack/onex/pkg/generated/applyconfigurations/core/v1"
 	typedcorev1 "github.com/onexstack/onex/pkg/generated/clientset/versioned/typed/core/v1"
 	v1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	gentype "k8s.io/client-go/gentype"
 )
 
@@ -38,6 +41,6 @@ func newFakeNamespaces(fake *FakeCoreV1) typedcorev1.NamespaceInterface {
 }
 
 // Finalize takes the representation of a namespace to update.  Returns the server's representation of the namespace, and an error, if it occurs.
-func (c *FakeNamespaces) Finalize(ctx context.Context, namespace *v1.Namespace, opts metav1.UpdateOptions) (result *v1.Namespace, err error) {
+func (c *fakeNamespaces) Finalize(ctx context.Context, namespace *v1.Namespace, opts metav1.UpdateOptions) (result *v1.Namespace, err error) {
 	return nil, nil
 }

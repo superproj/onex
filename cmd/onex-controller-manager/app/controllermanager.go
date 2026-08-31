@@ -64,6 +64,7 @@ import (
 	"github.com/onexstack/onex/internal/gateway/store"
 	"github.com/onexstack/onex/internal/pkg/metrics"
 	"github.com/onexstack/onex/internal/pkg/util/ratelimiter"
+	"github.com/onexstack/onex/internal/pkg/util/tracing"
 	v1beta1 "github.com/onexstack/onex/pkg/apis/apps/v1beta1"
 	"github.com/onexstack/onex/pkg/record"
 	"github.com/onexstack/onexstack/pkg/version"
@@ -211,6 +212,21 @@ func Run(ctx context.Context, c *config.CompletedConfig) error {
 
 	req, _ := labels.NewRequirement(v1beta1.ChainNameLabel, selection.Exists, nil)
 	chainSecretCacheSelector := labels.NewSelector().Add(*req)
+
+	// Optionally wire OpenTelemetry tracing for the apiserver client. Disabled when
+	// ONEX_OTEL_ENDPOINT is unset.
+	tracingServiceName := os.Getenv("ONEX_OTEL_SERVICE_NAME")
+	if tracingServiceName == "" {
+		tracingServiceName = "onex-controller-manager"
+	}
+	wrapTracingTransport, err := tracing.Setup(ctx, tracingServiceName, os.Getenv("ONEX_OTEL_ENDPOINT"))
+	if err != nil {
+		klog.ErrorS(err, "Unable to set up tracing")
+		return err
+	}
+	if wrapTracingTransport != nil {
+		c.Kubeconfig.WrapTransport = wrapTracingTransport
+	}
 
 	// Create a new Cmd to provide shared dependencies and start components
 	mgr, err := ctrl.NewManager(c.Kubeconfig, ctrl.Options{
@@ -528,6 +544,7 @@ func NewControllerDescriptors() map[string]*ControllerDescriptor {
 	// special controllers.
 	register(newGarbageCollectorControllerDescriptor())
 	register(newNamespacedResourcesDeleterControllerDescriptor())
+	register(newClusterRoleAggregationControllerDescriptor())
 
 	for _, alias := range aliases.UnsortedList() {
 		if _, ok := controllers[alias]; ok {
@@ -634,8 +651,9 @@ func createClientBuilders(c *config.CompletedConfig) (clientBuilder clientbuilde
 // hammer the apiserver with list requests simultaneously.
 func ResyncPeriod(c *config.CompletedConfig) func() time.Duration {
 	return func() time.Duration {
-		// factor := rand.Float64() + 1
-		// return time.Duration(float64(c.MinResyncPeriod.Nanoseconds()) * factor) // TODO?
-		return 1 * time.Second
+		// Jitter the resync period so multiple controllers don't fall into lock-step
+		// and all list the apiserver simultaneously. The base interval comes from the
+		// configured sync-period (default 10h) rather than the previous hardcoded 1s.
+		return wait.Jitter(c.ComponentConfig.Generic.SyncPeriod.Duration, 1.0)
 	}
 }

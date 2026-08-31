@@ -14,11 +14,14 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 )
 
+// DefaultControllerRateLimiter returns the rate limiter shared by all OneX controllers.
 func DefaultControllerRateLimiter() workqueue.TypedRateLimiter[reconcile.Request] {
 	return workqueue.NewTypedMaxOfRateLimiter(
-		// this ensures that we retry namespace deletion at least every minute, never longer.
+		// Per-item exponential backoff: retries start at 200ms and grow to at most 1h,
+		// so a persistently failing object is retried less and less frequently.
 		workqueue.NewTypedItemExponentialFailureRateLimiter[reconcile.Request](200*time.Millisecond, 1*time.Hour),
-		// 10 qps, 100 bucket size.  This is only for retry speed and its only the overall factor (not per item)
+		// Overall token bucket: 5000 qps with a burst of 10000. This is the global,
+		// not per-item, cap on retry throughput.
 		&workqueue.TypedBucketRateLimiter[reconcile.Request]{Limiter: rate.NewLimiter(rate.Limit(5000), 10000)},
 	)
 }

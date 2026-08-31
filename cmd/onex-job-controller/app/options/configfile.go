@@ -89,13 +89,7 @@ func encodeConfig(cfg *config.JobControllerConfiguration) (*bytes.Buffer, error)
 		return buf, fmt.Errorf("unable to locate encoder -- %q is not a supported media type", mediaType)
 	}
 
-	var encoder runtime.Encoder
-	switch cfg.TypeMeta.APIVersion {
-	case configv1beta1.SchemeGroupVersion.String():
-		encoder = scheme.Codecs.EncoderForVersion(info.Serializer, configv1beta1.SchemeGroupVersion)
-	default:
-		encoder = scheme.Codecs.EncoderForVersion(info.Serializer, configv1beta1.SchemeGroupVersion)
-	}
+	encoder := scheme.Codecs.EncoderForVersion(info.Serializer, configv1beta1.SchemeGroupVersion)
 	if err := encoder.Encode(cfg, buf); err != nil {
 		return buf, err
 	}

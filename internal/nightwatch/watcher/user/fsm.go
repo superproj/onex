@@ -22,7 +22,7 @@ import (
 // - UserEventAfterEvent: Calls the NewUserEventAfterEvent function after any user-related event is handled.
 //
 // The function returns the newly created FSM.
-func NewFSM(initial string, w *userWatcher) *fsm.FSM {
+func NewFSM(initial string, w *Watcher) *fsm.FSM {
 	return fsm.NewFSM(
 		initial,
 		fsm.Events{

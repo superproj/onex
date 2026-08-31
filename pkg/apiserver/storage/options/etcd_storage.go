@@ -15,6 +15,7 @@ import (
 
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apiserver/pkg/registry/generic"
 	genericregistry "k8s.io/apiserver/pkg/registry/generic/registry"
@@ -197,8 +198,8 @@ type StorageFactoryRESTOptionsFactory struct {
 }
 
 // GetRESTOptions return the rest options.
-func (f *StorageFactoryRESTOptionsFactory) GetRESTOptions(resource schema.GroupResource) (generic.RESTOptions, error) {
-	storageConfig, err := f.StorageFactory.NewConfig(resource)
+func (f *StorageFactoryRESTOptionsFactory) GetRESTOptions(resource schema.GroupResource, example runtime.Object) (generic.RESTOptions, error) {
+	storageConfig, err := f.StorageFactory.NewConfig(resource, example)
 	if err != nil {
 		return generic.RESTOptions{}, fmt.Errorf(
 			"unable to find storage destination for %v, due to %w",

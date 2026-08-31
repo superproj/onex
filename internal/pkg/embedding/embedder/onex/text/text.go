@@ -3,7 +3,6 @@ package text
 import (
 	"context"
 	"encoding/json"
-	"time"
 
 	"github.com/tmc/langchaingo/llms/ollama"
 
@@ -34,22 +33,22 @@ func NewEmbedder(base string, client *ollama.LLM) *embedder {
 func (emb *embedder) Embedding(ctx context.Context, input any) string {
 	data, ok := input.(EmbeddingData)
 	if !ok {
-		log.C(ctx).Warnw("Invalid input type for embedding")
+		log.Warnw("Invalid input type for embedding")
 		return ""
 	}
 
 	if data.inputText == "" {
-		log.C(ctx).Warnw("Encountered empty inputText when send embedding model request")
+		log.Warnw("Encountered empty inputText when send embedding model request")
 		return ""
 	}
 
 	embs, err := emb.client.CreateEmbedding(ctx, []string{data.inputText})
 	if err != nil {
-		log.C(ctx).Warnw("Failed to embed input text", "err", err)
+		log.Warnw("Failed to embed input text", "err", err)
 		return ""
 	}
 	if len(embs) != 1 {
-		log.C(ctx).Warnw("Embedding output is not equal to 1")
+		log.Warnw("Embedding output is not equal to 1")
 		return ""
 	}
 

@@ -23,6 +23,7 @@ import (
 	"k8s.io/client-go/tools/record"
 	ref "k8s.io/client-go/tools/reference"
 	"k8s.io/klog/v2"
+	"k8s.io/utils/clock"
 	"k8s.io/utils/ptr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -38,10 +39,6 @@ import (
 	//"github.com/onexstack/onex/pkg/record"
 	"github.com/onexstack/onex/third_party/protobuf/k8s.io/apimachinery/pkg/api/errors"
 )
-
-// MaxConcurrency used to prevent the high load of onex-apiserver caused by excessive concurrency,
-// it is necessary to limit the miner create/delete concurrency.
-const MaxConcurrency = 30
 
 const controllerName = "cronjob-controller"
 
@@ -70,8 +67,8 @@ type Reconciler struct {
 	jobControl     jobControlInterface
 	cronJobControl cronJobControlInterface
 
-	// now is a function that returns current time, done to facilitate unit tests
-	now func() time.Time
+	// clock returns the current time and provides fake-clock support for tests.
+	clock clock.Clock
 }
 
 func (r *Reconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager, options controller.Options) error {
@@ -80,7 +77,8 @@ func (r *Reconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager, opt
 		Owns(&v1beta1.Job{}).
 		Watches(
 			&v1beta1.Job{},
-			handler.EnqueueRequestsFromMapFunc(r.JobToCronJobs)).
+			handler.EnqueueRequestsFromMapFunc(r.JobToCronJobs),
+		).
 		WithOptions(options).
 		Named(controllerName).
 		WithEventFilter(predicates.All(
@@ -94,7 +92,7 @@ func (r *Reconciler) SetupWithManager(ctx context.Context, mgr ctrl.Manager, opt
 	r.cronJobControl = &realCJControl{client: mgr.GetClient()}
 	r.jobControl = &realJobControl{client: mgr.GetClient()}
 
-	r.now = time.Now
+	r.clock = clock.RealClock{}
 
 	return builder.Complete(r)
 }
@@ -187,7 +185,7 @@ func (r *Reconciler) cleanupFinishedJobs(ctx context.Context, cronJob *v1beta1.C
 }
 
 func (r *Reconciler) syncCronJob(ctx context.Context, cronJob *v1beta1.CronJob, jobs []*v1beta1.Job) (ctrl.Result, error) {
-	now := r.now()
+	now := r.clock.Now()
 
 	childrenJobs := make(map[types.UID]bool)
 	for _, job := range jobs {
@@ -479,22 +477,26 @@ func (r *Reconciler) JobToCronJobs(ctx context.Context, o client.Object) []ctrl.
 }
 
 func (r *Reconciler) getCronJobsForJob(ctx context.Context, j *v1beta1.Job) ([]*v1beta1.CronJob, error) {
-	if len(j.Labels) == 0 {
-		return nil, fmt.Errorf("miner %v has no labels, this is unexpected", client.ObjectKeyFromObject(j))
-	}
-
 	cronJobList := &v1beta1.CronJobList{}
 	if err := r.client.List(ctx, cronJobList, client.InNamespace(j.Namespace)); err != nil {
 		return nil, fmt.Errorf("failed to list CronJobs, err: %w", err)
 	}
 
-	var cronJobs []*v1beta1.CronJob
+	// Any CronJob in the same namespace is a candidate to adopt an orphaned Job:
+	// the Job's deterministic name encodes its owning CronJob and schedule, so the
+	// right parent is resolved during the CronJob's own reconciliation.
+	cronJobs := make([]*v1beta1.CronJob, 0, len(cronJobList.Items))
+	for i := range cronJobList.Items {
+		cronJobs = append(cronJobs, &cronJobList.Items[i])
+	}
 
 	return cronJobs, nil
 }
 
 func (r *Reconciler) getJobsToBeReconciled(ctx context.Context, cronJob *v1beta1.CronJob) ([]*v1beta1.Job, error) {
-	// List 所有 Job，找出归属该 CronJob 的（按 ownerReference 过滤）
+	// List all Jobs in the namespace and keep the ones that belong to this CronJob,
+	// excluding those owned by another controller and adopting orphaned Jobs whose
+	// deterministic name matches this CronJob's prefix.
 	var jobList v1beta1.JobList
 	if err := r.client.List(ctx, &jobList, client.InNamespace(cronJob.Namespace)); err != nil {
 		return nil, err
@@ -502,9 +504,20 @@ func (r *Reconciler) getJobsToBeReconciled(ctx context.Context, cronJob *v1beta1
 
 	var childJobs []*v1beta1.Job
 	for i := range jobList.Items {
-		if metav1.IsControlledBy(&jobList.Items[i], cronJob) {
-			childJobs = append(childJobs, &jobList.Items[i])
+		job := &jobList.Items[i]
+		if shouldExcludeJob(cronJob, job) {
+			continue
 		}
+
+		// Adopt orphan Jobs that were created by a previous CronJob instance but
+		// never got (or lost) their controller reference.
+		if metav1.GetControllerOf(job) == nil && strings.HasPrefix(job.Name, cronJob.Name+"-") {
+			if err := r.adoptOrphan(ctx, cronJob, job); err != nil {
+				return nil, err
+			}
+		}
+
+		childJobs = append(childJobs, job)
 	}
 
 	return childJobs, nil
@@ -559,7 +572,8 @@ func getRef(object runtime.Object) (*corev1.ObjectReference, error) {
 func formatSchedule(cronJob *v1beta1.CronJob, recorder record.EventRecorder) string {
 	if strings.Contains(cronJob.Spec.Schedule, "TZ") {
 		if recorder != nil {
-			recorder.Eventf(cronJob,
+			recorder.Eventf(
+				cronJob,
 				corev1.EventTypeWarning,
 				"UnsupportedSchedule",
 				"CRON_TZ or TZ used in schedule %q is not officially supported",

@@ -12,7 +12,9 @@ package apiserver
 
 import (
 	"fmt"
+	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/blang/semver/v4"
@@ -20,7 +22,12 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	kversion "k8s.io/apimachinery/pkg/version"
 	"k8s.io/apiserver/pkg/admission"
+	admissioninitializer "k8s.io/apiserver/pkg/admission/initializer"
+	webhookinitializer "k8s.io/apiserver/pkg/admission/plugin/webhook/initializer"
+	utilfeature "k8s.io/apiserver/pkg/util/feature"
+	"k8s.io/apiserver/pkg/util/webhook"
 	"k8s.io/client-go/rest"
+	aggregatorapiserver "k8s.io/kube-aggregator/pkg/apiserver"
 
 	//"k8s.io/apiserver/pkg/admission"
 	"k8s.io/apiserver/pkg/endpoints/discovery/aggregated"
@@ -88,7 +95,44 @@ func BuildGenericConfig(
 		}
 		informerFactory := informers.NewSharedInformerFactory(client, c.LoopbackClientConfig.Timeout)
 		s.InternalVersionedInformers = informerFactory
-		return []admission.PluginInitializer{initializer.New(informerFactory, client)}, nil
+
+		// Webhook admission plugins resolve `service:` references through a
+		// service resolver and authenticate outbound calls via an
+		// authentication-info resolver wrapper. Both are independent of the
+		// onex custom initializer, so wire dedicated initializers for them.
+		serviceResolver := aggregatorapiserver.NewClusterIPServiceResolver(
+			informerFactory.Core().V1().Services().Lister(),
+		)
+		if localHost, err := url.Parse(c.LoopbackClientConfig.Host); err == nil {
+			serviceResolver = aggregatorapiserver.NewLoopbackServiceResolver(serviceResolver, localHost)
+		}
+
+		authInfoResolverWrapper := webhook.NewDefaultAuthenticationInfoResolverWrapper(
+			nil, // proxyTransport: not wired yet, outgoing webhook calls use the default transport
+			c.EgressSelector,
+			c.LoopbackClientConfig,
+			c.TracerProvider,
+		)
+		webhookInitializer := webhookinitializer.NewPluginInitializer(authInfoResolverWrapper, serviceResolver)
+
+		return []admission.PluginInitializer{
+			// onex's own plugins (namespace lifecycle/autoprovision/exists) bind
+			// through the custom WantsInternalInformerFactory/ClientSet interfaces.
+			initializer.New(informerFactory, client),
+			// The webhook plugins bind through the standard apiserver
+			// WantsExternalKubeInformerFactory/ClientSet interfaces.
+			admissioninitializer.New(
+				client,                         // externalClient
+				nil,                            // dynamicClient
+				informerFactory,                // externalInformers
+				nil,                            // authorizer is wired separately (BuildAuthorizer)
+				utilfeature.DefaultFeatureGate, // featureGates
+				nil,                            // effectiveVersion
+				nil,                            // drained notification (only needed for manifest-based static webhooks)
+				nil,                            // restMapper
+			),
+			webhookInitializer,
+		}, nil
 	}
 
 	// RecommendedOptions.ApplyTo must after RecommendedOptions.ExtraAdmissionInitializers.
@@ -160,31 +204,24 @@ func BuildGenericConfig(
 		return
 	}
 
-	// UPDATEME: Currently authentication and authorization rely on kubernetes cluster. Support in the future.
-	/*
-		ctx := wait.ContextForChannel(genericConfig.DrainedNotify())
-
-		// Authentication.ApplyTo requires already applied OpenAPIConfig and EgressSelector if present
-		if lastErr = s.Authentication.ApplyTo(ctx, &genericConfig.Authentication, genericConfig.SecureServing, genericConfig.EgressSelector, genericConfig.OpenAPIConfig, genericConfig.OpenAPIV3Config, clientgoExternalClient, versionedInformers, genericConfig.APIServerID); lastErr != nil {
-			return
-		}
-
-		var enablesRBAC bool
-		genericConfig.Authorization.Authorizer, genericConfig.RuleResolver, enablesRBAC, err = BuildAuthorizer(
-			ctx,
-			s,
-			genericConfig.EgressSelector,
-			genericConfig.APIServerID,
-			versionedInformers,
-		)
-		if err != nil {
-			lastErr = fmt.Errorf("invalid authorization config: %v", err)
-			return
-		}
-		if s.Authorization != nil && !enablesRBAC {
-			genericConfig.DisabledPostStartHooks.Insert(rbacrest.PostStartHookName)
-		}
-	*/
+	// Authentication is already wired by s.RecommendedOptions.ApplyTo above:
+	// without an explicit client CA or token source, requests fall back to the
+	// anonymous user. Install onex's own non-delegating authorizer (default
+	// AlwaysAllow) so access can be restricted via --authorization-mode without
+	// requiring a kube cluster to serve SubjectAccessReviews.
+	genericConfig.Authorization.Authorizer, genericConfig.RuleResolver, err = BuildAuthorizer(
+		strings.Split(s.AuthorizationMode, ","),
+		s.InternalVersionedInformers,
+		webhookAuthorizationOptions{
+			ConfigFile:           s.AuthorizationWebhookConfigFile,
+			CacheAuthorizedTTL:   s.AuthorizationWebhookCacheAuthorizedTTL,
+			CacheUnauthorizedTTL: s.AuthorizationWebhookCacheUnauthorizedTTL,
+		},
+	)
+	if err != nil {
+		lastErr = fmt.Errorf("invalid authorization config: %w", err)
+		return
+	}
 
 	lastErr = s.RecommendedOptions.Audit.ApplyTo(&genericConfig.Config)
 	if lastErr != nil {

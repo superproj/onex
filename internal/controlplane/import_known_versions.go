@@ -10,9 +10,11 @@ package controlplane
 import (
 	// These imports are the API groups the API server will support.
 	_ "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/install"
+	_ "k8s.io/kubernetes/pkg/apis/authorization/install"
 	_ "k8s.io/kubernetes/pkg/apis/autoscaling/install"
 	_ "k8s.io/kubernetes/pkg/apis/coordination/install"
 	_ "k8s.io/kubernetes/pkg/apis/core/install"
 	_ "k8s.io/kubernetes/pkg/apis/discovery/install"
 	_ "k8s.io/kubernetes/pkg/apis/flowcontrol/install"
+	_ "k8s.io/kubernetes/pkg/apis/rbac/install"
 )

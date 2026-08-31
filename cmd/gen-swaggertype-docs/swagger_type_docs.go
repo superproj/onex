@@ -52,7 +52,10 @@ func main() {
 		funcOut = file
 	}
 
-	docsForTypes := kruntime.ParseDocumentationFrom(*typeSrc)
+	docsForTypes, err := kruntime.ParseDocumentationFrom(*typeSrc)
+	if err != nil {
+		klog.Fatalf("Error parsing documentation: %v", err)
+	}
 
 	if *verify {
 		rc, err := kruntime.VerifySwaggerDocsExist(docsForTypes, funcOut)

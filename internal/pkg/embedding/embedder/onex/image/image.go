@@ -3,7 +3,8 @@ package image
 import (
 	"context"
 	"encoding/json"
-	"time"
+
+	"github.com/tmc/langchaingo/llms/ollama"
 
 	"github.com/onexstack/onex/internal/pkg/embedding/embedder/onex"
 	"github.com/onexstack/onexstack/pkg/log"
@@ -32,18 +33,18 @@ func NewEmbedder(client *ollama.LLM) *embedder {
 func (emb *embedder) Embedding(ctx context.Context, input any) string {
 	data, ok := input.(EmbeddingData)
 	if !ok {
-		log.C(ctx).Warnw("Invalid input type for embedding")
+		log.Warnw("Invalid input type for embedding")
 		return ""
 	}
 
 	embs, err := emb.client.CreateEmbedding(ctx, []string{data.ImagePath})
 	if err != nil {
-		log.C(ctx).Warnw("Failed to embed image", "err", err)
+		log.Warnw("Failed to embed image", "err", err)
 		return ""
 	}
 
 	if len(embs) != 1 {
-		log.C(ctx).Warnw("Embedding output is not equal to 1")
+		log.Warnw("Embedding output is not equal to 1")
 		return ""
 	}
 

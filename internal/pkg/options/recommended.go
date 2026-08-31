@@ -15,6 +15,9 @@ import (
 	admissionmetrics "k8s.io/apiserver/pkg/admission/metrics"
 	"k8s.io/apiserver/pkg/apis/apiserver"
 	"k8s.io/apiserver/pkg/authentication/authenticatorfactory"
+	"k8s.io/apiserver/pkg/authentication/request/bearertoken"
+	requestunion "k8s.io/apiserver/pkg/authentication/request/union"
+	"k8s.io/apiserver/pkg/authentication/token/tokenfile"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	"k8s.io/apiserver/pkg/server/dynamiccertificates"
 	genericoptions "k8s.io/apiserver/pkg/server/options"
@@ -33,6 +36,10 @@ type RecommendedOptions struct {
 
 	// Custom options for onex project.
 	ExternalAdmissionInitializers func(c *genericapiserver.RecommendedConfig) ([]admission.PluginInitializer, error)
+
+	// TokenAuthFile, if set, enables static bearer token authentication. The
+	// file format is CSV: `token,user,uid,"group1,group2"` per line.
+	TokenAuthFile string
 }
 
 func NewRecommendedOptions(prefix string, codec runtime.Codec) *RecommendedOptions {
@@ -67,7 +74,7 @@ func (o *RecommendedOptions) ApplyTo(config *genericapiserver.RecommendedConfig)
 		return err
 	}
 	*/
-	if err := authenticationApplyTo(o.Authentication, &config.Config.Authentication, config.SecureServing, config.OpenAPIConfig); err != nil {
+	if err := authenticationApplyTo(o.Authentication, o.TokenAuthFile, &config.Config.Authentication, config.SecureServing, config.OpenAPIConfig); err != nil {
 		return err
 	}
 	if err := o.Authorization.ApplyTo(&config.Config.Authorization); err != nil {
@@ -174,7 +181,7 @@ func enabledPluginNames(a *genericoptions.AdmissionOptions) []string {
 	return orderedPlugins
 }
 
-func authenticationApplyTo(s *genericoptions.DelegatingAuthenticationOptions, authenticationInfo *genericapiserver.AuthenticationInfo,
+func authenticationApplyTo(s *genericoptions.DelegatingAuthenticationOptions, tokenAuthFile string, authenticationInfo *genericapiserver.AuthenticationInfo,
 	servingInfo *genericapiserver.SecureServingInfo, openAPIConfig *openapicommon.Config,
 ) error {
 	if s == nil {
@@ -226,6 +233,19 @@ func authenticationApplyTo(s *genericoptions.DelegatingAuthenticationOptions, au
 	if err != nil {
 		return err
 	}
+
+	// Prepend the static bearer token authenticator so that tokens from
+	// --token-auth-file are checked before the delegating authenticator (and
+	// before falling through to anonymous). It is not supported by
+	// DelegatingAuthenticationConfig, so it is wired here.
+	if tokenAuthFile != "" {
+		tokenAuthenticator, err := tokenfile.NewCSV(tokenAuthFile)
+		if err != nil {
+			return fmt.Errorf("unable to load token auth file %q: %w", tokenAuthFile, err)
+		}
+		authenticator = requestunion.New(bearertoken.New(tokenAuthenticator), authenticator)
+	}
+
 	authenticationInfo.Authenticator = authenticator
 	if openAPIConfig != nil {
 		openAPIConfig.SecurityDefinitions = securityDefinitions

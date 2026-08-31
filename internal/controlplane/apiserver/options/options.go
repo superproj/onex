@@ -64,6 +64,25 @@ type Options struct {
 	EnableAggregatorRouting             bool
 	AggregatorRejectForwardingRedirects bool
 
+	// AuthorizationMode is the ordered, comma-separated list of authorizer
+	// plugins to use on the secure port. Supported modes: AlwaysAllow (default),
+	// AlwaysDeny, RBAC and Webhook.
+	AuthorizationMode string
+
+	// AuthorizationWebhookConfigFile, if set with --authorization-mode=Webhook,
+	// is a kubeconfig whose `cluster.server` serves the authorization/v1
+	// SubjectAccessReview API (e.g. a casbin webhook).
+	AuthorizationWebhookConfigFile string
+
+	// AuthorizationWebhookCacheAuthorizedTTL / CacheUnauthorizedTTL control how
+	// long the Webhook authorizer caches allow/deny decisions respectively.
+	AuthorizationWebhookCacheAuthorizedTTL   time.Duration
+	AuthorizationWebhookCacheUnauthorizedTTL time.Duration
+
+	// TokenAuthFile, if set, enables static bearer token authentication. The
+	// file format is CSV: `token,user,uid,"group1,group2"` per line.
+	TokenAuthFile string
+
 	EnableLogsHandler          bool
 	EventTTL                   time.Duration
 	InternalVersionedInformers informers.SharedInformerFactory
@@ -93,10 +112,13 @@ func NewOptions() *Options {
 		Traces:        genericoptions.NewTracingOptions(),
 		APIEnablement: genericoptions.NewAPIEnablementOptions(),
 
-		AlternateDNS:            []string{"onex.io"},
-		EnableLogsHandler:       true,
-		EventTTL:                2 * time.Hour,
-		EnableAggregatorRouting: false,
+		AlternateDNS:                             []string{"onex.io"},
+		EnableLogsHandler:                        true,
+		EventTTL:                                 2 * time.Hour,
+		EnableAggregatorRouting:                  false,
+		AuthorizationMode:                        "AlwaysAllow",
+		AuthorizationWebhookCacheAuthorizedTTL:   5 * time.Minute,
+		AuthorizationWebhookCacheUnauthorizedTTL: 30 * time.Second,
 		// CloudOptions: cloud.NewCloudOptions(),
 	}
 
@@ -121,7 +143,7 @@ func NewOptions() *Options {
 		o.RecommendedOptions.CoreAPI.CoreAPIKubeconfigPath = filepath.Join(home, ".onex", "config")
 	}
 	if cfg := os.Getenv("ONEXCONFIG"); cfg != "" {
-		 o.RecommendedOptions.CoreAPI.CoreAPIKubeconfigPath = cfg
+		o.RecommendedOptions.CoreAPI.CoreAPIKubeconfigPath = cfg
 	}
 	// We only register the plugin of onex-apiserver,
 	// so we need to clear the plugin registered by apiserver by default.
@@ -190,6 +212,19 @@ func (o *Options) AddFlags(fss *cliflag.NamedFlagSets) {
 
 	fs.BoolVar(&o.AggregatorRejectForwardingRedirects, "aggregator-reject-forwarding-redirect", o.AggregatorRejectForwardingRedirects,
 		"Aggregator reject forwarding redirect response back to client.")
+
+	fs.StringVar(&o.AuthorizationMode, "authorization-mode", o.AuthorizationMode,
+		"Ordered list of plug-ins to do authorization on the secure port. Comma-delimited: AlwaysAllow|AlwaysDeny|RBAC|Webhook; defaults to AlwaysAllow.")
+
+	fs.StringVar(&o.AuthorizationWebhookConfigFile, "authorization-webhook-config-file", o.AuthorizationWebhookConfigFile,
+		"Path to a kubeconfig whose `cluster.server` serves the authorization/v1 SubjectAccessReview API (e.g. a casbin webhook). Required when --authorization-mode includes Webhook.")
+	fs.DurationVar(&o.AuthorizationWebhookCacheAuthorizedTTL, "authorization-webhook-cache-authorized-ttl", o.AuthorizationWebhookCacheAuthorizedTTL,
+		"The duration to cache 'authorized' responses from the webhook authorizer.")
+	fs.DurationVar(&o.AuthorizationWebhookCacheUnauthorizedTTL, "authorization-webhook-cache-unauthorized-ttl", o.AuthorizationWebhookCacheUnauthorizedTTL,
+		"The duration to cache 'unauthorized' responses from the webhook authorizer.")
+
+	fs.StringVar(&o.TokenAuthFile, "token-auth-file", o.TokenAuthFile,
+		"File path with a CSV content (`token,user,uid,\"group1,group2\"`) enabling static bearer token authentication.")
 }
 
 func (o *Options) Complete() (CompletedOptions, error) {
@@ -198,6 +233,10 @@ func (o *Options) Complete() (CompletedOptions, error) {
 	}
 
 	completed := completedOptions{Options: *o}
+
+	// Propagate the static token auth file to the recommended options so it can
+	// be wired into the authenticator in RecommendedOptions.ApplyTo.
+	completed.RecommendedOptions.TokenAuthFile = completed.TokenAuthFile
 
 	// set defaults
 	if err := completed.GenericServerRunOptions.DefaultAdvertiseAddress(completed.RecommendedOptions.SecureServing.SecureServingOptions); err != nil {
