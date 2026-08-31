@@ -28,6 +28,7 @@
 | watch/cache/informer | `client-go/tools/cache` + ctrl cache | ✅ 已用 | 修复 resync 硬编码 |
 | workqueue 限流重试 | `client-go/util/workqueue` | ✅ 已有 | 修复注释 |
 | leader election（Lease） | `client-go/tools/leaderelection` + ctrl | ✅ 已用 | 无 |
+| **API Priority and Fairness（APF）** | `apiserver/pkg/util/flowcontrol` | ⚠️ 仅 storage+bootstrap，filter 未挂 | **接线 FlowControl filter（阶段 H）** |
 | **ControllerExpectations（写后读一致性）** | `pkg/controller/controller_utils.go` | ❌ 缺失 | **新增（阶段 B）** |
 | **backoffStore（失败指数退避）** | `pkg/controller/job/backoff_utils.go` | ❌ 缺失 | **新增（阶段 B）** |
 | **ControllerRefManager（领养/弃养）** | `pkg/controller/controller_ref_manager.go` | ❌ 缺失 | **新增（阶段 B）** |
@@ -86,6 +87,10 @@
 ### 阶段 G — apiserver 扩展机制
 - **Webhook admission**：`options/plugins.go` 注册 `MutatingAdmissionWebhook` / `ValidatingAdmissionWebhook`（默认关闭，`--enable-admission-plugins` 开启）；`config.go` 接入标准 apiserver initializer（外部 informer/clientset）+ webhook initializer（`serviceResolver`=ClusterIP+loopback、`authInfoResolverWrapper`）。
 - **委派授权（casbin webhook）**：`authorizer.go` 的 `BuildAuthorizer` 新增 `Webhook` 模式，通过 `authorizerfactory.DelegatingAuthorizerConfig` 委派到远端 `SubjectAccessReview` 服务（如 casbin）；新增 `--authorization-webhook-config-file` / `--authorization-webhook-cache-authorized-ttl` / `--authorization-webhook-cache-unauthorized-ttl` flag。
+
+### 阶段 H — APF 精调
+- `config.go`：构造 `utilflowcontrol.New(InternalVersionedInformers, kubeClient.FlowcontrolV1(), maxInflight+maxMutatingInflight)` 并赋值 `genericConfig.FlowControl`，使 APF 队列真正接入请求 filter chain。此前 flow-control 的 REST storage + bootstrap ensurer 已接线，但 `FlowControl` 为 nil，filter 从未生效；赋值后 genericapiserver 自动完成 `Run`（post-start hook）、`Install`（debug 端点）与 `WithPriorityAndFairness`（filter）。启动期 informer 未 sync 前走内置 catch-all 配置，不丢请求。
+- CEL ValidatingAdmissionPolicy 与 controller-manager 域控制器拓展示意**列为后续批次**：前者工程量较大（需 policy controller + CEL 环境 + admissionregistration storage），与 webhook admission 部分重叠；后者属 onex 业务范畴，不在 k8s 迁移内。
 
 ## 5. 假设与待办
 

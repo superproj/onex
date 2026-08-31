@@ -25,6 +25,7 @@ import (
 	admissioninitializer "k8s.io/apiserver/pkg/admission/initializer"
 	webhookinitializer "k8s.io/apiserver/pkg/admission/plugin/webhook/initializer"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
+	utilflowcontrol "k8s.io/apiserver/pkg/util/flowcontrol"
 	"k8s.io/apiserver/pkg/util/webhook"
 	"k8s.io/client-go/rest"
 	aggregatorapiserver "k8s.io/kube-aggregator/pkg/apiserver"
@@ -171,6 +172,19 @@ func BuildGenericConfig(
 	if lastErr = s.Traces.ApplyTo(genericConfig.EgressSelector, &genericConfig.Config); lastErr != nil {
 		return
 	}
+
+	// Wire API Priority and Fairness (APF) into the request-handling filter
+	// chain. The flow-control REST storage (FlowSchema/PriorityLevelConfiguration
+	// CRUD) and its bootstrap ensurer are already installed via the REST storage
+	// provider; setting FlowControl here is what actually routes requests through
+	// the APF queue-set dispatch. Until the flow-control informers sync, APF falls
+	// back to its built-in catch-all configuration, so requests are not dropped
+	// during startup.
+	genericConfig.FlowControl = utilflowcontrol.New(
+		s.InternalVersionedInformers,
+		kubeClient.FlowcontrolV1(),
+		genericConfig.MaxRequestsInFlight+genericConfig.MaxMutatingRequestsInFlight,
+	)
 
 	// wrap the definitions to revert any changes from disabled features
 	getOpenAPIDefinitions = openapi.GetOpenAPIDefinitionsWithoutDisabledFeatures(getOpenAPIDefinitions)
