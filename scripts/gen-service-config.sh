@@ -40,7 +40,7 @@ Documentation=https://github.com/onexstack/onex/blob/master/manifests/installati
 WorkingDirectory=${ONEX_INSTALL_DIR}
 ExecStartPre=/usr/bin/mkdir -p ${ONEX_DATA_DIR}/onex-apiserver
 ExecStartPre=/usr/bin/mkdir -p ${ONEX_LOG_DIR}
-ExecStart=/opt/onex/bin/onex-apiserver --bind-address=${ONEX_APISERVER_BIND_ADDRESS} --secure-port ${ONEX_APISERVER_SECURE_PORT} --etcd-servers ${ONEX_APISERVER_ETCD_SERVERS} --client-ca-file=${ONEX_APISERVER_CLIENT_CA_FILE} --tls-cert-file=${ONEX_APISERVER_TLS_CERT_FILE} --tls-private-key-file=${ONEX_APISERVER_TLS_PRIVATE_KEY_FILE} --v=${ONEX_APISERVER_V_LEVEL}
+ExecStart=/opt/onex/bin/onex-apiserver --bind-address=${ONEX_APISERVER_BIND_ADDRESS} --secure-port ${ONEX_APISERVER_SECURE_PORT} --etcd-servers ${ONEX_APISERVER_ETCD_SERVERS} --client-ca-file=${ONEX_APISERVER_CLIENT_CA_FILE} --tls-cert-file=${ONEX_APISERVER_TLS_CERT_FILE} --tls-private-key-file=${ONEX_APISERVER_TLS_PRIVATE_KEY_FILE} --v=${ONEX_APISERVER_V_LEVEL} --feature-gates=${ONEX_APISERVER_FEATURE_GATES:-SizeBasedListCostEstimate=false}
 Restart=always
 RestartSec=5
 StartLimitInterval=0
