@@ -13,8 +13,8 @@
 // consecutively failing dispatches, and a ControllerRefManager adopts/releases
 // provider-managed child objects via controller references.
 //
-// The underlying workload is abstracted behind providerControlInterface. The
-// default realProviderControl is a no-op placeholder: plug in a concrete
-// implementation (kubernetes / aws-batch / spark-on-yarn) to actually dispatch
-// jobs to a provider.
+// The underlying workload is abstracted behind registry.Provider. Concrete
+// providers (kubernetes / LLMTrain / aws-batch / spark-on-yarn) register
+// themselves with the providers registry; dispatch resolves them by
+// job.spec.type.
 package job

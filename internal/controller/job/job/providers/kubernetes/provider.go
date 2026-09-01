@@ -4,7 +4,10 @@
 // this file is https://github.com/onexstack/onex.
 //
 
-package job
+// Package kubernetes implements the "kubernetes" Job provider, which runs a Job
+// by dispatching a single Pod and mapping the Pod phase back onto the Job
+// lifecycle.
+package kubernetes
 
 import (
 	"context"
@@ -16,30 +19,35 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
+	"github.com/onexstack/onex/internal/controller/job/job/providers/registry"
 	"github.com/onexstack/onex/pkg/apis/batch/v1beta1"
 )
 
 const (
-	// JobTypeKubernetes is the provider type for running a Job as a Kubernetes
-	// Pod. It is also the implicit default when spec.type is left empty.
-	JobTypeKubernetes v1beta1.JobType = "kubernetes"
+	// Type is the provider type for running a Job as a Kubernetes Pod. It is
+	// also the implicit default when spec.type is left empty.
+	Type v1beta1.JobType = "kubernetes"
 
 	// jobNameLabel is the label key used to associate the Pod dispatched for a
 	// Job with that Job, so that the provider can locate its children.
 	jobNameLabel = "job.onex.io/name"
 )
 
-// kubernetesProvider runs a Job by dispatching a single Pod and mapping the Pod
-// phase back onto the Job lifecycle. It expects job.Spec.ProviderSpec.Raw to
-// carry a JSON-encoded corev1.PodSpec.
-type kubernetesProvider struct {
+// controllerKind is the GroupVersionKind used when writing the Pod's controller
+// reference back to the owning Job.
+var controllerKind = v1beta1.SchemeGroupVersion.WithKind("Job")
+
+// Provider runs a Job by dispatching a single Pod and mapping the Pod phase back
+// onto the Job lifecycle. It expects job.Spec.ProviderSpec.Raw to carry a
+// JSON-encoded corev1.PodSpec.
+type Provider struct {
 	client client.Client
 }
 
-var _ providerControlInterface = &kubernetesProvider{}
+var _ registry.Provider = (*Provider)(nil)
 
 // Start creates the Pod that executes the Job.
-func (p *kubernetesProvider) Start(ctx context.Context, job *v1beta1.Job) error {
+func (p *Provider) Start(ctx context.Context, job *v1beta1.Job) error {
 	spec, err := podSpecFromJob(job)
 	if err != nil {
 		return err
@@ -62,7 +70,7 @@ func (p *kubernetesProvider) Start(ctx context.Context, job *v1beta1.Job) error 
 }
 
 // Stop deletes all Pods owned by the Job.
-func (p *kubernetesProvider) Stop(ctx context.Context, job *v1beta1.Job) error {
+func (p *Provider) Stop(ctx context.Context, job *v1beta1.Job) error {
 	pods, err := p.getPods(ctx, job)
 	if err != nil {
 		return err
@@ -77,31 +85,31 @@ func (p *kubernetesProvider) Stop(ctx context.Context, job *v1beta1.Job) error {
 
 // Status maps the Job's Pod phase to a provider status. A Job runs a single
 // Pod, so its terminal state is derived from that Pod's phase.
-func (p *kubernetesProvider) Status(ctx context.Context, job *v1beta1.Job) (providerStatus, error) {
+func (p *Provider) Status(ctx context.Context, job *v1beta1.Job) (registry.Status, error) {
 	pods, err := p.getPods(ctx, job)
 	if err != nil {
-		return providerStatus{}, err
+		return registry.Status{}, err
 	}
 	if len(pods) == 0 {
 		// No Pod observed yet (e.g. immediately after Start, before the
 		// informer has caught up).
-		return providerStatus{}, nil
+		return registry.Status{}, nil
 	}
 
 	pod := pods[0]
 	switch pod.Status.Phase {
 	case corev1.PodSucceeded:
-		return providerStatus{Finished: true, Succeeded: true}, nil
+		return registry.Status{Finished: true, Succeeded: true}, nil
 	case corev1.PodFailed:
-		return providerStatus{Finished: true, Succeeded: false, Message: podFailureMessage(&pod)}, nil
+		return registry.Status{Finished: true, Succeeded: false, Message: podFailureMessage(&pod)}, nil
 	default:
-		return providerStatus{}, nil
+		return registry.Status{}, nil
 	}
 }
 
 // Children returns the Pods owned by the Job, as client objects, for
 // controller-reference adoption/release.
-func (p *kubernetesProvider) Children(ctx context.Context, job *v1beta1.Job) ([]client.Object, error) {
+func (p *Provider) Children(ctx context.Context, job *v1beta1.Job) ([]client.Object, error) {
 	pods, err := p.getPods(ctx, job)
 	if err != nil {
 		return nil, err
@@ -113,7 +121,7 @@ func (p *kubernetesProvider) Children(ctx context.Context, job *v1beta1.Job) ([]
 	return objs, nil
 }
 
-func (p *kubernetesProvider) getPods(ctx context.Context, job *v1beta1.Job) ([]corev1.Pod, error) {
+func (p *Provider) getPods(ctx context.Context, job *v1beta1.Job) ([]corev1.Pod, error) {
 	list := &corev1.PodList{}
 	if err := p.client.List(ctx, list,
 		client.InNamespace(job.Namespace),
@@ -148,4 +156,10 @@ func podFailureMessage(pod *corev1.Pod) string {
 		}
 	}
 	return string(pod.Status.Phase)
+}
+
+func init() {
+	registry.Register(Type, func(c client.Client) registry.Provider {
+		return &Provider{client: c}
+	})
 }

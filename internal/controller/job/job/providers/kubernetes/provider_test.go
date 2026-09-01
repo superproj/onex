@@ -4,7 +4,7 @@
 // this file is https://github.com/onexstack/onex.
 //
 
-package job
+package kubernetes
 
 import (
 	"context"
@@ -38,7 +38,7 @@ func newTestJob(typ v1beta1.JobType) *v1beta1.Job {
 }
 
 func TestPodSpecFromJob(t *testing.T) {
-	spec, err := podSpecFromJob(newTestJob(JobTypeKubernetes))
+	spec, err := podSpecFromJob(newTestJob(Type))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -54,29 +54,16 @@ func TestPodSpecFromJob(t *testing.T) {
 		t.Fatal("expected error for empty providerSpec")
 	}
 
-	invalid := newTestJob(JobTypeKubernetes)
+	invalid := newTestJob(Type)
 	invalid.Spec.ProviderSpec.Raw = []byte("not-json")
 	if _, err := podSpecFromJob(invalid); err == nil {
 		t.Fatal("expected error for invalid providerSpec")
 	}
 }
 
-func TestProviderDispatcherUnsupportedType(t *testing.T) {
-	p := newRealProviderControl(nil)
-	job := newTestJob("aws-batch")
-
-	if err := p.Start(context.Background(), job); err == nil {
-		t.Fatal("expected unsupported type error")
-	}
-	// Non-terminal methods should be no-ops rather than panic/error.
-	if _, err := p.Status(context.Background(), job); err != nil {
-		t.Fatalf("unexpected status error: %v", err)
-	}
-}
-
-func TestKubernetesProviderLifecycle(t *testing.T) {
-	p := &kubernetesProvider{client: fake.NewClientBuilder().WithScheme(newTestScheme()).Build()}
-	job := newTestJob(JobTypeKubernetes)
+func TestProviderLifecycle(t *testing.T) {
+	p := &Provider{client: fake.NewClientBuilder().WithScheme(newTestScheme()).Build()}
+	job := newTestJob(Type)
 	ctx := context.Background()
 
 	if err := p.Start(ctx, job); err != nil {

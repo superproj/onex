@@ -18,10 +18,11 @@ import (
 	testingclock "k8s.io/utils/clock/testing"
 	"k8s.io/utils/ptr"
 
+	"github.com/onexstack/onex/internal/controller/job/job/providers/registry"
 	"github.com/onexstack/onex/pkg/apis/batch/v1beta1"
 )
 
-func newTestReconciler(provider providerControlInterface, now time.Time) *Reconciler {
+func newTestReconciler(provider registry.Provider, now time.Time) *Reconciler {
 	return &Reconciler{
 		provider:     provider,
 		recorder:     record.NewFakeRecorder(100),
@@ -93,7 +94,7 @@ func TestSyncActiveDeadline(t *testing.T) {
 
 func TestSyncCompletesJob(t *testing.T) {
 	now := time.Now()
-	provider := &fakeProviderControl{StatusResp: providerStatus{Finished: true, Succeeded: true}}
+	provider := &fakeProviderControl{StatusResp: registry.Status{Finished: true, Succeeded: true}}
 	r := newTestReconciler(provider, now)
 	job := testJob("job1")
 	startedAt := metav1.NewTime(now.Add(-time.Minute))

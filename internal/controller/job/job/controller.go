@@ -21,6 +21,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller"
 
+	"github.com/onexstack/onex/internal/controller/job/job/providers/registry"
 	jobutil "github.com/onexstack/onex/internal/pkg/util/job"
 	"github.com/onexstack/onex/internal/pkg/util/patch"
 	"github.com/onexstack/onex/internal/pkg/util/predicates"
@@ -46,7 +47,7 @@ type Reconciler struct {
 
 	recorder     record.EventRecorder
 	jobControl   jobControlInterface
-	provider     providerControlInterface
+	provider     registry.Provider
 	expectations *ControllerExpectations
 	backoff      *backoffStore
 
